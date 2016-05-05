@@ -1,0 +1,365 @@
+body { 
+	padding-top: 60px; 
+	color: #666;
+}
+
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+
+.noborder {
+	border: 0 !important;
+}
+
+.navbar_backgroud {
+	background: #222;
+	background: -webkit-linear-gradient(top, #252527, #1c1c1e);
+	background: linear-gradient(to bottom, #252527, #1c1c1e);
+	border-bottom: 1px solid #222;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .15);
+}
+
+.navbar_colorWhite>li>a {
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .12);
+	color: #C2C2C2 !important;
+}
+
+.navbar_colorWhite>li>a:hover {
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .12);
+	color: #fff !important;
+	background-color: #313035 !important;
+	background: -webkit-linear-gradient(top, #4C4A54, #3A3940);
+	background: linear-gradient(to bottom, #4C4A54, #3A3940);
+	box-shadow: inset 0 0 2px rgba(0, 0, 0, .12)
+}
+
+.navbar_searchBoxDropDown {
+	width:450px !important;
+}
+
+.navbar_portraitBox {
+	padding-top: 12px !important;
+	padding-bottom: 12px !important;
+}
+
+.navbar_portrait {
+	width: 25px !important;
+	height: 25px !important;
+}
+
+.navbar_clickable {
+	cursor: pointer;
+}
+
+.navbar_active {
+	background-color: #313035 !important;
+	background: -webkit-linear-gradient(top, #4C4A54, #313035);
+	background: linear-gradient(to bottom, #4C4A54, #313035);
+	box-shadow: inset 0 0 2px rgba(0, 0, 0, .12)
+}
+
+.navbar_active>a {
+	color: #fff !important;
+}
+
+
+.userHome_layoutDiv {
+	color: #666;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 1px 0 #f2f4f5;
+	margin-bottom: 20px;
+}
+
+.userHome_layoutDivHead {
+	overflow: hidden;
+	padding: 7px 14px;
+	border-bottom: 1px solid #EEE
+}
+
+.userHome_layoutDivHead a {
+	color: #666;
+}
+
+.userHome_layoutDivHead span {
+	display: inline-block;
+	float: right;
+}
+
+.userHome_layoutDivContentItem {
+	
+}
+
+
+.userHome_name {
+	color: #000000 !important;
+}
+
+.userHome_profileHeader {
+	padding: 5px 18px;
+}
+
+.userHome_profileHeaderTop {
+	
+}
+
+.userHome_profileHeaderLeft {
+	margin-top: 5px;
+	float: left;
+	width: 17%;
+	margin-left: 15px;
+}
+
+.userHome_profileHeaderLeft a {
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.userHome_profileHeaderRight {
+	margin-top: 5px;
+	margin-left: 10px;
+	float: left;
+	width: 78%;
+}
+
+
+.userHome_profileItem {
+	margin-left: 5px;
+}
+
+.userHome_profileMoreItem {
+	margin-left: 6px;
+	border-left: 1px solid #eee;
+	padding-left: 6px;
+}
+
+.userHome_selfIntro {
+	border-top: 1px dotted #eee;
+	padding-top: 10px;
+	padding-right: 10px;
+}
+
+.userHome_pointSummary {
+	margin-top: 10px;
+	padding: 12px 18px;
+	border-top: 1px dotted #eee;
+
+}
+
+.userHome_number {
+	font-weight: bold;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.userHome_profileNavbar {
+	background-color: #fcfcfc;
+	border-top: 1px solid #ddd;
+	box-shadow: 0 2px 2px #f0f0f0 inset;
+	border-radius: 0 0 4px 4px;
+	font-size: 16px;
+	display: table;
+	width: 100%;
+}
+
+.userHome_profileNavbar a {
+	float: left;
+	padding: 12px 20px;
+	font-weight: 700;
+	color: #666;
+	text-align: center;
+	font-size: 14px;
+	text-decoration: none;
+	line-height: 22px;
+	display: block;
+}
+
+.userHome_profileNavbar a span {
+	color: #999;
+	font-weight: 400
+}
+
+.userHome_sideBarSection {
+	border-bottom: 1px solid #eee;
+	margin-bottom: 5px;
+	margin-top: 8px;
+	padding-bottom: 5px;
+}
+
+.userHome_follows {
+	border-bottom: 1px solid #eee;
+	margin-bottom: 10px;
+	display: table;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.userHome_follows a {
+	float: left;
+	text-decoration: none;
+	padding: 2px 30px 8px 0;
+	display: block;
+}
+
+.userHome_follows a span {
+	color: #999;
+	font-weight: 400;
+}
+
+.userHome_followsMore {
+	border-left: 1px solid #eee;
+	padding-left: 8px !important;
+}
+
+.userHome_followTopicTitile {
+	font-size: 14px;
+	font-weight: 700;
+	color: #666;
+	padding-bottom: 10px;
+	padding-top: 0;
+	line-height: 1;
+	white-space: nowrap;
+	display: inline-block
+}
+
+.userHome_followTopicItems a {
+	isplay: block;
+	height: 34px;
+	width: 34px;
+	border-radius: 3px
+}
+
+.userHome_sideBarSectionInner {
+
+}
+
+.userHome_sitesCopyright {
+	text-align: left !important;
+}
+
+.sitesCopyright {
+	border-top: 1px solid #ccc;
+	text-align: left;
+	color: #999;
+	clear: both;
+}
+
+.sitesCopyrightInner {
+	width: auto;
+	border-top-color: #eee;
+	margin: 0 auto;
+}
+
+.sitesCopyrightInner ul {
+	list-style-type: disc;
+	-webkit-margin-before: 1em;
+	-webkit-margin-after: 1em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 18px;
+
+}
+.sitesCopyrightInner ul li {
+	float: left;
+	margin-right: 22px;
+}
+
+.sitesCopyrightInner ul li a {
+	color: #666;
+}
+
+.sitesCopyrightInner div {
+	text-align: right;
+}
+
+.userMessage_Head {
+	color: #000000;
+	border-bottom: solid 1px #ccc;
+	margin-bottom: 10px;
+	margin-top: 5px;
+	padding-bottom: 5px;
+}
+
+.userMessage_Head button {
+	margin-top: 5px;
+	padding-left: 27px; 
+	padding-right: 27px;
+}
+
+.userMessage_Content {
+	color: #000000;
+}
+
+.userMessage_Content img {
+	width: 45px;
+	height: 45px;
+}
+
+.userMessage_ContentItemBottom {
+	margin-top: 10px;
+	text-align: right;
+	color: #999;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.userMessage_ContentItemBottomTime {
+	float: left;
+}
+
+.userMessage_verticalLine {
+	padding: 0 3px;
+	color: #BBB;
+	font-family: Arial;
+}
+
+.userSetting_nav {
+	margin-top: 8px;
+}
+
+.userSetting_content {
+	margin-top: 5px;
+	color: #000000;
+}
+
+.userSetting_contentLabelLeft {
+	text-align: left !important;
+}
+
+.userSetting_EditA {
+	color: #999;
+	display: inline-block;
+	font-size: 11px;
+	-webkit-text-size-adjust: none;
+	font-weight: 400;
+	padding: 0 5px 0 2px;
+	margin: 0 0 0 5px;
+	text-decoration: none;
+}
+
+.userSetting_section {
+	border-bottom: 1px solid #f2f2f2;
+	margin-top: 10px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+.userSetting_info {
+	color: #999;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 35px;
+}
+
+.userSetting_loginMethodItem a {
+	margin-right: 10px;
+}
+
+.userSetting_loginMethodItem a:hover {
+	background: #eff6fa;
+}
+
+.userSetting_labelAdjust {
+	width: 18% !important;
+}
