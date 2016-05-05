@@ -76,10 +76,10 @@
   <div class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs userSetting_nav">
-          <li role="presentation" class="active"><a href="#">Basic Information</a></li>
+          <li role="presentation"><a href="#">Basic Information</a></li>
           <li role="presentation"><a href="#">Account &amp; Password</a></li>
           <li role="presentation"><a href="#">Notification</a></li>
-          <li role="presentation"><a href="#">Block</a></li>
+          <li role="presentation" class="active"><a href="#">Block</a></li>
         </ul>
       </div>
   </div>
@@ -90,28 +90,21 @@
     <div class="row userSetting_section">
       <div class="col-md-8">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Name:</label>
-            <label class="col-sm-10 control-label userSetting_contentLabelLeft">Xiao Pu<a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></label>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-9 userSetting_EditText">
-              <input type="text" class="form-control" id="inputPassword3" placeholder="Xiao Pu">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row userSetting_section">
-      <div class="col-md-8">
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Selfdomain:</label>
-            <div class="col-sm-6">
-              <div class="input-group">
-                <div class="input-group-addon">http://nusding.com/</div>
-                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+            <label for="inputEmail3" class="col-sm-2 control-label">Block User</label>
+            <div class="col-sm-5">
+              <input type="email" class="form-control" id="blockUserInput" placeholder="Email">
+            </div>
+            <div class="col-sm-5">
+              <div class="userSetting_info">
+                You will not see anything about these user
               </div>
             </div>
-            <div class="col-sm-4">
-               <span class="userSetting_info">Only One Edit Chance</span>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10 userSetting_Item">
+              <a href="#">Ren ChangHao</a>
+              <a href="#">Lyu Zhuoran</a>
             </div>
         </div>
       </div>
@@ -157,6 +150,15 @@
     <script src="js/bootstrap3-typeahead.js"></script>
     <script>
       var $input = $('.typeahead');
+      $input.typeahead({source:[
+            {id: "someId1", name: "Display name 1", category: "skill"}, 
+            {id: "someId2", name: "Display name 2", category: "game"},
+            {id: "someId3", name: "Display Name 3", category: "game"}], 
+            autoSelect: true}); 
+    </script>
+
+    <script>
+      var $input = $('#blockUserInput');
       $input.typeahead({source:[
             {id: "someId1", name: "Display name 1", category: "skill"}, 
             {id: "someId2", name: "Display name 2", category: "game"},

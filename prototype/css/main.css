@@ -175,6 +175,10 @@ body {
 	display: block;
 }
 
+.userHome_profileNavbar a:hover {
+	color: #259;
+}
+
 .userHome_profileNavbar a span {
 	color: #999;
 	font-weight: 400
@@ -352,11 +356,11 @@ body {
 	line-height: 35px;
 }
 
-.userSetting_loginMethodItem a {
+.userSetting_Item a {
 	margin-right: 10px;
 }
 
-.userSetting_loginMethodItem a:hover {
+.userSetting_Item a:hover {
 	background: #eff6fa;
 }
 
