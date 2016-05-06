@@ -457,3 +457,105 @@ body {
 	outline: 0
 }
 
+.question_tag a {
+	padding: 1px 8px;
+	font-size: 12px;
+	margin:0px 10px 0px 0px;
+}
+
+.question_answer a{
+	color:#999;
+	margin:0px 10px 0px 0px;
+}
+
+.question_answer a:hover {
+	color:#337ab7;
+}
+
+.question_answer form {
+	margin:15px 0px;
+}
+
+.question_answer button {
+	padding:2px 10px;
+	margin-left: 90%;
+}
+
+.answer_num p {
+	float:left;
+	width:15%;
+	font-weight:bold;
+}
+
+.answer_num .dropdown {
+	float:right;
+	width:70%;
+}
+
+.answer_num button {
+	margin-left:90%;
+	padding: 1px 8px;
+}
+
+.answer_num ul {
+	margin-left:90%;
+}
+
+.answer_voting button {
+	margin:0px 45% 5px 45%;
+	width:35px;
+	padding:0px 1px;
+	background-color:#777;
+	border-color:#777;
+}
+
+.answer_voting button:hover {
+	background-color: #666;
+	border-color: #666;
+}
+
+.answer_userInfo p {
+	float:left;
+	width: 95%;
+}
+
+.answer_userInfo img {
+	float:right;
+	width:20px;
+	margin-bottom: 20px;
+}
+
+.answer_username {
+	font-weight: bold;
+}
+
+.answer_info a{
+	margin:5px 12px 0px 0px;
+	color: #999;
+}
+
+.answer_info a:hover {
+	color:#337ab7;
+}
+
+.question_subscribe button {
+	padding:2px 5px;
+	margin-bottom:10px;
+}
+
+.question_subscribe a {
+	font-weight:bold;
+}
+
+.question_subscribe img {
+	margin: 10px 2px 0px 0px;
+	width: 40px;
+}
+
+.question_related p {
+	width: 100%;
+}
+
+.question_copyright {
+	color:#999;
+}
