@@ -552,6 +552,10 @@ body {
 	text-decoration: none;
 }
 
+.login_nav_options a:hover {
+	color: #222;
+}
+
 .login_nav_options_active {
 	opacity: 1;
 	-ms-filter: "alpha(Opacity=100)";

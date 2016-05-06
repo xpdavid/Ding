@@ -266,6 +266,15 @@ $(function() {
 	setInterval(draw, 50);
 });
 
+/*
+* function: moveSlideBar
+* Description: make the slide bar slide in the login page
+*/
+function moveSlideBar(offset) {
+	$('.login_nav_slidebar').css('left', offset + 'em');
+}
+
+
 
 
 

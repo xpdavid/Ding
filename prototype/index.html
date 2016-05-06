@@ -34,14 +34,14 @@
         <div class="login_mainBodyOperation">
           <div class="login_nav">
             <div class="login_nav_options">
-              <a href="#singup" aria-controls="singup" role="tab" data-toggle="tab">Register</a>
-              <a href="#singin" aria-controls="singin" role="tab" data-toggle="tab">Login</a>
+              <a href="#signup" aria-controls="signup" role="tab" data-toggle="tab" onclick="moveSlideBar(0);" >Register</a>
+              <a href="#signin" aria-controls="signin" role="tab" data-toggle="tab" onclick="moveSlideBar(4.1);" >Login</a>
               <span class="login_nav_slidebar"></span>
             </div>        
           </div>
 
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active login_signup" id="singup">
+            <div role="tabpanel" class="tab-pane fade in active login_signup" id="signup">
                 <div class="login_input_group">
                   <input type="text" class="form-control" placeholder="Name">
                   <input type="text" class="form-control" placeholder="Email">
@@ -51,7 +51,7 @@
                 <button type="button" class="btn btn-warning">Login with NUSOpen ID</button>
             </div>
 
-            <div role="tabpanel" class="tab-pane fade login_signin" id="singin">
+            <div role="tabpanel" class="tab-pane fade login_signin" id="signin">
                 <div class="login_input_group">
                   <input type="text" class="form-control" placeholder="Email">
                   <input type="text" class="noborder form-control" placeholder="Password">
