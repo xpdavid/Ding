@@ -102,11 +102,12 @@
               <div class="col-md-12">
                 <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Answer</a>
                 <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> Bookmark</a>
+                <a href="#"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Invite Friends</a>
               </div>
               <div class="col-md-12">
                 <form>
                   <div class="form-group">
-                    <input type="text" class="form-control" id="question_answerSubmission" placeholder="Write your answer here.">
+                    <textarea class="form-control" id="question_answerSubmission" placeholder="Write your answer here." rows="3"></textarea>
                   </div>
                   <button type="submit" class="btn btn-warning">Submit</button>
                 </form>
@@ -137,10 +138,10 @@
               <div class="col-md-1 answer_voting">
                 <br><br>
                 <button type="button" class="btn btn-primary">
-                  <span class="glyphicon glyphicon-triangle-top"></span>
-                </button>
-                <button type="button" class="btn btn-primary">
-                  <div>117</div>
+                  <div>
+                  	<span class="glyphicon glyphicon-triangle-top"></span>
+                  </div>
+                  117
                 </button>
                 <button type="button" class="btn btn-primary">
                   <span class="glyphicon glyphicon-triangle-bottom"></span>
@@ -151,7 +152,7 @@
                 <div class="col-md-12 answer_userInfo">
                   <hr>
                   <p><span class="answer_username">Mr Asd</span> , the embodiment of ultimate randomness</p>
-                  <img src="image/sample_icon.png" alt="" width=20px>
+                  <img src="image/sample_icon.png" alt="">
                 </div>
                 <div class="col-md-12 answer_content">
                   <p>Answer Content blah  blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
@@ -165,6 +166,28 @@
                     <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Not helpful</a>
                     <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Report</a>
                 </div>
+
+                <div class="col-md-12 answer_more">
+                	<hr>
+                	<button type="button" class="btn btn-default">More</button>
+                </div>                	 	
+
+                <div class="col-md-12 question_answer">
+                	<hr>
+                	<div>
+                		<p>
+                		<a href="#" class="username">Mr Asd</a>
+                		<img src="image/sample_icon.png" alt="...">
+                		</p>
+                	</div>
+
+	                <form>
+	                  <div class="form-group">
+	                    <textarea class="form-control" id="question_answerSubmission" placeholder="Write your answer here." rows="3"></textarea>
+	                  </div>
+	                  <button type="submit" class="btn btn-warning">Submit</button>
+	                </form>
+	              </div>
 
                 <hr>
               </div>
@@ -213,5 +236,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+
+    <script src="js/bootstrap3-typeahead.js"></script>
+
+    <script>
+      var $input = $('.typeahead');
+      $input.typeahead({source:[
+            {id: "someId1", name: "Display name 1", category: "skill"}, 
+            {id: "someId2", name: "Display name 2", category: "game"},
+            {id: "someId3", name: "Display Name 3", category: "game"}], 
+            autoSelect: true}); 
+    </script>
+
+    <script>
+      var $input = $('#blockUserInput');
+      $input.typeahead({source:[
+            {id: "someId1", name: "Display name 1", category: "skill"}, 
+            {id: "someId2", name: "Display name 2", category: "game"},
+            {id: "someId3", name: "Display Name 3", category: "game"}], 
+            autoSelect: true}); 
+    </script>
+
   </body>
 </html>
