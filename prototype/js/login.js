@@ -7,6 +7,7 @@ function MyObject(clientWidth, clientHeight) { // not collde with javascript Obj
 	this.x = Math.random() * clientWidth;
 	this.y = Math.random() * clientHeight;
 	this.id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5); // assign a random id for the object
+	this.fontSize = Math.random() * 8 + 16;
 	this.generateSpeed();
 }
 
@@ -35,7 +36,7 @@ MyObject.prototype.setDisplayText = function(text) {
 * Description: change the object to div element in order to display it.
 */
 MyObject.prototype.toDiv = function() {
-	return "<div style='top:" + this.y + "px;left:" + this.x + "px;' id='" + this.id + "'>" + this.text + "<div>";
+	return "<div style='top:" + this.y + "px;left:" + this.x + "px;font-size:" + this.fontSize + "px;' id='" + this.id + "'>" + this.text + "<div>";
 }
 
 
