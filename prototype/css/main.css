@@ -849,3 +849,190 @@ body {
 .questions_sidebar a {
 	color: #777;
 }
+
+.topics_header {
+	margin-bottom: 0px;
+}
+
+.topics_header span {
+	color: #888;
+	float: left;
+	width: 2.5%;
+}
+
+.topics_header h4 {
+	width: 75%;
+	float: left;
+	font-weight: bold;
+	margin-top: 0px;
+	
+}
+
+.topics_header p {
+	width: 20%;
+	float: right;
+	margin-top: 1px;
+	color: #888;
+}
+
+.topics_header hr {
+	margin: 15px 0px;
+	width:100%;
+	border-color: #bbb;
+}
+
+.topics_topicTag a {
+	background-color: #FFFFFF;
+	border-color: #DAEBFF;
+	color: #225599;
+}
+
+.topics_topicTag hr {
+	margin: 15px 0px;
+}
+
+.topics_selectedTopic img {
+	float: left;
+	width: 45px;
+}
+
+.topics_selectedTopic p {
+	float: left;
+	width: 80%;
+	font-weight: bold;
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+.topics_selectedTopic .dropdown {
+	float: left;
+	width: 12%;
+}
+
+.topics_selectedTopic hr {
+	margin: 15px 0px;
+}
+
+.topics_separator hr {
+	margin: 15px 0px 25px 0px;
+}
+
+.topics_questionTitle {
+	font-weight: bold;
+}
+
+.topics_questionSubscribeNum {
+	padding-right: 5px;
+}
+
+.topics_questionSubscribeNum button {
+	margin-top: 5px;
+	background-color: #EFF6FA;
+	color: #698EBF;
+	border: none;
+	width: 100%;
+	padding: 5px 0px;
+}
+
+.topics_questionSubscribeNum button:hover {
+	background-color: #698EBF;
+	color: #FFFFFF;
+}
+
+.topics_questionAuthor.row {
+	margin: 10px 0px 0px 0px;
+}
+
+.topics_questionAuthor a {
+	font-weight: bold;
+	color: #222;
+	margin-top: 100px;
+}
+
+.question_comments {
+	margin-left: 2%;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+
+.question_comments .col-md-1 {
+	margin-top: 10px;
+	padding-left: 5px;
+}
+
+.question_comments img {
+	width: 100%;
+}
+
+.question_comments .col-md-11 {
+	margin-top: 10px;
+	padding-left: 0px;
+}
+
+.question_comments .col-md-11 a {
+	color: #698EBF;
+	font-weight: bold;
+}
+
+.question_comments .comments_time {
+	float: left;
+	color: #888;
+	width: 80%;
+}
+
+.question_comments .comments_time a {
+	color: #888;
+	font-weight: normal;
+}
+
+.question_comments .comments_likes {
+	float: left;
+	color: #888;
+	width: 20%;
+}
+
+.question_comments .col-md-12 {
+	padding: 0px;
+}
+
+.question_comments .col-md-12 hr {
+	border-color: #bbb;
+}
+
+.topics_moreTopics {
+	text-align:center;
+	padding-bottom: 30px;
+}
+
+.topics_moreTopics a {
+	margin-bottom: 0px;
+	font-size: 16px;
+}
+
+.topics_related img {
+	float: left;
+	width:10%;
+}
+
+.topics_related a {
+	font-weight: bold;
+	margin-top: 3%;
+	margin-left: 3%;
+	width: 68%;
+	float: left;
+}
+
+.topics_related .topics_relatedAdd {
+	width: 15%;
+	margin-top: 3%;
+	float: left;
+	color: #698DBF;
+	font-weight: normal;
+}
+
+.topics_related .col-md-12 {
+	margin-bottom: 8px;
+	padding-left: 0px;
+	padding-right: 0px;
+
+}
