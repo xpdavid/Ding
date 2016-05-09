@@ -71,38 +71,57 @@
       </div><!-- /.container-fluid -->
     </nav>
     <div class="container">
-      <br>
       <div class="row">
         <div class="col-md-8">
-          <div class="col-md-12 topics_header">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-            <h4>&nbsp;My Subscribed Topics</h4>
-            <p>3 Topics in Total</p>
-            <hr>
+          <div class="clearfix">
+            <a href="#" class="header_left"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>All Tags</a>
+            <a class="header_right">3043 Questions</a>
           </div>
-          <div class="col-md-12 topics_topicTag">
+          <hr class="small_hr">
+
+          <div class="topics_topicTag">
             <a class="btn btn-primary" href="#" role="button">Topic1</a>
             <a class="btn btn-primary" href="#" role="button">Topic2</a>
             <a class="btn btn-primary" href="#" role="button">Topic3</a>
-            <hr>
           </div>
-          <div class="col-md-12 topics_selectedTopic">
-            <img src="image/sample_icon.png" alt="" class="img-rounded">
-            <p>&nbsp;&nbsp;&nbsp;Topic1 </p>
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Sort by
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="#">Popularity</a></li>
-                <li><a href="#">Time</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-12 topics_separator"><hr></div>
 
-          <div class="col-md-12 topics_questionTitle">
+          <hr class="small_hrLight">
+
+          <div class="topics_selectedTopic clearfix">
+            <img src="image/sample_icon.png" alt="" class="img-rounded topics_selectedTopicImg">
+            <div class="topics_selectedTopicName">&nbsp;&nbsp;&nbsp;Topic1 </div>
+            <div class="topics_selectedTopicSort"><a href="">Sort by Rate</a> / <a href="">Sort by Date</a></div>
+          </div>
+          
+          <hr class="small_hrLight">
+
+
+          <div class="questions_questionLayout">
+            <div class="questions_side">
+              <button type="button" class="btn btn-primary questions_sideButton">100K</button>
+              <button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <br>2</button>
+            </div>
+
+            <div class="font-bold">
+              <a href="#"> What is molecular force? </a>
+            </div>
+
+            <div class="questions_questionContent">
+              Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail  Question Detail 
+              <a href="#"> show all </a>
+            </div>
+
+            <div class="horizontal_item">
+              <a href="#"><span class="glyphicon glyphicon-check" aria-hidden="true"></span>25 Answers</a>
+              <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>25 Comments</a>
+              <a href="#"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+              <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+              <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
+              <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
+            </div>
+          </div> 
+
+          <div class="topics_questionTitle">
             <a href="#"> Question title question title question title? </a>
           </div>
           <div class="col-md-1 topics_questionSubscribeNum">
