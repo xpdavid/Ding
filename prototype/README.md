@@ -14,9 +14,10 @@
 12. `.samll_hr` : the original bootstrap `hr` is margin to much, this one override it to `7px margin-top and margin down`
 13. `.small_hrLight` : same as above but with light color `<hr>`
 14. `.font-black` : `set black` to the `font-color`
-15. `.sitesCopyright` : copyright information (refer to the sample in `user_home.html`)
-16. `.sideBar_section` : side bar implementation (refer to the sample in `notification.html`)
-17. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
-18. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+15. `.font-greey` : `set greep` to the `font-color`
+16. `.sitesCopyright` : copyright information (refer to the sample in `user_home.html`)
+17. `.sideBar_section` : side bar implementation (refer to the sample in `notification.html`)
+18. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
+19. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
 
 ##### Please update this when you have other helper css class added
