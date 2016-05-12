@@ -60,6 +60,20 @@ body {
 	border-top: 1px solid #eee !important;
 }
 
+.space-right {
+	margin-right: 4px;
+}
+
+.space-right-big {
+	margin-right: 10px;
+}
+
+.avatar-img {
+	width: 41px;
+	height: 41px;
+}
+
+
 .logo {
 	margin: 0 auto;
 	width: 160px;
@@ -72,7 +86,7 @@ body {
 	color: #000;
 }
 
-.font-greey {
+.font-grey {
 	color: #666;
 }
 
@@ -728,6 +742,10 @@ body {
 	border-bottom: 1px solid #ccc;
 }
 
+.sideBar_sectionItem {
+	margin: 10px 3px 5px 3px;
+}
+
 .sideBar_item {
 	display: block;
 	list-style-type: disc;
@@ -782,6 +800,10 @@ body {
 
 .notice_button {
 	width: 100%;
+}
+
+.bookmark_list_item {
+	padding: 5px;
 }
 
 

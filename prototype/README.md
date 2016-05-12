@@ -14,10 +14,13 @@
 12. `.samll_hr` : the original bootstrap `hr` is margin to much, this one override it to `7px margin-top and margin down`
 13. `.small_hrLight` : same as above but with light color `<hr>`
 14. `.font-black` : `set black` to the `font-color`
-15. `.font-greey` : `set greep` to the `font-color`
+15. `.font-grey` : `set greep` to the `font-color`
 16. `.sitesCopyright` : copyright information (refer to the sample in `user_home.html`)
 17. `.sideBar_section` : side bar implementation (refer to the sample in `notification.html`)
-18. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
-19. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+18. `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
+19. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
+20. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+21. `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
+22. `.space-right-big` : same as above with `margin-right:10px` 
 
 ##### Please update this when you have other helper css class added
