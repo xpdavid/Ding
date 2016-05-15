@@ -83,7 +83,7 @@ body {
 }
 
 .font-black {
-	color: #000;
+	color: #000 !important;
 }
 
 .font-grey {
