@@ -33,7 +33,6 @@
                             </div>
                             <div class="userMessage_ContentItemBottom">
                                 <span class="userMessage_ContentItemBottomTime">{{ $message->created_at }}</span>
-                                <a href="#"> Delete </a>
                             </div>
                         </div>
                     </div>
@@ -55,7 +54,38 @@
 
         </div>
         <div class="col-md-4">
-            <div class="alert alert-success" role="alert">If you are worry about span, maybe <a href="#" class="alert-link">Setting</a> is a good place to prevent it.</div>
+            <div>
+                <h5>Participators</h5>
+                <hr class="small_hrLight">
+                <div class="question_subscribe">
+                    <div>
+                        <a href="#">{{  $conversation->users->count() }}</a> people participate in this conversation.
+                    </div>
+                    <div>
+                        @foreach($conversation->users as $user)
+                            <img src="/upload/user/sample_icon.png" alt="..." class="img-rounded">
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <div class="alert alert-success" role="alert">If you are worry about span, maybe <a href="#" class="alert-link">Setting</a> is a good place to prevent it.</div>
+            </div>
+
+            <div>
+                @if (count($errors) > 0)
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">There is error in this form</div>
+                        <div class="panel-body">
+                            @foreach($errors->all() as $error)
+                                <p class="text-danger">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+
         </div>
     </div> <!-- for row -->
 </div>
