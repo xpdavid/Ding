@@ -8,6 +8,7 @@ class CreateMessagesTable extends Migration
     /**
      * Run the migrations.
      *
+     * This is for creating of message table
      * @return void
      */
     public function up()
@@ -16,10 +17,8 @@ class CreateMessagesTable extends Migration
             $table->increments('id');
 
             $table->text('content');
-            
-            $table->boolean('has_read');
 
-            $table->integer('conversation_id');
+            $table->integer('conversation_id')->unsigned();
             $table->foreign('conversation_id')
                 ->references('id')
                 ->on('conversations')

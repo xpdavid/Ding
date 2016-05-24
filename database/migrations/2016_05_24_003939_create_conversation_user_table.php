@@ -3,19 +3,20 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConversationsTable extends Migration
+class CreateConversationUserTable extends Migration
 {
     /**
      * Run the migrations.
      *
-     * This is for creating conversation table
+     * This is an intermediate table to established eloquent relationship between user and conversation
      * @return void
      */
     public function up()
     {
-        Schema::create('conversations', function (Blueprint $table) {
+        Schema::create('conversation_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('can_reply');
+            $table->integer('conversation_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateConversationsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('conversations');
+        Schema::drop('conversation_user');
     }
 }

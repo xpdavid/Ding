@@ -6,5 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    //
+    /**
+     * Define the fillable attribute so that the request will not accidentally written other column in database
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'content'
+    ];
+
+    /**
+     * Define eloquent relationship to Conversation.
+     * A message belong to a certain conversation
+     */
+    public function conversation() {
+        return $this->belongsTo('App\Conversation')->withTimestamps();
+    }
+
+    /**
+     * Define eloquent relationship to Conversation.
+     * A message has unread users.
+     */
+    public function unreadUsers() {
+        return $this->belongsToMany('App\User', 'unreadMessage_user');
+    }
 }

@@ -23,4 +23,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Define eloquent relationship to conversation model
+     * A user can have many conversations.
+     */
+    public function conversations() {
+        return $this->belongsToMany('App\Conversation');
+    }
+
+    /**
+     * Define eloquent relationship to message
+     * A user can have many unread message
+     */
+    public function unreadMessages() {
+        return $this->belongsToMany('App\Message', 'unreadMessage_user');
+    }
 }
