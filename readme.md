@@ -1,27 +1,41 @@
-# Laravel PHP Framework
+### Project Development Instruction
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+1. Please give every code appropriate comment. (for css file, just make it clear)
+2. For database column, please use "_" to separate naming name. (e.g. can_reply)
+3. For php, javascript method, please use Camel-Case naming.
+4. There is no need to write comment for every line. Please follow the JAVA comment.
+``` java
+/**
+ * Run the migrations.
+ *
+ * @return void
+ */  
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+### There are several helper function you can use in the main.css file
 
-## Official Documentation
+1. `<body>` : this element is defined `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
+2. `.glyphicon` : this class is from `bootstrap` css and we override it as `margin-right:5px` because we always use put a icon in front of text.
+3. `.clearfix` : this class is to expend parent element when you have floating `div`
+4. `.clear_margin` : clear all margin of an element using `!important`
+5. `.font-bold` : to bold a element content
+6. `.noborder` : to clear all border of a elemnt. This is useful when you have item level and level and define `.border-bottom: 1px solid #666` and you want the last level show no border
+7. `.topborder` : to show top border color `#eee`
+8. `.hide-text` : to hide content in an element
+9. `.float-left` : to set an element float left
+10. `.float-right` : to set an element float right
+11. `.font-normal` : to set normal set of font `14px`
+12. `.samll_hr` : the original bootstrap `hr` is margin to much, this one override it to `7px margin-top and margin down`
+13. `.small_hrLight` : same as above but with light color `<hr>`
+14. `.font-black` : `set black` to the `font-color`
+15. `.font-grey` : `set greep` to the `font-color`
+16. `.sitesCopyright` : copyright information (refer to the sample in `user_home.html`)
+17. `.sideBar_section` : side bar implementation (refer to the sample in `notification.html`)
+18. `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
+19. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
+20. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+21. `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
+22. `.space-right-big` : same as above with `margin-right:10px` 
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+##### Please update this when you have other helper css class added
