@@ -4,13 +4,40 @@
 2. For database column, please use "_" to separate naming name. (e.g. can_reply)
 3. For php, javascript method, please use Camel-Case naming.
 4. There is no need to write comment for every line. Please follow the JAVA comment.
-``` java
+
+``` Migration
 /**
  * Run the migrations.
  *
  * @return void
  */  
 ```
+
+Javacript
+``` javascript
+/**
+* Class: MyObject
+* Description: a object that cound be 'draw' in the backgroup, technically, we append it to the parent div
+*/
+```
+
+PHP：
+``` php
+/**
+ * Remove a user from a conversation.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+```
+
+### Project dependency
+Please follow the asset management style. Basically, using the gulpfile to control the asset.
+
+1. JQuery 1.12.3 (Javascript enhancement) [Index](http://jquery.com)
+2. Bootstrap (Grid-system) [Index](http://getbootstrap.com)
+3. Boostrap3-typeahead (UI for select tag in form) [Github](https://github.com/bassjobsen/Bootstrap-3-Typeahead)
+4. sweetalert (Alternative for javascript 'alert()') [Github](http://t4t5.github.io/sweetalert/)
 
 
 ### There are several helper function you can use in the main.css file
