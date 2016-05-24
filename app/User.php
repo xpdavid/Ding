@@ -39,4 +39,12 @@ class User extends Authenticatable
     public function unreadMessages() {
         return $this->belongsToMany('App\Message', 'unreadMessage_user');
     }
+
+    /**
+     * Define eloquent relationship to message
+     * A user can send many messages
+     */
+    public function sentMessages() {
+        return $this->hasMany('App\Message');
+    }
 }

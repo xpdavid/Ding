@@ -18,11 +18,11 @@ class CreateMessagesTable extends Migration
 
             $table->text('content');
 
+            // a message is belong to a conversation
             $table->integer('conversation_id')->unsigned();
-            $table->foreign('conversation_id')
-                ->references('id')
-                ->on('conversations')
-                ->onDelete('cascade');
+
+            // a message is sent by a user
+            $table->integer('user_id')->unsigned();
 
             $table->timestamps();
         });
