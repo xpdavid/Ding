@@ -99,7 +99,23 @@ class InboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        $current_user = Auth::user();
+
+        // because there is only one field, we can validate here
+        $this->validate($request, [
+            'reply' => 'required'
+        ]);
+
+        // create message object
+        $message = Message::create(['content' => $request->get('reply')]);
+        // the message is send by current user
+        $current_user->sentMessages()->save($message);
+
+        // set relationship to current conversation
+        $conversation = Conversation::findOrFail($id);
+        $conversation->messages()->save($message);
+
+        return redirect(route('inbox.show', $id));
     }
 
     /**
@@ -113,14 +129,5 @@ class InboxController extends Controller
         //
     }
 
-
-    /**
-     * Remove a message from a conversation
-     *
-     * @param $id
-     * @param Request $request
-     */
-    public function edit($id, Request $request) {
-
-    }
+    
 }
