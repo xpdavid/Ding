@@ -12,15 +12,29 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    var bpath = 'node_modules/bootstrap-sass/assets';
+    var bootstrapPath = 'resources/assets/bootstrap';
+    var sweetalertPath = 'resources/assets/sweetalert';
+
+    var cssPath = 'resources/assets/js';
     var jsPath = 'resources/assets/js';
-    mix.sass('app.scss')
-        .copy(jsPath + '/jquery-1.12.3.min.js', 'public/js')
-        .copy(bpath + '/fonts', 'public/fonts')
-        .copy(bpath + '/javascripts/bootstrap.min.js', 'public/js');
+
+    // for bootstrap
+    mix.copy(bootstrapPath + '/fonts', 'public/fonts')
+        .copy(bootstrapPath + '/css', 'public/css')
+        .copy(bootstrapPath + '/js', 'public/js');
+
+    // for sweetalert
+    mix.copy(sweetalertPath + '/sweetalert.css', 'public/css')
+        .copy(sweetalertPath + '/sweetalert.min.js', 'public/js');
     
-    
+    // for project css file
+    mix.sass('app.scss');
+
+
+    // for project js file
     mix.scripts('main.js')
+        .copy(jsPath + '/jquery-1.12.3.min.js', 'public/js')
         .copy(jsPath + '/bootstrap3-typeahead.js', 'public/js')
-        .copy(jsPath + '/navbar.js', 'public/js');
+        .copy(jsPath + '/navbar.js', 'public/js')
+        .copy(jsPath + '/inbox.js', 'public/js');
 });
