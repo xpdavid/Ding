@@ -38,4 +38,16 @@ class Message extends Model
     public function sendBy() {
         return $this->belongsTo('App\User', 'user_id');
     }
+
+    /**
+     * @Override
+     * Override Delte method to detach the belongsToMany relationship
+     */
+    public function delete() {
+        // first delete all the relevant unreadUsers
+        $this->unreadUsers()->detach();
+
+        // then call parent method delete
+        parent::delete();
+    }
 }

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=500px, initial-scale=2">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>My Message - Ding</title>
 
@@ -40,6 +41,9 @@
 
 {{--sweetalert supporting file--}}
 {!! Html::script('js/sweetalert.min.js') !!}}
+
+{{--app supporting js file--}}
+{!! Html::script('js/main.js') !!}
 
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}

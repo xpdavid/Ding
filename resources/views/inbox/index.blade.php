@@ -43,7 +43,7 @@
                             </span>
                                 <a href="{{ route('inbox.show', $conversation->id) }}"> {{ $conversation->messages->count() }} Message(s)</a>
                                 <span class="userMessage_verticalLine">|</span>
-                                <a href="{{ route('inbox.destroy', $conversation->id) }}"> Delete </a>
+                                <a href="#" onclick="hideConversation({{ $conversation->id }})"> Hide </a>
                             </div>
                         </div>
                     </div>

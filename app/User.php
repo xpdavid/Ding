@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Conversation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -46,5 +47,15 @@ class User extends Authenticatable
      */
     public function sentMessages() {
         return $this->hasMany('App\Message');
+    }
+
+    /**
+     * Determine whether the user is in the conversation
+     *
+     * @param \App\Conversation $conversation
+     * @return bool
+     */
+    public function isInConversation(Conversation $conversation) {
+        return in_array($this->id, $conversation->users->lists('id')->all());
     }
 }

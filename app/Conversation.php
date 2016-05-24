@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Conversation extends Model
 {
@@ -33,4 +35,5 @@ class Conversation extends Model
         return $this->hasMany('App\Message');
     }
     
+
 }

@@ -119,15 +119,36 @@ class InboxController extends Controller
     }
 
     /**
-     * Remove a conversation from storage.
+     * Remove a user from a conversation.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $current_user = Auth::user();
+        $conversation = Conversation::findOrFail($id);
+
+        // we must ensure that the user is in the conversation
+        if ($current_user->isInConversation($conversation)) {
+            // detach the user from the conversation
+            $conversation->users()->detach($current_user->id);
+            
+            // detach the user from all the unread message of the current conversation
+            foreach ($conversation->messages as $message) {
+                $message->unreadUsers()->detach($current_user->id);
+            }
+
+            // return sucess message
+            return [
+                'status' => 1
+            ];
+        } else {
+            return [
+                'status' => 0
+            ];
+        }
     }
 
-    
+
 }
