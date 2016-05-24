@@ -7,35 +7,49 @@
             <div class="userMessage_Head">
                 <div class="row">
                     <div class="col-md-9">
-                        <a href="#">&lt;&lt;Back</a>
+                        <a href="{{ route('inbox.index') }}">&lt;&lt;Back</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-9">
-                        <button class="btn btn-warning btn-sm" type="submit">Reply</button>
+                        @if(!$conversation->can_reply)
+                            <span class="font-grey">You cannot reply this message</span>
+                        @endif
                     </div>
                 </div>
             </div>
-            <div class="userMessage_Content">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object" src="message.png" alt="...">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="media-heading"><a href="#">KKP Admin :</a></h5>
-                        Hello, Welcom to the Ding Answer Platform! <br>
-                        Very Warm welcome to you! <br>
-                        We're enhancing profiles on Stack Overflow. <br>
-                        Update your profile in three easy steps <br>
-                        <div class="userMessage_ContentItemBottom">
-                            <span class="userMessage_ContentItemBottomTime">Jan 27 19:33</span>
-                            <a href="#"> Delete </a>
+            <div class="userMessage_Content clearfix">
+                @foreach($conversation->messages as $message)
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" src="message.png" alt="...">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading"><a href="#">{{ $message->sendBy->name }}</a></h5>
+                            <div class="message_content">
+                                {{ $message->content }}
+                            </div>
+                            <div class="userMessage_ContentItemBottom">
+                                <span class="userMessage_ContentItemBottomTime">{{ $message->created_at }}</span>
+                                <a href="#"> Delete </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr>
+                    <hr>
+                @endforeach
+
+
+                @if($conversation->can_reply)
+                    {!! Form::open(['url' => route('inbox.update', $conversation->id), 'method' => 'PATCH']) !!}
+                        <div class="form-group">
+                            {!! Form::label('Reply', 'Reply:') !!}
+                            {!! Form::textarea('reply', null, ['class' => 'form-control', 'rows' => 5]) !!}
+                        </div>
+                        <button class="btn btn-warning float-right" type="submit">Reply</button>
+                    {{ Form::close() }}
+                @endif
 
             </div>
 

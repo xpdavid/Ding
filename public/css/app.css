@@ -5992,6 +5992,7 @@ body {
   text-align: left !important; }
 
 .sitesCopyright {
+  margin-top: 10px;
   border-top: 1px solid #ccc;
   text-align: left;
   color: #999;
@@ -6046,7 +6047,7 @@ body {
   font-size: 12px;
   font-weight: 400; }
 
-.userMessage_ContentItemBottomTime {
+.userMessage_ContentItemBottomLeft {
   float: left; }
 
 .userMessage_verticalLine {
