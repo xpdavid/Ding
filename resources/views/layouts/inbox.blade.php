@@ -31,7 +31,13 @@
 
 @yield('content')
 
-@include('partials._copyright_bottom')
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @include('partials._copyright_bottom')
+        </div>
+    </div>
+</div>
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
