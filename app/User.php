@@ -13,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'url_name', 'sex', 'self_intro', 'bio'
     ];
 
     /**
@@ -24,6 +24,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Defined new query scope so that we can find user by their self-defined url_name
+     *
+     * @param $query
+     * @param $url_name
+     * @return mixed
+     */
+    public function scopeFindUrlName($query, $url_name) {
+        return $query->where('url_name', $url_name)->firstOrFail();
+    }
 
     /**
      * Define eloquent relationship to conversation model

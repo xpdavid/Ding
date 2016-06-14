@@ -19,6 +19,6 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('/people', 'UserController');
+Route::resource('/people', 'PeopleController');
 
 Route::resource('/inbox', 'InboxController');

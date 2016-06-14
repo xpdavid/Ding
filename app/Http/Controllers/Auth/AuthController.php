@@ -63,10 +63,37 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $this->generateUrlName($user);
+
+        return $user;
     }
+
+
+    /**
+     * Auto-generate url-name for user.
+     *
+     * @param User $user
+     * @return string
+     */
+    private function generateUrlName(User $user) {
+        $url_name = $user->name;
+
+        // replace all the non-alphanumeric characters
+        $url_name = preg_replace("/[^A-Za-z0-9 ]/", '', $url_name);
+        // replace the space with underscore
+        $url_name = str_replace(' ', '_', $url_name);
+
+        // in order to prevent using same name, add user id at last.
+        $user->url_name = $url_name . $user->id;
+
+        $user->save();
+    }
+
+
 }

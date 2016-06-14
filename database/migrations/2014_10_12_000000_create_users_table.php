@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('bio')->nullable();
             $table->string('self_intro')->nullable();
             $table->enum('sex', ['Male', 'Female', 'Secret'])->nullable();
-            $table->string('url_name')->nullable();
+            $table->string('url_name');
 
             $table->rememberToken();
             $table->timestamps();
