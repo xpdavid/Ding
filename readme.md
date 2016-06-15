@@ -1,3 +1,7 @@
+## Porject Ding
+#### NUS Orbital 2016
+---
+
 ### Project Development Instruction
 
 1. Please give every code appropriate comment. (for css file, just make it clear)
@@ -67,3 +71,122 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 - `.space-right-big` : same as above with `margin-right:10px` 
 
 ##### Please update this when you have other helper css class added
+
+
+## Milestone 1
+---
+### Project Name: Ding
+
+
+### Brief Description (What it solves)
+
+Project Ding is a forum-based web application that allows discussion of tutorial questions and past year papers under specific modules. 
+
+ 
+
+### Our Motivation (The importance of the project)
+
+Below are a few of our observations:
+
+Every semester after final examinations, students often have the thought that they are now rid of the modules taken without acknowledging that these modules are important foundations for their future learning.
+
+In the time of interviews / internships where consolidation of knowledge learned is necessary, relevant learning materials are likely to be unavaliable since IVLE is only open to students taking specific modules for the time span of one semester.
+
+Although students have been doing past year papers over and over each year, there are no sustained platforms for discussion of questions and possible answers, causing their thoughts and intellectual products to be shared and passed on only within a small group or even gone with the wind!
+As such, we strongly feel that current discussion platforms such as IVLE forum are inadequate to encourage sustained and effective learning. There is definitely the need for a more long-lasting platform where students are given the impetus to participate in discussion, review their learning outcome, consolidate their knowledge and learn more along the way.
+
+ 
+
+### Scope of the Project
+
+Our project is mainly for current and recently graduated NUS students.
+
+Potentially, we could open up the portal to future NUS students to let them know more about the majors they want to take.
+
+With proper permission, it is even possible to open the portal to the public. This is not easily achievable in the short term, but knowledge is for sharing isn't it? :P
+
+ 
+
+### User Stories and Features*
+
+1. As a registered student who is going to take certain modules, I would like to know more about the scope and expectation of these modules.
+
+    Features to be included:
+
+⋅⋅1. Categorization of users based on their majors.
+
+⋅⋅2. Searching of modules and questions based on keywords.
+
+⋅⋅3. Viewing of questions, answers and comments by other users.
+
+ 
+
+2. As a registered student who is taking certain modules currently, I would like to stay tuned in and participate any discussions pertaining to these modules.
+
+    Features to be included (in addition to features mentioned above):
+
+⋅⋅1. Posting of answers and comments
+
+⋅⋅2. Subscribing of modules and questions and receiving notification when there are new updates.
+
+⋅⋅3. Suggesting of relevant questions based on what questions the user is currently viewing
+
+ 
+
+3. As a registered student who has already taken certain modules, I would like to help students who are taking these modules in the future by offering my own and perhaps my cohort's insights into the modules.
+
+    Features to be included (in addition to features mentioned above):
+
+⋅⋅1. Invitation to friends who are able to answer certain questions and receiving of invitations.
+
+⋅⋅2. Giving positive / negative votes to answers posted by others to reflect quality of answers.
+
+⋅⋅3. Sharing of questions / answers on social media
+
+ 
+
+4. As a normal registered user in general, I would like to view information and updates relevant to me conveniently and make connections with other users.
+
+    Features to be included (in addition to features mentioned above):
+
+⋅⋅1. Personalized user panels where user information, new status to modules and questions subscribed, new comments to answers posted are consolidated.
+
+⋅⋅2. Consolidation and highlighting of questions based on popularity.
+
+⋅⋅3. Private messaging between users.
+
+ 
+
+5. As a site owner / moderator, I would like the platform to be safe, clean and active.
+
+    Features to be included (in addition to features mentioned above):
+
+⋅⋅1. Reporting of invalid / indecent answers by normal users and deletion of such answers by moderators
+
+⋅⋅2. A level system of users' viewing permission based on users' contributions:
+
+⋅⋅⋅⋅1. Enable users to set viewing permission to answers posted by themselves (no higher than their own permissions).
+
+⋅⋅⋅⋅2. Post valid answers to questions to receive credits.
+
+⋅⋅⋅⋅3. Give more credits to the first answer to any questions to encourage user activity.
+
+⋅⋅⋅⋅4. Give more credits to high quality answers (answers with more positive votes).
+
+⋅⋅⋅⋅5. Severe deduction of credits to any invalid / indecent answers by moderators.
+
+(above mentioned are inexhaustive)
+
+⋅⋅3. Security features including encryption of data in transmission and storage, strict checking of user permission before running any functions.
+
+ 
+We will try to implement Feature 1, 2, 3 and 4 in June and Feature 5 as well as other features suggested by other teams in July.
+
+*For this section, we assume the audience to be future, current and recently graduated NUS students.
+
+ 
+
+### Level of Achievement
+
+As development of such a platform involving complicated relationships between models requires extensive testing and careful project management, our aimed level of achievement is `Apollo 11`.
+
