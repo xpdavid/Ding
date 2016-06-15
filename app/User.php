@@ -69,4 +69,13 @@ class User extends Authenticatable
     public function isInConversation(Conversation $conversation) {
         return in_array($this->id, $conversation->users->lists('id')->all());
     }
+
+    /**
+     * Defined eloquent relationship : A student could have many education experience
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function educationExps() {
+        return $this->belongsToMany('App\EducationExp', 'user_educationExp', 'user_id', 'educationExp_id');
+    }
 }
