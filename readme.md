@@ -42,6 +42,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 2. Bootstrap (Grid-system) [Index](http://getbootstrap.com)
 3. Boostrap3-typeahead (UI for select tag in form) [Github](https://github.com/bassjobsen/Bootstrap-3-Typeahead)
 4. sweetalert (Alternative for javascript 'alert()') [Github](http://t4t5.github.io/sweetalert/)
+5. form validator [Github](https://github.com/1000hz/bootstrap-validator)
 
 
 ### There are several helper function you can use in the main.css file

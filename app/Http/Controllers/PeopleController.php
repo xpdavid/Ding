@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\EducationExp;
 use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PeopleController extends Controller
 {
     /**
      * Display the user homepage according to their customer url name
      *
-     * @param  int  $url_name
+     * @param  string  $url_name
      * @return \Illuminate\Http\Response
      */
     public function show($url_name)
@@ -25,7 +27,7 @@ class PeopleController extends Controller
     /**
      * Show the form for editing the specified user profile.
      *
-     * @param  int  $url_name
+     * @param  string  $url_name
      * @return \Illuminate\Http\Response
      */
     public function edit($url_name)
@@ -37,14 +39,26 @@ class PeopleController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * This is logic to response AJAX request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $url_name
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $url_name)
     {
-        //
+        $user = User::findUrlName($url_name);
+        switch ($request->get('type')) {
+            case 'education':
+                $educationExp = EducationExp::findOrCreate($request->get('institution'), $request->get('major'));
+                $user->educationExps()->save($educationExp);
+                return ['educationExp_id' => $educationExp->id];
+            default:
+                break;
+        }
+
+        abort(401);
+
     }
 
     /**

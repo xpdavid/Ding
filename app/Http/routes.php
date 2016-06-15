@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index');
 Route::resource('/people', 'PeopleController');
 
 Route::resource('/inbox', 'InboxController');
+
+Route::controller('/api', 'APIController');

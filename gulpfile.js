@@ -35,6 +35,7 @@ elixir(function(mix) {
     mix.scripts('main.js')
         .copy(jsPath + '/jquery-1.12.3.min.js', 'public/js')
         .copy(jsPath + '/bootstrap3-typeahead.js', 'public/js')
+        .copy(jsPath + '/validator.js', 'public/js')
         .copy(jsPath + '/navbar.js', 'public/js')
         .copy(jsPath + '/inbox.js', 'public/js')
         .copy(jsPath + '/profile.js', 'public/js');

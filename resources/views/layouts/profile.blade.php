@@ -53,14 +53,18 @@
 {{--sweetalert supporting file--}}
 {!! Html::script('js/sweetalert.min.js') !!}}
 
-{{--app supporting js file--}}
-{!! Html::script('js/main.js') !!}
-
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
 {!! Html::script('js/navbar.js') !!}
 
-{{--inbox javascript support--}}
+{{--form validator javascript support--}}
+{!! Html::script('js/validator.js') !!}
+
+{{--profile javascript support--}}
 {!! Html::script('js/profile.js') !!}
+
+{{--app supporting js file--}}
+{!! Html::script('js/main.js') !!}
+
 </body>
 </html>

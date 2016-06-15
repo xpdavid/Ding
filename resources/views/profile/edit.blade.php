@@ -203,35 +203,47 @@
                             <a href="#" class="glyphicon glyphicon-pencil">Add</a>
                         </div>
                         <div id="user_education_edit">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" placeholder="e.g NUS">
+                            {{ Form::open(['url' => '#',
+                            'data-toggle' => "validator",
+                            'role' => "form",
+                            'onsubmit' => 'return saveEducationExp("' . $user->url_name . '")']) }}
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Institution" name="institution" data-error="Institution Field Required" required>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Major (Optional)" name="major">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" placeholder="e.g NUS">
+                                <div class="row userEdit_buttonGroup">
+                                    <div class="col-sm-12 form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                        <a href="#" class="userEdit_cancelButton">Cancel</a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row userEdit_buttonGroup">
-                                <div class="col-sm-12">
-                                    <button class="btn btn-primary btn-sm" type="submit">Save</button>
-                                    <a href="#" class="userEdit_cancelButton">Cancel</a>
-                                </div>
-                            </div>
+                            {{ Form::close() }}
                         </div>
 
                         <div class="row">
-                            <ul class="userEdit_itemList">
-                                <li>
-                                    <div class="userEdit_itemListDetail">
-                                        <div class="userEdit_itemListDetailImage">
-                                            <img src="topic.png" class="img-rounded" />
+                            <ul class="userEdit_itemList" id="user_education_list">
+                                @foreach($user->educationExps as $educationExp)
+                                    <li>
+                                        <div class="userEdit_itemListDetail">
+                                            <div class="userEdit_itemListDetailImage">
+                                                <img src="topic.png" class="img-rounded" />
+                                            </div>
+                                            <div class="userEdit_itemListDetailContent">
+                                                <a href="#">{{ $educationExp->full_name }}</a>
+                                            </div>
                                         </div>
-                                        <div class="userEdit_itemListDetailContent">
-                                            <a href="#">National University of Singapore</a>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton">Delete</a>
-                                </li>
+                                        <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" onclick="detachEducationExp({{ $educationExp->id }})">Delete</a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -319,6 +331,20 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="hide" id="itemContent">
+                <li>
+                    <div class="userEdit_itemListDetail">
+                        <div class="userEdit_itemListDetailImage">
+                            <img src="#" class="img-rounded" id="itemContent_img" />
+                        </div>
+                        <div class="userEdit_itemListDetailContent">
+                            <a href="#" id="itemContent_title"></a>
+                        </div>
+                    </div>
+                    <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" id="itemContent_delete">Delete</a>
+                </li>
             </div>
 
         </div>
