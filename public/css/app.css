@@ -5,6 +5,9 @@ body {
 .glyphicon {
   margin-right: 5px; }
 
+.hide {
+  display: none; }
+
 .clearfix {
   overflow: auto;
   zoom: 1; }

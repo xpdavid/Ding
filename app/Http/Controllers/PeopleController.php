@@ -17,19 +17,22 @@ class PeopleController extends Controller
     public function show($url_name)
     {
         $user = User::findUrlName($url_name);
-        dd($user);
+
+        return view('profile.index', compact('user'));
     }
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified user profile.
      *
-     * @param  int  $id
+     * @param  int  $url_name
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($url_name)
     {
-        //
+        $user = User::findUrlName($url_name);
+
+        return view('profile.edit', compact('user'));
     }
 
     /**
