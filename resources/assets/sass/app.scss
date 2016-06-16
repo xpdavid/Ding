@@ -507,7 +507,11 @@ body {
   width: 100%;
   border: 1px solid transparent;
   box-sizing: border-box;
-  cursor: move;
+}
+
+.userEdit_itemList li:hover{
+  border: 1px solid #ddd;
+  border-radius: 4px
 }
 
 .userEdit_itemListDetailImage {
@@ -524,10 +528,13 @@ body {
   font-size: 14px;
   line-height: 34px;
   word-wrap: normal;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
+}
+
+.userEdit_itemListDetailContent a:hover {
+  text-decoration: none;
 }
 
 .userEdit_itemListDetailButton {

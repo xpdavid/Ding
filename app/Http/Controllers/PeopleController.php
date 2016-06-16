@@ -2,14 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\EducationExp;
 use App\User;
+use App\EducationExp;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PeopleController extends Controller
 {
+    /**
+     * PeopleController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => [
+            'show',
+        ]]);
+    }
+
     /**
      * Display the user homepage according to their customer url name
      *
@@ -27,12 +37,11 @@ class PeopleController extends Controller
     /**
      * Show the form for editing the specified user profile.
      *
-     * @param  string  $url_name
      * @return \Illuminate\Http\Response
      */
-    public function edit($url_name)
+    public function edit()
     {
-        $user = User::findUrlName($url_name);
+        $user = Auth::user();
 
         return view('profile.edit', compact('user'));
     }
@@ -45,9 +54,9 @@ class PeopleController extends Controller
      * @param  string  $url_name
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $url_name)
+    public function update(Request $request)
     {
-        $user = User::findUrlName($url_name);
+        $user = Auth::user();
         switch ($request->get('type')) {
             case 'education':
                 $educationExp = EducationExp::findOrCreate($request->get('institution'), $request->get('major'));
@@ -64,38 +73,21 @@ class PeopleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string $url_name
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $user = Auth::user();
+        switch ($request->get('type')) {
+            case 'education':
+                $user->educationExps()->detach($request->get('educationExp_id'));
+                return response(200);
+            default:
+                break;
+        }
+
+        abort(401);
     }
 
-
-
-
-    /**
-     * Unused method
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Unused method
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Unused method
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 }

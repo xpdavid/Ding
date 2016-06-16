@@ -106,11 +106,10 @@ $(function() {
  * AJAX requent to the sever to change the user education experience
  * @param url_name
  */
-function saveEducationExp(url_name) {
+function saveEducationExp() {
     $.post({
-        url: '/people/' + url_name,
+        url: '/people/update',
         data: {
-            _method : 'PATCH',
             institution : $('[name="institution"]').val(),
             major : $('[name="major"]').val(),
             type : 'education'
@@ -129,8 +128,9 @@ function saveEducationExp(url_name) {
         // append generate item to the list
         $('#user_education_list').append(
             generateItemUI(
+                'educationExp' + data.educationExp_id,
                 educationExpName,
-                'detachEducationExp(' + data.educationExp_id  + ')'
+                'detachEducationExp(event, ' + data.educationExp_id  + ')'
             )
         );
 
@@ -146,6 +146,32 @@ function saveEducationExp(url_name) {
 }
 
 /**
+ * Javascript support for delete education experience
+ *
+ * @param event
+ * @param EducationExp_id
+ * @returns {boolean}
+ */
+function detachEducationExp(event, EducationExp_id) {
+    event.preventDefault(); // prevent default html anchor
+
+    $.post({
+        url: '/people/delete',
+        data: {
+            educationExp_id : EducationExp_id,
+            type : 'education'
+        },
+        dataType: 'json'
+    }).done(function() {
+        $('#educationExp' + EducationExp_id).remove();
+    }).fail(function() {
+        console.log('delete education experience fail.');
+    });
+
+    return false;
+}
+
+/**
  * generate ItemUI so that we can add item without refresh
  *
  * there need a function that auto find img by using some keywords
@@ -153,12 +179,13 @@ function saveEducationExp(url_name) {
  * @param title
  * @param deleteAction
  */
-function generateItemUI(title, deleteAction) {
+function generateItemUI(id, title, deleteAction) {
     titleUI = $('#itemContent_title');
     deleteButtonUI = $('#itemContent_delete');
 
     titleUI.html(title);
     deleteButtonUI.attr('onclick', deleteAction);
+    $('#itemContent').find('li').attr('id', id);
 
     titleUI.attr('id', '');
     deleteButtonUI.attr('id', '');
@@ -170,3 +197,5 @@ function generateItemUI(title, deleteAction) {
 
     return $content;
 }
+
+

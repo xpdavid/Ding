@@ -19,7 +19,11 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('/people', 'PeopleController');
+Route::get('/people/edit', 'PeopleController@edit');
+Route::get('/people/{url_name}', 'PeopleController@show');
+Route::post('/people/update', 'PeopleController@update');
+Route::post('/people/delete', 'PeopleController@destroy');
+
 
 Route::resource('/inbox', 'InboxController');
 

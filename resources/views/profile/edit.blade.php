@@ -206,7 +206,7 @@
                             {{ Form::open(['url' => '#',
                             'data-toggle' => "validator",
                             'role' => "form",
-                            'onsubmit' => 'return saveEducationExp("' . $user->url_name . '")']) }}
+                            'onsubmit' => 'return saveEducationExp()']) }}
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
@@ -232,7 +232,7 @@
                         <div class="row">
                             <ul class="userEdit_itemList" id="user_education_list">
                                 @foreach($user->educationExps as $educationExp)
-                                    <li>
+                                    <li id="educationExp{{ $educationExp->id }}">
                                         <div class="userEdit_itemListDetail">
                                             <div class="userEdit_itemListDetailImage">
                                                 <img src="topic.png" class="img-rounded" />
@@ -241,7 +241,7 @@
                                                 <a href="#">{{ $educationExp->full_name }}</a>
                                             </div>
                                         </div>
-                                        <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" onclick="detachEducationExp({{ $educationExp->id }})">Delete</a>
+                                        <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" onclick="detachEducationExp(event, '{{ $educationExp->id }}')">Delete</a>
                                     </li>
                                 @endforeach
                             </ul>

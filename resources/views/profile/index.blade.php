@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="userHome_profileHeaderLeft">
                     <img src="xp_l.jpeg" alt="..." class="img-rounded">
-                    <a class="btn btn-default btn-xs" href="{{ route('people.edit', $user->url_name) }}" role="button">Edit My Profile</a>
+                    <a class="btn btn-default btn-xs" href="#" role="button">Edit My Profile</a>
                 </div>
 
                 <div class="userHome_profileHeaderRight">
