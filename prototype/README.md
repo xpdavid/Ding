@@ -1,6 +1,6 @@
 ### There are several helper function you can use in the main.css file
 
-1. `<body>` : this element is defined `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
+1. `<body>` : this element is defined by `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
 2. `.glyphicon` : this class is from `bootstrap` css and we override it as `margin-right:5px` because we always use put a icon in front of text.
 3. `.clearfix` : this class is to expend parent element when you have floating `div`
 4. `.clear_margin` : clear all margin of an element using `!important`
@@ -13,14 +13,15 @@
 11. `.font-normal` : to set normal set of font `14px`
 12. `.samll_hr` : the original bootstrap `hr` is margin to much, this one override it to `7px margin-top and margin down`
 13. `.small_hrLight` : same as above but with light color `<hr>`
-14. `.font-black` : `set black` to the `font-color`
-15. `.font-grey` : `set greep` to the `font-color`
-16. `.sitesCopyright` : copyright information (refer to the sample in `user_home.html`)
-17. `.sideBar_section` : side bar implementation (refer to the sample in `notification.html`)
-18. `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
-19. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
-20. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
-21. `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
-22. `.space-right-big` : same as above with `margin-right:10px` 
+14. `.mid_hrLight` : `hr` with margin to 12px and light color
+15. `.font-black` : `set black` to the `font-color`
+16. `.font-grey` : `set greep` to the `font-color`
+17. `.sitesCopyright` : copyright information (refer to the sample in `user_home.html`)
+18. `.sideBar_section` : side bar implementation (refer to the sample in `notification.html`)
+19. `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
+20. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
+21. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+22. `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
+23. `.space-right-big` : same as above with `margin-right:10px` 
 
 ##### Please update this when you have other helper css class added
