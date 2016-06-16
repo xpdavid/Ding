@@ -58,6 +58,16 @@ function genericUserProfileEditHover(id) {
     });
 }
 
+function genericUserProfileListEditHover(id) {
+    $( "li[id^=" + id + "]" ).each(function(index, liUI) {
+        $(liUI).children('a').toggle();
+
+        $(liUI).hover(function() {
+            $(liUI).children('a').toggle();
+        });
+    });
+}
+
 $(function() {
     // try bind every div with hover event
     try {
@@ -66,6 +76,9 @@ $(function() {
         genericUserProfileEditHover('#user_display_email');
         genericUserProfileEditHover('#user_bio');
         genericUserProfileEditHover('#user_self_intro');
+
+        // for listing (using li), bind every li with hover event
+        genericUserProfileListEditHover('educationExp');
 
     } catch (e) {
         console.log('hover event binding fail');
@@ -183,17 +196,23 @@ function generateItemUI(id, title, deleteAction) {
     titleUI = $('#itemContent_title');
     deleteButtonUI = $('#itemContent_delete');
 
+    // set value
     titleUI.html(title);
     deleteButtonUI.attr('onclick', deleteAction);
     $('#itemContent').find('li').attr('id', id);
 
+    // clear the all attribute
     titleUI.attr('id', '');
     deleteButtonUI.attr('id', '');
 
+    // copy
     $content = $('#itemContent').html();
 
+    // clear the all content
     titleUI.attr('id', 'itemContent_title');
     deleteButtonUI.attr('id', 'itemContent_delete');
+    $('#itemContent').find('li').attr('id', "");
+    titleUI.html("");
 
     return $content;
 }
