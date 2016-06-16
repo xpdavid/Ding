@@ -533,6 +533,29 @@ body {
   border-radius: 0px !important;
   border-bottom: 1px solid #ccc; }
 
+.login_input_wrapper {
+  position: relative;
+  margin: 0;
+  overflow: hidden; }
+
+.login_input_error {
+  position: absolute;
+  top: 0;
+  right: -300px;
+  padding: 0 20px;
+  line-height: 48px;
+  color: #c33;
+  width: 320px;
+  cursor: text;
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: translate(20px, 0);
+  transition: .25s ease-out;
+  font-size: 12px;
+  text-align: right; }
+
+.login_input_error_show {
+  right: 8px; }
+
 .login_input_group input:focus {
   border-color: #ccc;
   box-shadow: none; }

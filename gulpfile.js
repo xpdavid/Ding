@@ -37,6 +37,7 @@ elixir(function(mix) {
         .copy(jsPath + '/bootstrap3-typeahead.js', 'public/js')
         .copy(jsPath + '/validator.js', 'public/js')
         .copy(jsPath + '/navbar.js', 'public/js')
+        .copy(jsPath + '/login.js', 'public/js')
         .copy(jsPath + '/inbox.js', 'public/js')
         .copy(jsPath + '/profile.js', 'public/js');
 });

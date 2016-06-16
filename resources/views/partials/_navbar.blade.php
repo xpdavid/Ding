@@ -39,7 +39,7 @@
                         <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
                     </ul>
                 </li>
             </ul>

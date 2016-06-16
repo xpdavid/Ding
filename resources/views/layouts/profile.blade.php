@@ -51,7 +51,7 @@
 {!! Html::script('js/bootstrap.min.js') !!}
 
 {{--sweetalert supporting file--}}
-{!! Html::script('js/sweetalert.min.js') !!}}
+{!! Html::script('js/sweetalert.min.js') !!}
 
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
