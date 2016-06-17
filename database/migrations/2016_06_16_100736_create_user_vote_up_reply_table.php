@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReplysTable extends Migration
+class CreateUserVoteUpReplyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,11 @@ class CreateReplysTable extends Migration
      */
     public function up()
     {
-        Schema::create('replys', function (Blueprint $table) {
+        Schema::create('user_vote_up_reply', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->text('reply');
+            $table->integer('user_id')->unsigned();
+            $table->integer('reply_id')->unsigned();
 
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ class CreateReplysTable extends Migration
      */
     public function down()
     {
-        Schema::drop('replys');
+        Schema::drop('user_vote_up_reply');
     }
 }

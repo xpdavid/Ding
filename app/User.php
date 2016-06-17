@@ -78,4 +78,60 @@ class User extends Authenticatable
     public function educationExps() {
         return $this->belongsToMany('App\EducationExp', 'user_educationExp', 'user_id', 'educationExp_id');
     }
+
+    /**
+     * A user can post many question
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions() {
+        return $this->hasMany('App\Question');
+    }
+
+    /**
+     * A user can answer some question
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers() {
+        return $this->hasMany('App\Answer');
+    }
+
+    /**
+     * A user can write many replies
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies() {
+        return $this->hasMany('App\Reply');
+    }
+
+    /**
+     * A user can vote up some answers
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function vote_up_answers() {
+        return $this->belongsToMany('App\Answer', 'user_vote_up_answer');
+    }
+
+    /**
+     * A user can vote down some answers
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function vote_down_answers() {
+        return $this->belongsToMany('App\Answer', 'user_vote_down_answer');
+    }
+
+    /**
+     * A user can vote up for some replies
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function vote_up_replies() {
+        return $this->belongsToMany('App\Reply', 'user_vote_up_reply');
+    }
+
+
 }

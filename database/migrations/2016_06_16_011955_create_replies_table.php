@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuestionsTable extends Migration
+class CreateRepliesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,16 @@ class CreateQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('replies', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('title');
-            $table->text('content');
+            $table->text('reply');
 
-            $table->integer('user_id'); // a question is posted by a user
+            $table->integer('vote_up_user_id')->unsigned();
+
+            // a reply many belongs to question or answers
+            $table->integer('for_item_id')->unsigned();
+            $table->string('for_item_type');
 
             $table->timestamps();
         });
@@ -31,6 +34,6 @@ class CreateQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('questions');
+        Schema::drop('replies');
     }
 }
