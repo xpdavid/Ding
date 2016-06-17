@@ -21,6 +21,9 @@
     {{--sweetalert supporting file--}}
     {!! Html::style('css/sweetalert.css') !!}
 
+    {{--select2 supporting file--}}
+    {!! Html::style('css/select2.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
@@ -47,6 +50,9 @@
 
 {{--sweetalert supporting file--}}
 {!! Html::script('js/sweetalert.min.js') !!}
+
+{{--select2 supporting file--}}
+{!! Html::script('js/select2.full.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}

@@ -21,6 +21,9 @@
     {{--sweetalert supporting file--}}
     {!! Html::style('css/sweetalert.css') !!}
 
+    {{--select2 supporting file--}}
+    {!! Html::style('css/select2.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
@@ -36,6 +39,9 @@
 
 {{--Bootstrap javascript for supporting bootstrap js animation--}}
 {!! Html::script('js/bootstrap.min.js') !!}
+
+{{--select2 supporting file--}}
+{!! Html::script('js/select2.full.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}

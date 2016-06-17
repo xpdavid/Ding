@@ -14,6 +14,7 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     var bootstrapPath = 'resources/assets/bootstrap';
     var sweetalertPath = 'resources/assets/sweetalert';
+    var select2Path = 'resources/assets/select2'
 
     var cssPath = 'resources/assets/js';
     var jsPath = 'resources/assets/js';
@@ -26,6 +27,10 @@ elixir(function(mix) {
     // for sweetalert
     mix.copy(sweetalertPath + '/sweetalert.css', 'public/css')
         .copy(sweetalertPath + '/sweetalert.min.js', 'public/js');
+
+    // for select2
+    mix.copy(select2Path + '/css', 'public/css')
+        .copy(select2Path + '/js', 'public/js');
     
     // for project css file
     mix.sass('app.scss');

@@ -1,6 +1,5 @@
 ## Porject Ding
 #### NUS Orbital 2016
----
 
 ### Project Development Instruction
 
@@ -43,6 +42,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 3. Boostrap3-typeahead (UI for select tag in form) [Github](https://github.com/bassjobsen/Bootstrap-3-Typeahead)
 4. sweetalert (Alternative for javascript 'alert()') [Github](http://t4t5.github.io/sweetalert/)
 5. form validator [Github](https://github.com/1000hz/bootstrap-validator)
+6. select2 (tag selector) [Github](https://github.com/select2/select2/releases)
 
 
 ### There are several helper function you can use in the main.css file
@@ -75,7 +75,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 
 
 ## Milestone 1
----
+
 ### Project Name: Ding
 
 
@@ -114,11 +114,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included:
 
-⋅⋅1. Categorization of users based on their majors.
+ * Categorization of users based on their majors.
 
-⋅⋅2. Searching of modules and questions based on keywords.
+ * Searching of modules and questions based on keywords.
 
-⋅⋅3. Viewing of questions, answers and comments by other users.
+ * Viewing of questions, answers and comments by other users.
 
  
 
@@ -126,11 +126,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Posting of answers and comments
+ * Posting of answers and comments
 
-⋅⋅2. Subscribing of modules and questions and receiving notification when there are new updates.
+ * Subscribing of modules and questions and receiving notification when there are new updates.
 
-⋅⋅3. Suggesting of relevant questions based on what questions the user is currently viewing
+ * Suggesting of relevant questions based on what questions the user is currently viewing
 
  
 
@@ -138,11 +138,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Invitation to friends who are able to answer certain questions and receiving of invitations.
+ * Invitation to friends who are able to answer certain questions and receiving of invitations.
 
-⋅⋅2. Giving positive / negative votes to answers posted by others to reflect quality of answers.
+ * Giving positive / negative votes to answers posted by others to reflect quality of answers.
 
-⋅⋅3. Sharing of questions / answers on social media
+ * Sharing of questions / answers on social media
 
  
 
@@ -150,11 +150,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Personalized user panels where user information, new status to modules and questions subscribed, new comments to answers posted are consolidated.
+ * Personalized user panels where user information, new status to modules and questions subscribed, new comments to answers posted are consolidated.
 
-⋅⋅2. Consolidation and highlighting of questions based on popularity.
+ * Consolidation and highlighting of questions based on popularity.
 
-⋅⋅3. Private messaging between users.
+ * Private messaging between users.
 
  
 
@@ -162,23 +162,17 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Reporting of invalid / indecent answers by normal users and deletion of such answers by moderators
+ * Reporting of invalid / indecent answers by normal users and deletion of such answers by moderators
 
-⋅⋅2. A level system of users' viewing permission based on users' contributions:
+ * A level system of users' viewing permission based on users' contributions:
+ 		* Enable users to set viewing permission to answers posted by themselves (no higher than their own permissions).
+		* Post valid answers to questions to receive credits.
+		* Give more credits to the first answer to any questions to encourage user activity.
+		* Give more credits to high quality answers (answers with more positive votes).
+		* Severe deduction of credits to any invalid / indecent answers by moderators.
+		* (above mentioned are inexhaustive)
 
-⋅⋅⋅⋅1. Enable users to set viewing permission to answers posted by themselves (no higher than their own permissions).
-
-⋅⋅⋅⋅2. Post valid answers to questions to receive credits.
-
-⋅⋅⋅⋅3. Give more credits to the first answer to any questions to encourage user activity.
-
-⋅⋅⋅⋅4. Give more credits to high quality answers (answers with more positive votes).
-
-⋅⋅⋅⋅5. Severe deduction of credits to any invalid / indecent answers by moderators.
-
-(above mentioned are inexhaustive)
-
-⋅⋅3. Security features including encryption of data in transmission and storage, strict checking of user permission before running any functions.
+ * Security features including encryption of data in transmission and storage, strict checking of user permission before running any functions.
 
  
 We will try to implement Feature 1, 2, 3 and 4 in June and Feature 5 as well as other features suggested by other teams in July.
