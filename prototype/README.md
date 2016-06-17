@@ -20,6 +20,7 @@
 18. `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
 19. `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
 20. `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+21. `.comment_box` : show all relative comment (refer to the sample in `question.html`)
 21. `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
 22. `.space-right-big` : same as above with `margin-right:10px` 
 
