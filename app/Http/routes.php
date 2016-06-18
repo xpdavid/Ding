@@ -43,5 +43,8 @@ Route::post('/people/delete', 'PeopleController@destroy');
 // for message controller
 Route::resource('/inbox', 'InboxController');
 
+// for reply controller
+Route::controller('/reply', 'ReplyController');
+
 // for API controller
 Route::controller('/api', 'APIController');
