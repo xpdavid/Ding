@@ -103,7 +103,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function replies() {
-        return $this->hasMany('App\Reply');
+        return $this->hasMany('App\Reply', 'user_id');
     }
 
     /**

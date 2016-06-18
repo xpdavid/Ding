@@ -264,6 +264,7 @@ body {
 
 .sitesCopyright {
   margin-top: 10px;
+  margin-bottom: 20px;
   border-top: 1px solid #ccc;
   text-align: left;
   color: #999;
@@ -708,6 +709,18 @@ body {
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
 
+.comment_spike {
+  position: absolute;
+  top: -13px;
+  left: 110px; }
+
+.comment_spike_arrow {
+  top: 1px;
+  margin-left: -10px;
+  content: " ";
+  border-top-width: 0;
+  border-bottom-color: #fff; }
+
 .comment_content {
   padding: 8px; }
 
@@ -723,6 +736,9 @@ body {
 
 .comment_item_content {
   display: inline-block; }
+
+.comment_for_user {
+  margin-top: 10px; }
 
 .question_answer a {
   color: #999;

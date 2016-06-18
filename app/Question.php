@@ -2,10 +2,22 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    /**
+     * Define fillable field in the model
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'content'
+    ];
+
+
     /**
      * A question belongs to a user (is posted by a user)
      *
@@ -40,5 +52,36 @@ class Question extends Model
      */
     public function topics() {
         return $this->belongsToMany('App\Topic');
+    }
+
+    /**
+     * Get the excerpt of the question detail
+     *
+     * @return string
+     */
+    public function getExcerptAttribute() {
+        $text = $this->content;
+        $length = 200;
+        if(strlen($text) > $length) {
+            $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
+        }
+        return $text;
+    }
+
+    /**
+     * Display human readable created at date
+     *
+     * @return string
+     */
+    public function getCreatedAtHumanReadableAttribute() {
+        $created_at = Carbon::parse($this->created_at);
+        // if the created at date is more than 3 month ago, display the date
+        if (Carbon::now()->subMonth(3)->gte($created_at)) {
+            return $created_at->format('Y-m-d');
+        } else {
+            // or display the humanReadble text (e.g 2 days ago)
+            return $created_at->diffForHumans();
+        }
+
     }
 }

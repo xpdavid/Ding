@@ -2,10 +2,19 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    /**
+     * Define fillable field in the model
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'answer'
+    ];
 
     /**
      * A Answer belong to a question
@@ -13,7 +22,7 @@ class Answer extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function question() {
-        return $this->belongsTo('App\Question');
+        return $this->belongsTo('App\Question', 'question_id');
     }
 
     
@@ -21,10 +30,10 @@ class Answer extends Model
     /**
      * A answer belongs to a user (question answered by a user)
      *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function owner() {
-        return $this->belongsToMany('App\User');
+        return $this->belongsTo('App\User', 'user_id');
     }
 
     /**
@@ -52,5 +61,22 @@ class Answer extends Model
      */
     public function replies() {
         return $this->morphMany('App\Reply', 'for_item');
+    }
+
+    /**
+     * Display human readable created at date
+     *
+     * @return string
+     */
+    public function getCreatedAtHumanReadableAttribute() {
+        $created_at = Carbon::parse($this->created_at);
+        // if the created at date is more than 3 month ago, display the date
+        if (Carbon::now()->subMonth(3)->gte($created_at)) {
+            return $created_at->format('Y-m-d');
+        } else {
+            // or display the humanReadble text (e.g 2 days ago)
+            return $created_at->diffForHumans();
+        }
+
     }
 }

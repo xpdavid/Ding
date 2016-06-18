@@ -11,20 +11,37 @@
 |
 */
 
+Route::get('/forcelogin', function() {
+    Auth::loginUsingId(1);
+    return redirect('/question');
+});
+
 Route::get('/', function () {
     return view('auth.index');
 });
 
+// for auth controller
 Route::auth();
+
 
 Route::get('/home', 'HomeController@index');
 
+
+// for question controller
+Route::get('/question', 'QuestionController@index');
+Route::get('/question/{question_id}', 'QuestionController@show');
+
+// for topic controller
+Route::controller('/topic', 'TopicController');
+
+// for user controller
 Route::get('/people/edit', 'PeopleController@edit');
 Route::get('/people/{url_name}', 'PeopleController@show');
 Route::post('/people/update', 'PeopleController@update');
 Route::post('/people/delete', 'PeopleController@destroy');
 
-
+// for message controller
 Route::resource('/inbox', 'InboxController');
 
+// for API controller
 Route::controller('/api', 'APIController');
