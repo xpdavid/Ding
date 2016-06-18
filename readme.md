@@ -43,6 +43,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 4. sweetalert (Alternative for javascript 'alert()') [Github](http://t4t5.github.io/sweetalert/)
 5. form validator [Github](https://github.com/1000hz/bootstrap-validator)
 6. select2 (tag selector) [Github](https://github.com/select2/select2/releases)
+7. handlebars (javascript template engine) [Index](http://handlebarsjs.com)
 
 
 ### There are several helper function you can use in the main.css file
