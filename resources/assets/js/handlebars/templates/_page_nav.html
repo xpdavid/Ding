@@ -1,0 +1,17 @@
+<nav>
+    <ul class="pagination">
+        <li class="{{prev.class}}">
+            <span aria-label="Previous" onclick="{{prev.onclick}}">
+                <span aria-hidden="true">&laquo;</span>
+            </span>
+        </li>
+        {{#each pages}}
+            <li class="{{class}}"><span href="#" onclick="{{onclick}}">{{name}}</span></li>
+        {{/each}}
+        <li class="{{next.class}}">
+            <span href="#" aria-label="Next">
+                <span aria-hidden="true" onclick="{{next.onclick}}">&raquo;</span>
+            </span>
+        </li>
+    </ul>
+</nav>

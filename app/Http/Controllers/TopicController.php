@@ -18,7 +18,7 @@ class TopicController extends Controller
     public function postAutocomplete(Request $request) {
         $this->validate($request, [
             'query' => 'required',
-            'max_match' => 'required|numeric',
+            'max_match' => 'required|integer',
             'use_similar' => 'required|boolean'
         ]);
 

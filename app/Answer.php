@@ -79,4 +79,13 @@ class Answer extends Model
         }
 
     }
+
+    /**
+     * Display the net votes of the current answer
+     *
+     * @return mixed
+     */
+    public function getNetVotesAttribute() {
+        return $this->vote_up_users->count() - $this->vote_down_users->count();
+    }
 }

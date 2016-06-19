@@ -14,15 +14,17 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     var bootstrapPath = 'resources/assets/bootstrap';
     var sweetalertPath = 'resources/assets/sweetalert';
-    var select2Path = 'resources/assets/select2'
+    var select2Path = 'resources/assets/select2';
 
-    var cssPath = 'resources/assets/js';
+    var cssPath = 'resources/assets/css';
     var jsPath = 'resources/assets/js';
 
     // for bootstrap
     mix.copy(bootstrapPath + '/fonts', 'public/fonts')
         .copy(bootstrapPath + '/css', 'public/css')
         .copy(bootstrapPath + '/js', 'public/js');
+
+
 
     // for sweetalert
     mix.copy(sweetalertPath + '/sweetalert.css', 'public/css')
@@ -41,8 +43,10 @@ elixir(function(mix) {
         .copy(jsPath + '/jquery-1.12.3.min.js', 'public/js')
         .copy(jsPath + '/bootstrap3-typeahead.js', 'public/js')
         .copy(jsPath + '/validator.js', 'public/js')
+        .copy(jsPath + '/handlebars-latest.js', 'public/js')
         .copy(jsPath + '/navbar.js', 'public/js')
         .copy(jsPath + '/login.js', 'public/js')
         .copy(jsPath + '/inbox.js', 'public/js')
-        .copy(jsPath + '/profile.js', 'public/js');
+        .copy(jsPath + '/profile.js', 'public/js')
+        .copy(jsPath + '/question.js', 'public/js')
 });

@@ -9,9 +9,11 @@ use App\Http\Requests;
 
 class QuestionController extends Controller
 {
+
     /**
-     * Display the index page
+     * Display index page
      *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
         $recommends = Question::take(5)->get();
@@ -21,7 +23,14 @@ class QuestionController extends Controller
         return view('question.index', compact('recommends', 'current_day_hot', 'current_month_hot'));
     }
 
-    public function show($question_id) {
+    /**
+     * show specific question detail
+     *
+     * @param $question_id
+     * @param $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show($question_id, Request $request) {
         $question = Question::findOrFail($question_id);
 
         $also_interest = [];
@@ -29,7 +38,18 @@ class QuestionController extends Controller
             $also_interest = array_merge($also_interest, $topic->questions->take(3)->all());
         }
 
+        // determine how to sort answers
+        $answers = $question->answers;
+        $sorted = 'rate';
+        if ($request->exists('sorted') && $request->get('sorted') == 'created') {
+            $sorted = 'created';
+            $answers = $answers->sortByDesc('created_at');
+        } else {
+            $answers = $answers->sortByDesc('netVotes');
+        }
 
-        return view('question.show', compact('question', 'also_interest'));
+
+        return view('question.show', compact('question', 'answers', 'sorted', 'also_interest'));
     }
+
 }

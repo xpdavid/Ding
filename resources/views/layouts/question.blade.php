@@ -69,6 +69,10 @@
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
 {!! Html::script('js/navbar.js') !!}
 
+{{--javascript template engine support--}}
+{!! Html::script('js/handlebars-latest.js') !!}
+{!! Html::script('js/templates.js') !!}
+
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
 

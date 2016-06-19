@@ -1,0 +1,41 @@
+<!--this is the remplate for reply item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each replies}}
+<div class="media comment_item">
+    <div class="media-left">
+        <a href="#">
+            <img class="media-object" src="..." alt="...">
+        </a>
+    </div>
+    <div class="media-body">
+        <div class="clearfix font-black">
+            <div class="media-heading float-left"><a href=""><strong>{{user_name}}</strong></a></div>
+            <div class="float-right invisible">
+                <a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Show Conversation</a>
+            </div>
+            <div class="comment_item_content">
+                {{reply}}
+            </div>
+        </div>
+        <div class="float-left horizontal_item">
+            <a href="#">{{created_at}}</a>
+            <a href="#" onclick="reply_comment(event, '{{id}}')"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Reply</a>
+            <a href="#"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+            <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Report</a>
+        </div>
+        <div class="float-right">{{votes}} vote(s)</div>
+        <span class="clearfix"></span>
+        <div class="comment_for_user clearfix" id="comment_{{id}}">
+            <div class="form-group">
+                <input type="email" class="form-control" id="reply_content" placeholder="Write Your Comment Here">
+            </div>
+            <div class="float-right form-group">
+                <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'comment_{{id}}')">Cancel</a>
+                <button class="btn btn-primary" type="submit">Comment</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<hr class="small_hrLight">
+{{/each}}

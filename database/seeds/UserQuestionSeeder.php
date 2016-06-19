@@ -13,24 +13,28 @@ class UserQuestionSeeder extends Seeder
     {
         factory(App\User::class, 50)->create()->each(function($u) {
             // a user can post many question
-            for($i = 0; $i < rand(5, 10); $i++) {
+            $bound_i = rand(5, 10);
+            for($i = 0; $i < $bound_i; $i++) {
                 $question = factory(App\Question::class)->make();
                 $question->save();
 
                 // question is categorized by many topics
-                for($j = 0; $j < rand(1, 8); $j++) {
+                $bound_j = rand(1, 8);
+                for($j = 0; $j < $bound_j; $j++) {
                     $question->topics()->save(App\Topic::all()->random(1));
                 }
 
                 // question have many answers
-                for($j = 0; $j < rand(1, 20); $j++) {
+                $bound_j = rand(6, 12);
+                for($j = 0; $j < $bound_j; $j++) {
                     $answer = factory(App\Answer::class)->make();
 
                     // an answer belongs to a user
                     App\User::all()->random(1)->answers()->save($answer);
 
                     // an answer have many replies
-                    for($j = 0; $j < rand(5, 20); $j++) {
+                    $bound_k = rand(1, 20);
+                    for($k = 0; $k < $bound_k; $k++) {
                         $reply = factory(App\Reply::class)->make();
                         $reply->save();
                         $answer->replies()->save($reply);
@@ -40,7 +44,8 @@ class UserQuestionSeeder extends Seeder
                 }
 
                 // question have many replies
-                for($j = 0; $j < rand(3, 20); $j++) {
+                $bound_j = rand(5, 20);
+                for($j = 0; $j < $bound_j; $j++) {
                     $reply = factory(App\Reply::class)->make();
                     $reply->save();
 

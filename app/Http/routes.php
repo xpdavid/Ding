@@ -27,9 +27,14 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 
 
+// for answer controller
+Route::post('/question/answers', 'AnswerController@postAnswers');
+
 // for question controller
 Route::get('/question', 'QuestionController@index');
 Route::get('/question/{question_id}', 'QuestionController@show');
+Route::controller('/question', 'QuestionController');
+
 
 // for topic controller
 Route::controller('/topic', 'TopicController');
