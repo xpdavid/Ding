@@ -78,4 +78,18 @@ class User extends Authenticatable
     public function educationExps() {
         return $this->belongsToMany('App\EducationExp', 'user_educationExp', 'user_id', 'educationExp_id');
     }
+
+    /** Define eloquent relationship between User and Settings
+    *   A user has one setting
+    */
+    public function settings() {
+        return $this->hasOne('App\Settings');
+    }
+
+    /** Define eloquent relationship between User and Blocking
+    *   A user may block many other users
+    */
+    public function blockings() {
+        return $this->hasMany('App\Blocking');
+    }
 }

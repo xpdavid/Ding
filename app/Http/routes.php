@@ -28,3 +28,5 @@ Route::post('/people/delete', 'PeopleController@destroy');
 Route::resource('/inbox', 'InboxController');
 
 Route::controller('/api', 'APIController');
+
+Route::resource('/settings', 'SettingsController');
