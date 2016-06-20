@@ -30,10 +30,19 @@ Route::get('/home', 'HomeController@index');
 // for answer controller
 Route::post('/question/answers', 'AnswerController@postAnswers');
 
-// for question controller
+// for question & answer
 Route::get('/question', 'QuestionController@index');
 Route::get('/question/{question_id}', 'QuestionController@show');
+Route::post('/question/{question_id}/comment', 'ReplyController@storeQuestionComment');
+Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::controller('/question', 'QuestionController');
+
+// for answer
+Route::post('/answer/{answer_id}/reply', 'ReplyController@storeAnswerReply');
+Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
+
+// for reply
+Route::post('/reply/{reply_id}/vote', 'ReplyController@vote');
 
 
 // for topic controller

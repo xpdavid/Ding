@@ -17,5 +17,5 @@ $.ajaxSetup({
 function scroll_to(event, element_id) {
     event.preventDefault();
 
-    $('html,body').animate({scrollTop: $('#' + element_id).offset().top - 200}, 1000);
+    $('html,body').animate({scrollTop: $('#' + element_id).offset().top}, 1000);
 }

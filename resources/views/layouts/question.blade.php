@@ -82,5 +82,7 @@
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}
 
+@yield('javascript')
+
 </body>
 </html>

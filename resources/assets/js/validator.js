@@ -50,7 +50,7 @@
     })
   }
 
-  Validator.INPUT_SELECTOR = ':input:not([type="submit"], button):enabled:visible'
+  Validator.INPUT_SELECTOR = ':input:not([type="submit"], button):enabled'
 
   Validator.FOCUS_OFFSET = 20
 

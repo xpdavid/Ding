@@ -722,11 +722,11 @@ body {
   border-top-width: 0;
   border-bottom-color: #fff; }
 
-.comment_content {
-  padding: 8px; }
-
 .comment_item {
-  margin: 0 8px 0 8px; }
+  margin: 10px !important; }
+
+.reply_op {
+  display: none; }
 
 .comment_form {
   margin: 0;
@@ -787,6 +787,10 @@ body {
   height: auto;
   text-align: center;
   width: 55px; }
+
+.answer_voting .active {
+  background-color: #698EBF;
+  color: #FFFFFF; }
 
 .answer_voting button {
   width: 40px;
@@ -916,6 +920,9 @@ body {
   margin-right: 10px;
   color: #778087;
   white-space: nowrap; }
+
+.horizontal_item .active {
+  color: #337ab7; }
 
 .horizontal_item a:hover {
   text-decoration: none;

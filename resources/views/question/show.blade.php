@@ -24,7 +24,10 @@
 
         <div class="horizontal_item">
             <a href="#" onclick="scroll_to(event, 'question_answer_form')"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
-            <a href="#" onclick="showComment(event, this, 'question', '{{ $question->id }}', 'question_comment', 'question_comment_content');"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Comment ({{ $question->replies->count() }})</a>
+            <a href="#" onclick="showComment(event, this, 'question', '{{ $question->id }}', 'question_comment');">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                Comment (<span id="question_comment_replies_count">{{ $question->replies->count() }}</span>)
+            </a>
             <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
             <a href="#"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>Invite Friends</a>
         </div>
@@ -38,17 +41,24 @@
 
                 </div>
 
-                <div class="text-center" id="nav_question_comment_content">
+                <div class="text-center" id="question_comment_nav">
 
                 </div>
 
                 <div class="comment_form clearfix">
                     <div class="form-group">
-                        <input type="email" class="form-control" id="reply_content" placeholder="Write Your Comment Here" onfocus="show_form(event, 'question_comment_button')">
+                        <input type="text"
+                               class="form-control"
+                               name="question_comment_input"
+                               id="question_comment_input"
+                               placeholder="Write Your Comment Here"
+                               onfocus="show_form(event, 'question_comment_button')"
+                        >
                     </div>
                     <div class="float-right form-group" id="question_comment_button">
                         <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'question_comment_button')">Cancel</a>
-                        <button class="btn btn-primary" type="submit">Submit</button>
+                        <button class="btn btn-primary" type="submit"
+                                onclick="saveQuestionComment('question_comment', '{{ $question->id }}')">Submit</button>
                     </div>
                 </div>
 
@@ -72,91 +82,38 @@
 
         <hr class="small_hrLight">
 
-        <div id="question_answers">
-            @foreach($answers->take(8) as $answer)
-                <div class="answer_overall">
-                    <div class="answer_voting">
-                        <button type="button" class="btn btn-primary">
-                            <div>
-                                <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
-                            </div>
-                            {{ $answer->netVotes }}
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
-                        </button>
-                    </div>
-
-
-                    <div class="answer_userInfo clearfix">
-                        <div class="float-left"><strong>{{ $answer->owner->name }}</strong>, {{ $answer->owner->bio }}</div>
-                        <img class="answer_userImg" src="image/sample_icon.png" alt="">
-                    </div>
-
-                    <div>
-                        <span class="answer_vote">{{ $answer->netVotes }} Vote(s)</span>
-                    </div>
-
-                    <div class="answer_content font-black">
-                        {{ $answer->answer }}
-                    </div>
-
-                    <div class="horizontal_item">
-                        <a href="#">Posted on {{ $answer->createdAtHumanReadable }}</a>
-                        <a href="#" onclick="showComment(event, this, 'answer', '{{ $answer->id }}', 'answer_comment_{{ $answer->id }}', 'question_comment_content_{{ $answer->id }}');"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Comment ({{ $answer->replies->count() }})</a>
-                        <a href="#"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
-                        <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
-                        <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
-                        <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
-                    </div>
-
-
-                    <div class="comment_box" id="answer_comment_{{ $answer->id }}">
-                        <div class="comment_spike"></div>
-                        <div class="comment_list">
-                            <div class="comment_content" id="question_comment_content_{{ $answer->id }}">
-
-                            </div>
-
-                            <div class="text-center" id="nav_question_comment_content_{{ $answer->id }}">
-
-                            </div>
-
-                            <div class="comment_form clearfix">
-                                <div class="form-group">
-                                    <input type="email" class="form-control" id="reply_content" placeholder="Write Your Comment Here" onfocus="show_form(event, 'answer_comment_button_{{ $answer->id }}')">
-                                </div>
-                                <div class="float-right form-group answer_comment_button" id="answer_comment_button_{{ $answer->id }}">
-                                    <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'answer_comment_button_{{ $answer->id }}')">Cancel</a>
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr>
-            @endforeach
-        </div>
+        <div id="question_answers"></div>
 
 
         <div class="answer_more">
-            <button type="button" class="btn btn-default" onclick="getMore(event, 'question_answers', '{{ $question->id }}', '{{ $sorted }}')">More</button>
+            <button type="button" class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}')">More</button>
         </div>
 
         <div class="clearfix question_answer" id="question_answer_form">
             <hr>
             <div class="write_answer_userInfo clearfix">
-                <strong>{{ Auth::user()->name }}</strong>, the embodiment of ultimate randomness
+                <strong>{{ Auth::user()->name }}</strong>, {{ Auth::user()->bio }}
                 <img class="answer_userImg" src="image/sample_icon.png" alt="">
             </div>
-            <form class="clearfix">
+            <form action="/question/{{ $question->id }}/answer"
+                  class="clearfix" method="POST"
+                  role="form" data-toggle="validator"
+                  onsubmit="return saveAnswer('question_answers', '{{ $question->id }}')">
+                {{ csrf_field() }}
                 <div class="form-group">
-                    <textarea class="form-control" id="question_answerSubmission" placeholder="Write your answer here." rows="3"></textarea>
+                    <textarea
+                            name="user_answer"
+                            class="form-control"
+                            id="question_answers_input"
+                            placeholder="Write your answer here."
+                            rows="5"
+                            data-minlength="10"
+                            required
+                            data-error="Bruh, I think answers must be more than 10 characters."
+                    ></textarea>
+                    <div class="help-block with-errors"></div>
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
-                <button type="submit" class="btn btn-warning">Submit</button>
             </form>
         </div>
     </div>
@@ -188,4 +145,13 @@
             <p><a href="{{ action('QuestionController@show', $question->id) }}">{{ $question->title }}</a> {{ $question->answers->count() }} answers</p>
         @endforeach
     </div>
+@endsection
+
+@section('javascript')
+    <script type="text/javascript">
+        // onload event then load answers
+        $(function() {
+            getMore('question_answers', '{{ $question->id }}');
+        })
+    </script>
 @endsection

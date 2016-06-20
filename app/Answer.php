@@ -86,6 +86,6 @@ class Answer extends Model
      * @return mixed
      */
     public function getNetVotesAttribute() {
-        return $this->vote_up_users->count() - $this->vote_down_users->count();
+        return $this->vote_up_users()->count() - $this->vote_down_users()->count();
     }
 }

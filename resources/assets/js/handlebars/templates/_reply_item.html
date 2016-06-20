@@ -9,9 +9,11 @@
     </div>
     <div class="media-body">
         <div class="clearfix font-black">
-            <div class="media-heading float-left"><a href=""><strong>{{user_name}}</strong></a></div>
-            <div class="float-right invisible">
-                <a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Show Conversation</a>
+            <div class="clearfix">
+                <div class="media-heading float-left"><a href=""><strong>{{user_name}}</strong></a></div>
+                <div class="float-right invisible">
+                    <a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Show Conversation</a>
+                </div>
             </div>
             <div class="comment_item_content">
                 {{reply}}
@@ -19,18 +21,21 @@
         </div>
         <div class="float-left horizontal_item">
             <a href="#">{{created_at}}</a>
-            <a href="#" onclick="reply_comment(event, '{{id}}')"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Reply</a>
-            <a href="#"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
-            <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Report</a>
+            <span class="reply_op">
+                <a href="#" onclick="reply_comment(event, '{{id}}')"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Reply</a>
+                <a href="#" class="{{vote_up_class}}" id="vote_reply_{{id}}_up" onclick="vote_reply(event, '{{id}}')"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+                <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Report</a>
+            </span>
         </div>
-        <div class="float-right">{{votes}} vote(s)</div>
+        <div class="float-right"><span id="vote_reply_{{id}}_count">{{votes}}</span> vote(s)</div>
         <span class="clearfix"></span>
-        <div class="comment_for_user clearfix" id="comment_{{id}}">
+
+        <div class="comment_for_user clearfix" id="reply_comment_{{id}}">
             <div class="form-group">
                 <input type="email" class="form-control" id="reply_content" placeholder="Write Your Comment Here">
             </div>
             <div class="float-right form-group">
-                <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'comment_{{id}}')">Cancel</a>
+                <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'reply_comment_{{id}}')">Cancel</a>
                 <button class="btn btn-primary" type="submit">Comment</button>
             </div>
         </div>

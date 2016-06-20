@@ -5,52 +5,79 @@
  * @param clickObject
  * @param type
  * @param item_id
- * @param toggle_id
- * @param append_id
+ * @param base_id
  *
  * description: send post request to get all the replies of the current object
  */
-function showComment(event, clickObject, type, item_id, toggle_id, append_id) {
+function showComment(event, clickObject, type, item_id, base_id) {
     event.preventDefault();
 
     $(clickObject).prop('onclick', null);
     $(clickObject).click(function(e) {
-        event.preventDefault();
+        e.preventDefault();
         // display the comment box
-        $('#' + toggle_id).toggle();
+        $('#' + base_id).toggle();
     });
 
     // display comment at the first page
-    showCommentPage(append_id, type, item_id, 1);
-    $('#' + toggle_id).toggle();
+    showCommentPage(base_id, type, item_id, 1);
+    $('#' + base_id).toggle();
 
+}
+
+/**
+ * when hover comment box, show operation div
+ *
+ * @param base_id
+ */
+function replyBindHoverShowOperation(base_id) {
+    $('#' + base_id).find('.comment_item').each(function() {
+        var element = $(this);
+        element.hover(function() {
+            element.find('.reply_op').show();
+        }, function() {
+            element.find('.reply_op').hide();
+        })
+    })
 }
 
 /**
  * Click page nav trigger update comment
  *
- * @param append_id
+ * @param base_id
  * @param type
  * @param item_id
  * @param page
+ * @param callback
  */
-function showCommentPage(append_id, type, item_id, page) {
+function showCommentPage(base_id, type, item_id, page, callback) {
     $.post('/reply/reply-list', {
         type : type,
         item_id : item_id,
         page : page,
     }, function(results) {
-        var processResults = {
-            replies : results.data
-        };
+        if (results.data.length != 0) {
+            var processResults = {
+                replies : results.data
+            };
 
-        // complie template
-        var template = Handlebars.templates['_reply_item.html'];
-        // send data
-        $('#' + append_id).html(template(processResults));
+            // complie template
+            var template = Handlebars.templates['_reply_item.html'];
+            // send data
+            $('#' + base_id + '_content').html(template(processResults));
 
-        // update nav bar
-        $('#nav_' + append_id).html(compileCommentPageNav(page, results.pages, append_id, type, item_id));
+            // update nav bar
+            $('#' + base_id + '_nav').html(compileCommentPageNav(page, results.pages, base_id, type, item_id));
+
+            // check callback
+            if(callback && typeof callback == "function"){
+                callback();
+            }
+
+            // bind hover event
+            replyBindHoverShowOperation(base_id);
+        }
+
     });
 }
 
@@ -59,17 +86,17 @@ function showCommentPage(append_id, type, item_id, page) {
  *
  * @param currPage
  * @param numPages
- * @param append_id
+ * @param base_id
  * @param type
  * @param item_id
  * @returns {*}
  */
-function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
+function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
     // generate prev link
     var prev = {};
     if (currPage > 1) {
         var prevPage = currPage - 1;
-        prev.onclick = "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + prevPage + ")";
+        prev.onclick = "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + prevPage + ")";
     } else {
         prev.class = "disabled";
     }
@@ -78,7 +105,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
     var next = {};
     if (currPage < numPages) {
         var nextPage = currPage + 1;
-        next.onclick = "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + nextPage + ")";
+        next.onclick = "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + nextPage + ")";
     } else {
         next.class = "disabled";
     }
@@ -91,7 +118,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
         for(i = 1; i <= numPages; i++) {
             className = (i == currPage) ? 'active' : '';
             pages.push({
-                onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + i + ")",
+                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                 name : i,
                 class : className
             });
@@ -102,7 +129,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
             for(i = 1; i <= 5; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                     name : i,
                     class : className
                 });
@@ -114,14 +141,14 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
             });
             // push last page
             pages.push({
-                onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + numPages + ")",
+                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
                 name : numPages
             });
         } else if (numPages - currPage <=5) {
             // the current page is within last 5 page
             // push first page
             pages.push({
-                onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + 1 + ")",
+                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
                 name : 1
             });
             // push '...' element
@@ -133,7 +160,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
             for(i = numPages - 4; i <= numPages; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                     name : i,
                     class : className
                 });
@@ -141,7 +168,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
         } else {
             // push the first page
             pages.push({
-                onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + 1 + ")",
+                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
                 name : 1
             });
             // push '...' element
@@ -154,7 +181,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
             for(i = currPage - 1; i <= currPage + 1; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                     name : i,
                     class : className
                 });
@@ -167,7 +194,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
             });
             // push last page
             pages.push({
-                onclick : "showCommentPage('" + append_id + "','" + type + "'," + item_id + "," + numPages + ")",
+                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
                 name : numPages
             });
 
@@ -193,7 +220,7 @@ function compileCommentPageNav(currPage, numPages, append_id, type, item_id) {
 function reply_comment(event, comment_id) {
     event.preventDefault();
 
-    $('#comment_' + comment_id).toggle();
+    $('#reply_comment_' + comment_id).toggle();
 }
 
 /**
@@ -204,7 +231,6 @@ function reply_comment(event, comment_id) {
  */
 function show_form(event, element_id) {
     $('#' + element_id).show();
-    scroll_to(event, element_id);
 }
 
 /**
@@ -222,11 +248,11 @@ function cancel_from(event, element_id) {
 /**
  * AJAX request to get more answers
  *
- * @param append_id
+ * @param base_id
  * @param question_id
  * @param page
  */
-function getMoreAnswers(append_id, question_id, page) {
+function getMoreAnswers(base_id, question_id, page) {
     $.post('/question/answers', {
         question_id : question_id,
         page : page
@@ -241,16 +267,201 @@ function getMoreAnswers(append_id, question_id, page) {
                 answers : results
             };
             // append more answers to the box
-            $('#' + append_id).append(template(data));
+            $('#' + base_id).append(template(data));
+            $('.answer_more>button').prop('disabled', false);
         }
     });
 }
 
-var curreAnswerPage = 2;
-function getMore(event, append_id, question_id) {
-    event.preventDefault();
-    getMoreAnswers(append_id, question_id, curreAnswerPage);
+var curreAnswerPage = 1;
+function getMore(base_id, question_id) {
+    $('.answer_more>button').prop('disabled', true);
+    getMoreAnswers(base_id, question_id, curreAnswerPage);
     curreAnswerPage++;
+}
+
+
+/**
+ * Send ajax request to sever to save answer
+ *
+ * @param base_id
+ * @param question_id
+ * @returns {boolean}
+ */
+function saveAnswer(base_id, question_id) {
+    $.post('/question/' + question_id + '/answer', {
+        user_answer : $('#' + base_id + '_input').val()
+    }, function(results) {
+        if (results.status) {
+            var template = Handlebars.templates['_answer_item.html'];
+            var data = {
+                answers : [results]
+            }
+            $('#' + base_id).append(template(data));
+            $('#' + base_id + '_input').val("");
+        } else {
+            swal("Error", "Sever post a question :(", "error");
+        }
+    })
+
+    return false;
+}
+
+/**
+ * send ajax request to sever to store current question comment
+ *
+ * @param base_id
+ * @param question_id
+ */
+function saveQuestionComment(base_id, question_id) {
+    var inputFiled = $('#' + base_id + '_input');
+    if (inputFiled.val() == "") {
+        // the user doesn't write any thing
+        inputFiled.focus();
+    } else {
+        // validate pass, keep on
+        $.post('/question/' + question_id + '/comment', {
+            user_question_reply : inputFiled.val()
+        }, function(results) {
+            if (results.status) {
+                $('#' + base_id + '_input').val("");
+                // refresh to show last comment page
+                showCommentPage(base_id, 'question', question_id, results.numPages);
+                $('#' + base_id + '_replies_count').html(results.numReplies);
+            } else {
+                swal("Error", "Sever post a question :(", "error");
+            }
+        });
+    }
+}
+
+/**
+ * send ajax request to store answer reply
+ *
+ * @param base_id
+ * @param answer_id
+ * @returns {boolean}
+ */
+function saveAnswerReply(base_id, answer_id) {
+    var inputFiled = $('#' + base_id + '_input');
+    if (inputFiled.val() == "") {
+        // the user doesn't write any thing
+        inputFiled.focus();
+    } else {
+        $.post('/answer/' + answer_id + '/reply', {
+            reply : inputFiled.val()
+        }, function(results) {
+            if (results.status) {
+                $('#' + base_id + '_input').val("");
+                // refresh to show last comment page
+                showCommentPage(base_id, 'answer', answer_id, results.numPages);
+                // update comment count
+                $('#' + base_id + '_replies_count').html(results.numReplies);
+            } else {
+                swal("Error", "Sever post a question :(", "error");
+            }
+        });
+    }
+
+}
+
+/**
+ * vote answer (up, down, cancel)
+ *
+ * @param answer_id
+ * @param op
+ */
+function vote_answer(answer_id, op) {
+    if (op == 'up') {
+        // cancel the down vote button class
+        $('#vote_answer_' + answer_id + '_down').toggleClass('active', false);
+        var element = $('#vote_answer_' + answer_id + '_up');
+        // toggle class
+        element.toggleClass('active');
+
+        // determine vote or cancel
+        if(element.hasClass('active')) {
+            vote_answer_helper(answer_id, 'up');
+        } else {
+            vote_answer_helper(answer_id, 'cancel');
+        }
+
+    } else if (op == 'down') {
+        // cancel the up vote button class
+        $('#vote_answer_' + answer_id + '_up').toggleClass('active', false);
+        var element = $('#vote_answer_' + answer_id + '_down');
+        // toggle class
+        element.toggleClass('active');
+
+        // determine vote or cancel
+        if(element.hasClass('active')) {
+            vote_answer_helper(answer_id, 'down');
+        } else {
+            vote_answer_helper(answer_id, 'cancel');
+        }
+    }
+}
+
+/**
+ * vote answer helper (send ajax request only)
+ *
+ * @param answer_id
+ * @param op
+ */
+function vote_answer_helper(answer_id, op) {
+    $.post('/answer/' + answer_id + '/vote', {
+        op : op
+    }, function(result) {
+        if (!result.status) {
+            swal("Error", "Sever post a question :(", "error");
+            return null;
+        }
+        // update the count
+        $('.vote_answer_' + answer_id + '_count').each(function() {
+            $(this).html(result.netVotes);
+        });
+    });
+}
+
+/**
+ * Send ajax request to vote for the reply
+ *
+ * @param event
+ * @param reply_id
+ * @param op
+ */
+function vote_reply(event, reply_id) {
+    // prevent anchor
+    event.preventDefault();
+
+    var element = $('#vote_reply_' + reply_id + '_up');
+    element.toggleClass('active');
+
+    // determine the operation
+    if (element.hasClass('active')) {
+        vote_reply_helper(reply_id, 'up');
+    } else {
+        vote_reply_helper(reply_id, 'cancel');
+    }
+}
+
+/**
+ * vote reply helper function to send ajax request
+ *
+ * @param reply_id
+ * @param op
+ */
+function vote_reply_helper(reply_id, op) {
+    $.post('/reply/' + reply_id + '/vote', {
+        op : op
+    }, function(result) {
+        if (!result.status) {
+            swal("Error", "Sever post a question :(", "error");
+            return null;
+        }
+        // update the count
+        $('#vote_reply_' + reply_id + '_count').html(result.numVotes);
+    });
 }
 
 

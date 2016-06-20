@@ -1,25 +1,25 @@
 {{#each answers}}
 <div class="answer_overall">
     <div class="answer_voting">
-        <button type="button" class="btn btn-primary">
+        <button type="button" id="vote_answer_{{id}}_up" class="btn btn-primary {{vote_up_class}}" onclick="vote_answer('{{id}}', 'up')">
             <div>
                 <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
             </div>
-            {{votes}}
+            <span class="vote_answer_{{id}}_count">{{votes}}</span>
         </button>
-        <button type="button" class="btn btn-primary">
+        <button type="button" id="vote_answer_{{id}}_down" class="btn btn-primary {{vote_down_class}}" onclick="vote_answer('{{id}}', 'down')">
             <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
         </button>
     </div>
 
 
     <div class="answer_userInfo clearfix">
-        <div class="float-left"><strong>{{user_name}}</strong>, {{user_bio}}</div>
+        <div class="float-left"><strong>{{user_name}}</strong>, <span class="font-black">{{user_bio}}</span> </div>
         <img class="answer_userImg" src="image/sample_icon.png" alt="">
     </div>
 
     <div>
-        <span class="answer_vote">{{votes}} Vote(s)</span>
+        <span class="answer_vote "><span class="vote_answer_{{id}}_count">{{votes}}</span> Vote(s)</span>
     </div>
 
     <div class="answer_content font-black">
@@ -28,8 +28,10 @@
 
     <div class="horizontal_item">
         <a href="#">Posted on {{created_at}}</a>
-        <a href="#" onclick="showComment(event, this, 'answer', '{{id}}', 'answer_comment_{{id}}', 'question_comment_content_{{id}}');"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Comment ({{numComment}})</a>
-        <a href="#"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+        <a href="#" onclick="showComment(event, this, 'answer', '{{id}}', 'answer_comment_{{id}}');">
+            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+            Comment (<span id="answer_comment_{{id}}_replies_count">{{numComment}}</span>)
+        </a>
         <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
         <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
         <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
@@ -39,21 +41,26 @@
     <div class="comment_box" id="answer_comment_{{id}}">
         <div class="comment_spike"></div>
         <div class="comment_list">
-            <div class="comment_content" id="question_comment_content_{{id}}">
+            <div class="comment_content" id="answer_comment_{{id}}_content">
 
             </div>
 
-            <div class="text-center" id="nav_question_comment_content_{{id}}">
+            <div class="text-center" id="answer_comment_{{id}}_nav">
 
             </div>
 
             <div class="comment_form clearfix">
                 <div class="form-group">
-                    <input type="email" class="form-control" id="reply_content" placeholder="Write Your Comment Here" onfocus="show_form(event, 'answer_comment_button')">
+                    <input type="email"
+                           class="form-control" id="answer_comment_{{id}}_input"
+                           placeholder="Write Your Comment Here",
+                           id="answer_comment_{{id}}_input",
+                           onfocus="show_form(event, 'answer_comment_{{id}}_buttons')">
                 </div>
-                <div class="float-right form-group" id="answer_comment_button">
-                    <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'answer_comment_button')">Cancel</a>
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                <div class="float-right form-group" id="answer_comment_{{id}}_buttons">
+                    <a href="#" role="button" class="space-right-big"
+                       onclick="cancel_from(event, 'answer_comment_{{id}}_buttons')">Cancel</a>
+                    <button class="btn btn-primary" type="submit" onclick="saveAnswerReply('answer_comment_{{id}}', '{{id}}')">Submit</button>
                 </div>
             </div>
 
