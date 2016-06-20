@@ -60,6 +60,12 @@ body {
 	border-top: 1px solid #eee !important;
 }
 
+.mid_hr {
+	margin-top: 12px !important;
+	margin-bottom: 12px !important;
+	border-top: 1px solid #ccc !important;
+}
+
 .mid_hrLight {
 	margin-top: 12px !important;
 	margin-bottom: 12px !important;
@@ -1233,4 +1239,91 @@ body {
 .answer_statusContent {
 	color: #999;
 	line-height: 1em;
+}
+
+/* topics_more css */
+/* inheriting partially from CSS for topics.html */
+.media.col-md-6.topics_more {
+	margin-top: 5px;
+}
+
+.topics_topicTag.topics_more {
+	line-height: 3em;
+}
+
+.topics_topicTag.topics_more a {
+	margin-right: 5px;
+}
+
+img.media-object.topics_more {
+	width:50px;
+	height:50px;
+}
+
+.media-body.topics_more h4 {
+	font-size: 15px;
+	margin-bottom: 8px;
+}
+
+.media-body.topics_more h4 a{
+	color: #259;
+}
+
+.media-body.topics_more a {
+	font-size: 14px;
+	margin-top: -24px;
+	color: #698EBF;
+}
+
+.media-body.topics_more a span {
+	color: #bbb;
+	font-size: 12px;
+	padding-bottom: 2px;
+}
+
+.media-body.topics_more p {
+	font-size: 12px;
+}
+
+.topics_more.more {
+	padding-top: 10px;
+	margin-left: -2px;
+	margin-right: -2px;
+}
+
+.topics_more.row button {
+	padding-top, padding-bottom: 8px;
+	background-color: #EDEDEF;
+	font-size: 18px;
+	text-align: center;
+	color: #666;
+	width: 100%;
+}
+
+.topics_more.side img {
+	width: 50px;
+	height: 50px;
+}
+
+
+.topics_more.side h4 {
+	font-size: 15px;
+	padding-bottom: 8px;
+}
+
+.topics_more.popular_title h4 {
+	margin-top: 2px;
+}
+
+.topics_more.side .media-body {
+	color: #888;
+	padding-bottom: 8px;
+}
+
+.topics_more.side h4 a {
+	color: #259;
+}
+
+.topics_more.side .popular_question {
+	color: #259;
 }
