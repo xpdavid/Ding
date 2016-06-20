@@ -31,7 +31,7 @@
 
 @yield('content')
 
-@include('partials._copyright_bottom')
+@include('partials._site_copyright')
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
@@ -40,7 +40,7 @@
 {!! Html::script('js/bootstrap.min.js') !!}
 
 {{--sweetalert supporting file--}}
-{!! Html::script('js/sweetalert.min.js') !!}}
+{!! Html::script('js/sweetalert.min.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}
