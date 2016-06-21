@@ -133,5 +133,27 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Reply', 'user_vote_up_reply');
     }
 
+    /**
+     * define query scope. similar match $name
+     *
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
+    public function scopeSimilarMatch($query, $name) {
+        return $query->where('name', 'REGEXP', '[' . $name . ']');
+    }
+
+    /**
+     * define query scope. like match $name
+     *
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
+    public function scopeNoneSimilarMatch($query, $name) {
+        return $query->where('name', 'LIKE', '%' . $name . '%');
+    }
+
 
 }

@@ -1,5 +1,7 @@
 /**
- * Created by XP on 24/5/16.
+ * Send ajax request to hide the conversation
+ * 
+ * @param $id
  */
 function hideConversation($id) {
     swal({
@@ -34,3 +36,45 @@ function hideConversation($id) {
             });
         });
 }
+
+/**
+ * Auto complete for select user
+ */
+function receive_message_users_autocomplete() {
+    $('#receive_message_users').select2({
+        width: '100%',
+        dropdownAutoWidth : true,
+        placeholder: 'select peoples',
+        minimumInputLength : 1,
+        ajax: {
+            url: "/people/autocomplete",
+            dataType: 'json',
+            method: 'POST',
+            delay: 250,
+            data: function (params) {
+                return {
+                    query: params.term, // search term
+                    max_match: 10,
+                    use_similar: 0
+                };
+            },
+            processResults: function(data, params) {
+                var process_data = [];
+                $.each(data, function(index, value) {
+                    process_data.push({
+                        id : index,
+                        text : value
+                    });
+                });
+                return {
+                    results : process_data
+                }
+            }
+        },
+    });
+}
+
+$(function() {
+    receive_message_users_autocomplete();
+})
+

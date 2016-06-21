@@ -51,6 +51,7 @@ Route::post('/reply/{reply_id}', 'ReplyController@storeCommentReply');
 Route::controller('/topic', 'TopicController');
 
 // for user controller
+Route::post('/people/autocomplete', 'PeopleController@autocomplete');
 Route::get('/people/edit', 'PeopleController@edit');
 Route::get('/people/{url_name}', 'PeopleController@show');
 Route::post('/people/update', 'PeopleController@update');

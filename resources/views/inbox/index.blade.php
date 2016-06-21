@@ -73,7 +73,7 @@
                 <!-- User Form Input-->
                 <div class="form-group">
                     {!! Form::label('users', 'User:') !!}
-                    {!! Form::select('users[]', \App\User::all()->lists('name', 'id'), null, ['class' => 'form-control', 'id' => 'organizations', 'multiple']) !!}
+                    {!! Form::select('users[]', [], null, ['class' => 'form-control', 'id' => 'receive_message_users', 'multiple']) !!}
                 </div>
                 
                 <!-- Content Form Input-->
