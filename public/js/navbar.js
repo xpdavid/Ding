@@ -55,6 +55,8 @@ function navbar_question_topic_autocomplete() {
     $("#question_topics").select2({
         width: '100%',
         dropdownAutoWidth : true,
+        placeholder: 'Please select some topics',
+        minimumInputLength : 1,
         ajax: {
             url: "/topic/autocomplete",
             dataType: 'json',
@@ -75,7 +77,6 @@ function navbar_question_topic_autocomplete() {
                         text : value
                     });
                 });
-                console.log(process_data);
                 return {
                     results : process_data
                 }
@@ -86,4 +87,86 @@ function navbar_question_topic_autocomplete() {
 
 $(function () {
     navbar_question_topic_autocomplete();
+});
+
+/**
+ * Ask question page serach autocomplete
+ */
+function navbar_serach_box_autocomplate() {
+    $('#ask_question_input').typeahead({
+        delay : 500,
+        source : function(query, process) {
+            $.post('/question/autocomplete', {
+                query : query,
+                use_similar : 0,
+                max_match : 7,
+            }, function(results) {
+                process(results);
+            })
+        },
+        displayText : function(item) {
+            return item.title;
+        },
+        afterSelect : function(item) {
+            if (item || item.url) {
+                window.location.replace(item.url);
+            }
+        },
+        bottomElement : {
+            html : "<li class='nav_search_box_hint' onclick='navbar_ask_question_detail()'>I don't find my desired answer, keep asking</li>",
+        },
+        items: 8,
+    });
+}
+
+$(function() {
+    navbar_serach_box_autocomplate();
+});
+
+function navbar_ask_question_detail() {
+    $('#ask_question').modal('hide');
+    var old_input = $('#ask_question_input');
+    var new_input = $('#ask_question_detail_input');
+    // copy same query
+    new_input.val(old_input.val());
+    old_input.val('');
+    // fire search event
+    new_input.trigger('change');
+    // show ask question detail page
+    $('#ask_question_detail').modal('show');
+}
+
+/**
+ * Question detail page serach autocomplete
+ */
+var navbar_search_table_timer = null;
+function navbar_serach_table_autocomplete() {
+    $('#ask_question_detail_input').bind('change keyup paste', function() {
+        clearTimeout(navbar_search_table_timer);
+        navbar_search_table_timer = setTimeout(function() {
+            $.post('/question/autocomplete', {
+                query : $('#ask_question_detail_input').val(),
+                use_similar : 0,
+                max_match : 6,
+            }, function(results) {
+                var search_table = $('#ask_question_detail_search_table');
+                if (results.length) {
+                    // clear the table first
+                    search_table.html("");
+                    // process response
+                    $.each(results, function(index, value) {
+                        search_table.append('<tr><td><a href="' + value.url  + '">' + value.title + '</a> - ' + value.numAnswers + ' answer(s)</td></tr>');
+                    });
+                } else {
+                    search_table.html('<tr><td>No Query Result, welcome to ask the question!</td></tr>');
+                }
+
+            });
+        }, 500); // set query delay
+    });
+
+}
+
+$(function() {
+    navbar_serach_table_autocomplete();
 });

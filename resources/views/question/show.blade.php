@@ -141,8 +141,8 @@
 
     <div class="question_related">
         <h4>You might also be interested in:</h4>
-        @foreach($also_interest as $question)
-            <p><a href="{{ action('QuestionController@show', $question->id) }}">{{ $question->title }}</a> {{ $question->answers->count() }} answers</p>
+        @foreach($also_interest as $interest_question)
+            <p><a href="{{ action('QuestionController@show', $interest_question->id) }}">{{ $interest_question->title }}</a> {{ $interest_question->answers->count() }} answers</p>
         @endforeach
     </div>
 @endsection

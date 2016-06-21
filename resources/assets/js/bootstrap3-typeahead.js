@@ -57,6 +57,7 @@
     this.render = this.options.render || this.render;
     this.updater = this.options.updater || this.updater;
     this.displayText = this.options.displayText || this.displayText;
+    this.bottomElement = this.options.bottomElement || this.bottomElement;
     this.source = this.options.source;
     this.delay = this.options.delay;
     this.$menu = $(this.options.menu);
@@ -164,9 +165,9 @@
 
       items = this.sorter(items);
 
-      if (!items.length && !this.options.addItem) {
-        return this.shown ? this.hide() : this;
-      }
+      // if (!items.length && !this.options.addItem) {
+      //   return this.shown ? this.hide() : this;
+      // }
 
       if (items.length > 0) {
         this.$element.data('active', items[0]);
@@ -281,6 +282,9 @@
         this.$element.data('active', items.first().data('value'));
       }
       this.$menu.html(items);
+
+      // append bottom element
+      this.$menu.append(this.bottomElement.html);
       return this;
     },
 
@@ -486,7 +490,7 @@
   $.fn.typeahead.defaults = {
         source: [],
         items: 8,
-        menu: '<ul class="typeahead dropdown-menu navbar_searchBoxDropDown" role="listbox"></ul>',
+        menu: '<ul class="typeahead dropdown-menu" role="listbox"></ul>',
         item: '<li><a class="dropdown-item" href="#" role="option"></a></li>',
         minLength: 1,
         scrollHeight: 0,
@@ -496,7 +500,8 @@
         delay: 0,
         separator: 'category',
         headerHtml: '<li class="dropdown-header"></li>',
-        headerDivider: '<li class="divider" role="separator"></li>'
+        headerDivider: '<li class="divider" role="separator"></li>',
+        bottomElement: '',
   };
 
   $.fn.typeahead.Constructor = Typeahead;

@@ -336,7 +336,10 @@ function saveComment(base_id, item_id, type, reply_id) {
             reply_to_reply_id : reply_id,
         }, function(results) {
             if (results.status) {
+                // clear the submit content
                 $('#' + base_id + '_input').val("");
+                // hide the buttons
+                $('#' + base_id + '_buttons').toggle(false);
                 // refresh to show last comment page
                 showCommentPage(base_id, type, item_id, results.numPages);
                 // update comment count

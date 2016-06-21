@@ -103,9 +103,6 @@ body {
   background: linear-gradient(to bottom, #4C4A54, #3A3940);
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.12); }
 
-.navbar_searchBoxDropDown {
-  width: 450px !important; }
-
 .navbar_portraitBox {
   padding-top: 12px !important;
   padding-bottom: 12px !important; }
@@ -127,6 +124,26 @@ body {
 
 .navbar_ask_button {
   margin-top: 8px; }
+
+.nav_search_box_hint {
+  text-align: center;
+  cursor: pointer;
+  background-color: #fafafa;
+  border-top: 1px solid #ccc;
+  padding: 5px; }
+
+.nav_search_box_hint:hover {
+  background-color: #fafafa;
+  color: inherit; }
+
+.typeahead {
+  width: 100%; }
+
+.typeahead li a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%; }
 
 .userHome_layoutDiv {
   color: #666;

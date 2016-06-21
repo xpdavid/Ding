@@ -84,4 +84,26 @@ class Question extends Model
         }
 
     }
+
+    /**
+     * define query scope. similar match $name
+     *
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
+    public function scopeSimilarMatch($query, $title) {
+        return $query->where('title', 'REGEXP', '[' . $title . ']');
+    }
+
+    /**
+     * define query scope. `like` match $name
+     *
+     * @param $query
+     * @param $name
+     * @return mixed
+     */
+    public function scopeNoneSimilarMatch($query, $title) {
+        return $query->where('title', 'LIKE', '%' . $title . '%');
+    }
 }

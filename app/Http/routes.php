@@ -32,8 +32,10 @@ Route::post('/question/answers', 'AnswerController@postAnswers');
 
 // for question & answer
 Route::get('/question', 'QuestionController@index');
+Route::post('/question/autocomplete', 'QuestionController@autocomplete');
 Route::get('/question/{question_id}', 'QuestionController@show');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
+Route::post('/question/ask', 'QuestionController@ask');
 
 // for answer
 Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
