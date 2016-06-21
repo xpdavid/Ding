@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/forcelogin', function() {
-    Auth::loginUsingId(1);
+Route::get('/forcelogin/{id}', function($id) {
+    Auth::loginUsingId($id);
     return redirect('/question');
 });
 
@@ -32,7 +32,6 @@ Route::post('/question/answers', 'AnswerController@postAnswers');
 
 // for question & answer
 Route::get('/question', 'QuestionController@index');
-Route::post('/question/autocomplete', 'QuestionController@autocomplete');
 Route::get('/question/{question_id}', 'QuestionController@show');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::post('/question/ask', 'QuestionController@ask');
@@ -51,7 +50,6 @@ Route::post('/reply/{reply_id}', 'ReplyController@storeCommentReply');
 Route::controller('/topic', 'TopicController');
 
 // for user controller
-Route::post('/people/autocomplete', 'PeopleController@autocomplete');
 Route::get('/people/edit', 'PeopleController@edit');
 Route::get('/people/{url_name}', 'PeopleController@show');
 Route::post('/people/update', 'PeopleController@update');

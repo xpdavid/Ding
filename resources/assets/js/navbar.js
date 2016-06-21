@@ -58,23 +58,26 @@ function navbar_question_topic_autocomplete() {
         placeholder: 'Please select some topics',
         minimumInputLength : 1,
         ajax: {
-            url: "/topic/autocomplete",
+            url: "/api/autocomplete",
             dataType: 'json',
             method: 'POST',
             delay: 250,
             data: function (params) {
                 return {
-                    query: params.term, // search term
-                    max_match: 10,
-                    use_similar: 0
+                    queries: [{
+                        type : 'topic',
+                        term : params.term, // search term
+                        max_match: 10,
+                        use_similar: 0,
+                    }]
                 };
             },
             processResults: function(data, params) {
                 var process_data = [];
-                $.each(data, function(index, value) {
+                $.each(data, function(index, item) {
                     process_data.push({
-                        id : index,
-                        text : value
+                        id : item.id,
+                        text : item.name
                     });
                 });
                 return {
@@ -96,10 +99,13 @@ function navbar_serach_box_autocomplate() {
     $('#ask_question_input').typeahead({
         delay : 500,
         source : function(query, process) {
-            $.post('/question/autocomplete', {
-                query : query,
-                use_similar : 0,
-                max_match : 7,
+            $.post('/api/autocomplete', {
+                queries: [{
+                    type : 'question',
+                    term : query, // search term
+                    max_match: 7,
+                    use_similar: 0,
+                }]
             }, function(results) {
                 process(results);
             })
@@ -144,10 +150,13 @@ function navbar_serach_table_autocomplete() {
     $('#ask_question_detail_input').bind('change keyup paste', function() {
         clearTimeout(navbar_search_table_timer);
         navbar_search_table_timer = setTimeout(function() {
-            $.post('/question/autocomplete', {
-                query : $('#ask_question_detail_input').val(),
-                use_similar : 0,
-                max_match : 6,
+            $.post('/api/autocomplete', {
+                queries: [{
+                    type : 'question',
+                    term : $('#ask_question_detail_input').val(), // search term
+                    max_match: 6,
+                    use_similar: 0,
+                }]
             }, function(results) {
                 var search_table = $('#ask_question_detail_search_table');
                 if (results.length) {

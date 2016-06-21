@@ -53,46 +53,7 @@ class QuestionController extends Controller
 
         return view('question.show', compact('question', 'answers', 'sorted', 'also_interest'));
     }
-
-
-    /**
-     * This is AJAX post request sever side autocomplete for question
-     *
-     * @param Request $request
-     * @return mixed
-     */
-    public function autocomplete(Request $request) {
-        $this->validate($request, [
-            'query' => 'required',
-            'max_match' => 'required|integer',
-            'use_similar' => 'required|boolean'
-        ]);
-
-        $query = $request->get('query'); // the keyword
-        $max_matches = $request->get('max_match'); // the maximum match
-        $use_similar = $request->get('use_similar'); // whether use similar
-
-        // leave the max_matches as numbers only
-        $max_matches = ($max_matches != "0") ? $max_matches : '0';
-
-        // leave the user_similar as true or false only
-        $use_similar = ($use_similar == "1") ? true : false;
-
-        $questions = $use_similar ? Question::similarMatch($query) : Question::noneSimilarMatch($query);
-        $questions = $questions->take($max_matches)->get();
-
-        // process data format
-        $results = [];
-        foreach ($questions as $question) {
-            array_push($results, [
-                'url' => action('QuestionController@show', $question->id),
-                'title' => $question->title,
-                'numAnswers' => $question->answers()->count(),
-            ]);
-        }
-
-        return $results;
-    }
+    
 
     /**
      * response form request to store question

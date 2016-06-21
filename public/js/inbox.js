@@ -47,23 +47,26 @@ function receive_message_users_autocomplete() {
         placeholder: 'select peoples',
         minimumInputLength : 1,
         ajax: {
-            url: "/people/autocomplete",
+            url: "/api/autocomplete",
             dataType: 'json',
             method: 'POST',
             delay: 250,
             data: function (params) {
                 return {
-                    query: params.term, // search term
-                    max_match: 10,
-                    use_similar: 0
+                    queries: [{
+                        type : 'people',
+                        term : params.term, // search term
+                        max_match: 10,
+                        use_similar: 0,
+                    }]
                 };
             },
             processResults: function(data, params) {
                 var process_data = [];
-                $.each(data, function(index, value) {
+                $.each(data, function(index, item) {
                     process_data.push({
-                        id : index,
-                        text : value
+                        id : item.id,
+                        text : item.name
                     });
                 });
                 return {
