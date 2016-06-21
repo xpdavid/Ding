@@ -58,6 +58,7 @@
     this.updater = this.options.updater || this.updater;
     this.displayText = this.options.displayText || this.displayText;
     this.bottomElement = this.options.bottomElement || this.bottomElement;
+    this.width = this.options.width || this.width;
     this.source = this.options.source;
     this.delay = this.options.delay;
     this.$menu = $(this.options.menu);
@@ -281,7 +282,9 @@
         items.filter(':not(.dropdown-header)').first().addClass('active');
         this.$element.data('active', items.first().data('value'));
       }
+      this.$menu.css('width', this.width);
       this.$menu.html(items);
+
 
       // append bottom element
       this.$menu.append(this.bottomElement.html);
@@ -502,6 +505,7 @@
         headerHtml: '<li class="dropdown-header"></li>',
         headerDivider: '<li class="divider" role="separator"></li>',
         bottomElement: '',
+        width: '100%'
   };
 
   $.fn.typeahead.Constructor = Typeahead;

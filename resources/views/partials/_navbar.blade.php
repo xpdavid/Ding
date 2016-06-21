@@ -23,7 +23,7 @@
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control typeahead" placeholder="Search for Answers.." autocomplete="off">
+                        <input type="text" class="form-control typeahead" placeholder="Search for Answers.." autocomplete="off" id="navbar_seraching">
                         <div class="input-group-addon navbar_clickable">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                         </div>

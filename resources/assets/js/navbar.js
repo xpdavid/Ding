@@ -30,12 +30,52 @@ function navbar_triggerMessageBar() {
  * description: set asynchronous searching post query
  */
 function navbar_searching() {
-    var $input = $('.typeahead');
-    $input.typeahead({source:[
-        {id: "someId1", name: "Display name 1", category: "skill"},
-        {id: "someId2", name: "Display name 2", category: "game"},
-        {id: "someId3", name: "Display Name 3", category: "game"}],
-        autoSelect: true});
+    var $input = $('#navbar_seraching');
+    $input.typeahead({
+        delay : 500,
+        source : function(query, process) {
+            $.post('/api/autocomplete', {
+                queries: [{
+                    type : 'topic',
+                    term : query, // search term
+                    max_match: 3,
+                    use_similar: 0,
+                },{
+                    type : 'people',
+                    term : query, // search term
+                    max_match: 3,
+                    use_similar: 0,
+                },{
+                    type : 'question',
+                    term : query, // search term
+                    max_match: 8,
+                    use_similar: 0,
+                }]
+            }, function(results) {
+                process(results);
+            })
+        },
+        displayText : function(item) {
+            if (item.name) {
+                return item.name;
+            }
+
+            if (item.title) {
+                return item.title;
+            }
+        },
+        afterSelect : function(item) {
+            if (item || item.url) {
+                window.location.replace(item.url);
+            }
+        },
+        bottomElement : {
+            html : "<li class='nav_search_box_hint'>Click for more results</li>",
+        },
+        items : 'all',
+        sorter : function(items) { return items}, // don't sort it!
+        width : '540px'
+    });
 }
 
 /**
@@ -179,3 +219,4 @@ function navbar_serach_table_autocomplete() {
 $(function() {
     navbar_serach_table_autocomplete();
 });
+
