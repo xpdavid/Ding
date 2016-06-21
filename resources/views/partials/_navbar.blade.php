@@ -53,5 +53,3 @@
 </nav>
 
 @include('partials._noticebar_model')
-
-@include('partials._ask_question_model')

@@ -34,6 +34,8 @@
 
 @yield('content')
 
+@include('partials._ask_question_model')
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">

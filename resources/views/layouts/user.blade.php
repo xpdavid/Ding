@@ -34,6 +34,8 @@
 
 @yield('content')
 
+@include('partials._ask_question_model')
+
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
 
