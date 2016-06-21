@@ -19,6 +19,8 @@ class CreateRepliesTable extends Migration
 
             $table->integer('user_id')->unsigned();
 
+            $table->integer('reply_to_reply_id')->unsigned()->nullable();
+
             $table->integer('vote_up_user_id')->unsigned();
 
             // a reply many belongs to question or answers

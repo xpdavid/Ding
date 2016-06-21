@@ -43,6 +43,14 @@ class Reply extends Model
         return $this->morphTo();
     }
 
+    public function reply_to() {
+        return $this->belongsTo('App\Reply', 'reply_to_reply_id');
+    }
+
+    public function receive_replies() {
+        return $this->hasMany('App\Reply', 'reply_to_reply_id');
+    }
+
     /**
      * Display human readable created at date
      *

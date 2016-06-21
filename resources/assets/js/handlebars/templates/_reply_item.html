@@ -1,4 +1,4 @@
-<!--this is the remplate for reply item-->
+<!--this is the template for reply item-->
 <!--the template will rendered by javascript template engine `handlebars.js`-->
 {{#each replies}}
 <div class="media comment_item">
@@ -10,10 +10,18 @@
     <div class="media-body">
         <div class="clearfix font-black">
             <div class="clearfix">
-                <div class="media-heading float-left"><a href=""><strong>{{user_name}}</strong></a></div>
-                <div class="float-right invisible">
-                    <a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Show Conversation</a>
+                <div class="media-heading float-left">
+                    <a href=""><strong>{{from.user_name}}</strong></a>
+                    {{#if to}}
+                        reply <a href=""><strong>{{to.user_name}}</strong></a>
+                    {{/if}}
                 </div>
+                {{#if to}}
+                    <div class="float-right link_normal">
+                        <a href="#" onclick="showConversation(event, {{id}})"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Show Conversation</a>
+                    </div>
+                {{/if}}
+
             </div>
             <div class="comment_item_content">
                 {{reply}}
@@ -32,11 +40,11 @@
 
         <div class="comment_for_user clearfix" id="reply_comment_{{id}}">
             <div class="form-group">
-                <input type="email" class="form-control" id="reply_content" placeholder="Write Your Comment Here">
+                <input type="email" class="form-control" id="{{for_item}}_comment_{{for_item_id}}_reply_{{id}}" placeholder="Write Your Comment Here">
             </div>
             <div class="float-right form-group">
                 <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'reply_comment_{{id}}')">Cancel</a>
-                <button class="btn btn-primary" type="submit">Comment</button>
+                <button class="btn btn-primary" type="submit" onclick="saveComment('{{for_item}}_comment_{{for_item_id}}', '{{for_item_id}}' ,'{{for_item}}', '{{id}}')">Comment</button>
             </div>
         </div>
 

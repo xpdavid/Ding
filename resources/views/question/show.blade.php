@@ -24,24 +24,24 @@
 
         <div class="horizontal_item">
             <a href="#" onclick="scroll_to(event, 'question_answer_form')"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
-            <a href="#" onclick="showComment(event, this, 'question', '{{ $question->id }}', 'question_comment');">
+            <a href="#" onclick="showComment(event, this, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                Comment (<span id="question_comment_replies_count">{{ $question->replies->count() }}</span>)
+                Comment (<span id="question_comment_{{ $question->id }}_replies_count">{{ $question->replies->count() }}</span>)
             </a>
             <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
             <a href="#"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>Invite Friends</a>
         </div>
 
-        <div class="comment_box" id="question_comment">
+        <div class="comment_box" id="question_comment_{{ $question->id }}">
             <div class="comment_spike">
                 <div class="comment_spike_arrow"></div>
             </div>
             <div class="comment_list">
-                <div class="comment_content" id="question_comment_content">
+                <div class="comment_content" id="question_comment_{{ $question->id }}_content">
 
                 </div>
 
-                <div class="text-center" id="question_comment_nav">
+                <div class="text-center" id="question_comment_{{ $question->id }}_nav">
 
                 </div>
 
@@ -49,16 +49,15 @@
                     <div class="form-group">
                         <input type="text"
                                class="form-control"
-                               name="question_comment_input"
-                               id="question_comment_input"
+                               id="question_comment_{{ $question->id }}_input"
                                placeholder="Write Your Comment Here"
-                               onfocus="show_form(event, 'question_comment_button')"
+                               onfocus="show_form(event, 'question_comment_{{ $question->id }}_buttons')"
                         >
                     </div>
-                    <div class="float-right form-group" id="question_comment_button">
-                        <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'question_comment_button')">Cancel</a>
+                    <div class="float-right form-group noneDisplay" id="question_comment_{{ $question->id }}_buttons">
+                        <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'question_comment_{{ $question->id }}_buttons')">Cancel</a>
                         <button class="btn btn-primary" type="submit"
-                                onclick="saveQuestionComment('question_comment', '{{ $question->id }}')">Submit</button>
+                                onclick="saveComment('question_comment_{{ $question->id }}', '{{ $question->id }}', 'question')">Submit</button>
                     </div>
                 </div>
 
@@ -83,7 +82,6 @@
         <hr class="small_hrLight">
 
         <div id="question_answers"></div>
-
 
         <div class="answer_more">
             <button type="button" class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}')">More</button>
@@ -117,6 +115,8 @@
             </form>
         </div>
     </div>
+
+    @include('partials._show_comment_conversation')
 @endsection
 
 

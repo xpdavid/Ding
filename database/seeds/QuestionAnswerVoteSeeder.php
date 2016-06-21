@@ -15,21 +15,16 @@ class QuestionAnswerVoteSeeder extends Seeder
     public function run()
     {
         foreach (Answer::all() as $answer) {
-            foreach (User::all()->random(rand(3, 50)) as $user) {
-                $answer->vote_up_users()->save($user);
-            }
+            $numUser = rand(3, 50);
+            foreach (User::all()->random($numUser) as $user) {
+                if (rand(0, 1) == 1) {
+                    $answer->vote_up_users()->save($user);
+                } else {
+                    $answer->vote_down_users()->save($user);
+                }
 
-            foreach (User::all()->random(rand(3, 20)) as $user) {
-                $answer->vote_down_users()->save($user);
-            }
-        }
-
-        foreach (Reply::all() as $reply) {
-            foreach (User::all()->random(rand(3, 50)) as $user) {
-                $reply->vote_up_users()->save($user);
             }
         }
-
-
+        
     }
 }

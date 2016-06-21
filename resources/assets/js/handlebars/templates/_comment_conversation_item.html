@@ -1,0 +1,37 @@
+<!--this is the template for show conversation reply item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each replies}}
+<div class="media comment_item">
+    <div class="media-left">
+        <a href="#">
+            <img class="media-object" src="..." alt="...">
+        </a>
+    </div>
+    <div class="media-body">
+        <div class="clearfix font-black">
+            <div class="clearfix">
+                <div class="media-heading float-left">
+                    <a href=""><strong>{{from.user_name}}</strong></a>
+                    {{#if to}}
+                    reply <a href=""><strong>{{to.user_name}}</strong></a>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="comment_item_content">
+                {{reply}}
+            </div>
+        </div>
+        <div class="float-left horizontal_item">
+            <a href="#">{{created_at}}</a>
+            <span class="reply_op">
+                <a href="#" class="{{vote_up_class}}" id="vote_reply_{{id}}_c_up" onclick="vote_reply(event, '{{id}}_c');vote_reply(event, '{{id}}')"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+                <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Report</a>
+            </span>
+        </div>
+        <div class="float-right"><span id="vote_reply_{{id}}_c_count">{{votes}}</span> vote(s)</div>
+        <span class="clearfix"></span>
+
+    </div>
+</div>
+<hr class="small_hrLight">
+{{/each}}

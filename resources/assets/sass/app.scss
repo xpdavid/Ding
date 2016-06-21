@@ -7,7 +7,7 @@ body {
   margin-right: 5px;
 }
 
-.hide {
+.noneDisplay {
   display: none;
 }
 
@@ -70,6 +70,15 @@ body {
 
 .space-right-big {
   margin-right: 10px;
+}
+
+.link_normal a {
+  color: #999;
+}
+
+.link_normal a:hover {
+  color: #698ebf;
+  text-decoration: none;
 }
 
 .avatar-img {
@@ -918,14 +927,6 @@ body {
 
 .comment_for_user {
   margin-top: 10px;
-  display: none;
-}
-
-#question_comment_button {
-  display: none;
-}
-
-.answer_comment_button {
   display: none;
 }
 

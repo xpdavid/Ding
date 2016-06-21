@@ -50,7 +50,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 
 - `<body>` : this element is defined `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
 - `.glyphicon` : this class is from `bootstrap` css and we override it as `margin-right:5px` because we always use put a icon in front of text.
-- `hide` : this class is to set display to `none`, pretty useful together with jquery toggle function
+- `.noneDisplay ` : this class is to set display to `none`, pretty useful together with jquery toggle function
 - `.clearfix` : this class is to expend parent element when you have floating `div`
 - `.clear_margin` : clear all margin of an element using `!important`
 - `.font-bold` : to bold a element content
@@ -71,6 +71,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 - `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
 - `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
 - `.space-right-big` : same as above with `margin-right:10px` 
+- `.link_normal` : all `<a>` under this class will display as grey colour. When hover, it will turn to blue.
 
 ##### Please update this when you have other helper css class added
 

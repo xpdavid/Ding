@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\User;
 use App\Reply;
 use App\Answer;
 use App\Question;
@@ -20,32 +21,54 @@ class ReplyController extends Controller
      * @param Request $request
      * @return array
      */
-    public function postReplyList(Request $request) {
+    public function replyList(Request $request) {
 
-        // validate the incomming request
+        // validate the incoming request
         $this->validate($request, [
             'type' => 'required|',
             'item_id' => 'required|integer',
             'page' => 'required|integer'
         ]);
 
+        // get necessary param
         $item_id = $request->get('item_id');
         $page = ($request->get('page') < '0') ? 1 : $request->get('page'); // page must be positive numbers
         $user = Auth::user();
 
+        // determine the operation
         switch ($request->get('type')) {
             case 'question' :
                 $question = Question::findOrFail($item_id);
 
                 $results = [];
                 foreach ($question->replies->sortBy('created_at')->forPage($page, $this->itemInPage) as $reply) {
+                    $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
+                    $from = [
+                        'user_id' => $reply->owner->id,
+                        'user_name' => $reply->owner->name
+                    ];
+
+                    // whether the reply is to someone
+                    if ($reply->reply_to()->count() > 0) {
+                        $to = [
+                            'reply_id' => $reply->reply_to->id,
+                            'user_name' => $reply->reply_to->owner->name,
+                            'user_id' => $reply->reply_to->owner->name,
+                        ];
+                    } else {
+                        $to = [];
+                    }
+
                     array_push($results, [
                         'id' => $reply->id,
-                        'user_name' => $reply->owner->name,
-                        'user_id' => $reply->owner->id,
+                        'from' => $from,
+                        'to' => $to,
                         'reply' => $reply->reply,
                         'created_at' => $reply->createdAtHumanReadable,
+                        'for_item' => 'question',
+                        'for_item_id' => $question->id,
                         'votes' => $reply->vote_up_users->count(),
+                        'vote_up_class' => $vote_up_class,
                     ]);
                 }
 
@@ -61,12 +84,30 @@ class ReplyController extends Controller
                 $results = [];
                 foreach ($answer->replies->sortBy('created_at')->forPage($page, $this->itemInPage) as $reply) {
                     $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
+                    $from = [
+                        'user_id' => $reply->owner->id,
+                        'user_name' => $reply->owner->name
+                    ];
+
+                    // whether the reply is to someone
+                    if ($reply->reply_to()->count() > 0) {
+                        $to = [
+                            'reply_id' => $reply->reply_to->id,
+                            'user_name' => $reply->reply_to->owner->name,
+                            'user_id' => $reply->reply_to->owner->name,
+                        ];
+                    } else {
+                        $to = [];
+                    }
+
                     array_push($results, [
                         'id' => $reply->id,
-                        'user_name' => $reply->owner->name,
-                        'user_id' => $reply->owner->id,
+                        'from' => $from,
+                        'to' => $to,
                         'reply' => $reply->reply,
                         'created_at' => $reply->createdAtHumanReadable,
+                        'for_item' => 'answer',
+                        'for_item_id' => $answer->id,
                         'votes' => $reply->vote_up_users->count(),
                         'vote_up_class' => $vote_up_class,
                     ]);
@@ -83,69 +124,50 @@ class ReplyController extends Controller
     /**
      * Response ajax request to store reply
      *
-     * @param $question_id
+     * @param $item_id
      * @param Request $request
      * @return bool
      */
-    public function storeQuestionComment($question_id, Request $request) {
+    public function storeReply($item_id, Request $request) {
         $this->validate($request, [
-            'user_question_reply' => 'required'
+            'text' => 'required'
         ]);
 
-        // get necessary param
+        // determine related model
+        switch ($request->get('type')) {
+            case 'question':
+                $item = Question::findOrFail($item_id);
+                break;
+            case 'answer':
+                $item = Answer::findOrFail($item_id);
+        }
+
+        // get current user
         $user = Auth::user();
-        $question = Question::findOrFail($question_id);
 
         // create comment
         $comment = Reply::create([
-            'reply' => $request->get('user_question_reply')
+            'reply' => $request->get('text')
         ]);
         $comment->save();
 
         // set relationship
         $user->replies()->save($comment);
-        $question->replies()->save($comment);
+        $item->replies()->save($comment);
+
+        // check has reply to users
+        if($request->exists('reply_to_reply_id')) {
+            $to_reply = Reply::findOrFail($request->get('reply_to_reply_id'));
+            $to_reply->receive_replies()->save($comment);
+        }
 
         // response ajax request
         return [
             'status' => true,
-            'numPages' => ceil($question->replies->count() / $this->itemInPage),
-            'numReplies' => $question->replies->count()
+            'numPages' => ceil($item->replies->count() / $this->itemInPage),
+            'numReplies' => $item->replies->count()
         ];
 
-    }
-
-
-    /**
-     * response ajax request to store replies for specific answer
-     *
-     * @param $answer_id
-     * @param Request $request
-     * @return array
-     */
-    public function storeAnswerReply($answer_id, Request $request) {
-        $this->validate($request, [
-            'reply' => 'required'
-        ]);
-
-        // get necessary param
-        $answer = Answer::findOrFail($answer_id);
-        $user = Auth::user();
-
-        // create reply
-        $reply = Reply::create($request->all());
-        $reply->save();
-
-        // set relationship
-        $user->replies()->save($reply);
-        $answer->replies()->save($reply);
-
-        // response ajax request
-        return [
-            'status' => true,
-            'numPages' => ceil($answer->replies->count() / $this->itemInPage),
-            'numReplies' => $answer->replies->count()
-        ];
     }
 
     /**
@@ -181,6 +203,73 @@ class ReplyController extends Controller
             'status' => true
         ];
 
+    }
+
+    /**
+     * Response ajax request to show conversation
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function showConversation(Request $request) {
+        // operation name must exist
+        $this->validate($request, [
+            'initial_reply_id' => 'required|integer'
+        ]);
+
+        $results = [];
+        $visited = [];
+        $reply = Reply::findOrFail($request->get('initial_reply_id'));
+
+        $this->generateConversation($reply, $results, $visited);
+
+        return [
+            'status' => true,
+            'data' => $results
+        ];
+    }
+
+    /**
+     * Iteration step to generate conversation array
+     *
+     * @param Reply $reply
+     * @param $results
+     * @param $visited
+     */
+    protected function generateConversation($reply, &$results ,&$visited) {
+        while($reply && !in_array($reply->id, $visited)) {
+            // check $reply is not null , lazy &&
+            $user = Auth::user();
+            $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
+            $from = [
+                'reply_id' => $reply->id,
+                'user_id' => $reply->owner->id,
+                'user_name' => $reply->owner->name
+            ];
+
+            // whether the reply is to someone
+            if ($reply->reply_to()->count() > 0) {
+                $to = [
+                    'reply_id' => $reply->reply_to->id,
+                    'user_name' => $reply->reply_to->owner->name,
+                    'user_id' => $reply->reply_to->owner->name,
+                ];
+            } else {
+                $to = [];
+            }
+            array_unshift($results, [
+                'id' => $reply->id,
+                'from' => $from,
+                'to' => $to,
+                'reply' => $reply->reply,
+                'created_at' => $reply->createdAtHumanReadable,
+                'votes' => $reply->vote_up_users->count(),
+                'vote_up_class' => $vote_up_class,
+            ]);
+            // mark as visited
+            array_push($visited, $reply->id);
+            $reply = $reply->reply_to; //iteration
+        }
     }
 
 }

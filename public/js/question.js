@@ -61,7 +61,7 @@ function showCommentPage(base_id, type, item_id, page, callback) {
                 replies : results.data
             };
 
-            // complie template
+            // compile template
             var template = Handlebars.templates['_reply_item.html'];
             // send data
             $('#' + base_id + '_content').html(template(processResults));
@@ -311,50 +311,34 @@ function saveAnswer(base_id, question_id) {
  * send ajax request to sever to store current question comment
  *
  * @param base_id
- * @param question_id
+ * @param item_id
+ * @param type
+ * @param reply_id (optional)
  */
-function saveQuestionComment(base_id, question_id) {
-    var inputFiled = $('#' + base_id + '_input');
-    if (inputFiled.val() == "") {
+function saveComment(base_id, item_id, type, reply_id) {
+    // get input text
+    var inputField;
+    if (reply_id) {
+        // if reply_id is not null, then must be a action to reply a comment
+        inputField = $('#' + base_id + '_reply_' + reply_id);
+    } else {
+        inputField = $('#' + base_id + '_input');
+    }
+    // validation
+    if (inputField.val() == "") {
         // the user doesn't write any thing
-        inputFiled.focus();
+        inputField.focus();
     } else {
         // validate pass, keep on
-        $.post('/question/' + question_id + '/comment', {
-            user_question_reply : inputFiled.val()
+        $.post('/reply/' + item_id + '/reply', {
+            text : inputField.val(),
+            type : type,
+            reply_to_reply_id : reply_id,
         }, function(results) {
             if (results.status) {
                 $('#' + base_id + '_input').val("");
                 // refresh to show last comment page
-                showCommentPage(base_id, 'question', question_id, results.numPages);
-                $('#' + base_id + '_replies_count').html(results.numReplies);
-            } else {
-                swal("Error", "Sever post a question :(", "error");
-            }
-        });
-    }
-}
-
-/**
- * send ajax request to store answer reply
- *
- * @param base_id
- * @param answer_id
- * @returns {boolean}
- */
-function saveAnswerReply(base_id, answer_id) {
-    var inputFiled = $('#' + base_id + '_input');
-    if (inputFiled.val() == "") {
-        // the user doesn't write any thing
-        inputFiled.focus();
-    } else {
-        $.post('/answer/' + answer_id + '/reply', {
-            reply : inputFiled.val()
-        }, function(results) {
-            if (results.status) {
-                $('#' + base_id + '_input').val("");
-                // refresh to show last comment page
-                showCommentPage(base_id, 'answer', answer_id, results.numPages);
+                showCommentPage(base_id, type, item_id, results.numPages);
                 // update comment count
                 $('#' + base_id + '_replies_count').html(results.numReplies);
             } else {
@@ -362,7 +346,6 @@ function saveAnswerReply(base_id, answer_id) {
             }
         });
     }
-
 }
 
 /**
@@ -463,5 +446,35 @@ function vote_reply_helper(reply_id, op) {
         $('#vote_reply_' + reply_id + '_count').html(result.numVotes);
     });
 }
+
+
+function showConversation(event, initial_reply_id) {
+    // prevent anchor event
+    event.preventDefault();
+
+    $.post('/reply/conversation', {
+        initial_reply_id : initial_reply_id
+    }, function(results) {
+        if (!results.status) {
+            swal("Error", "Sever post a question :(", "error");
+            return null;
+        }
+        // show conversation model
+        // compile template
+        var template = Handlebars.templates['_comment_conversation_item.html'];
+        // send data
+        var processResults = {
+            replies : results.data
+        }
+        $('#comment_conversation_content').html(template(processResults));
+
+        // bind hover event
+        replyBindHoverShowOperation('comment_conversation_content');
+
+        // show modal
+        $('#comment_conversation').modal('show');
+    })
+}
+
 
 

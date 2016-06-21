@@ -1,3 +1,5 @@
+<!--this is the template for answer item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
 {{#each answers}}
 <div class="answer_overall">
     <div class="answer_voting">
@@ -57,10 +59,10 @@
                            id="answer_comment_{{id}}_input",
                            onfocus="show_form(event, 'answer_comment_{{id}}_buttons')">
                 </div>
-                <div class="float-right form-group" id="answer_comment_{{id}}_buttons">
+                <div class="float-right form-group noneDisplay" id="answer_comment_{{id}}_buttons">
                     <a href="#" role="button" class="space-right-big"
                        onclick="cancel_from(event, 'answer_comment_{{id}}_buttons')">Cancel</a>
-                    <button class="btn btn-primary" type="submit" onclick="saveAnswerReply('answer_comment_{{id}}', '{{id}}')">Submit</button>
+                    <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{id}}', '{{id}}', 'answer')">Submit</button>
                 </div>
             </div>
 
