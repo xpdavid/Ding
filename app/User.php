@@ -79,6 +79,24 @@ class User extends Authenticatable
         return $this->belongsToMany('App\EducationExp', 'user_educationExp', 'user_id', 'educationExp_id');
     }
 
+    /**
+     * Defined eloquent relationship : A student could have many jobs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jobs() {
+        return $this->belongsToMany('App\Job', 'user_job', 'user_id', 'job_id');
+    }    
+
+    /**
+     * Defined eloquent relationship : A student could have many specializationss
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function specializations() {
+        return $this->belongsToMany('App\Specialization', 'user_specialization', 'user_id', 'specialization_id');
+    }    
+
     /** Define eloquent relationship between User and Settings
     *   A user has one setting
     */
@@ -91,5 +109,9 @@ class User extends Authenticatable
     */
     public function blockings() {
         return $this->hasMany('App\Blocking');
+    }
+
+    public function userProfile() {
+        return $this->hasOne('App\UserProfile');
     }
 }

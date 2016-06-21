@@ -80,7 +80,7 @@ class SettingsController extends Controller
         $user = Auth::user();
         $settings = $user->settings;
         $blockings = $user->blockings;
-
+        
         if ($request->name){
             $user->update(['name' => $request->name]);
         }

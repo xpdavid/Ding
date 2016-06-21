@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserBlockingTable extends Migration
+class CreateUserSpecializationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,12 @@ class CreateUserBlockingTable extends Migration
      */
     public function up()
     {
-        Schema::create('blockings', function (Blueprint $table) {
+        Schema::create('user_specialization', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
-            $table->integer('blocked_id')->unsigned();
+
+            $table->integer('user_id');
+            $table->integer('specialization_id');
+
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateUserBlockingTable extends Migration
      */
     public function down()
     {
-        Schema::drop('blockings');
+        Schema::drop('user_specialization');
     }
 }

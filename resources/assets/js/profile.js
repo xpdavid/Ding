@@ -24,6 +24,13 @@ function genericUserProfileEditToggleSetting(id) {
         $(id).toggle();
         $(id + '_edit').toggle();
     });
+
+    $(id + '_edit').find('button').click(function(e) {
+
+        $(id).toggle();
+        $(id + '_edit').toggle();
+    });
+    
 }
 
 $(window).on('load', function() {
@@ -115,8 +122,94 @@ $(function() {
     }
 })
 
+function saveUserSex() {
+    $.post({
+        url: '/people/update',
+        data: {
+            sex : $("#user_sex_radio input[type='radio']:checked").val(),
+            type: 'sex',
+        },
+        dataType: 'json'
+    }).done(function() {
+        $("#user_sex_status").text($("#user_sex_radio input[type='radio']:checked").val());
+    }).fail(function() {
+        console.log('save user sex fail.');
+    });
+
+    return false;
+}
+
+function saveUserDisplayFacebook() {
+    $.post({
+        url: '/people/update',
+        data: {
+            facebook : $("#user_display_facebook_radio input[type='radio']:checked").val(),
+            type: 'facebook',
+        },
+        dataType: 'json'
+    }).done(function() {
+        $("#user_display_facebook_status").text($("#user_display_facebook_radio input[type='radio']:checked").val());
+    }).fail(function() {
+        console.log('save user display facebook fail.');
+    });
+
+    return false;
+}
+
+function saveUserDisplayEmail() {
+    $.post({
+        url: '/people/update',
+        data: {
+            email : $("#user_display_email_radio input[type='radio']:checked").val(),
+            type: 'email',
+        },
+        dataType: 'json'
+    }).done(function() {
+        $("#user_display_email_status").text($("#user_display_email_radio input[type='radio']:checked").val());
+    }).fail(function() {
+        console.log('save user display email fail.');
+    });
+
+    return false;
+}
+
+function saveUserBio() {
+    $.post({
+        url: '/people/update',
+        data: {
+            bio : $("#user_bio_edit input[type='text']").val(),
+            type: 'bio',
+        },
+        dataType: 'json'
+    }).done(function() {
+        $("#user_display_bio_status").text($("#user_bio_edit input[type='text']").val());
+    }).fail(function() {
+        console.log('save user bio fail.');
+    });
+
+    return false;
+}
+
+function saveUserIntro() {
+    $.post({
+        url: '/people/update',
+        data: {
+            intro : $("#user_self_intro_edit").find('textarea').val(),
+            type: 'intro',
+        },
+        dataType: 'json'
+    }).done(function() {
+        $("#user_self_intro_status").text($("#user_self_intro_edit").find('textarea').val());
+    }).fail(function() {
+        console.log('save user self-intro fail.');
+    });
+
+    return false;
+}
+
+
 /**
- * AJAX requent to the sever to change the user education experience
+ * AJAX request to the sever to change the user education experience
  * @param url_name
  */
 function saveEducationExp() {
@@ -183,6 +276,135 @@ function detachEducationExp(event, EducationExp_id) {
 
     return false;
 }
+
+/**
+ * AJAX request to the sever to change the user job experience
+ * @param url_name
+ */
+function saveJob() {
+    $.post({
+        url: '/people/update',
+        data: {
+            job : $('[name="job_name"]').val(),
+            type : 'job'
+        },
+        dataType: 'json'
+    }).done(function(data) {
+        // display edit button
+        $('#user_job_edit').find('a').click();
+
+        // generate job name
+        var jobName = $('[name="job_name"]').val();
+
+        // append generate item to the list
+        $('#user_job_list').append(
+            generateItemUI(
+                'job' + data.job_id,
+                jobName,
+                'detachJob(event, ' + data.job_id  + ')'
+            )
+        );
+
+        // clear value
+        $('[name="job_name"]').val("");
+
+    }).fail(function() {
+        console.log('save job fail.');
+    });
+
+    return false;
+}
+
+/**
+ * Javascript support for delete job
+ *
+ * @param event
+ * @param job_id
+ * @returns {boolean}
+ */
+function detachJob(event, job_id) {
+    event.preventDefault(); // prevent default html anchor
+
+    $.post({
+        url: '/people/delete',
+        data: {
+            job_id : job_id,
+            type : 'job'
+        },
+        dataType: 'json'
+    }).done(function() {
+        $('#job' + job_id).remove();
+    }).fail(function() {
+        console.log('delete job fail.');
+    });
+
+    return false;
+}
+
+/**
+ * AJAX request to the sever to change the user specialization
+ * @param url_name
+ */
+function saveSpecialization() {
+    $.post({
+        url: '/people/update',
+        data: {
+            specialization : $('[name="specialization_name"]').val(),
+            type : 'specialization'
+        },
+        dataType: 'json'
+    }).done(function(data) {
+        // display edit button
+        $('#user_specialization_edit').find('a').click();
+
+        // generate job name
+        var specializationName = $('[name="specialization_name"]').val();
+
+        // append generate item to the list
+        $('#user_specialization_list').append(
+            generateItemUI(
+                'specialization' + data.specialization_id,
+                specializationName,
+                'detachSpecialization(event, ' + data.specialization_id  + ')'
+            )
+        );
+
+        // clear value
+        $('[name="specialization_name"]').val("");
+
+    }).fail(function() {
+        console.log('save specialization fail.');
+    });
+
+    return false;
+}
+
+/**
+ * Javascript support for delete education experience
+ *
+ * @param event
+ * @param EducationExp_id
+ * @returns {boolean}
+ */
+function detachSpecialization(event, specialization_id) {
+    event.preventDefault(); // prevent default html anchor
+
+    $.post({
+        url: '/people/delete',
+        data: {
+            specialization_id : specialization_id,
+            type : 'specialization'
+        },
+        dataType: 'json'
+    }).done(function() {
+        $('#specialization' + specialization_id).remove();
+    }).fail(function() {
+        console.log('delete specialization fail.');
+    });
+
+    return false;
+}
+
 
 /**
  * generate ItemUI so that we can add item without refresh
