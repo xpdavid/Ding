@@ -85,8 +85,14 @@ class InboxController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
         $conversation = Conversation::findOrFail($id);
-        return view('inbox.show', compact('conversation'));
+        if ($user->isInConversation($conversation)) {
+            return view('inbox.show', compact('conversation'));
+        } else {
+            abort(401); // 401 forbidden
+        }
+
     }
 
 
@@ -100,6 +106,10 @@ class InboxController extends Controller
     public function update(Request $request, $id)
     {
         $current_user = Auth::user();
+        $conversation = Conversation::findOrFail($id);
+        if (!$current_user->isInConversation($conversation)) {
+            abort(401); // 401 forbidden
+        }
 
         // because there is only one field, we can validate here
         $this->validate($request, [
@@ -112,7 +122,6 @@ class InboxController extends Controller
         $current_user->sentMessages()->save($message);
 
         // set relationship to current conversation
-        $conversation = Conversation::findOrFail($id);
         $conversation->messages()->save($message);
 
         return redirect(route('inbox.show', $id));
