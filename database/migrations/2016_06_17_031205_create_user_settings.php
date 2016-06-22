@@ -17,7 +17,6 @@ class CreateUserSettings extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->text('personal_domain');
             $table->boolean('personal_domain_modified')->default(false);
             $table->integer('receiving_messages')->unsigned()->default(2);
             $table->boolean('email_messages')->default(true);
