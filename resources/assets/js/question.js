@@ -251,15 +251,22 @@ function cancel_from(event, element_id) {
  * @param base_id
  * @param question_id
  * @param page
+ * @param itemInPage
+ * @param sorted
+ * @param button_id
  */
-function getMoreAnswers(base_id, question_id, page) {
+function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_id) {
     $.post('/question/answers', {
         question_id : question_id,
-        page : page
+        page : page,
+        itemInPage : itemInPage,
+        sorted : sorted,
     }, function(results) {
         if (results.length == 0) {
-            $('.answer_more>button').html("No More Already");
-            $('.answer_more>button').prop('disabled', true);
+            if (button_id) {
+                $('#' + button_id).html("No More Already");
+                $('#' + button_id).prop('disabled', true);
+            }
         } else {
             // compile template
             var template = Handlebars.templates['_answer_item.html'];
@@ -268,15 +275,19 @@ function getMoreAnswers(base_id, question_id, page) {
             };
             // append more answers to the box
             $('#' + base_id).append(template(data));
-            $('.answer_more>button').prop('disabled', false);
+            if (button_id) {
+                $('#' + button_id).prop('disabled', false);
+            }
         }
     });
 }
 
 var curreAnswerPage = 1;
-function getMore(base_id, question_id) {
-    $('.answer_more>button').prop('disabled', true);
-    getMoreAnswers(base_id, question_id, curreAnswerPage);
+function getMore(base_id, question_id, sorted, button_id) {
+    if (button_id) {
+        $('#' + button_id).prop('disabled', true);
+    }
+    getMoreAnswers(base_id, question_id, curreAnswerPage, null, sorted, button_id);
     curreAnswerPage++;
 }
 

@@ -27,6 +27,7 @@ class AnswerController extends Controller
         // get necessary param
         $page = $request->get('page');
         $question_id = $request->get('question_id');
+        $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
         $question = Question::findOrFail($question_id);
         $user = Auth::user();
 
@@ -39,7 +40,7 @@ class AnswerController extends Controller
         }
 
         $results = [];
-        foreach ($answers->forPage($page, $this->itemInPage) as $answer) {
+        foreach ($answers->forPage($page, $itemInPage) as $answer) {
             $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
             $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
             array_push($results, [

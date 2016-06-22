@@ -70,11 +70,11 @@
     <div class="col-md-12 answer_layout">
         <div class="answer_num clearfix">
             <p>{{ $question->answers->count() }} answer(s)</p>
-            <div class="question_sortby">
+            <div class="float-right">
                 @if($sorted == 'created')
-                    <a href="{{ action('QuestionController@show', $question->id) }}">Sort by Rate</a> / Sort by Date
+                    <a href="{{ action('QuestionController@show', $question->id) }}">Sort by Vote</a> / Sort by Date
                 @else
-                    Sort by Rate / <a href="{{ action('QuestionController@show', [$question->id, 'sorted' => 'created']) }}">Sort by Date</a>
+                    Sort by Vote / <a href="{{ action('QuestionController@show', [$question->id, 'sorted' => 'created']) }}">Sort by Date</a>
                 @endif
             </div>
         </div>
@@ -84,7 +84,7 @@
         <div id="question_answers"></div>
 
         <div class="answer_more">
-            <button type="button" class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}')">More</button>
+            <button type="button" id='get_more_answers' class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers')">More</button>
         </div>
 
         <div class="clearfix question_answer" id="question_answer_form">
@@ -151,7 +151,7 @@
     <script type="text/javascript">
         // onload event then load answers
         $(function() {
-            getMore('question_answers', '{{ $question->id }}');
+            getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers');
         })
     </script>
 @endsection

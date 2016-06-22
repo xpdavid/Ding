@@ -100,7 +100,7 @@ body {
 }
 
 .font-black {
-  color: #000 !important;
+  color: #000;
 }
 
 .font-grey {
@@ -976,10 +976,6 @@ body {
   font-weight:bold;
 }
 
-.answer_num .question_sortby {
-  float:right;
-}
-
 .answer_num button {
   padding: 1px 8px;
 }
@@ -1088,15 +1084,6 @@ body {
 }
 
 /*for question_homepage.html*/
-.header_left {
-  float: left;
-  color: #555;
-}
-
-.header_right {
-  float: right;
-  color: #888;
-}
 
 .questions_questionLayout {
   padding-left: 55px;
@@ -1175,102 +1162,76 @@ body {
 
 /*begin of topic.html*/
 
-.topics_topicTag {
-  margin-top: 5px;
-}
 
-.topics_topicTag a {
+.topics_topicTag button {
+  margin-bottom: 5px;
   background-color: #FFFFFF;
   border-color: #DAEBFF;
   color: #225599;
 }
 
-.topics_selectedTopicImg {
-  float: left;
-  width: 42px;
-}
 
-.topics_selectedTopicName {
-  float: left;
-  font-weight: bold;
-  font-size: 18px;
-  margin-top: 8px;
-}
-.topics_selectedTopicSort {
-  float: right;
-  margin-top: 8px;
-}
 
-.topics_selectedTopic .dropdown {
-  float: right;
-}
-
-.topics_questionTitle {
-  font-weight: bold;
-}
-
-.topics_questionSubscribeNum {
-  padding-right: 5px;
-}
-
-.topics_questionSubscribeNum button {
+// topics_more css
+// inheriting partially from CSS for topics.html
+.topics_item {
   margin-top: 5px;
-  background-color: #EFF6FA;
-  color: #698EBF;
-  border: none;
-  width: 100%;
-  padding: 5px 0px;
 }
 
-.topics_questionSubscribeNum button:hover {
-  background-color: #698EBF;
-  color: #FFFFFF;
+.topics_item_image {
+  width:50px;
+  height:50px;
+  margin-top: 4px;
 }
 
-.topics_questionAuthor.row {
-  margin: 10px 0px 0px 0px;
+.topics_subscribe {
+  margin-top: 2px;
+  font-size: 13px;
+  color: #698ebf;
 }
 
-.topics_questionAuthor a {
-  font-weight: bold;
-  color: #222;
-  margin-top: 100px;
+.topics_subscribe:hover {
+  color: #259
 }
 
-.topics_moreTopics {
-  text-align:center;
-  padding-bottom: 30px;
-}
-
-.topics_moreTopics a {
-  margin-bottom: 0px;
+.topics_name {
   font-size: 16px;
 }
 
-.topics_related img {
+.topics_item_hots a {
+  margin: 5px 0 5px 0;
+  display: block;
+}
+
+#topics_more_button {
+  width: 100%;
+  font-size: 18px;
+}
+
+// topic with specific id css
+// inheriting partially from CSS for topics.html
+.topic_avatar {
+  width: 64px;
+  height: 64px;
+}
+
+.topic_category {
+  margin-top: 20px;
+  display: block;
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.topic_category li {
+  padding-right: 15px;
+  margin-right: 15px;
+  border-right: 1px solid #eee;
   float: left;
-  width:10%;
 }
 
-.topics_related a {
-  font-weight: bold;
-  margin-top: 3%;
-  margin-left: 3%;
-  width: 68%;
-  float: left;
+.topic_question_title {
+  margin-bottom: 10px;
 }
 
-.topics_related .topics_relatedAdd {
-  width: 15%;
-  margin-top: 3%;
-  float: left;
-  color: #698DBF;
-  font-weight: normal;
-}
 
-.topics_related .col-md-12 {
-  margin-bottom: 8px;
-  padding-left: 0px;
-  padding-right: 0px;
 
-}

@@ -86,6 +86,19 @@ class Question extends Model
     }
 
     /**
+     * Get the highest number of votes in answers of the current question
+     *
+     * @return int
+     */
+    public function getHighestVoteAttribute() {
+        if($this->answers->count() > 0) {
+            return $this->answers->max('netVotes');
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * define query scope. similar match $name
      *
      * @param $query

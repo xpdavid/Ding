@@ -38,6 +38,24 @@ class Topic extends Model
     }
 
     /**
+     * A topic has it parent topics
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parent_topic() {
+        return $this->belongsTo('App\Topic', 'parent_id');
+    }
+
+    /**
+     * A topic has many child topics
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function child_topics() {
+        return $this->hasMany('App\Topic', 'parent_id');
+    }
+
+    /**
      * define query scope. like match $name
      *
      * @param $query
@@ -46,5 +64,9 @@ class Topic extends Model
      */
     public function scopeNoneSimilarMatch($query, $name) {
         return $query->where('name', 'LIKE', '%' . $name . '%');
+    }
+
+    public function scopeTopParentTopics($query) {
+        return $query->where('parent_id', NULL);
     }
 }

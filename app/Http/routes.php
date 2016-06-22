@@ -47,7 +47,11 @@ Route::post('/reply/{reply_id}/vote', 'ReplyController@vote');
 Route::post('/reply/{reply_id}', 'ReplyController@storeCommentReply');
 
 // for topic controller
-Route::controller('/topic', 'TopicController');
+Route::get('/topic', 'TopicController@index');
+Route::get('/topics', 'TopicController@topics');
+Route::post('/topic/{topic_id}/sub_topics', 'TopicController@subTopics');
+Route::get('/topic/{topic_id}', 'TopicController@show');
+Route::post('/topic/questions', 'TopicController@getQuestions');
 
 // for user controller
 Route::get('/people/edit', 'PeopleController@edit');

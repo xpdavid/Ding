@@ -1,0 +1,42 @@
+<!--this is the template for reply item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each group2Topics}}
+<div class="row">
+    <div class="col-md-6">
+        <div class="media topics_item">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object topics_item_image" data-src="..." alt="Generic placeholder image" src="image/sample_icon.png">
+                </a>
+            </div>
+            <div class="media-body topics_more">
+                <div class="clearfix">
+                    <div class="float-left topics_name"><a href="/topic/{{left.id}}">{{left.name}}</a></div>
+                    <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
+                </div>
+                <p class="font-black">{{left.description}}</p>
+            </div>
+        </div>
+    </div>
+
+    {{#if right.id}}
+        <div class="col-md-6">
+            <div class="media topics_item">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object topics_item_image" data-src="..." alt="Generic placeholder image" src="image/sample_icon.png">
+                    </a>
+                </div>
+                <div class="media-body topics_more">
+                    <div class="clearfix">
+                        <div class="float-left topics_name"><a href="#">/topic/{{right.id}}</a></div>
+                        <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
+                    </div>
+                    <p class="font-black">{{right.description}}</p>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+</div>
+<hr class="small_hrLight">
+{{/each}}

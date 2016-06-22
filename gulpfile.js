@@ -37,16 +37,19 @@ elixir(function(mix) {
     // for project css file
     mix.sass('app.scss');
 
+    // handlebars requirement
+    mix.copy(jsPath + '/handlebars/handlebars-latest.js', 'public/js');
+
 
     // for project js file
     mix.scripts('main.js')
         .copy(jsPath + '/jquery-1.12.3.min.js', 'public/js')
         .copy(jsPath + '/bootstrap3-typeahead.js', 'public/js')
         .copy(jsPath + '/validator.js', 'public/js')
-        .copy(jsPath + '/handlebars-latest.js', 'public/js')
         .copy(jsPath + '/navbar.js', 'public/js')
         .copy(jsPath + '/login.js', 'public/js')
         .copy(jsPath + '/inbox.js', 'public/js')
         .copy(jsPath + '/profile.js', 'public/js')
         .copy(jsPath + '/question.js', 'public/js')
+        .copy(jsPath + '/topic.js', 'public/js');
 });

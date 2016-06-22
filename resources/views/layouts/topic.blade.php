@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=500px, initial-scale=2">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Highlights - Ding</title>
+    <title>Topic - Ding</title>
 
     <!-- Bootstrap -->
 {!! Html::style('css/bootstrap.min.css') !!}
@@ -78,7 +78,8 @@
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
 
-{{--question javascript support--}}
+{{--topic javascript support--}}
+{!! Html::script('js/topic.js') !!}
 {!! Html::script('js/question.js') !!}
 
 {{--app supporting js file--}}
