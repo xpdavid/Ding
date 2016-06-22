@@ -8,7 +8,7 @@ class Job extends Model
 {
 	protected $table = 'Jobs';
 
-	protected $fillable = ['full_name'];
+	protected $fillable = ['organization', 'designation'];
 
 	/**
 	 * Defined eloquent relationship : A student could has many jobs
@@ -27,13 +27,14 @@ class Job extends Model
 	 * @param $major
 	 * @return EducationExp
 	 */
-	public static function findOrCreate($jobName) {
-	    $candidates = Job::where('full_name', $jobName);
+	public static function findOrCreate($organization, $designation) {
+	    $candidates = Job::where('organization', $organization)->where('designation', $designation);
 	    if($candidates->count() > 0) {
 	        return $candidates->first();
 	    } else {
 	        $job = Job::create([
-	            'full_name' => $jobName
+	            'organization' => $organization,
+	            'designation' => $designation
 	        ]);
 	        return $job;
 	    }
@@ -53,5 +54,9 @@ class Job extends Model
 	        ->all();
 
 	    return $job_list;
+	}
+
+	public function getFullNameAttribute() {
+	    return $this->organization . ' ⋅ ' . $this->designation;
 	}
 }

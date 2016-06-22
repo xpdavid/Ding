@@ -285,7 +285,8 @@ function saveJob() {
     $.post({
         url: '/people/update',
         data: {
-            job : $('[name="job_name"]').val(),
+            organization : $('[name="organization"]').val(),
+            designation : $('[name="designation"]').val(),
             type : 'job'
         },
         dataType: 'json'
@@ -294,7 +295,7 @@ function saveJob() {
         $('#user_job_edit').find('a').click();
 
         // generate job name
-        var jobName = $('[name="job_name"]').val();
+        var jobName = $('[name="organization"]').val() + ' ⋅ ' + $('[name="designation"]').val();
 
         // append generate item to the list
         $('#user_job_list').append(
@@ -306,7 +307,8 @@ function saveJob() {
         );
 
         // clear value
-        $('[name="job_name"]').val("");
+        $('[name="organization"]').val("");
+        $('[name="designation"]').val("");
 
     }).fail(function() {
         console.log('save job fail.');

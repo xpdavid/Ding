@@ -293,7 +293,16 @@
                         <div id="user_job_edit">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <input type="text" name="job_name" class="form-control" placeholder="e.g student">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Organization" name="organization" data-error="Organization Name Required" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Designation" name="designation" data-error="Designation Required" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row userEdit_buttonGroup">
@@ -363,7 +372,7 @@
                                                 <img src="topic.png" class="img-rounded" />
                                             </div>
                                             <div class="userEdit_itemListDetailContent">
-                                                <a href="#">{{ $specialization->full_name }}</a>
+                                                <a href="#">{{ $specialization->name }}</a>
                                             </div>
                                         </div>
                                         <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" onclick="detachSpecialization(event, '{{ $specialization->id }}')">Delete</a>

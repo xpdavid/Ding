@@ -94,7 +94,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function specializations() {
-        return $this->belongsToMany('App\Specialization', 'user_specialization', 'user_id', 'specialization_id');
+        return $this->belongsToMany('App\Topic', 'user_specialization', 'user_id', 'topic_id');
     }    
 
     /** Define eloquent relationship between User and Settings

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGoodAtTable extends Migration
+class CreateTopicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,12 @@ class CreateGoodAtTable extends Migration
      */
     public function up()
     {
-        Schema::create('good_at', function (Blueprint $table) {
+        Schema::create('topics', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('full_name');
+
+            $table->string('name');
+            $table->string('description');
+
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateGoodAtTable extends Migration
      */
     public function down()
     {
-        Schema::drop('good_at');
+        Schema::drop('topics');
     }
 }
