@@ -7,14 +7,14 @@
 
             <div class="row userHome_profileHeaderTop">
                 <div class="col-md-12">
-                    <h4><span class="userHome_name">{{ $user->name }}</span> , I am programmer!</h4>
+                    <h4><span class="userHome_name">{{ $user->name }}</span> , {{ $user->bio}}</h4>
                 </div>
             </div>
 
             <div class="row">
                 <div class="userHome_profileHeaderLeft">
                     <img src="xp_l.jpeg" alt="..." class="img-rounded">
-                    <a class="btn btn-default btn-xs" href="#" role="button">Edit My Profile</a>
+                    <a class="btn btn-default btn-xs" href="/people/edit" role="button">Edit My Profile</a>
                 </div>
 
                 <div class="userHome_profileHeaderRight">
@@ -22,12 +22,20 @@
                         <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                   <span class="userHome_profileItem">
                     <a href="#">
-                      National University of Singapore
+                      @if (count($educationExp) > 0) 
+                        {{$educationExp->first()->institution}} 
+                      @else
+                        Fill up your institution
+                      @endif
                     </a>
                   </span>
                   <span class="userHome_profileMoreItem">
                     <a href="#">
-                      Computer Science
+                      @if ((count($educationExp) > 0) && (count($educationExp->first()->major) > 0))
+                          {{$educationExp->first()->major}} 
+                      @else
+                        Fill up your major
+                      @endif
                     </a>
                   </span>
                   <span class="userHome_profileMoreItem">
@@ -38,19 +46,29 @@
                         <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
                   <span class="userHome_profileItem">
                     <a href="#">
-                      PaperBaton
+                      @if (count($job) > 0)
+                        {{ $job->first()->full_name }}
+                      @else
+                        Fill up your occupation
+                      @endif
                     </a>
                   </span>
                     </p>
                     <p>
                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                   <span class="userHome_profileItem">
-                    <a href="#">
+                    @if ($profile->email)
+                      <a href="mailto:{{ $user->email }}">Email</a>
+                    @else
                       Email
-                    </a>
+                    @endif
                   </span>
                   <span class="userHome_profileMoreItem">
-                      Facebook
+                      @if ($profile->facebook)
+                        <a href="#">Email</a>
+                      @else
+                        Facebook
+                      @endif
                   </span>
                     </p>
                     <p>
