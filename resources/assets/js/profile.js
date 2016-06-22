@@ -182,7 +182,7 @@ function saveUserBio() {
         },
         dataType: 'json'
     }).done(function() {
-        $("#user_display_bio_status").text($("#user_bio_edit input[type='text']").val());
+        $("#user_bio_status").text($("#user_bio_edit input[type='text']").val());
     }).fail(function() {
         console.log('save user bio fail.');
     });

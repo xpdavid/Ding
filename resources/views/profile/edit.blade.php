@@ -40,7 +40,7 @@
                         Sex
                     </div>
                     <div class="col-sm-6">
-                        <div id="user_sex"><span id="user_sex_status">{{ $profile->sex }}</span> <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></div>
+                        <div id="user_sex"><span id="user_sex_status">{{ $user->sex }}</span> <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></div>
                         <div id="user_sex_edit">
                             {{ Form::open(['url' => '#',
                             'data-toggle' => "validator",
@@ -51,15 +51,15 @@
                                         <div class="form-group" id="user_sex_radio">
                                             <label class="col-sm-3 radio-inline">
                                                 <input type="radio" name="user_sex" value="Secret" 
-                                                @if ($profile->sex == 'Secret') checked="checked" @endif > Secret
+                                                @if ($user->sex == 'Secret') checked="checked" @endif > Secret
                                             </label>
                                             <label class="col-sm-3 radio-inline">
                                                 <input type="radio" name="user_sex" value="Male"
-                                                @if ($profile->sex == 'Male') checked="checked" @endif > Male
+                                                @if ($user->sex == 'Male') checked="checked" @endif > Male
                                             </label>
                                             <label class="col-sm-3 radio-inline">
                                                 <input type="radio" name="user_sex" value="Female"
-                                                @if ($profile->sex == 'Female') checked="checked" @endif> Female
+                                                @if ($user->sex == 'Female') checked="checked" @endif> Female
                                             </label>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div id="user_bio">
-                            <span id="user_bio_status">{{ $profile->bio }}</span> <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a>
+                            <span id="user_bio_status">{{ $user->bio }}</span> <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a>
                         </div>
                         <div id="user_bio_edit">
                             <div class="row">
@@ -197,7 +197,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div id="user_self_intro">
-                            <span id="user_self_intro_status">{{ $profile->description }}</span><a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a>
+                            <span id="user_self_intro_status">{{ $user->self_intro }}</span><a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a>
                         </div>
                         <div id="user_self_intro_edit">
                             <div class="row">

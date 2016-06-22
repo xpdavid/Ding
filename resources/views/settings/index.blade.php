@@ -41,7 +41,7 @@
 	            <div class="col-sm-6">
 	              <div class="input-group">
 	                <div class="input-group-addon">http://nusding.com/</div>
-	                <input type="text" class="form-control" name="personal_domain" placeholder="{{ $settings->personal_domain }}"
+	                <input type="text" class="form-control" name="personal_domain" placeholder="{{ $user->url_name }}"
 	                @if($settings->personal_domain_modified) 
 	                	disabled
 	                @endif

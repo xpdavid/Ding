@@ -75,7 +75,7 @@ class PeopleController extends Controller
                 $user->specializations()->save($specialization);
                 return ['specialization_id' => $specialization->id];
             case 'sex':
-                $profile->update(['sex' => $request->get('sex')]);
+                $user->update(['sex' => $request->get('sex')]);
                 return 1;
             case 'facebook':
                 if ($request->get('facebook') == 'Yes') {
@@ -94,10 +94,10 @@ class PeopleController extends Controller
                 }
                 return 1;
             case 'bio':
-                $profile->update(['bio' => $request->get('bio')]);
+                $user->update(['bio' => $request->get('bio')]);
                 return 1;
             case 'intro':
-                $profile->update(['description' => $request->get('intro')]);
+                $user->update(['self_intro' => $request->get('intro')]);
                 return 1;
             default:
                 break;
