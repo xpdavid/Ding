@@ -3,6 +3,10 @@ body {
   color: #666;
 }
 
+html {
+  width: 100%; width: 100vw;
+}
+
 .glyphicon {
   margin-right: 5px;
 }
@@ -1163,6 +1167,28 @@ body {
   border-right: 1px solid #eee;
   float: left;
 }
+
+// css style for topic manage
+.topic_manage_item {
+
+}
+
+.topic_manage_title {
+  float: left;
+}
+
+.topic_manage_content {
+  margin-left: 140px;
+  display: block;
+}
+
+
+// topic organization css style
+.topic_organization_list {
+  list-style: disc;
+  margin: 5px 0 0 0;
+}
+
 
 
 

@@ -2,6 +2,10 @@ body {
   padding-top: 60px;
   color: #666; }
 
+html {
+  width: 100%;
+  width: 100vw; }
+
 .glyphicon {
   margin-right: 5px; }
 
@@ -933,5 +937,16 @@ body {
   margin-right: 15px;
   border-right: 1px solid #eee;
   float: left; }
+
+.topic_manage_title {
+  float: left; }
+
+.topic_manage_content {
+  margin-left: 140px;
+  display: block; }
+
+.topic_organization_list {
+  list-style: disc;
+  margin: 5px 0 0 0; }
 
 /*# sourceMappingURL=app.css.map */

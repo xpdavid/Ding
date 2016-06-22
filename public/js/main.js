@@ -20,4 +20,16 @@ function scroll_to(event, element_id) {
     $('html,body').animate({scrollTop: $('#' + element_id).offset().top}, 1000);
 }
 
+/**
+ * toggle display of the element with id
+ *
+ * @param id
+ */
+function toggle(id, event) {
+    if (event) {
+        event.preventDefault();
+    }
+    $('#' + id).toggle();
+}
+
 //# sourceMappingURL=main.js.map

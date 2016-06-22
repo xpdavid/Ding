@@ -51,6 +51,9 @@ Route::get('/topic', 'TopicController@index');
 Route::get('/topics', 'TopicController@topics');
 Route::post('/topic/{topic_id}/sub_topics', 'TopicController@subTopics');
 Route::get('/topic/{topic_id}', 'TopicController@show');
+Route::get('/topic/{topic_id}/edit', 'TopicController@edit');
+Route::post('/topic/{topic_id}/update', 'TopicController@update');
+Route::get('/topic/{topic_id}/organization', 'TopicController@organization');
 Route::post('/topic/questions', 'TopicController@getQuestions');
 
 // for user controller

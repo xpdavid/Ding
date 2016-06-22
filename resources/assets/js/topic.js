@@ -144,6 +144,40 @@ function getMoreTopicQuestion() {
     getMoreTopicQuestion_page++;
 }
 
-function getQuestionAnswers() {
-
+function topicAutocomplete(inputId, selectNum) {
+    $("#" + inputId).select2({
+        width: '300px',
+        dropdownAutoWidth : true,
+        placeholder: 'Please select some topics',
+        minimumInputLength : 1,
+        maximumSelectionLength : selectNum,
+        ajax: {
+            url: "/api/autocomplete",
+            dataType: 'json',
+            method: 'POST',
+            delay: 250,
+            data: function (params) {
+                return {
+                    queries: [{
+                        type : 'topic',
+                        term : params.term, // search term
+                        max_match: 10,
+                        use_similar: 0,
+                    }]
+                };
+            },
+            processResults: function(data, params) {
+                var process_data = [];
+                $.each(data, function(index, item) {
+                    process_data.push({
+                        id : item.id,
+                        text : item.name
+                    });
+                });
+                return {
+                    results : process_data
+                }
+            }
+        },
+    });
 }

@@ -10,48 +10,42 @@
         <div class="media-body">
             <h4 class="media-heading">{{ $topic->name }}</h4>
             <ul class="topic_category clearfix">
-                @if($type == 'recommend')
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>
-                    <li>Recommend</li>
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Wait For Answers</a></li>
-                @endif
-
-                @if($type == 'wait_for_answer')
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'recommend']) }}">Recommend</a></li>
-                    <li>Wait For Answers</li>
-                @endif
-
-                @if($type == 'highlight')
-                    <li>Highlight</li>
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'recommend']) }}">Recommend</a></li>
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Wait For Answers</a></li>
-                @endif
-                </ul>
+                <li><a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a></li>
+                <li>Organization Tree</li>
+                <li><a href="/topic/{{ $topic->id }}/edit">Edit</a></li>
+            </ul>
         </div>
     </div>
 
     <hr class="small_hrLight">
 
-    <div class="clearfix">
-        <div class="float-right">
-            @if( $sorted == 'created')
-                <a href="/topic/{{ $topic->id }}">Sort by Rate</a> / Sort by Date
-            @else
-                Sort by Rate / <a href="/topic/{{ $topic->id }}?sorted=created">Sort by Date</a>
-            @endif
+    <div class="topic_manage_item clearfix">
+        <div class="topic_manage_title">
+            <h5>Parent Topics</h5>
+        </div>
+        <div class="topic_manage_content margin-top">
+            {!! $parent_tree !!}
         </div>
     </div>
 
     <hr class="small_hrLight">
 
-    <div id="topic_questions">
-
-    </div>
-
-
-    <div>
-        <button type="button" class="btn btn-default" id="topics_more_button" onclick="getMoreTopicQuestion()">More</button>
+    <div class="topic_manage_item clearfix">
+        <div class="topic_manage_title">
+            <h5>SubTopics</h5>
+        </div>
+        <div class="topic_manage_content">
+            <ul class="topic_organization_list">
+                <li>
+                    <a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a>
+                    <ul id="subtopics_{{ $topic->id }}">
+                        @foreach($topic->subtopics as $subtopic)
+                            <li><a href="/topic/{{ $subtopic->id }}">{{ $subtopic->name }}</a></li>
+                        @endforeach
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 
 @endsection
@@ -114,12 +108,4 @@
         </div>
     @endif
 
-    @include('partials._show_comment_conversation')
-
-@endsection
-
-@section('javascript')
-<script type="text/javascript">
-    getTopicQuestions('{{ $topic->id }}','{{ $type }}', 1, 3, '{{ $sorted }}')
-</script>
 @endsection

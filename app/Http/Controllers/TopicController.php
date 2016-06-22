@@ -131,4 +131,137 @@ class TopicController extends Controller
 
         return $results;
     }
+
+    /**
+     * show Edit topic page
+     * need authentication check
+     *
+     * @param $topic_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($topic_id) {
+        $topic = Topic::findOrFail($topic_id);
+
+        $parent_topics = $topic->parent_topics;
+
+        $subtopics = $topic->subtopics;
+
+        return view('topic.edit', compact('topic', 'parent_topics', 'subtopics'));
+    }
+
+    /**
+     * update information of topics
+     *
+     * @param $topic_id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update($topic_id, Request $request) {
+        $topic = Topic::findOrFail($topic_id);
+        if($request->exists('add_parent_topics')) {
+            foreach ($request->get('add_parent_topics') as $key=>$parent_topic_id) {
+                if ($parent_topic_id == $topic_id) {
+                    // cannot be self assigned
+                    continue;
+                }
+                // detach relationship first
+                $topic->subtopics()->detach($parent_topic_id);
+                $topic->parent_topics()->detach($parent_topic_id);
+
+                $topic->parent_topics()->attach($parent_topic_id);
+            }
+
+        }
+
+        if($request->exists('add_subtopics')) {
+            foreach ($request->get('add_subtopics') as $key=>$subtopic_id) {
+                if ($subtopic_id == $topic_id) {
+                    // cannot be self assigned
+                    continue;
+                }
+                // detach relationship first
+                $topic->parent_topics()->detach($subtopic_id);
+                $topic->subtopics()->detach($subtopic_id);
+
+                $topic->subtopics()->attach($subtopic_id);
+            }
+        }
+
+        if($request->exists('delete_parent_topics')) {
+            foreach ($request->get('delete_parent_topics') as $key=>$delete_parent_topic_id) {
+                $topic->parent_topics()->detach($delete_parent_topic_id);
+            }
+        }
+
+        if($request->exists('delete_subtopics')) {
+            foreach ($request->get('delete_subtopics') as $key=>$delete_subtopic_id) {
+                $topic->subtopics()->detach($delete_subtopic_id);
+            }
+        }
+
+        return redirect(action('TopicController@edit', $topic_id));
+    }
+
+    /**
+     * Show overall organization of topics
+     *
+     * @param $topic_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function organization($topic_id) {
+        $topic = Topic::findOrFail($topic_id);
+
+        $parent_topics = $topic->parent_topics;
+
+        $subtopics = $topic->subtopics;
+
+        $parent_tree_array = [];
+        $this->generateParentTopicTree($topic, [], $parent_tree_array);
+        $parent_tree = $this->renderParentTopicTree($parent_tree_array);
+
+        return view('topic.organization', compact('topic', 'parent_topics', 'subtopics', 'parent_tree'));
+    }
+
+
+    /**
+     * Recursive process to generate parent topic tree
+     * DFS searching technique
+     *
+     * @param Topic $topic
+     * @param $current_result
+     * @param &$results
+     */
+    private function generateParentTopicTree(Topic $topic, $current_result, &$results) {
+        array_push($current_result, [
+            'id' => $topic->id,
+            'name' => $topic->name,
+        ]);
+        if($topic->parent_topics()->count() == 0) {
+            array_push($results, $current_result);
+        } else {
+            foreach ($topic->parent_topics as $parent_topic) {
+                $this->generateParentTopicTree($parent_topic, $current_result, $results);
+            }
+        }
+    }
+
+    /**
+     * Render the data from the above method
+     *
+     * @param $topics_path
+     * @return string
+     */
+    private function renderParentTopicTree($topics_path) {
+        $final_result = "";
+        foreach ($topics_path as $topic_path) {
+            $result = "";
+            foreach ($topic_path as $topic) {
+                $id = $topic['id'];
+                $name = $topic['name'];
+                $result = "<ul><li><a href='/topic/$id'>$name</a> $result</li></ul>";
+            }
+            $final_result = $final_result . $result;
+        }
+        return $final_result;
+    }
 }
