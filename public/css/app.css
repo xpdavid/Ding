@@ -877,6 +877,17 @@ body {
   border-color: #DAEBFF;
   color: #225599; }
 
+.topics_topicTag a {
+  margin-bottom: 5px;
+  background-color: #FFFFFF;
+  border-color: #DAEBFF;
+  color: #225599; }
+
+.topics_subtopics_count {
+  font-size: 12px;
+  color: #898989;
+  float: right; }
+
 .topics_item {
   margin-top: 5px; }
 

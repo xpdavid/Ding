@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTopicsTable extends Migration
+class CreateTopicSubtopicTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateTopicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('topics', function (Blueprint $table) {
+        Schema::create('topic_subtopic', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('name');
-            $table->string('description');
+            $table->integer('parent_topic_id');
+            $table->integer('subtopic_id');
 
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateTopicsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('topics');
+        Schema::drop('topic_subtopic');
     }
 }

@@ -15,9 +15,13 @@ class TopicTableSeeder extends Seeder
 
         for($i = 1; $i <= 10; $i++) {
             $topic = App\Topic::find($i);
-            for($j = 1; $j <= 40; $j++) {
+            for($j = 1; $j <= 10; $j++) {
                 $sub_topic = App\Topic::find(rand(11, 50));
-                $topic->child_topics()->save($sub_topic);
+                $topic->subtopics()->save($sub_topic);
+                $another_topic = rand(1, 10);
+                if ($another_topic != $topic->id) {
+                    App\Topic::find($another_topic)->subtopics()->save($sub_topic);
+                }
             }
         }
         

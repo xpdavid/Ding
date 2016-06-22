@@ -39,7 +39,11 @@ class TopicController extends Controller
 
         $sorted = $request->get('sorted') ? $request->get('sorted') : '';
 
-        return view('topic.show', compact('topic', 'sorted'));
+        $parent_topics = $topic->parent_topics;
+
+        $subtopics = $topic->subtopics;
+
+        return view('topic.show', compact('topic', 'sorted', 'parent_topics', 'subtopics'));
     }
 
     /**
@@ -104,6 +108,26 @@ class TopicController extends Controller
         $page = $request->exists('page') ? $request->get('page') : 1;
 
         $topic = Topic::findOrFail($parent_id);
-        return $topic->child_topics->forPage($page, $this->itemInPage);
+
+        // format results
+        $results = [];
+        foreach ($topic->subtopics->forPage($page, $this->itemInPage) as $subtopic) {
+            array_push($results, [
+                'id' => $subtopic->id,
+                'name' => $subtopic->name,
+                'description' => $subtopic->description,
+                'numSubtopic' => $subtopic->subtopics()->count()
+            ]);
+        }
+
+        // push the topics itself also
+        array_unshift($results, [
+            'id' => $topic->id,
+            'name' => $topic->name,
+            'description' => $topic->description,
+            'numSubtopic' => $topic->subtopics()->count()
+        ]);
+
+        return $results;
     }
 }

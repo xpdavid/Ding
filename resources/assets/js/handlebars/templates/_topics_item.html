@@ -14,7 +14,10 @@
                     <div class="float-left topics_name"><a href="/topic/{{left.id}}">{{left.name}}</a></div>
                     <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
                 </div>
-                <p class="font-black">{{left.description}}</p>
+                <div class="font-black">{{left.description}}</div>
+                {{#if left.numSubtopic}}
+                    <div class="topics_subtopics_count">{{left.numSubtopic}} subtopic(s)</div>
+                {{/if}}
             </div>
         </div>
     </div>
@@ -29,10 +32,13 @@
                 </div>
                 <div class="media-body topics_more">
                     <div class="clearfix">
-                        <div class="float-left topics_name"><a href="#">/topic/{{right.id}}</a></div>
+                        <div class="float-left topics_name"><a href="/topic/{{right.id}}">{{right.name}}</a></div>
                         <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
                     </div>
-                    <p class="font-black">{{right.description}}</p>
+                    <div class="font-black">{{right.description}}</div>
+                    {{#if right.numSubtopic}}
+                        <div class="topics_subtopics_count">{{right.numSubtopic}} subtopic(s)</div>
+                    {{/if}}
                 </div>
             </div>
         </div>

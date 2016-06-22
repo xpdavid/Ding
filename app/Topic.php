@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
@@ -42,8 +43,8 @@ class Topic extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function parent_topic() {
-        return $this->belongsTo('App\Topic', 'parent_id');
+    public function parent_topics() {
+        return $this->belongsToMany('App\Topic', 'topic_subtopic', 'subtopic_id', 'parent_topic_id');
     }
 
     /**
@@ -51,8 +52,8 @@ class Topic extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function child_topics() {
-        return $this->hasMany('App\Topic', 'parent_id');
+    public function subtopics() {
+        return $this->belongsToMany('App\Topic', 'topic_subtopic', 'parent_topic_id', 'subtopic_id');
     }
 
     /**
@@ -67,6 +68,10 @@ class Topic extends Model
     }
 
     public function scopeTopParentTopics($query) {
-        return $query->where('parent_id', NULL);
+        return $query->whereNotExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('topic_subtopic')
+                ->whereRaw('topic_subtopic.subtopic_id = topics.id');
+        });
     }
 }

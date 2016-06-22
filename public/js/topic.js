@@ -50,19 +50,20 @@ function getMoreTopics() {
             }
 
             $.each(results, function(index, topic) {
-                index = parseInt(index);
                 if (index % 2 == 0) {
                     var left = results[index];
                     var right = results[index + 1];
                     var left_content = left ? {
                         id : left.id,
                         name : left.name,
-                        description : left.description
+                        description : left.description,
+                        numSubtopic : left.numSubtopic,
                     } : {};
                     var right_content = right ? {
                         id : right.id,
                         name : right.name,
-                        description : right.description
+                        description : right.description,
+                        numSubtopic : right.numSubtopic,
                     } : {};
                     processResults.push({
                         left : left_content,
