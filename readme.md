@@ -72,6 +72,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 - `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
 - `.space-right-big` : same as above with `margin-right:10px` 
 - `.link_normal` : all `<a>` under this class will display as grey colour. When hover, it will turn to blue.
+- `.margin-top` : set `margin-top` to `8px`;
 
 ##### Please update this when you have other helper css class added
 

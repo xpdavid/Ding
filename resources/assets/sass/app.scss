@@ -72,6 +72,10 @@ body {
   margin-right: 10px;
 }
 
+.margin-top {
+  margin-top: 8px;
+}
+
 .link_normal a {
   color: #999;
 }
@@ -822,7 +826,7 @@ body {
 }
 
 .sideBar_sectionItem {
-  margin: 10px 3px 5px 3px;
+  margin: 10px 3px 10px 3px;
 }
 
 .sideBar_item {
@@ -886,15 +890,12 @@ body {
 }
 
 
-.question_tag a {
+.question_topic_tag {
   padding: 1px 8px;
   font-size: 12px;
   margin:0px 10px 0px 0px;
 }
 
-.question_title {
-  margin-top: 8px !important;
-}
 
 .comment_box {
   position: relative;
@@ -948,37 +949,6 @@ body {
   display: none;
 }
 
-.question_answer a{
-  color:#999;
-  margin:0px 10px 0px 0px;
-}
-
-.question_answer a:hover {
-  color:#337ab7;
-}
-
-.question_answer form {
-  margin:15px 0px;
-}
-
-.question_answer button {
-  padding:2px 10px;
-  margin-right: 0px;
-  float: right;
-}
-
-.answer_layout {
-  margin-right: 15px;
-}
-
-.answer_num p {
-  float:left;
-  font-weight:bold;
-}
-
-.answer_num button {
-  padding: 1px 8px;
-}
 
 .answer_overall {
   padding-left: 55px;
@@ -1013,16 +983,6 @@ body {
   color: #FFFFFF;
 }
 
-.answer_userInfo {
-  position: relative;
-}
-
-.write_answer_userInfo {
-  position: relative;
-  height: 30px;
-  line-height: 30px;
-}
-
 .answer_vote {
   font-size: 12px;
   color: #999;
@@ -1034,53 +994,11 @@ body {
   position: absolute;
 }
 
-.answer_overall .answer_more {
-  padding-left: 0px;
-}
-
-.question_subscribe button {
-  padding:2px 5px;
-  margin-bottom:10px;
-}
-
-.question_subscribe a {
-  font-weight:bold;
-}
-
-.question_subscribe img {
-  margin: 10px 2px 0px 0px;
-  width: 40px;
-}
-
-.question_related p {
-  width: 100%;
-}
-
-.question_copyright {
-  color:#999;
-}
-
 .answer_more button {
   padding-bottom: 8px;
   font-size: 18px;
   text-align: center;
   width: 100%;
-}
-
-.question_answer p {
-  float:left;
-  width: 100%;
-}
-
-.question_answer img {
-  float:right;
-  width:30px;
-  margin-bottom: 5px;
-}
-
-.question_answer .username {
-  font-weight: bold;
-  color: #698EBF;
 }
 
 /*for question_homepage.html*/
@@ -1210,6 +1128,10 @@ body {
 
 // topic with specific id css
 // inheriting partially from CSS for topics.html
+.topic_item {
+  margin-top: 15px !important;
+}
+
 .topic_avatar {
   width: 64px;
   height: 64px;
@@ -1229,9 +1151,7 @@ body {
   float: left;
 }
 
-.topic_question_title {
-  margin-bottom: 10px;
-}
+
 
 
 

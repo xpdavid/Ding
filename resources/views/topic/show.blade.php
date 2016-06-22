@@ -1,7 +1,7 @@
 @extends('layouts.topic')
 
 @section('left')
-    <div class="media">
+    <div class="media margin-top topic_item">
         <div class="media-left">
             <a href="#">
                 <img class="media-object topic_avatar" src="..." alt="...">
@@ -45,6 +45,29 @@
 
 
 @section('right')
+    <div class="sideBar_section">
+        <div class="sideBar_sectionItem">
+            <div class="clearfix">
+                <button type="button" class="btn btn-success float-left">Subscribe</button>
+                <div class="float-right margin-top">32424 <span class="font-black">People Subscribe</span> </div>
+            </div>
+
+            <div class="margin-top">
+                <a href="#">Organization</a>
+                <span>•</span>
+                <a href="#">Edit</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="sideBar_section">
+        <div class="sideBar_sectionItem">
+            <div class="sideBar_sectionItem">
+                <h4>Description</h4>
+                <p>{{ $topic->description }}</p>
+            </div>
+        </div>
+    </div>
 
 
 @endsection

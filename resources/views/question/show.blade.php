@@ -1,22 +1,22 @@
 @extends('layouts.question')
 
 @section('left')
-    <div class="col-md-12 question_layout">
-        <div class="row question_tag">
+    <div class="col-md-12">
+        <div class="row">
             <div class="col-md-12">
                 @foreach($question->topics as $topic)
-                    <a class="btn btn-primary" href="#" role="button">{{ $topic->name }}</a>
+                    <a class="btn btn-primary question_topic_tag" href="#" role="button">{{ $topic->name }}</a>
                 @endforeach
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <h2 class="question_title"> {{ $question->title }} </h2>
+                <h3> {{ $question->title }} </h3>
             </div>
         </div>
 
-        <div class="row question_content">
+        <div class="row">
             <div class="col-md-12 font-black">
                 {{ $question->content }}
             </div>
@@ -67,9 +67,9 @@
         <hr>
     </div>
 
-    <div class="col-md-12 answer_layout">
-        <div class="answer_num clearfix">
-            <p>{{ $question->answers->count() }} answer(s)</p>
+    <div class="col-md-12">
+        <div class="clearfix">
+            <div class="float-left">{{ $question->answers->count() }} answer(s)</div>
             <div class="float-right">
                 @if($sorted == 'created')
                     <a href="{{ action('QuestionController@show', $question->id) }}">Sort by Vote</a> / Sort by Date
@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        <hr class="small_hrLight">
+        <hr>
 
         <div id="question_answers"></div>
 
@@ -90,11 +90,11 @@
         <div class="clearfix question_answer" id="question_answer_form">
             <hr>
             <div class="write_answer_userInfo clearfix">
-                <strong>{{ Auth::user()->name }}</strong>, {{ Auth::user()->bio }}
-                <img class="answer_userImg" src="image/sample_icon.png" alt="">
+                <div class="float-left"><strong>{{ Auth::user()->name }}</strong>, {{ Auth::user()->bio }}</div>
+                <img class="float-right" src="image/sample_icon.png" alt="">
             </div>
             <form action="/question/{{ $question->id }}/answer"
-                  class="clearfix" method="POST"
+                  class="clearfix margin-top" method="POST"
                   role="form" data-toggle="validator"
                   onsubmit="return saveAnswer('question_answers', '{{ $question->id }}')">
                 {{ csrf_field() }}
@@ -110,7 +110,7 @@
                             data-error="Bruh, I think answers must be more than 10 characters."
                     ></textarea>
                     <div class="help-block with-errors"></div>
-                    <button type="submit" class="btn btn-warning">Submit</button>
+                    <button type="submit" class="btn btn-warning float-right">Submit</button>
                 </div>
             </form>
         </div>
@@ -121,29 +121,32 @@
 
 
 @section('right')
-    <div class="question_subscribe">
-        <div>
-            <button type="button" class="btn btn-success">Subscribe</button>
-        </div>
-        <div>
-            <a href="#">270</a> people have subscribed to this question.
-        </div>
-        <div>
-            <img src="image/sample_icon.png" alt="..." class="img-rounded">
-            <img src="image/sample_icon.png" alt="..." class="img-rounded">
-            <img src="image/sample_icon.png" alt="..." class="img-rounded">
-            <img src="image/sample_icon.png" alt="..." class="img-rounded">
-            <img src="image/sample_icon.png" alt="..." class="img-rounded">
+    <div class="sideBar_section">
+        <div class="sideBar_sectionItem">
+            <div>
+                <button type="button" class="btn btn-success">Subscribe</button>
+            </div>
+            <div class="margin-top">
+                <a href="#">270</a> people have subscribed to this question.
+            </div>
+            <div class="margin-top">
+                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
+                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
+                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
+                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
+                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
+            </div>
         </div>
     </div>
 
-    <hr>
+    <div class="sideBar_section">
+        <div class="sideBar_sectionItem">
+            <h4>You might also be interested in:</h4>
+            @foreach($also_interest as $interest_question)
+                <p><a href="{{ action('QuestionController@show', $interest_question->id) }}">{{ $interest_question->title }}</a> {{ $interest_question->answers->count() }} answers</p>
+            @endforeach
+        </div>
 
-    <div class="question_related">
-        <h4>You might also be interested in:</h4>
-        @foreach($also_interest as $interest_question)
-            <p><a href="{{ action('QuestionController@show', $interest_question->id) }}">{{ $interest_question->title }}</a> {{ $interest_question->answers->count() }} answers</p>
-        @endforeach
     </div>
 @endsection
 
