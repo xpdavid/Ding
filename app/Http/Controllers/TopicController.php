@@ -39,11 +39,13 @@ class TopicController extends Controller
 
         $sorted = $request->get('sorted') ? $request->get('sorted') : '';
 
+        $type = $request->get('type') ? $request->get('type') : 'highlight';
+
         $parent_topics = $topic->parent_topics;
 
         $subtopics = $topic->subtopics;
 
-        return view('topic.show', compact('topic', 'sorted', 'parent_topics', 'subtopics'));
+        return view('topic.show', compact('topic', 'sorted', 'parent_topics', 'subtopics', 'type'));
     }
 
     /**
@@ -55,7 +57,6 @@ class TopicController extends Controller
     public function getQuestions(Request $request) {
         // validate the incoming request
         $this->validate($request, [
-            'type' => 'required',
             'topic_id' => 'required|integer',
             'page' => 'required|integer',
         ]);

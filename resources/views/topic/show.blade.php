@@ -10,10 +10,24 @@
         <div class="media-body">
             <h4 class="media-heading">{{ $topic->name }}</h4>
             <ul class="topic_category clearfix">
-                <li><a href="#">Highlight</a></li>
-                <li><a href="#">Recommend</a></li>
-                <li><a href="#">Wait For Answers</a></li>
-            </ul>
+                @if($type == 'recommend')
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>
+                    <li>Recommend</li>
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Wait For Answers</a></li>
+                @endif
+
+                @if($type == 'wait_for_answer')
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'recommend']) }}">Recommend</a></li>
+                    <li>Wait For Answers</li>
+                @endif
+
+                @if($type == 'highlight')
+                    <li>Highlight</li>
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'recommend']) }}">Recommend</a></li>
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Wait For Answers</a></li>
+                @endif
+                </ul>
         </div>
     </div>
 
@@ -53,9 +67,9 @@
             </div>
 
             <div class="margin-top">
-                <a href="#">Organization</a>
+                <a href="#">Topic Organization Tree</a>
                 <span>•</span>
-                <a href="#">Edit</a>
+                <a href="#">Edit Topic</a>
             </div>
         </div>
     </div>
@@ -106,6 +120,6 @@
 
 @section('javascript')
 <script type="text/javascript">
-    getTopicQuestions('{{ $topic->id }}','highlight', 1, 3, '{{ $sorted }}')
+    getTopicQuestions('{{ $topic->id }}','{{ $type }}', 1, 3, '{{ $sorted }}')
 </script>
 @endsection
