@@ -30,7 +30,7 @@
                         Your Profile
                     </div>
                     <div class="col-sm-6">
-                        <img src="{{ $profile->profile_pic_name }}" alt="..." class="img-rounded" />
+                        <img src="{{ $settings->profile_pic_name }}" alt="..." class="img-rounded" />
                     </div>
                 </div>
             </div>
@@ -86,17 +86,17 @@
                             Display Facebook?
                         </div>
                         <div class="col-sm-6">
-                            <div id="user_display_facebook"><span id="user_display_facebook_status">@if ($profile->facebook) Yes @else No @endif <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></div>
+                            <div id="user_display_facebook"><span id="user_display_facebook_status">@if ($settings->display_facebook) Yes @else No @endif <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></div>
                             <div id="user_display_facebook_edit">
                                 <div class="userSetting_info">Show Facebook link in your profile card</div>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group" id="user_display_facebook_radio">
                                             <label class="col-sm-3 radio-inline">
-                                                <input type="radio" name="user_display_facebook" value="Yes" @if ($profile->facebook == true) checked="checked" @endif> Yes
+                                                <input type="radio" name="user_display_facebook" value="Yes" @if ($settings->display_facebook == true) checked="checked" @endif> Yes
                                             </label>
                                             <label class="col-sm-3 radio-inline">
-                                                <input type="radio" name="user_display_facebook" value="No" @if ($profile->facebook == false) checked="checked" @endif> No
+                                                <input type="radio" name="user_display_facebook" value="No" @if ($settings->display_facebook == false) checked="checked" @endif> No
                                             </label>
                                         </div>
                                     </div>
@@ -124,17 +124,17 @@
                         Display Email?
                     </div>
                     <div class="col-sm-6">
-                        <div id="user_display_email"><span id="user_display_email_status">@if ($profile->email) Yes @else No @endif</span> <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></div>
+                        <div id="user_display_email"><span id="user_display_email_status">@if ($settings->display_email) Yes @else No @endif</span> <a href="#" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></div>
                         <div id="user_display_email_edit">
                             <div class="userSetting_info">Show Email link in your profile card</div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group" id="user_display_email_radio">
                                         <label class="col-sm-3 radio-inline">
-                                            <input type="radio" name="user_display_email" id="inlineRadio2" value="Yes"> Yes
+                                            <input type="radio" name="user_display_email" id="inlineRadio2" value="Yes" @if ($settings->display_email == true) checked="checked" @endif> Yes
                                         </label>
                                         <label class="col-sm-3 radio-inline">
-                                            <input type="radio" name="user_display_email" id="inlineRadio2" value="No"> No
+                                            <input type="radio" name="user_display_email" id="inlineRadio2" value="No" @if ($settings->display_email == false) checked="checked" @endif> No
                                         </label>
                                     </div>
                                 </div>

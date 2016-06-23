@@ -32,7 +32,9 @@ class CreateUserSettings extends Migration
             $table->boolean('email_reply_votings')->default(true);
             $table->integer('receiving_subscriptions')->unsigned()->default(2);
             $table->boolean('email_subscriptions')->default(true);
-
+            $table->boolean('display_email')->default(false);
+            $table->boolean('display_facebook')->default(false);
+            $table->string('profile_pic_name')->default('');
             $table->timestamps();
         });
     }

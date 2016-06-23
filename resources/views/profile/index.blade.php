@@ -57,14 +57,14 @@
                     <p>
                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                   <span class="userHome_profileItem">
-                    @if ($profile->email)
+                    @if ($settings->display_email)
                       <a href="mailto:{{ $user->email }}">Email</a>
                     @else
                       Email
                     @endif
                   </span>
                   <span class="userHome_profileMoreItem">
-                      @if ($profile->facebook)
+                      @if ($settings->display_facebook)
                         <a href="#">Email</a>
                       @else
                         Facebook

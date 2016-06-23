@@ -22,7 +22,10 @@ class Settings extends Model
 		'email_replies',
 		'email_votings',
 		'email_reply_votings',
-		'email_subscriptions'
+		'email_subscriptions',
+		'display_facebook', //whether facebook account is displayed
+		'display_email', // whether email account is displayed
+		'profile_pic_name'
 	];
 
 	/** Define eloquent relationship between User and Settings

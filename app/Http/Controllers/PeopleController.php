@@ -33,11 +33,11 @@ class PeopleController extends Controller
     {
         $user = User::findUrlName($url_name);
         $topics = $user->specializations;
-        $profile = $user->userProfile;
+        $settings = $user->settings;
         $educationExp = $user->educationExps;
         $job = $user->jobs;
 
-        return view('profile.index', compact('user', 'profile', 'educationExp', 'job'));
+        return view('profile.index', compact('user', 'settings', 'educationExp', 'job'));
     }
 
 
@@ -49,8 +49,8 @@ class PeopleController extends Controller
     public function edit()
     {   
         $user = Auth::user();
-        $profile = $user->userProfile;
-        return view('profile.edit', compact('user', 'profile'));
+        $settings = $user->settings;
+        return view('profile.edit', compact('user', 'settings'));
     }
 
     /**
@@ -64,7 +64,7 @@ class PeopleController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
-        $profile = $user->userProfile;
+        $settings = $user->settings;
         $topic = $user->specializations;
         Log::info($request->get('organization'));
         Log::info($request->get('designation'));
@@ -86,18 +86,18 @@ class PeopleController extends Controller
                 return 1;
             case 'facebook':
                 if ($request->get('facebook') == 'Yes') {
-                    $profile->update(['facebook' => true]);
+                    $settings->update(['display_facebook' => true]);
                 }
                 else {
-                    $profile->update(['facebook' => false]);   
+                    $settings->update(['display_facebook' => false]);   
                 }
                 return 1;
             case 'email':
                 if ($request->get('email') == 'Yes') {
-                    $profile->update(['email' => true]);
+                    $settings->update(['display_email' => true]);
                 }
                 else {
-                    $profile->update(['email' => false]);   
+                    $settings->update(['display_email' => false]);   
                 }
                 return 1;
             case 'bio':
