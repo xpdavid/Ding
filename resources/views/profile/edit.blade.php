@@ -339,7 +339,7 @@
             <div class="userEdit_item">
                 <div class="row">
                     <div class="col-sm-offset-1 col-sm-2">
-                        Good at topics
+                        Specializations
                     </div>
                     <div class="col-sm-9">
                         <div id="user_specialization">
@@ -352,7 +352,7 @@
                             'onsubmit' => 'return saveSpecialization()']) }}
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <input type="text" name="specialization_name" class="form-control" placeholder="e.g Computing">
+                                    <input type="text" name="specialization" class="form-control" placeholder="e.g Computing">
                                 </div>
                             </div>
                             <div class="row userEdit_buttonGroup">

@@ -86,6 +86,8 @@ $(function() {
 
         // for listing (using li), bind every li with hover event
         genericUserProfileListEditHover('educationExp');
+        genericUserProfileListEditHover('job');
+        genericUserProfileListEditHover('specialization');
 
     } catch (e) {
         console.log('hover event binding fail');
@@ -94,10 +96,10 @@ $(function() {
 
 
 /**
- * Popup candidate text for the input field (typehead)
+ * Popup candidate text for the input field (type-ahead)
  *
  */
-function genericTypeHead(id, source_url) {
+function genericTypeAhead(id, source_url) {
     $(id).typeahead({
         delay: 400,
         source: function (query, process) {
@@ -113,10 +115,13 @@ function genericTypeHead(id, source_url) {
 }
 
 $(function() {
-    // try bind every input field with typehead
+    // try bind every input field with type-ahead
     try {
-        genericTypeHead('[name="institution"]', '/api/institution-list');
-        genericTypeHead('[name="major"]', '/api/major-list');
+        genericTypeAhead('[name="institution"]', '/api/institution-list');
+        genericTypeAhead('[name="major"]', '/api/major-list');
+        genericTypeAhead('[name="organization"]', '/api/organization-list');
+        genericTypeAhead('[name="designation"]', '/api/designation-list');
+        genericTypeAhead('[name="specialization"]', '/api/specialization-list');
     } catch (e) {
         console.log('hover event binding fail');
     }
@@ -222,9 +227,6 @@ function saveEducationExp() {
         },
         dataType: 'json'
     }).done(function(data) {
-        // display edit button
-        $('#user_education_edit').find('a').click();
-
         // generate education experience name
         var educationExpName = $('[name="institution"]').val();
         if ($('[name="major"]').val() != "") {
@@ -243,6 +245,9 @@ function saveEducationExp() {
         // clear value
         $('[name="institution"]').val("");
         $('[name="major"]').val("");
+
+        // re-bind the new listing with hover event
+        genericUserProfileListEditHover('educationExp');
 
     }).fail(function() {
         console.log('save education experience fail.');
@@ -291,9 +296,6 @@ function saveJob() {
         },
         dataType: 'json'
     }).done(function(data) {
-        // display edit button
-        $('#user_job_edit').find('a').click();
-
         // generate job name
         var jobName = $('[name="organization"]').val() + ' ⋅ ' + $('[name="designation"]').val();
 
@@ -351,7 +353,7 @@ function saveSpecialization() {
     $.post({
         url: '/people/update',
         data: {
-            specialization : $('[name="specialization_name"]').val(),
+            specialization : $('[name="specialization"]').val(),
             type : 'specialization'
         },
         dataType: 'json'
@@ -359,8 +361,8 @@ function saveSpecialization() {
         // display edit button
         $('#user_specialization_edit').find('a').click();
 
-        // generate job name
-        var specializationName = $('[name="specialization_name"]').val();
+        // generate specialization name
+        var specializationName = $('[name="specialization"]').val();
 
         // append generate item to the list
         $('#user_specialization_list').append(

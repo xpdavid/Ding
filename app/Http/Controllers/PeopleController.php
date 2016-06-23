@@ -66,8 +66,7 @@ class PeopleController extends Controller
         $user = Auth::user();
         $settings = $user->settings;
         $topic = $user->specializations;
-        Log::info($request->get('organization'));
-        Log::info($request->get('designation'));
+        
         switch ($request->get('type')) {
             case 'education':
                 $educationExp = EducationExp::findOrCreate($request->get('institution'), $request->get('major'));

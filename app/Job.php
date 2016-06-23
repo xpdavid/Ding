@@ -42,18 +42,33 @@ class Job extends Model
 
 
 	/**
-	 * Get all the distinct jobs in the database
+	 * Get all the distinct organizations in the database
 	 *
 	 * @return array
 	 */
-	public static function getJobList() {
-	    $job_list = Job::select('full_name')
+	public static function getOrganizationList() {
+	    $orgnization_list = Job::select('organization')
 	        ->distinct()
 	        ->get()
-	        ->lists('full_name')
+	        ->lists('organization')
 	        ->all();
 
-	    return $job_list;
+	    return $orgnization_list;
+	}
+
+	/**
+	 * Get all the distinct designations in the database
+	 *
+	 * @return array
+	 */
+	public static function getDesignationList() {
+	    $designation_list = Job::select('designation')
+	        ->distinct()
+	        ->get()
+	        ->lists('designation')
+	        ->all();
+
+	    return $designation_list;
 	}
 
 	public function getFullNameAttribute() {

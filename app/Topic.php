@@ -104,4 +104,19 @@ class Topic extends Model
                 ->whereRaw('topic_subtopic.subtopic_id = topics.id');
         });
     }
+
+    /**
+     * Get all the distinct designations in the database
+     *
+     * @return array
+     */
+    public static function getTopicList() {
+        $topic_list = topic::select('name')
+            ->distinct()
+            ->get()
+            ->lists('name')
+            ->all();
+
+        return $topic_list;
+    }
 }
