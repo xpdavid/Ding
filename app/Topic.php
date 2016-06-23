@@ -57,6 +57,15 @@ class Topic extends Model
     }
 
     /**
+     * A topic is subscribed by many users' subscribe
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function subscribers() {
+        return $this->belongsToMany('App\Subscribe');
+    }
+
+    /**
      * define query scope. like match $name
      *
      * @param $query

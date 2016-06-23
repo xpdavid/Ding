@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 @foreach($question->topics as $topic)
-                    <a class="btn btn-primary question_topic_tag" href="#" role="button">{{ $topic->name }}</a>
+                    <a class="btn btn-primary question_topic_tag" href="/topic/{{ $topic->id }}" role="button">{{ $topic->name }}</a>
                 @endforeach
             </div>
         </div>
@@ -124,7 +124,15 @@
     <div class="sideBar_section">
         <div class="sideBar_sectionItem">
             <div>
-                <button type="button" class="btn btn-success">Subscribe</button>
+                @if($subscribe)
+                    <button type="button" class="btn btn-warning"
+                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
+                        Unsubscribe</button>
+                @else
+                    <button type="button" class="btn btn-success"
+                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
+                        Subscribe</button>
+                @endif
             </div>
             <div class="margin-top">
                 <a href="#">270</a> people have subscribed to this question.

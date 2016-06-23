@@ -3,8 +3,8 @@
 
 @section('left')
     <div class="clearfix">
-        <a href="#" class="float-left font"><span class="glyphicon glyphicon glyphicon-th-large" aria-hidden="true"></span>Topics</a>
-        <div class="float-right font-grey">7 topics subscribed</div>
+        <a href="#" class="float-left font"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span>Topics</span></a>
+        <div class="float-right font-grey">{{ Auth::user()->subscribe->topics()->count() }} topic(s) subscribed</div>
     </div>
     <hr class="small_hr">
     <div class="topics_topicTag" id="top_parent_topics">
@@ -33,33 +33,54 @@
 
 
 @section('right')
-    <div class="sideBar_section noborder">
-        <div class="sideBar_item">
-            <div class="">
-                <h4>Popular Topics</h4>
-            </div>
-            <div class="media topics_item">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object topics_item_image" data-src="..." alt="Generic placeholder image" src="image/sample_icon.png">
-                    </a>
+        <div class="sideBar_section noborder">
+            <div class="sideBar_item">
+                <div class="">
+                    <h4>Popular Topics</h4>
                 </div>
-                <div class="media-body topics_more">
-                    <div class="clearfix">
-                        <div class="float-left topics_name"><a href="#">test</a></div>
-                        <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
+                @foreach($popular_topics as $popular_topic)
+                    <div class="media topics_item">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object topics_item_image" data-src="..." alt="Generic placeholder image" src="image/sample_icon.png">
+                            </a>
+                        </div>
+                        <div class="media-body topics_more">
+                            <div class="clearfix">
+                                <div class="float-left topics_name">
+                                    <a href="/topic/{{ $popular_topic->id }}">{{ $popular_topic->name }}</a>
+                                </div>
+                                @if(Auth::user()->subscribe->checkHasSubscribed($popular_topic->id, 'topic'))
+                                    <a class="float-right topics_subscribe active"
+                                       href="#"
+                                       onclick="topics_subscribe(event, this, '{{ $popular_topic->id }}')">
+                                        <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
+                                        <span>Unsubscribe</span>
+                                    </a>
+                                @else
+                                    <a class="float-right topics_subscribe"
+                                       href="#"
+                                       onclick="topics_subscribe(event, this, '{{ $popular_topic->id }}')">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        <span>Subscribe</span>
+                                    </a>
+                                @endif
+                            </div>
+                            <p class="font-black"></p>
+                            <p class="font-black">{{ $popular_topic->subscribers()->count() }} subscribe</p>
+                        </div>
+                        <div class="topics_item_hots">
+                            @foreach($popular_topic->questions->take(1) as $question)
+                                <a href="/question/{{ $question->id }}">{{ $question->title }}</a>
+                            @endforeach
+                        </div>
                     </div>
-                    <p class="font-black"></p>
-                    <p class="font-black">33323 subscribe</p>
-                </div>
-                <div class="topics_item_hots">
-                    <a href="#">Looking to Start Your CS Career in the Bay Area? </a>
-                    <a href="#">Looking to Start Your CS Career in the Bay Area? </a>
-                    <a href="#">Looking to Start Your CS Career in the Bay Area? </a>
-                </div>
+                @endforeach
+
             </div>
         </div>
-    </div>
+
+
 @endsection
 
 

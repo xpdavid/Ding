@@ -905,8 +905,14 @@ html {
   font-size: 13px;
   color: #698ebf; }
 
+.topics_subscribe.active {
+  color: #999; }
+
 .topics_subscribe:hover {
   color: #259; }
+
+.topics_subscribe span {
+  margin: 0; }
 
 .topics_name {
   font-size: 16px; }
@@ -948,5 +954,8 @@ html {
 .topic_organization_list {
   list-style: disc;
   margin: 5px 0 0 0; }
+
+.topic_home_topic_list_item_text {
+  padding: 18px 9px 0; }
 
 /*# sourceMappingURL=app.css.map */

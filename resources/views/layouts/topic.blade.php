@@ -36,20 +36,17 @@
     <div class="row">
         <div class="col-md-8">
             @yield('left')
+            <br>
         </div>
 
 
         <div class="col-md-4">
             @yield('right')
+
+            @include('partials._site_copyright')
         </div>
 
     </div> <!--For row-->
-
-    <div class="row">
-        <div class="col-12-md">
-            @include('partials._site_copyright')
-        </div>
-    </div>
 
 </div> <!--For contianer-->
 

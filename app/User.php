@@ -134,6 +134,25 @@ class User extends Authenticatable
     }
 
     /**
+     * A user has subscribe plan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function subscribe() {
+        return $this->hasOne('App\Subscribe');
+    }
+
+
+    /**
+     * A user is subscribed by many users' subscribe
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function subscribers() {
+        return $this->belongsToMany('App\Subscribe');
+    }
+
+    /**
      * define query scope. similar match $name
      *
      * @param $query

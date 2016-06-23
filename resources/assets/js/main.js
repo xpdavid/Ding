@@ -31,3 +31,52 @@ function toggle(id, event) {
     }
     $('#' + id).toggle();
 }
+
+/**
+ * Send AJAX request to subscribe a topic
+ *
+ * @param topic_id
+ */
+function subscribeTopic(topic_id, op, callback) {
+    $.post('/subscribe/topic/' + topic_id, {
+        op : op
+    }, function() {
+        if (callback && typeof callback == "function") {
+            callback();
+        }
+    })
+}
+
+/**
+ * Send ajax request to subscribe a question
+ *
+ * @param question_id
+ * @param op
+ * @param callback
+ */
+function subscribeQuestion(question_id, op, callback) {
+    $.post('/subscribe/question/' + question_id, {
+        op : op
+    }, function() {
+        if (callback && typeof callback == "function") {
+            callback();
+        }
+    })
+}
+
+/**
+ * Send ajax request to subscribe a user
+ *
+ * @param user_id
+ * @param op
+ * @param callback
+ */
+function subscribeUser(user_id, op, callback) {
+    $.post('/subscribe/user/' + user_id, {
+        op : op
+    }, function() {
+        if (callback && typeof callback == "function") {
+            callback();
+        }
+    })
+}

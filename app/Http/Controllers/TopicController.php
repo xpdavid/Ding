@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Topic;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -14,18 +15,33 @@ class TopicController extends Controller
      * show user custom topic page
      */
     public function index() {
+        $user = Auth::user();
 
+        // get subscribe_topics
+        $subscribe_topics = $user->subscribe->topics;
+
+        // generate people also like
+        $other_topics = $popular_topics = Topic::all()->sortByDesc(function($topic) {
+            return $topic->subscribers()->count();
+        })->shuffle()->take(6);
+
+        return view('topic.home', compact('subscribe_topics', 'other_topics'));
+        
     }
 
     /**
-     * show all topic
+     * show all topics
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function topics() {
         $top_parent_topics = Topic::topParentTopics()->get();
 
-        return view('topic.topics', compact('top_parent_topics'));
+        $popular_topics = Topic::all()->sortByDesc(function($topic) {
+            return $topic->subscribers()->count();
+        })->take(3);
+
+        return view('topic.topics', compact('top_parent_topics', 'popular_topics'));
     }
 
     /**
@@ -37,15 +53,57 @@ class TopicController extends Controller
     public function show($topic_id, Request $request) {
         $topic = Topic::findOrFail($topic_id);
 
+        // determine sorted method
         $sorted = $request->get('sorted') ? $request->get('sorted') : '';
 
+        // determine type
         $type = $request->get('type') ? $request->get('type') : 'highlight';
+
+        // get parent topics
+        $parent_topics = $topic->parent_topics;
+
+        // get subtopics
+        $subtopics = $topic->subtopics;
+
+        return view('topic.show', compact('topic', 'sorted', 'parent_topics', 'subtopics', 'type'));
+    }
+
+    /**
+     * Show overall organization of topics
+     *
+     * @param $topic_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function organization($topic_id) {
+        $topic = Topic::findOrFail($topic_id);
 
         $parent_topics = $topic->parent_topics;
 
         $subtopics = $topic->subtopics;
 
-        return view('topic.show', compact('topic', 'sorted', 'parent_topics', 'subtopics', 'type'));
+        $parent_tree_array = [];
+        $this->generateParentTopicTree($topic, [], $parent_tree_array);
+        $parent_tree = $this->renderParentTopicTree($parent_tree_array);
+
+        return view('topic.organization', compact('topic', 'parent_topics', 'subtopics', 'parent_tree'));
+    }
+
+
+    /**
+     * show Edit topic page
+     * need authentication check
+     *
+     * @param $topic_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($topic_id) {
+        $topic = Topic::findOrFail($topic_id);
+
+        $parent_topics = $topic->parent_topics;
+
+        $subtopics = $topic->subtopics;
+
+        return view('topic.edit', compact('topic', 'parent_topics', 'subtopics'));
     }
 
     /**
@@ -98,7 +156,6 @@ class TopicController extends Controller
         return $results;
     }
 
-
     /**
      * Response ajax request to show child topics
      *
@@ -110,6 +167,8 @@ class TopicController extends Controller
 
         $topic = Topic::findOrFail($parent_id);
 
+        $user = Auth::user();
+
         // format results
         $results = [];
         foreach ($topic->subtopics->forPage($page, $this->itemInPage) as $subtopic) {
@@ -117,7 +176,8 @@ class TopicController extends Controller
                 'id' => $subtopic->id,
                 'name' => $subtopic->name,
                 'description' => $subtopic->description,
-                'numSubtopic' => $subtopic->subtopics()->count()
+                'numSubtopic' => $subtopic->subtopics()->count(),
+                'isSubscribed' => $user->subscribe->checkHasSubscribed($subtopic->id, 'topic')
             ]);
         }
 
@@ -126,27 +186,11 @@ class TopicController extends Controller
             'id' => $topic->id,
             'name' => $topic->name,
             'description' => $topic->description,
-            'numSubtopic' => $topic->subtopics()->count()
+            'numSubtopic' => $topic->subtopics()->count(),
+            'isSubscribed' => $user->subscribe->checkHasSubscribed($topic->id, 'topic')
         ]);
 
         return $results;
-    }
-
-    /**
-     * show Edit topic page
-     * need authentication check
-     *
-     * @param $topic_id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function edit($topic_id) {
-        $topic = Topic::findOrFail($topic_id);
-
-        $parent_topics = $topic->parent_topics;
-
-        $subtopics = $topic->subtopics;
-
-        return view('topic.edit', compact('topic', 'parent_topics', 'subtopics'));
     }
 
     /**
@@ -200,26 +244,6 @@ class TopicController extends Controller
         }
 
         return redirect(action('TopicController@edit', $topic_id));
-    }
-
-    /**
-     * Show overall organization of topics
-     *
-     * @param $topic_id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function organization($topic_id) {
-        $topic = Topic::findOrFail($topic_id);
-
-        $parent_topics = $topic->parent_topics;
-
-        $subtopics = $topic->subtopics;
-
-        $parent_tree_array = [];
-        $this->generateParentTopicTree($topic, [], $parent_tree_array);
-        $parent_tree = $this->renderParentTopicTree($parent_tree_array);
-
-        return view('topic.organization', compact('topic', 'parent_topics', 'subtopics', 'parent_tree'));
     }
 
 

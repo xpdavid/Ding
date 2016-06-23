@@ -58,12 +58,14 @@ function getMoreTopics() {
                         name : left.name,
                         description : left.description,
                         numSubtopic : left.numSubtopic,
+                        isSubscribed : left.isSubscribed,
                     } : {};
                     var right_content = right ? {
                         id : right.id,
                         name : right.name,
                         description : right.description,
                         numSubtopic : right.numSubtopic,
+                        isSubscribed : right.isSubscribed,
                     } : {};
                     processResults.push({
                         left : left_content,
@@ -87,22 +89,27 @@ function getMoreTopics() {
 }
 
 /**
- * AJAX request to get relevant questin topic
+ * AJAX request to get relevant question topic
  *
  * @param topic_id
  * @param type
  * @param page
  * @param itemInPage
+ * @param sorted
  */
 function getTopicQuestions(topic_id, type, page, itemInPage, sorted) {
-    getMoreTopicQuestion_page = page;
-    getMoreTopicQuestion_page_itemInPage = itemInPage;
-    getMoreTopicQuestion_page_type = type;
-    getMoreTopicQuestin_id = topic_id;
-    getMoreTopicQuestin_sorted = sorted;
+    // keep the original value or update with new value
+    getMoreTopicQuestion_page = page ? page : getMoreTopicQuestion_page;
+    getMoreTopicQuestion_page_itemInPage = itemInPage ? itemInPage : getMoreTopicQuestion_page_itemInPage;
+    getMoreTopicQuestion_page_type = type ? type : getMoreTopicQuestion_page_type;
+    getMoreTopicQuestin_id = topic_id ? topic_id : getMoreTopicQuestin_id;
+    getMoreTopicQuestin_sorted = sorted ? sorted :getMoreTopicQuestin_sorted;
     getMoreTopicQuestion();
 }
 
+/**
+ * JS Method support for the `more` button
+ */
 var getMoreTopicQuestion_page = 1;
 var getMoreTopicQuestion_page_itemInPage = 3;
 var getMoreTopicQuestion_page_type = null;
@@ -144,6 +151,12 @@ function getMoreTopicQuestion() {
     getMoreTopicQuestion_page++;
 }
 
+/**
+ * generic method for topic autocomplete
+ *
+ * @param inputId
+ * @param selectNum
+ */
 function topicAutocomplete(inputId, selectNum) {
     $("#" + inputId).select2({
         width: '300px',
@@ -180,4 +193,91 @@ function topicAutocomplete(inputId, selectNum) {
             }
         },
     });
+}
+
+/**
+ * Send ajax call to subscribe a question
+ *
+ * @param event
+ * @param clickObject
+ * @param topic_id
+ */
+function topics_subscribe(event, clickObject, topic_id) {
+    event.preventDefault();
+    var $click = $(clickObject);
+    if ($click.hasClass('active')) {
+        // is already subscribed
+        subscribeTopic(topic_id, 'unsubscribe', function() {
+            // remove class
+            $click.removeClass('active');
+            // show subscribe text
+            $click.find('span:nth-child(1)').show();
+            $click.find('span:nth-child(2)').text('');
+            $click.find('span:nth-child(2)').text('Subscribe')
+        });
+    } else {
+        // current operation is subscribe the topic
+        subscribeTopic(topic_id, null, function() {
+            // add active class
+            $click.addClass('active');
+            // show unsubscribe text
+            $click.find('span:nth-child(1)').hide();
+            $click.find('span:nth-child(2)').text('');
+            $click.find('span:nth-child(2)').text('Unsubscribe')
+        });
+    }
+}
+
+/**
+ * trigger subscribe button in specific topic page
+ *
+ * @param clickObject
+ * @param topic_id
+ */
+function topic_show_subscribe(clickObject, topic_id) {
+    var $button = $(clickObject);
+    if ($button.hasClass('btn-success')) {
+        // has not subscribed yet
+        subscribeQuestion(topic_id, null, function() {
+            $button.html('Unsubscribe');
+            $button.removeClass('btn-success');
+            $button.addClass('btn-warning');
+        });
+    } else {
+        // has subscribed
+        subscribeQuestion(topic_id, 'unsubscribe', function() {
+            $button.html('Subscribe');
+            $button.removeClass('btn-warning');
+            $button.addClass('btn-success');
+        });
+    }
+}
+
+/**
+ * show topic with specific sort method
+ *
+ * @param sorted
+ */
+function topic_show_sort(clickObject, sorted) {
+    var $link = $(clickObject);
+    // clear content
+    $('#topic_questions').html('');
+    // ajax get questions
+    getTopicQuestions(null, null, 1, null, sorted);
+    // trigger link display
+    $link.addClass('font-black');
+    $link.siblings('a').removeClass('font-black');
+}
+
+function topic_show_get_questions(clickObject, topic_id, sorted) {
+    var $button = $(clickObject);
+    // clear content
+    $('#topic_questions').html('');
+    // clear active button
+    $('#subscribe_topics').find('.active').removeClass('active');
+    // trigger current button
+    $button.addClass('active');
+    // ajax get questions
+    getTopicQuestions(topic_id, null, 1, 10, sorted);
+
 }

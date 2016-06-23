@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Subscribe;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -68,6 +69,9 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $subscribe = Subscribe::create();
+        $user->subscribe()->save($subscribe);
 
         $this->generateUrlName($user);
 

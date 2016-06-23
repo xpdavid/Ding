@@ -68,5 +68,8 @@ Route::resource('/inbox', 'InboxController');
 // for reply controller
 Route::controller('/reply', 'ReplyController');
 
+// for subscribe controller
+Route::controller('/subscribe', 'SubscribeController');
+
 // for API controller
 Route::controller('/api', 'APIController');

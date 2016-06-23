@@ -1125,8 +1125,16 @@ html {
   color: #698ebf;
 }
 
+.topics_subscribe.active {
+  color: #999;
+}
+
 .topics_subscribe:hover {
   color: #259
+}
+
+.topics_subscribe span {
+  margin : 0;
 }
 
 .topics_name {
@@ -1187,6 +1195,11 @@ html {
 .topic_organization_list {
   list-style: disc;
   margin: 5px 0 0 0;
+}
+
+// topic home css style
+.topic_home_topic_list_item_text {
+  padding: 18px 9px 0;
 }
 
 

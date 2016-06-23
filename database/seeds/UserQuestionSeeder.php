@@ -12,7 +12,10 @@ class UserQuestionSeeder extends Seeder
     public function run()
     {
         // create 50 users
-        factory(App\User::class, 50)->create();
+        factory(App\User::class, 50)->create()->each(function($u) {
+            $subscribe = App\Subscribe::create();
+            $u->subscribe()->save($subscribe);
+        });;
 
         // each user post several question
         foreach (App\User::all() as $user) {

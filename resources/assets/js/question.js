@@ -491,5 +491,24 @@ function showConversation(event, initial_reply_id) {
     })
 }
 
+function show_question_subscribe(clickObject, question_id) {
+    var $button = $(clickObject);
+    if ($button.hasClass('btn-success')) {
+        // has not subscribed yet
+        subscribeQuestion(question_id, null, function() {
+            $button.html('Unsubscribe');
+            $button.removeClass('btn-success');
+            $button.addClass('btn-warning');
+        });
+    } else {
+        // has subscribed
+        subscribeQuestion(question_id, 'unsubscribe', function() {
+            $button.html('Subscribe');
+            $button.removeClass('btn-warning');
+            $button.addClass('btn-success');
+        });
+    }
+}
+
 
 

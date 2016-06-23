@@ -12,7 +12,21 @@
             <div class="media-body topics_more">
                 <div class="clearfix">
                     <div class="float-left topics_name"><a href="/topic/{{left.id}}">{{left.name}}</a></div>
-                    <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
+                    {{#if left.isSubscribed}}
+                        <a class="float-right topics_subscribe active"
+                           href="#"
+                           onclick="topics_subscribe(event, this, '{{left.id}}')">
+                            <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
+                            <span>Unsubscribe</span>
+                        </a>
+                    {{~^~}}
+                        <a class="float-right topics_subscribe"
+                           href="#"
+                           onclick="topics_subscribe(event, this, '{{left.id}}')">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <span>Subscribe</span>
+                        </a>
+                    {{~/if~}}
                 </div>
                 <div class="font-black">{{left.description}}</div>
                 {{#if left.numSubtopic}}
@@ -33,7 +47,21 @@
                 <div class="media-body topics_more">
                     <div class="clearfix">
                         <div class="float-left topics_name"><a href="/topic/{{right.id}}">{{right.name}}</a></div>
-                        <a class="float-right topics_subscribe" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Subscribe</a>
+                        {{#if right.isSubscribed}}
+                            <a class="float-right topics_subscribe active"
+                               href="#"
+                               onclick="topics_subscribe(event, this, '{{right.id}}')">
+                                <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
+                                <span>Unsubscribe</span>
+                            </a>
+                        {{~^~}}
+                            <a class="float-right topics_subscribe"
+                               href="#"
+                               onclick="topics_subscribe(event, this, '{{right.id}}')">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                <span>Subscribe</span>
+                            </a>
+                        {{~/if~}}
                     </div>
                     <div class="font-black">{{right.description}}</div>
                     {{#if right.numSubtopic}}

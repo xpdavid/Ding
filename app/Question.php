@@ -55,6 +55,15 @@ class Question extends Model
     }
 
     /**
+     * A question is subscribed by many users' subscribe
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function subscribers() {
+        return $this->belongsToMany('App\Subscribe');
+    }
+
+    /**
      * Get the excerpt of the question detail
      *
      * @return string

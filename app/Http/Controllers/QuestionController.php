@@ -35,6 +35,11 @@ class QuestionController extends Controller
     public function show($question_id, Request $request) {
         $question = Question::findOrFail($question_id);
 
+        // get necessary parameters & determine whether the user subscribe the question
+        $user = Auth::user();
+        $subscribe = $user->subscribe->checkHasSubscribed($question_id, 'question');
+
+        // generate also_interest questions
         $also_interest = [];
         foreach ($question->topics as $topic) {
             $also_interest = array_merge($also_interest, $topic->questions->take(3)->all());
@@ -51,7 +56,7 @@ class QuestionController extends Controller
         }
 
 
-        return view('question.show', compact('question', 'answers', 'sorted', 'also_interest'));
+        return view('question.show', compact('question', 'answers', 'sorted', 'subscribe', 'also_interest'));
     }
     
 
