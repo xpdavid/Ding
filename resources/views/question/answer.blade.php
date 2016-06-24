@@ -357,7 +357,19 @@
 <script type="text/javascript">
     // highlight current answer
     $(function() {
-        highlight('answer_{{ $answer->id }}', true);
+        // determine show/highlight reply
+        @if($highlight)
+            //show_reply(reply_id, base_id, type, item_id, page)
+            highlight_reply('{{ $highlight['reply_id'] }}',
+                    '{{ $highlight['base_id'] }}',
+                    '{{ $highlight['type'] }}',
+                    '{{ $highlight['item_id'] }}',
+                    '{{ $highlight['page'] }}');
+        @else
+            // we don't want to highlight reply, we highlight answer
+            highlight('answer_{{ $answer->id }}', true);
+        @endif
+
     })
 </script>
 @endsection

@@ -15,6 +15,25 @@ class ReplyController extends Controller
 {
     protected $itemInPage = 8; // define how many item will be display in each page
 
+    public function show($reply_id) {
+        $reply = Reply::findOrFail($reply_id);
+        $for_item = $reply->for_item;
+        if (get_class($for_item) == 'App\Question') {
+            return redirect(action('QuestionController@show', [
+                'question_id' => $for_item->id,
+                'highlight_reply' => $reply->id
+            ]));
+        } else if(get_class($for_item) == 'App\Answer') {
+            return redirect(action('AnswerController@show', [
+                'question_id' => $for_item->question->id,
+                'answer_id' => $for_item->id,
+                'highlight_reply' => $reply->id
+            ]));
+        } else {
+            redirect('/');
+        }
+    }
+
     /**
      * For AJAX server side. return all the replies data
      *

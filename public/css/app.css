@@ -755,7 +755,8 @@ html {
   border-bottom-color: #fff; }
 
 .comment_item {
-  margin: 10px !important; }
+  margin: 10px !important;
+  transition: background-color 800ms linear; }
 
 .reply_op {
   display: none; }

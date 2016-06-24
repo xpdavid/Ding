@@ -14,10 +14,12 @@ $.ajaxSetup({
  * @param event
  * @param element_id
  */
-function scroll_to(event, element_id) {
-    event.preventDefault();
+function scroll_to(element_id, event) {
+    if (event) {
+        event.preventDefault();
+    }
 
-    $('html,body').animate({scrollTop: $('#' + element_id).offset().top}, 1000);
+    $('html,body').animate({scrollTop: $('#' + element_id).offset().top - 200}, 1000);
 }
 
 /**

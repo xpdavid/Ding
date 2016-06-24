@@ -14,10 +14,12 @@ $.ajaxSetup({
  * @param event
  * @param element_id
  */
-function scroll_to(event, element_id) {
-    event.preventDefault();
+function scroll_to(element_id, event) {
+    if (event) {
+        event.preventDefault();
+    }
 
-    $('html,body').animate({scrollTop: $('#' + element_id).offset().top}, 1000);
+    $('html,body').animate({scrollTop: $('#' + element_id).offset().top - 200}, 1000);
 }
 
 /**
@@ -79,6 +81,23 @@ function subscribeUser(user_id, op, callback) {
             callback(results);
         }
     })
+}
+
+/**
+ * Highlight a element, if rollback is true, after two second, it will auto 'dehighlight'.
+ *
+ * @param elementID
+ * @param rollback(optional)
+ */
+function highlight(elementID, rollback) {
+    $('#' + elementID).addClass('highlight');
+    // hightlight 2 second
+    if (rollback) {
+        setTimeout(function(){
+            $('#' + elementID).removeClass('highlight');
+        }, 2000);
+    }
+
 }
 
 //# sourceMappingURL=main.js.map

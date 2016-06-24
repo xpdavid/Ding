@@ -18,7 +18,7 @@ function showComment(event, type, item_id, base_id) {
     if (!clicked) {
         // display comment at the first click
         showCommentPage(base_id, type, item_id, 1);
-        $link.data('clicked', 'true');
+        $link.data('clicked', true);
     }
 
     $('#' + base_id).toggle();
@@ -255,6 +255,7 @@ function cancel_from(event, element_id) {
  * @param itemInPage
  * @param sorted
  * @param button_id
+ * @param callback
  */
 function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_id) {
     $.post('/question/answers', {
@@ -280,16 +281,22 @@ function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_i
                 $('#' + button_id).prop('disabled', false);
             }
         }
+
     });
 }
 
 var curreAnswerPage = 1;
-function getMore(base_id, question_id, sorted, button_id) {
+function getMore(base_id, question_id, sorted, button_id, callback) {
     if (button_id) {
         $('#' + button_id).prop('disabled', true);
     }
     getMoreAnswers(base_id, question_id, curreAnswerPage, null, sorted, button_id);
     curreAnswerPage++;
+
+    // check callback
+    if(callback && typeof callback == "function"){
+        callback();
+    }
 }
 
 
@@ -525,13 +532,23 @@ function show_question_subscribe(clickObject, question_id) {
     }
 }
 
-//showCommentPage(base_id, type, item_id, page, callback)
-//showComment(event, type, item_id, base_id)
-function show_reply(reply_id, base_id, type, item_id, page) {
-    if (type == 'question') {
-        showComment(null, type, item_id, page);
-        highlight('comment');
-    }
+/**
+ * highlight specific reply
+ *
+ * @param reply_id
+ * @param base_id
+ * @param type
+ * @param item_id
+ * @param page
+ */
+function highlight_reply(reply_id, base_id, type, item_id, page) {
+    var $link = $('#' + base_id + '_trigger');
+    showCommentPage(base_id, type, item_id, page, function() {
+        $('#' + base_id).toggle();
+        $link.data('clicked', true);
+        scroll_to('reply_' + reply_id);
+        highlight('reply_' + reply_id, true);
+    });
 }
 
 

@@ -23,7 +23,7 @@
         </div>
 
         <div class="horizontal_item">
-            <a href="#" onclick="scroll_to(event, 'question_answer_form')"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
+            <a href="#" onclick="scroll_to('question_answer_form', event)"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
             <a href="#"
                id="question_comment_{{ $question->id }}_trigger"
                onclick="showComment(event, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
@@ -126,7 +126,7 @@
     <div class="sideBar_section">
         <div class="sideBar_sectionItem">
             <div>
-                @if($subscribe)
+                @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
                     <button type="button" class="btn btn-warning"
                             onclick="show_question_subscribe(this, '{{ $question->id }}')">
                         Unsubscribe</button>
@@ -164,7 +164,14 @@
     <script type="text/javascript">
         // onload event then load answers
         $(function() {
-            getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers');
+            getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers', function() {
+                //show_reply(reply_id, base_id, type, item_id, page)
+                highlight_reply('{{ $highlight['reply_id'] }}',
+                        '{{ $highlight['base_id'] }}',
+                        '{{ $highlight['type'] }}',
+                        '{{ $highlight['item_id'] }}',
+                        '{{ $highlight['page'] }}');
+            });
         })
     </script>
 @endsection

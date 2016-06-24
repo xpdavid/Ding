@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Reply;
 use App\Answer;
 use App\Question;
 use App\Http\Requests;
@@ -18,9 +19,10 @@ class AnswerController extends Controller
      *
      * @param $question_id
      * @param $answer_id
+     * @param $request
      * @return View
      */
-    public function show($question_id, $answer_id) {
+    public function show($question_id, $answer_id, Request $request) {
         $question = Question::findOrFail($question_id);
         $answer = Answer::findOrFail($answer_id);
         if ($answer->question->id != $question->id) {
@@ -33,21 +35,17 @@ class AnswerController extends Controller
         foreach ($question->topics->shuffle()->take(3) as $topic) {
             $also_interest = array_merge($also_interest, $topic->questions->take(2)->all());
         }
-        
-        return view('question.answer', compact('question', 'answer', 'also_interest'));
-        
-    }
 
-    /**
-     * redirect request for /answer/1
-     *
-     * @param $answer_id
-     * @return View
-     */
-    public function redirectShow($answer_id) {
-        $answer = Answer::findOrFail($answer_id);
-
-        return $this->show($answer->question->id, $answer_id);
+        // determine whether to highlight a reply
+        $highlight = null;
+        if($request->exists('highlight_reply')) {
+            $target_id = $request->get('highlight_reply');
+            $target_reply = Reply::findOrFail($target_id);
+            $highlight = $target_reply->highlightParameters;
+        }
+        
+        return view('question.answer', compact('question', 'answer', 'also_interest', 'highlight'));
+        
     }
 
     /**

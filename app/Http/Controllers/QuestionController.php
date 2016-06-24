@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Reply;
 use App\Topic;
 use App\Question;
 use Illuminate\Http\Request;
@@ -35,10 +36,6 @@ class QuestionController extends Controller
     public function show($question_id, Request $request) {
         $question = Question::findOrFail($question_id);
 
-        // get necessary parameters & determine whether the user subscribe the question
-        $user = Auth::user();
-        $subscribe = $user->subscribe->checkHasSubscribed($question_id, 'question');
-
         // generate also_interest questions
         $also_interest = [];
         foreach ($question->topics as $topic) {
@@ -55,8 +52,15 @@ class QuestionController extends Controller
             $answers = $answers->sortByDesc('netVotes');
         }
 
+        // determine whether to highlight a reply
+        $highlight = null;
+        if($request->exists('highlight_reply')) {
+            $target_id = $request->get('highlight_reply');
+            $target_reply = Reply::findOrFail($target_id);
+            $highlight = $target_reply->highlightParameters;
+        }
 
-        return view('question.show', compact('question', 'answers', 'sorted', 'subscribe', 'also_interest'));
+        return view('question.show', compact('question', 'answers', 'sorted', 'also_interest', 'highlight'));
     }
     
 

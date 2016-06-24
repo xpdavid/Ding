@@ -43,12 +43,56 @@ class Reply extends Model
         return $this->morphTo();
     }
 
+    /**
+     * A reply can reply to a reply
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function reply_to() {
         return $this->belongsTo('App\Reply', 'reply_to_reply_id');
     }
 
+    /**
+     * A reply will receive a reply
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function receive_replies() {
         return $this->hasMany('App\Reply', 'reply_to_reply_id');
+    }
+
+    /**
+     * Generate highlight parameters
+     *
+     * @return array
+     */
+    public function getHighlightParametersAttribute() {
+        $for_item = $this->for_item;
+        $index = 1;
+        // calculate the page number
+        foreach ($for_item->replies->sortBy('created_at') as $reply) {
+            if ($reply->id == $this->id) {
+                break;
+            }
+            $index++;
+        }
+        $page = ceil($index / 8); // get the page number
+
+        //parameter needed
+        //highlight_reply(reply_id, base_id, type, item_id, page)
+        $highlight = [
+            'reply_id' => $this->id,
+            'item_id' => $for_item->id,
+            'page' => $page
+        ];
+        if(get_class($for_item) == 'App\Question') {
+            $highlight['base_id'] = 'question_comment_' . $for_item->id;
+            $highlight['type'] = 'question';
+        } else if (get_class($for_item) == 'App\Answer') {
+            $highlight['base_id'] = 'answer_comment_' . $for_item->id;
+            $highlight['type'] = 'answer';
+        }
+        return $highlight;
     }
 
     /**
