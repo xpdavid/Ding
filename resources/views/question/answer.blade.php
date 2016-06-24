@@ -26,7 +26,9 @@
 
         <div class="horizontal_item">
             <a href="#" onclick="scroll_to(event, 'question_answer_form')"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
-            <a href="#" onclick="showComment(event, this, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
+            <a href="#"
+               id="question_comment_{{ $question->id }}_trigger"
+               onclick="showComment(event, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 Comment (<span id="question_comment_{{ $question->id }}_replies_count">{{ $question->replies->count() }}</span>)
             </a>
@@ -82,7 +84,7 @@
 
         {{--current answer here--}}
         <div>
-            <div class="answer_overall">
+            <div class="answer_overall" id="answer_{{ $answer->id }}">
                 <div class="answer_voting">
                     <button type="button" id="vote_answer_{{ $answer->id }}_up" class="btn btn-primary
                         @if($answer->vote_up_users->contains(Auth::user()->id))
@@ -119,7 +121,9 @@
 
                 <div class="horizontal_item">
                     <a href="#">Posted on {{ $answer->createdAtHumanReadable }}</a>
-                    <a href="#" onclick="showComment(event, this, 'answer', '{{ $answer->id }}', 'answer_comment_{{ $answer->id }}');">
+                    <a href="#"
+                       id="answer_comment_{{ $question->id }}_trigger"
+                       onclick="showComment(event, 'answer', '{{ $answer->id }}', 'answer_comment_{{ $answer->id }}');">
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                         Comment (<span id="answer_comment_{{ $answer->id }}_replies_count">{{ $answer->replies()->count() }}</span>)
                     </a>
@@ -346,4 +350,14 @@
     </div>
 
 
+@endsection
+
+
+@section('javascript')
+<script type="text/javascript">
+    // highlight current answer
+    $(function() {
+        highlight('answer_{{ $answer->id }}', true);
+    })
+</script>
 @endsection

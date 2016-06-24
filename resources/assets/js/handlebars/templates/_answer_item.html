@@ -1,7 +1,7 @@
 <!--this is the template for answer item-->
 <!--the template will rendered by javascript template engine `handlebars.js`-->
 {{#each answers}}
-<div class="answer_overall">
+<div class="answer_overall" id="answer_{{id}}">
     <div class="answer_voting">
         <button type="button" id="vote_answer_{{id}}_up" class="btn btn-primary {{vote_up_class}}" onclick="vote_answer('{{id}}', 'up')">
             <div>
@@ -30,7 +30,9 @@
 
     <div class="horizontal_item">
         <a href="#">Posted on {{created_at}}</a>
-        <a href="#" onclick="showComment(event, this, 'answer', '{{id}}', 'answer_comment_{{id}}');">
+        <a href="#"
+           id="answer_comment_{{id}}_trigger"
+           onclick="showComment(event, 'answer', '{{id}}', 'answer_comment_{{id}}');">
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
             Comment (<span id="answer_comment_{{id}}_replies_count">{{numComment}}</span>)
         </a>

@@ -71,10 +71,10 @@ class Notification extends Model
         switch ($this->type) {
             case 4:
             case 1:
-            case 2:
                 $subject = User::findOrFail($this->subject_id);
                 $object = Question::findOrFail($this->object_id);
                 break;
+            case 2:
             case 7:
             case 3:
                 $subject = User::findOrFail($this->subject_id);

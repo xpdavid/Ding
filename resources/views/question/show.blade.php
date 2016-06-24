@@ -24,7 +24,9 @@
 
         <div class="horizontal_item">
             <a href="#" onclick="scroll_to(event, 'question_answer_form')"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
-            <a href="#" onclick="showComment(event, this, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
+            <a href="#"
+               id="question_comment_{{ $question->id }}_trigger"
+               onclick="showComment(event, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 Comment (<span id="question_comment_{{ $question->id }}_replies_count">{{ $question->replies->count() }}</span>)
             </a>

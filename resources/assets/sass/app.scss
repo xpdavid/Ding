@@ -98,6 +98,15 @@ html {
   cursor: pointer;
 }
 
+.highlight {
+  background-color: #FFF8DC;
+  -webkit-transition: background-color 800ms linear;
+  -moz-transition: background-color 800ms linear;
+  -o-transition: background-color 800ms linear;
+  -ms-transition: background-color 800ms linear;
+  transition: background-color 800ms linear;
+}
+
 
 .logo {
   margin: 0 auto;
@@ -956,6 +965,12 @@ html {
 
 .answer_overall {
   padding-left: 55px;
+  border-radius: 5px;
+  -webkit-transition: background-color 800ms linear;
+  -moz-transition: background-color 800ms linear;
+  -o-transition: background-color 800ms linear;
+  -ms-transition: background-color 800ms linear;
+  transition: background-color 800ms linear;
 }
 
 .answer_voting {

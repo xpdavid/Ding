@@ -80,3 +80,20 @@ function subscribeUser(user_id, op, callback) {
         }
     })
 }
+
+/**
+ * Highlight a element, if rollback is true, after two second, it will auto 'dehighlight'.
+ *
+ * @param elementID
+ * @param rollback(optional)
+ */
+function highlight(elementID, rollback) {
+    $('#' + elementID).addClass('highlight');
+    // hightlight 2 second
+    if (rollback) {
+        setTimeout(function(){
+            $('#' + elementID).removeClass('highlight');
+        }, 2000);
+    }
+
+}

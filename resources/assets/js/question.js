@@ -2,25 +2,25 @@
  * function: showComment
  *
  * @param event
- * @param clickObject
  * @param type
  * @param item_id
  * @param base_id
  *
  * description: send post request to get all the replies of the current object
  */
-function showComment(event, clickObject, type, item_id, base_id) {
-    event.preventDefault();
+function showComment(event, type, item_id, base_id) {
+    if (event) {
+        event.preventDefault();
+    }
+    var $link = $('#' + base_id + '_trigger')
+    var clicked = $link.data('clicked');
 
-    $(clickObject).prop('onclick', null);
-    $(clickObject).click(function(e) {
-        e.preventDefault();
-        // display the comment box
-        $('#' + base_id).toggle();
-    });
+    if (!clicked) {
+        // display comment at the first click
+        showCommentPage(base_id, type, item_id, 1);
+        $link.data('clicked', 'true');
+    }
 
-    // display comment at the first page
-    showCommentPage(base_id, type, item_id, 1);
     $('#' + base_id).toggle();
 
 }
@@ -522,6 +522,15 @@ function show_question_subscribe(clickObject, question_id) {
 
             $('#question_subscriber').html(results.numSubscriber);
         });
+    }
+}
+
+//showCommentPage(base_id, type, item_id, page, callback)
+//showComment(event, type, item_id, base_id)
+function show_reply(reply_id, base_id, type, item_id, page) {
+    if (type == 'question') {
+        showComment(null, type, item_id, page);
+        highlight('comment');
     }
 }
 

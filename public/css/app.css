@@ -77,6 +77,10 @@ html {
 .pagination > li > span {
   cursor: pointer; }
 
+.highlight {
+  background-color: #FFF8DC;
+  transition: background-color 800ms linear; }
+
 .logo {
   margin: 0 auto;
   width: 160px;
@@ -771,7 +775,9 @@ html {
   display: none; }
 
 .answer_overall {
-  padding-left: 55px; }
+  padding-left: 55px;
+  border-radius: 5px;
+  transition: background-color 800ms linear; }
 
 .answer_voting {
   clear: left;
