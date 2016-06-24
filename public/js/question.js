@@ -462,7 +462,12 @@ function vote_reply_helper(reply_id, op) {
     });
 }
 
-
+/**
+ * Show conversation for comment
+ *
+ * @param event
+ * @param initial_reply_id
+ */
 function showConversation(event, initial_reply_id) {
     // prevent anchor event
     event.preventDefault();
@@ -491,21 +496,31 @@ function showConversation(event, initial_reply_id) {
     })
 }
 
+/**
+ * Question detail page subscribe button
+ *
+ * @param clickObject
+ * @param question_id
+ */
 function show_question_subscribe(clickObject, question_id) {
     var $button = $(clickObject);
     if ($button.hasClass('btn-success')) {
         // has not subscribed yet
-        subscribeQuestion(question_id, null, function() {
+        subscribeQuestion(question_id, null, function(results) {
             $button.html('Unsubscribe');
             $button.removeClass('btn-success');
             $button.addClass('btn-warning');
+
+            $('#question_subscriber').html(results.numSubscriber);
         });
     } else {
         // has subscribed
-        subscribeQuestion(question_id, 'unsubscribe', function() {
+        subscribeQuestion(question_id, 'unsubscribe', function(results) {
             $button.html('Subscribe');
             $button.removeClass('btn-warning');
             $button.addClass('btn-success');
+
+            $('#question_subscriber').html(results.numSubscriber);
         });
     }
 }

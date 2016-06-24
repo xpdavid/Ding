@@ -70,6 +70,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 - `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
 - `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
 - `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+- `.userProfile_card` : show user profile card (small) (refer to the sample in `question.answer.blade.php`)
 - `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
 - `.space-right-big` : same as above with `margin-right:10px` 
 - `.link_normal` : all `<a>` under this class will display as grey colour. When hover, it will turn to blue.

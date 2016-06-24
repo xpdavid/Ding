@@ -40,9 +40,9 @@ function toggle(id, event) {
 function subscribeTopic(topic_id, op, callback) {
     $.post('/subscribe/topic/' + topic_id, {
         op : op
-    }, function() {
+    }, function(results) {
         if (callback && typeof callback == "function") {
-            callback();
+            callback(results);
         }
     })
 }
@@ -57,9 +57,9 @@ function subscribeTopic(topic_id, op, callback) {
 function subscribeQuestion(question_id, op, callback) {
     $.post('/subscribe/question/' + question_id, {
         op : op
-    }, function() {
+    }, function(results) {
         if (callback && typeof callback == "function") {
-            callback();
+            callback(results);
         }
     })
 }
@@ -74,9 +74,9 @@ function subscribeQuestion(question_id, op, callback) {
 function subscribeUser(user_id, op, callback) {
     $.post('/subscribe/user/' + user_id, {
         op : op
-    }, function() {
+    }, function(results) {
         if (callback && typeof callback == "function") {
-            callback();
+            callback(results);
         }
     })
 }

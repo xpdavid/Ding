@@ -7,10 +7,48 @@ use App\Answer;
 use App\Question;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Symfony\Component\Yaml\Tests\A;
 
 class AnswerController extends Controller
 {
     protected $itemInPage = 8;
+
+    /**
+     * Show specific answer for question
+     *
+     * @param $question_id
+     * @param $answer_id
+     * @return View
+     */
+    public function show($question_id, $answer_id) {
+        $question = Question::findOrFail($question_id);
+        $answer = Answer::findOrFail($answer_id);
+        if ($answer->question->id != $question->id) {
+            // the answer doesn't belong to the question
+            return redirect(action('QuestionController@show', $question_id));
+        }
+
+        // generate also_interest questions
+        $also_interest = [];
+        foreach ($question->topics->shuffle()->take(3) as $topic) {
+            $also_interest = array_merge($also_interest, $topic->questions->take(2)->all());
+        }
+        
+        return view('question.answer', compact('question', 'answer', 'also_interest'));
+        
+    }
+
+    /**
+     * redirect request for /answer/1
+     *
+     * @param $answer_id
+     * @return View
+     */
+    public function redirectShow($answer_id) {
+        $answer = Answer::findOrFail($answer_id);
+
+        return $this->show($answer->question->id, $answer_id);
+    }
 
     /**
      * response ajax request to get all answers

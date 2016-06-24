@@ -135,7 +135,7 @@
                 @endif
             </div>
             <div class="margin-top">
-                <a href="#">270</a> people have subscribed to this question.
+                <span id="question_subscriber">{{ $question->subscribers()->count() }}</span> people have subscribed to this question.
             </div>
             <div class="margin-top">
                 <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">

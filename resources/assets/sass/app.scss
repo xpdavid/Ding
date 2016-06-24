@@ -1202,7 +1202,26 @@ html {
   padding: 18px 9px 0;
 }
 
+// answer page css style
+.answer_moreAnswer {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 30px;
+  margin-top: 15px
+}
 
+.answer_moreAnswer span {
+  position: relative;
+  top: 11px;
+  background-color: #fff;
+  padding: 0 20px
+}
+
+.userProfile_card_content {
+  margin: 0 0 0 52px;
+}
 
 
 

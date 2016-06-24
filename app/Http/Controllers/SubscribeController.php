@@ -21,12 +21,13 @@ class SubscribeController extends Controller
      */
     public function postQuestion($question_id, Request $request) {
         $user = Auth::user();
+        $question = Question::findOrFail($question_id);
 
         if ($request->exists('op') && $request->get('op') == 'unsubscribe') {
             // unsubscribe a question
             $user->subscribe->questions()->detach($question_id);
         } else {
-            $question = Question::findOrFail($question_id);
+
             // you cannot subscribe a question twice
             if (!$user->subscribe->checkHasSubscribed($question_id, 'question')) {
                 $user->subscribe->questions()->save($question);
@@ -34,7 +35,8 @@ class SubscribeController extends Controller
         }
 
         return [
-            'status' => true
+            'status' => true,
+            'numSubscriber' => $question->subscribers()->count()
         ];
 
     }

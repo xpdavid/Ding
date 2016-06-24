@@ -60,7 +60,7 @@ class Question extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subscribers() {
-        return $this->belongsToMany('App\Subscribe');
+        return $this->belongsToMany('App\Subscribe', 'subscribe_question');
     }
 
     /**

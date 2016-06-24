@@ -38,6 +38,8 @@ Route::post('/question/ask', 'QuestionController@ask');
 
 // for answer
 Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
+Route::get('/question/{question_id}/answer/{answer_id}', 'AnswerController@show');
+Route::get('/answer/{answer_id}', 'AnswerController@redirectShow');
 
 // for reply
 Route::post('/reply/reply-list', 'ReplyController@replyList');
