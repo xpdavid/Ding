@@ -51,5 +51,6 @@ elixir(function(mix) {
         .copy(jsPath + '/inbox.js', 'public/js')
         .copy(jsPath + '/profile.js', 'public/js')
         .copy(jsPath + '/question.js', 'public/js')
-        .copy(jsPath + '/topic.js', 'public/js');
+        .copy(jsPath + '/topic.js', 'public/js')
+        .copy(jsPath + '/userCenter.js', 'public/js');
 });

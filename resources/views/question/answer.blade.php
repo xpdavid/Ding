@@ -94,7 +94,7 @@
                         <div>
                             <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
                         </div>
-                        <span class="vote_answer_{{ $answer->id }}_count">{{ $answer->vote_up_users()->count() }}</span>
+                        <span class="vote_answer_{{ $answer->id }}_count">{{ $answer->netVotes }}</span>
                     </button>
                     <button type="button" id="vote_answer_{{ $answer->id }}_down" class="btn btn-primary
                         @if($answer->vote_down_users->contains(Auth::user()->id))
@@ -112,7 +112,7 @@
                 </div>
 
                 <div>
-                    <span class="answer_vote "><span class="vote_answer_{{ $answer->id }}_count">{{ $answer->vote_up_users()->count() }}</span> Vote(s)</span>
+                    <span class="answer_vote "><span class="vote_answer_{{ $answer->id }}_count">{{ $answer->netVotes }}</span> Vote(s)</span>
                 </div>
 
                 <div class="answer_content font-black">
@@ -183,7 +183,7 @@
                                 <div>
                                     <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
                                 </div>
-                                <span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->vote_up_users()->count() }}</span>
+                                <span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->netVotes }}</span>
                             </button>
                             <button type="button" id="vote_answer_{{ $other_answer->id }}_down" class="btn btn-primary
                                 @if($other_answer->vote_down_users->contains(Auth::user()->id))
@@ -201,7 +201,7 @@
                         </div>
 
                         <div>
-                            <span class="answer_vote "><span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->vote_up_users()->count() }}</span> Vote(s)</span>
+                            <span class="answer_vote "><span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->netVotes }}</span> Vote(s)</span>
                         </div>
 
                         <div class="answer_content font-black">

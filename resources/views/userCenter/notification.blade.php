@@ -6,19 +6,19 @@
     <h4 class="font-black">All Notification</h4>
     <hr class="small_hr">
 
-    @foreach($notificationsByDay as $date => $notifications)
-        <div class="notice_day">
-            <h5>{{ $date }}</h5>
-            <div class="notice_dayItem topborder">
-                @foreach($notifications as $notification)
-                    <div>
-                        {!! $notification->renderedContent !!}
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endforeach
+    <div id="notification">
 
-    <button class="btn btn-default notice_button" type="submit">More..</button>
+    </div>
 
+
+    <button class="btn btn-default btn-block" type="button" id="notification_more" onclick="getOneDayNotification()">More..</button>
+
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+    $(function() {
+        getOneDayNotification();
+    });
+</script>
 @endsection
