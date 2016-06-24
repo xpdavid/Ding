@@ -153,6 +153,15 @@ class User extends Authenticatable
     }
 
     /**
+     * A user could have many notifications
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notifications() {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
      * define query scope. similar match $name
      *
      * @param $query

@@ -716,7 +716,7 @@ html {
   padding-top: 5px; }
 
 .notice_dayItem > div {
-  padding-top: 5px; }
+  padding: 8px; }
 
 .notice_button {
   width: 100%; }
@@ -973,6 +973,6 @@ html {
   padding: 0 20px; }
 
 .userProfile_card_content {
-  margin: 0 0 0 64px; }
+  margin: 0 0 0 52px; }
 
 /*# sourceMappingURL=app.css.map */

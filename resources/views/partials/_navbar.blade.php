@@ -15,8 +15,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="navbar_active"><a href="#">Index</a></li>
-                <li><a href="#">Topic</a></li>
-                <li><a href="#">Hightlight</a></li>
+                <li><a href="/topic">Topic</a></li>
+                <li><a href="/question">Hightlight</a></li>
                 <li><a tabindex="0" role="button" id="user_notice">Message</a></li>
             </ul>
 

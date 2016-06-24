@@ -47,7 +47,7 @@
         <!-- bottom panel -->
         <div class="noticeBar_bottomBar">
             <a href="#" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <a href="#" class="float-right">More &gt;&gt;</a>
+            <a href="/notification" class="float-right">More &gt;&gt;</a>
         </div>
 
     </div>

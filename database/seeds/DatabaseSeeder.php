@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserQuestionSeeder::class);
         $this->call(QuestionAnswerVoteSeeder::class);
         $this->call(SubscribeSeeder::class);
+        $this->call(NotificationSeeder::class);
 
         Model::reguard();
     }

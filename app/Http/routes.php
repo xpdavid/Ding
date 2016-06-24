@@ -73,5 +73,8 @@ Route::controller('/reply', 'ReplyController');
 // for subscribe controller
 Route::controller('/subscribe', 'SubscribeController');
 
+// for user center controller
+Route::get('/notification', 'UserCenterController@notification');
+
 // for API controller
 Route::controller('/api', 'APIController');
