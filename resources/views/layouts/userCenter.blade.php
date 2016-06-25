@@ -52,6 +52,7 @@
 
             <div class="sideBar_section noborder">
                 <ul class="sideBar_item">
+                    <li><a href="/topics"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Topics Palace</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> My Edit Answer</a></li>
                 </ul>
             </div>
@@ -88,6 +89,7 @@
 
 {{--userCenter javascript support--}}
 {!! Html::script('js/userCenter.js') !!}
+{!! Html::script('js/question.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}

@@ -14,19 +14,6 @@ class QuestionController extends Controller
 {
 
     /**
-     * Display index page
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index() {
-        $recommends = Question::take(5)->get();
-        $current_day_hot = Question::skip(5)->take(15)->get();
-        $current_month_hot = Question::skip(25)->take(15)->get();
-
-        return view('question.index', compact('recommends', 'current_day_hot', 'current_month_hot'));
-    }
-
-    /**
      * show specific question detail
      *
      * @param $question_id

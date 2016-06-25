@@ -13,25 +13,23 @@
 
 Route::get('/forcelogin/{id}', function($id) {
     Auth::loginUsingId($id);
-    return redirect('/question');
-});
-
-Route::get('/', function () {
-    return view('auth.index');
+    return redirect('/highlight');
 });
 
 // for auth controller
 Route::auth();
 
+// user index controller
+Route::get('/', 'UserCenterController@home');
+Route::post('/home', 'UserCenterController@postHome');
 
-Route::get('/home', 'HomeController@index');
-
+// for highlight controller
+Route::get('/highlight', 'HighlightController@index');
 
 // for answer controller
 Route::post('/question/answers', 'AnswerController@postAnswers');
 
 // for question & answer
-Route::get('/question', 'QuestionController@index');
 Route::get('/question/{question_id}', 'QuestionController@show');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::post('/question/ask', 'QuestionController@ask');

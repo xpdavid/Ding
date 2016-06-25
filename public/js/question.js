@@ -230,7 +230,9 @@ function reply_comment(event, comment_id) {
  * @param element_id
  */
 function show_form(event, element_id) {
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
     $('#' + element_id).show();
 }
 

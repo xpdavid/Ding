@@ -11,7 +11,7 @@
     </div>
 
 
-    <button class="btn btn-default btn-block" type="button" id="notification_more" onclick="getOneDayNotification()">More..</button>
+    <button class="btn btn-default btn-block" type="button" id="notification_more" onclick="getHomeQuestion()">More..</button>
 
 @endsection
 
