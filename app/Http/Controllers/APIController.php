@@ -8,7 +8,6 @@ use App\Question;
 use App\EducationExp;
 use App\Http\Requests;
 use App\Job;
-use App\Topic;
 use Illuminate\Http\Request;
 
 
@@ -40,9 +39,10 @@ class APIController extends Controller
      * @param Request $request
      * @return array
      */
-    public function postAutocomplete(Request $request) {
+    public function postAutocomplete(Request $request)
+    {
         $this->validate($request, [
-           'queries' => 'array'
+            'queries' => 'array'
         ]);
 
         $results = [];
@@ -125,6 +125,7 @@ class APIController extends Controller
         }
 
         return $results;
+    }
 
     /**
      * Get all the organizations
