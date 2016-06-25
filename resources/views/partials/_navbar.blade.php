@@ -14,10 +14,28 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="navbar_active"><a href="#">Index</a></li>
-                <li><a href="/topic">Topic</a></li>
-                <li><a href="/question">Hightlight</a></li>
-                <li><a tabindex="0" role="button" id="user_notice">Message</a></li>
+                    {{--for index button--}}
+                @if(Request::is('/'))
+                    <li class="navbar_active"><a href="/">Index</a></li>
+                @else
+                    <li><a href="/">Index</a></li>
+                @endif
+
+                    {{--for Topic button--}}
+                @if(Request::is('topic'))
+                    <li class="navbar_active"><a href="/topic">Topic</a></li>
+                @else
+                    <li><a href="/topic">Topic</a></li>
+                @endif
+
+                    {{--for Highlight button--}}
+                @if(Request::is('highlight'))
+                    <li class="navbar_active"><a href="/highlight">Highlight</a></li>
+                @else
+                    <li><a href="/highlight">Highlight</a></li>
+                @endif
+
+                <li><a tabindex="0" role="button" id="user_notice" class="navbar_active">Notification</a></li>
             </ul>
 
             <form class="navbar-form navbar-left" role="search">

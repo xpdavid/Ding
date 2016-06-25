@@ -42,7 +42,11 @@
         <div class="col-md-4">
             <div class="sideBar_section">
                 <ul class="sideBar_item">
-                    <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                    @if(Request::is('notification'))
+                        <li class="sideBar_item_active"><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                    @else
+                        <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                    @endif
                     <li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> My Bookmark</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> My subscribe Question</a></li>
