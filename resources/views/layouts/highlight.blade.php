@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=500px, initial-scale=2">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>User Center - Ding</title>
+    <title>Highlights - Ding</title>
 
     <!-- Bootstrap -->
 {!! Html::style('css/bootstrap.min.css') !!}
@@ -35,28 +35,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            @yield('content')
+            @yield('left')
         </div>
 
 
         <div class="col-md-4">
-            <div class="sideBar_section">
-                <ul class="sideBar_item">
-                    <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> My Bookmark</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> My subscribe Question</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Wait for me to Answer <span class="badge">4</span></a></li>
-                </ul>
-            </div>
-
-            <div class="sideBar_section noborder">
-                <ul class="sideBar_item">
-                    <li><a href="/topics"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Topics Palace</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> My Edit Answer</a></li>
-                </ul>
-            </div>
-
+            @yield('right')
             @include('partials._site_copyright')
         </div>
 
@@ -89,9 +73,10 @@
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
 
-{{--userCenter javascript support--}}
-{!! Html::script('js/userCenter.js') !!}
+{{--question javascript support--}}
+{!! Html::script('js/highlight.js') !!}
 {!! Html::script('js/question.js') !!}
+{!! Html::script('js/userCenter.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}

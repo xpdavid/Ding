@@ -25,6 +25,7 @@ Route::post('/home', 'UserCenterController@postHome');
 
 // for highlight controller
 Route::get('/highlight', 'HighlightController@index');
+Route::controller('/highlight', 'HighlightController');
 
 // for answer controller
 Route::post('/question/answers', 'AnswerController@postAnswers');
