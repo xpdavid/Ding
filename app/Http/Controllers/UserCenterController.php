@@ -30,7 +30,7 @@ class UserCenterController extends Controller
         $day = $request->get('day') ? $request->get('day') : 1;
         // group by date and sort by date
         $notificationsByDay = $notifications->groupBy(function ($notification) {
-            return Carbon::parse($notification->created_at)->format('d/m/Y');
+            return Carbon::parse($notification->updated_at)->format('d/m/Y');
         })->sort()->reverse()->forPage($day, 1);
         
         // format result
@@ -40,7 +40,8 @@ class UserCenterController extends Controller
             $partials = [];
             foreach ($notifications as $notification) {
                 array_push($partials, [
-                    'content' => $notification->renderedContent
+                    'content' => $notification->renderedContent,
+                    'type' => $notification->type
                 ]);
             }
             $results['items'] = $partials;

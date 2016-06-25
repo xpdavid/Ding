@@ -4,7 +4,7 @@
 function getOneDayNotification() {
     $('#notification_more').prop('disabled', true);
     getOneDayNotificationHelper(function(results) {
-        if (results.date) {
+        if (!results.date) {
             $('#notification_more').html('No More Already');
         } else {
             $('#notification_more').prop('disabled', false);

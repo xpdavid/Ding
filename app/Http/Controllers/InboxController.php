@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notification;
 use Auth;
 use App\User;
 use App\Message;
@@ -61,15 +62,16 @@ class InboxController extends Controller
         $conversation->users()->save($current_user);
         // current user send the message
         $current_user->sentMessages()->save($message);
-
-        // participators have many unread message
+        
         // participators have many conversation
         $users_id = $request->get('users');
         foreach ($users_id as $user_id) {
             if ($user_id == $current_user->id) continue;
             $user = User::findOrFail($user_id);
-            $message->unreadUsers()->save($user);
             $conversation->users()->save($user);
+
+            // send notification to participators with type 11 notification
+            Notification::notification($user, 11, $current_user->id, $message->id);
         }
 
 
@@ -124,6 +126,13 @@ class InboxController extends Controller
         // set relationship to current conversation
         $conversation->messages()->save($message);
 
+        // notification to participators
+        foreach ($conversation->users as $user) {
+            if ($current_user->id == $user->id) continue;
+            // notify participators (type 11 notification)
+            Notification::notification($user, 11, $current_user->id, $message->id);
+        }
+
         return redirect(route('inbox.show', $id));
     }
 
@@ -142,11 +151,6 @@ class InboxController extends Controller
         if ($current_user->isInConversation($conversation)) {
             // detach the user from the conversation
             $conversation->users()->detach($current_user->id);
-            
-            // detach the user from all the unread message of the current conversation
-            foreach ($conversation->messages as $message) {
-                $message->unreadUsers()->detach($current_user->id);
-            }
 
             // return sucess message
             return [

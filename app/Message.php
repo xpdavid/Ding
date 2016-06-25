@@ -24,14 +24,6 @@ class Message extends Model
     }
 
     /**
-     * Define eloquent relationship to User.
-     * A message has unread users.
-     */
-    public function unreadUsers() {
-        return $this->belongsToMany('App\User', 'unreadMessage_user');
-    }
-
-    /**
      * Define eloquent relationship to User
      * A message is sent by a user
      */

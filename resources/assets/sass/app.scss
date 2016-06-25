@@ -460,6 +460,7 @@ html {
 
 .userMessage_ContentItemBottomLeft {
   float: left;
+  max-width: 450px;
 }
 
 .userMessage_verticalLine {
@@ -820,6 +821,10 @@ html {
   border-top: 1px solid #ccc;
 }
 
+.navbar_noticeBarPopover {
+  position: fixed;
+}
+
 .noticeBar_content {
   overflow-y: auto;
   height: 300px;
@@ -830,7 +835,6 @@ html {
   border-bottom: 1px solid #eee;
   background: -webkit-linear-gradient(left, #fff 0, rgba(255, 255, 255, .5) 1%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0) 94%, rgba(255, 255, 255, .5) 99%, #fff 100%);
   background: linear-gradient(to right, #fff 0, rgba(255, 255, 255, .5) 1%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0) 94%, rgba(255, 255, 255, .5) 99%, #fff 100%);
-  display: block;
   padding: 8px 2px 8px 2px;
 }
 

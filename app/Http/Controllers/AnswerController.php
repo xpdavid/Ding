@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notification;
 use Auth;
 use App\Reply;
 use App\Answer;
@@ -124,6 +125,15 @@ class AnswerController extends Controller
         $user->answers()->save($answer);
         $question->answers()->save($answer);
 
+        // notify all the subscribe user
+        foreach ($question->subscribers as $subscriber) {
+            $owner = $subscriber->owner;
+            // cannot be self-notified
+            if ($owner->id == $user->id) continue;
+            // type 2 notification, user answer question
+            Notification::notification($owner, 2, $user->id, $answer->id);
+        }
+
         // return success data
         return [
             'id' => $answer->id,
@@ -162,9 +172,19 @@ class AnswerController extends Controller
         switch ($request->get('op')) {
             case 'up' :
                 $answer->vote_up_users()->save($user);
+                // send notification (type 7 notification)
+                // vote by yourself will not send notification to you
+                if ($user->id != $answer->owner->id) {
+                    Notification::notification($answer->owner, 7, $user->id, $answer_id);
+                }
                 break;
             case 'down' :
                 $answer->vote_down_users()->save($user);
+                // vote by yourself will not send notification to you
+                // vote down notification (type 8 notification)
+                if ($user->id != $answer->owner->id) {
+                    Notification::notification($answer->owner, 8, $user->id, $answer_id);
+                }
                 break;
         }
 

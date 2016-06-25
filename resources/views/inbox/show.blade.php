@@ -63,7 +63,7 @@
                     </div>
                     <div>
                         @foreach($conversation->users as $user)
-                            <img src="/upload/user/sample_icon.png" alt="..." class="img-rounded">
+                            <img src="/upload/user/sample_icon.png" alt="..." class="img-rounded avatar-img">
                         @endforeach
                     </div>
                 </div>

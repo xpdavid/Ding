@@ -53,3 +53,10 @@ $factory->define(App\Reply::class, function (Faker\Generator $faker) {
         'reply' => nl2br($faker->text()),
     ];
 });
+
+// define message factory
+$factory->define(App\Message::class, function (Faker\Generator $faker) {
+    return [
+        'content' => nl2br($faker->text()),
+    ];
+});

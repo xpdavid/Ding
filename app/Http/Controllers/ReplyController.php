@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notification;
 use Auth;
 use App\User;
 use App\Reply;
@@ -178,6 +179,8 @@ class ReplyController extends Controller
         if($request->exists('reply_to_reply_id')) {
             $to_reply = Reply::findOrFail($request->get('reply_to_reply_id'));
             $to_reply->receive_replies()->save($comment);
+            // send notification to the users (type 6 notification)
+            Notification::notification($to_reply->owner, 6, $user->id, $comment->id);
         }
 
         // response ajax request
@@ -214,6 +217,10 @@ class ReplyController extends Controller
         switch ($request->get('op')) {
             case 'up' :
                 $reply->vote_up_users()->save($user);
+
+                // notification to owner
+                // type 9 notification
+                Notification::notification($reply->owner, 9, $user->id, $reply->id);
                 break;
         }
 

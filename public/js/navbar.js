@@ -2,27 +2,88 @@
  * this is a jquery function which will be execute when page is load
  */
 $(function() {
-    navbar_triggerMessageBar();
     navbar_searching();
+    navbar_triggerNoticeBar();
 });
 
-
 /**
- * function: navbar_triggerMessageBar
+ * function: navbar_triggerNoticeBar
  * description: when page load, running js to set trigger to the menu button 'message' so that it will
  * display content when click;
  */
-function navbar_triggerMessageBar() {
-    $('#user_notice').popover({
-        animation: true,
-        container: 'body',
-        content: $('#contentForNoticeBar').html(), // need use ajax function next time
-        html: true,
-        placement: 'bottom',
+var navbar_noticeBarPage = 1;
+function navbar_triggerNoticeBar() {
+    // ajax get notification content
+    navbar_noticeBarAJAX(function(results) {
+        $('#user_notice').popover({
+            animation: true,
+            container: 'body',
+            content: $('#contentForNoticeBar').html(), // need use ajax function next time
+            html: true,
+            placement: 'bottom',
+            template : '<div class="popover navbar_noticeBarPopover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+        });
+
+
+        $('#contentForNoticeBar').empty(); // in order for the js trigger function well.
     });
 
-    $('#contentForNoticeBar').empty(); // in order for the js trigger function well.
 }
+
+/**
+ * function: navbar_noticBarAJAX
+ * description: ajax to get content for notice bar
+ */
+function navbar_noticeBarAJAX(callback) {
+    // ajax get notification content
+    $.post('/notification', {
+        page: navbar_noticeBarPage
+    }, function (results) {
+        if (results.items) {
+            var items = results.items;
+            // * Render the notification according to the template
+            // * 1.	{{User}} invite you to answer question {{Question}}
+            // * 2.	{{User}} answer the question {{Question}}
+            // * 3.	{{User}} @ you in his/her {{answer}}
+            // * 4.	{{User}} @ you in his/her {{question}}
+            // * 5.	{{User}} @ you in his/her {{reply}}
+            // * 6.	{{User}} reply your {{Reply}}
+            // * 7.	{{User}} vote up your answers {{answer}}
+            // * 8.	Someone vote down your answers {{answer}}
+            // * 9.	{{User}} vote up your reply {{Reply}}
+            // * 10.	{{User}} subscribe you.
+            // * 11.	{{User}} send message to you
+            var notice_notice = items.filter(function (item) {
+                return $.inArray(item.type, [1, 2, 3, 4, 5, 6]) != -1;
+            });
+
+            var notice_user = items.filter(function (item) {
+                return $.inArray(item.type, [10, 11]) != -1;
+            });
+
+            var notice_thanks = items.filter(function (item) {
+                return $.inArray(item.type, [7, 8, 9]) != -1;
+            });
+
+            $.each(notice_notice, function (index, item) {
+                $('#notice_notice').append('<div>' + item.content + '</div>');
+            });
+
+            $.each(notice_user, function (index, item) {
+                $('#notice_user').append('<div>' + item.content + '</div>');
+            });
+
+            $.each(notice_thanks, function (index, item) {
+                $('#notice_thanks').append('<div>' + item.content + '</div>');
+            });
+        }
+
+        if (callback && typeof callback == 'function') {
+            callback(results);
+        }
+    });
+}
+
 
 
 /**

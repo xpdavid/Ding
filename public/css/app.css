@@ -358,7 +358,8 @@ html {
   font-weight: 400; }
 
 .userMessage_ContentItemBottomLeft {
-  float: left; }
+  float: left;
+  max-width: 450px; }
 
 .userMessage_verticalLine {
   padding: 0 3px;
@@ -662,6 +663,9 @@ html {
   padding-top: 8px;
   border-top: 1px solid #ccc; }
 
+.navbar_noticeBarPopover {
+  position: fixed; }
+
 .noticeBar_content {
   overflow-y: auto;
   height: 300px;
@@ -670,7 +674,6 @@ html {
 .noticeBar_content > div > div {
   border-bottom: 1px solid #eee;
   background: linear-gradient(to right, #fff 0, rgba(255, 255, 255, 0.5) 1%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0) 94%, rgba(255, 255, 255, 0.5) 99%, #fff 100%);
-  display: block;
   padding: 8px 2px 8px 2px; }
 
 .sideBar_section {
@@ -721,9 +724,6 @@ html {
 
 .notice_dayItem > div {
   padding: 8px; }
-
-.notice_button {
-  width: 100%; }
 
 .bookmark_list_item {
   padding: 5px; }
