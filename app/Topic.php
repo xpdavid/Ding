@@ -39,6 +39,36 @@ class Topic extends Model
     }
 
     /**
+     * Defined eloquent relationship : A topic can be the specialization of many students
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function specialist() {
+        return $this->belongsToMany('App\User', 'user_specialization', 'user_id', 'topic_id');
+    }
+
+    /**
+     * find the topic in database
+     * if it does not exsit, then create it and return
+     *
+     * @param $topicName
+     * @return Topic
+     */
+    public static function findOrCreate($topicName) {
+        $candidates = Topic::where('name', $topicName);
+        if($candidates->count() > 0) {
+            return $candidates->first();
+        } else {
+            $newTopic = Topic::create([
+                'name' => $topicName,
+                'description' => ''
+            ]);
+            return $newTopic;
+        }
+    }
+
+
+    /**
      * A topic has it parent topics
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -82,5 +112,20 @@ class Topic extends Model
                 ->from('topic_subtopic')
                 ->whereRaw('topic_subtopic.subtopic_id = topics.id');
         });
+    }
+
+    /**
+     * Get all the distinct designations in the database
+     *
+     * @return array
+     */
+    public static function getTopicList() {
+        $topic_list = topic::select('name')
+            ->distinct()
+            ->get()
+            ->lists('name')
+            ->all();
+
+        return $topic_list;
     }
 }

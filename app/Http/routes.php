@@ -65,6 +65,7 @@ Route::post('/people/delete', 'PeopleController@destroy');
 // for message controller
 Route::resource('/inbox', 'InboxController');
 
+
 // for reply controller
 Route::get('/reply/{reply_id}', 'ReplyController@show');
 Route::controller('/reply', 'ReplyController');
@@ -78,3 +79,6 @@ Route::post('/notification', 'UserCenterController@postNotification');
 
 // for API controller
 Route::controller('/api', 'APIController');
+
+// for user setting
+Route::resource('/settings', 'SettingsController');

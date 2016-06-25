@@ -176,4 +176,36 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * Defined eloquent relationship : A student could have many jobs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jobs() {
+        return $this->belongsToMany('App\Job', 'user_job', 'user_id', 'job_id');
+    }    
+
+    /**
+     * Defined eloquent relationship : A student could have many specializationss
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function specializations() {
+        return $this->belongsToMany('App\Topic', 'user_specialization', 'user_id', 'topic_id');
+    }    
+
+    /** Define eloquent relationship between User and Settings
+    *   A user has one setting
+    */
+    public function settings() {
+        return $this->hasOne('App\Settings');
+    }
+
+    /** Define eloquent relationship between User and Blocking
+    *   A user may block many other users
+    */
+    public function blockings() {
+        return $this->hasMany('App\Blocking');
+    }
+
 }
