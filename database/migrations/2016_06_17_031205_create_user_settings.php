@@ -34,7 +34,7 @@ class CreateUserSettings extends Migration
             $table->boolean('email_subscriptions')->default(true);
             $table->boolean('display_email')->default(false);
             $table->boolean('display_facebook')->default(false);
-            $table->string('profile_pic_name')->default('');
+            $table->integer('profile_pic_id');
             $table->timestamps();
         });
     }

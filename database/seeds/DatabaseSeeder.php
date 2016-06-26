@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionAnswerVoteSeeder::class);
         $this->call(SubscribeSeeder::class);
         $this->call(NotificationSeeder::class);
+        $this->call(InboxSeeder::class);
+        $this->call(ImageSeeder::class);
 
         Model::reguard();
     }

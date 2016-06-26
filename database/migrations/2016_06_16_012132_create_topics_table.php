@@ -18,6 +18,8 @@ class CreateTopicsTable extends Migration
             $table->string('name');
             $table->string('description');
 
+            $table->integer('avatar_img_id');
+
             $table->timestamps();
         });
     }

@@ -11,6 +11,12 @@
 |
 */
 
+// usage inside a laravel route
+Route::get('/foo', function()
+{
+    dd(is_writeable('images/img-1_150x150.png'));
+});
+
 Route::get('/forcelogin/{id}', function($id) {
     Auth::loginUsingId($id);
     return redirect('/highlight');
@@ -82,3 +88,8 @@ Route::controller('/api', 'APIController');
 
 // for user setting
 Route::resource('/settings', 'SettingsController');
+
+
+// for dynamic image system
+Route::get('/image/{reference_id}/{width}/{height}', 'ImageController@image');
+

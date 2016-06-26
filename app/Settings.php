@@ -25,7 +25,7 @@ class Settings extends Model
 		'email_subscriptions',
 		'display_facebook', //whether facebook account is displayed
 		'display_email', // whether email account is displayed
-		'profile_pic_name'
+		'profile_pic_id'
 	];
 
 	/** Define eloquent relationship between User and Settings

@@ -15,7 +15,7 @@ class QuestionAnswerVoteSeeder extends Seeder
     public function run()
     {
         foreach (Answer::all() as $answer) {
-            $numUser = rand(3, 50);
+            $numUser = rand(3, 5);
             foreach (User::all()->random($numUser) as $user) {
                 if (rand(0, 1) == 1) {
                     $answer->vote_up_users()->save($user);

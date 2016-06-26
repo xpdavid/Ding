@@ -13,7 +13,7 @@ class NotificationSeeder extends Seeder
     {
         // random create notification for user
         foreach (App\User::all() as $user) {
-            $bound_i = rand(5, 20);
+            $bound_i = rand(5, 8);
             for($i = 0; $i < $bound_i; $i++) {
                 $user->notifications()->save(App\Notification::createFromType(rand(1, 11), rand(1, 50), rand(1, 50)));
             }
