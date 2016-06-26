@@ -43,13 +43,13 @@
             <div class="sideBar_section">
                 <ul class="sideBar_item">
                     @if(Request::is('notification'))
-                        <li class="sideBar_item_active"><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                        <li class="sideBar_item_active"><a href="/notification"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
                     @else
-                        <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                        <li><a href="/notification"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
                     @endif
                     <li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> My Bookmark</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> My subscribe Question</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> My subscribed Questions</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Wait for me to Answer <span class="badge">4</span></a></li>
                 </ul>
             </div>
