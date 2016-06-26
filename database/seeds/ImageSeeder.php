@@ -25,8 +25,9 @@ class ImageSeeder extends Seeder
         // associate each user and topic with img
         $i = 1;
         foreach (App\User::all() as $user) {
-            $user->settings->profile_pic_id = $i;
-            $user->save();
+            $settings = $user->settings;
+            $settings->profile_pic_id = $i;
+            $settings->save();
             $i++;
         }
 

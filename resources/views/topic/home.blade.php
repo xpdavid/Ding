@@ -59,7 +59,7 @@
             <div class="topic_home_topic_list">
                 @foreach($other_topics as $other_topic)
                     <div class="topic_home_topic_list_item clearfix">
-                        <img class="topics_item_image float-left" src="..">
+                        <img class="topics_item_image float-left" src="{{ DImage($other_topic->avatar_img_id, 40, 40) }}" alt="{{ $other_topic->name }}">
                         <div class="topic_home_topic_list_item_text clearfix">
                             <div class="float-left">
                                 <strong><a href="/topic/{{ $other_topic->id }}">{{ $other_topic->name }}</a></strong>

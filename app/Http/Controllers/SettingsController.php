@@ -13,6 +13,16 @@ use App\Http\Requests;
 class SettingsController extends Controller
 {
     /**
+     * SettingsController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

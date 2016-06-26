@@ -4,7 +4,7 @@
     <div class="media margin-top topic_item">
         <div class="media-left">
             <a href="#">
-                <img class="media-object topic_avatar" src="..." alt="...">
+                <img class="media-object topic_avatar" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
             </a>
         </div>
         <div class="media-body">

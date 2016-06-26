@@ -12,6 +12,16 @@ class HighlightController extends Controller
     protected $itemInPage = 5;
 
     /**
+     * HighlightController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display highlight page
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -52,7 +62,7 @@ class HighlightController extends Controller
             foreach ($question->topics as $topic) {
                 array_push($topics, [
                     'name' => $topic->name,
-                    'id' => $topic->id
+                    'id' => $topic->id,
                 ]);
             }
             // check if the user has voted the answer
@@ -61,6 +71,7 @@ class HighlightController extends Controller
             array_push($results, [
                 'id' => $question->id,
                 'topics' => $topics,
+                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
                 'answer' => [
                     'id' => $answer->id,
                     'owner' => [
@@ -124,6 +135,7 @@ class HighlightController extends Controller
             array_push($results, [
                 'id' => $question->id,
                 'topics' => $topics,
+                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
                 'answer' => [
                     'id' => $answer->id,
                     'owner' => [

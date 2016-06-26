@@ -16,6 +16,16 @@ class AnswerController extends Controller
     protected $itemInPage = 8;
 
     /**
+     * AnswerController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Show specific answer for question
      *
      * @param $question_id
@@ -85,6 +95,7 @@ class AnswerController extends Controller
                 'user_name' => $answer->owner->name,
                 'user_id' => $answer->owner->id,
                 'user_bio' => $answer->owner->bio,
+                'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
                 'answer' => $answer->answer,
                 'created_at' => $answer->createdAtHumanReadable,
                 'votes' => $answer->netVotes,

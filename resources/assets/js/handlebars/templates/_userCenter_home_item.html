@@ -3,7 +3,7 @@
 {{#each questions}}
 <div class="questions_questionLayout">
     <div class="answer_voting">
-        <img src="image/sample_icon.png" alt="" class="img-rounded avatar-img">
+        <img src="{{topic_pic}}" class="img-rounded avatar-img">
         <button type="button"
                 class="btn btn-primary questions_sideButton"
                 onclick="userHome_vote_button_trigger(this, 'vote_buttons_answer_{{answer.id}}')"

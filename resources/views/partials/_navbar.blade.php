@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Brand</a>
+            <a class="navbar-brand" href="#">Ding</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -16,26 +16,26 @@
             <ul class="nav navbar-nav">
                     {{--for index button--}}
                 @if(Request::is('/'))
-                    <li class="navbar_active"><a href="/">Index</a></li>
+                    <li class="navbar_active"><a href="/"><strong>Index</strong></a></li>
                 @else
                     <li><a href="/">Index</a></li>
                 @endif
 
                     {{--for Topic button--}}
                 @if(Request::is('topic'))
-                    <li class="navbar_active"><a href="/topic">Topic</a></li>
+                    <li class="navbar_active"><a href="/topic"><strong>Topic</strong></a></li>
                 @else
                     <li><a href="/topic">Topic</a></li>
                 @endif
 
                     {{--for Highlight button--}}
                 @if(Request::is('highlight'))
-                    <li class="navbar_active"><a href="/highlight">Highlight</a></li>
+                    <li class="navbar_active"><a href="/highlight"><strong>Highlight</strong></a></li>
                 @else
                     <li><a href="/highlight">Highlight</a></li>
                 @endif
 
-                <li><a tabindex="0" role="button" id="user_notice" class="navbar_active">Notification</a></li>
+                <li><a tabindex="0" role="button" id="user_notice">Notification</a></li>
             </ul>
 
             <form class="navbar-form navbar-left" role="search">
@@ -51,11 +51,16 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle navbar_portraitBox" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="navbar_portrait" src="xp.jpeg" alt="肖朴"> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle navbar_portraitBox" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <img class="navbar_portrait"
+                             src="{{ DImage(Auth::user()->settings->profile_pic_id, 25,25) }}"
+                             alt="{{ Auth::user()->name }}">
+                        <span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
+                        <li><a href="/people/{{ Auth::user()->url_name }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
+                        <li><a href="/inbox"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
+                        <li><a href="/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
                     </ul>

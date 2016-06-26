@@ -13,6 +13,16 @@ use App\Http\Requests;
 class SubscribeController extends Controller
 {
     /**
+     * SubscribeController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Response ajax request to subscribe/unsubscribe a question
      *
      * @param $question_id

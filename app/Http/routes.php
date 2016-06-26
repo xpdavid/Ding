@@ -10,13 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
-// usage inside a laravel route
-Route::get('/foo', function()
-{
-    dd(is_writeable('images/img-1_150x150.png'));
-});
-
 Route::get('/forcelogin/{id}', function($id) {
     Auth::loginUsingId($id);
     return redirect('/highlight');

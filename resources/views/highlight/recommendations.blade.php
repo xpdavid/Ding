@@ -3,6 +3,7 @@
 @section('left')
     <div class="clearfix">
         <a href="#" class="float-left"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Editor Recommendations</a>
+        <a href="/highlight" class="float-right">&lt;&lt; Back</a>
     </div>
     <hr class="small_hr">
 

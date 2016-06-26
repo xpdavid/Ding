@@ -93,7 +93,7 @@
             <hr>
             <div class="write_answer_userInfo clearfix">
                 <div class="float-left"><strong>{{ Auth::user()->name }}</strong>, {{ Auth::user()->bio }}</div>
-                <img class="float-right" src="image/sample_icon.png" alt="">
+                <img class="float-right" src="{{ DImage(Auth::user()->settings->profile_pic_id, 25, 25) }}" alt="{{ Auth::user()->name }}">
             </div>
             <form action="/question/{{ $question->id }}/answer"
                   class="clearfix margin-top" method="POST"
@@ -140,11 +140,9 @@
                 <span id="question_subscriber">{{ $question->subscribers()->count() }}</span> people have subscribed to this question.
             </div>
             <div class="margin-top">
-                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
-                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
-                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
-                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
-                <img src="image/sample_icon.png" alt="..." class="img-rounded avatar-img">
+                @foreach($question->subscribers as $subscriber)
+                    <img src="{{ DImage($subscriber->owner->settings->profile_pic_id, 25, 25) }}" alt="{{$subscriber->owner->name}}" class="img-rounded">
+                @endforeach
             </div>
         </div>
     </div>

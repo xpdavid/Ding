@@ -16,6 +16,16 @@ class ReplyController extends Controller
 {
     protected $itemInPage = 8; // define how many item will be display in each page
 
+    /**
+     * ReplyController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function show($reply_id) {
         $reply = Reply::findOrFail($reply_id);
         $for_item = $reply->for_item;
@@ -65,7 +75,8 @@ class ReplyController extends Controller
                     $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
                     $from = [
                         'user_id' => $reply->owner->id,
-                        'user_name' => $reply->owner->name
+                        'user_name' => $reply->owner->name,
+                        'user_pic' => DImage($reply->owner->settings->profile_pic_id, 25, 25),
                     ];
 
                     // whether the reply is to someone
@@ -106,7 +117,8 @@ class ReplyController extends Controller
                     $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
                     $from = [
                         'user_id' => $reply->owner->id,
-                        'user_name' => $reply->owner->name
+                        'user_name' => $reply->owner->name,
+                        'user_pic' => DImage($reply->owner->settings->profile_pic_id, 25, 25),
                     ];
 
                     // whether the reply is to someone

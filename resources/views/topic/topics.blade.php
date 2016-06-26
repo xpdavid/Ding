@@ -42,7 +42,7 @@
                     <div class="media topics_item">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object topics_item_image" data-src="..." alt="Generic placeholder image" src="image/sample_icon.png">
+                                <img class="media-object topics_item_image" src="{{ DImage($popular_topic->avatar_img_id, 40, 40) }}" alt="{{ $popular_topic->name }}">
                             </a>
                         </div>
                         <div class="media-body topics_more">

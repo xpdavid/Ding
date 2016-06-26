@@ -51,25 +51,11 @@ function getMoreTopics() {
 
             $.each(results, function(index, topic) {
                 if (index % 2 == 0) {
-                    var left = results[index];
-                    var right = results[index + 1];
-                    var left_content = left ? {
-                        id : left.id,
-                        name : left.name,
-                        description : left.description,
-                        numSubtopic : left.numSubtopic,
-                        isSubscribed : left.isSubscribed,
-                    } : {};
-                    var right_content = right ? {
-                        id : right.id,
-                        name : right.name,
-                        description : right.description,
-                        numSubtopic : right.numSubtopic,
-                        isSubscribed : right.isSubscribed,
-                    } : {};
+                    var left = results[index] ? results[index] : {};
+                    var right = results[index + 1] ? results[index + 1] : {};
                     processResults.push({
-                        left : left_content,
-                        right : right_content
+                        left : left,
+                        right : right
                     });
                 } else {
                     // do nothing

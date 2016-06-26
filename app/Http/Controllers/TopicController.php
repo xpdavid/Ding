@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 class TopicController extends Controller
 {
     protected $itemInPage = 12; // define how many item will be display in each page
+    /**
+     * TopicController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * show user custom topic page
@@ -177,7 +186,8 @@ class TopicController extends Controller
                 'name' => $subtopic->name,
                 'description' => $subtopic->description,
                 'numSubtopic' => $subtopic->subtopics()->count(),
-                'isSubscribed' => $user->subscribe->checkHasSubscribed($subtopic->id, 'topic')
+                'isSubscribed' => $user->subscribe->checkHasSubscribed($subtopic->id, 'topic'),
+                'pic' => DImage($subtopic->avatar_img_id, 40, 40),
             ]);
         }
 
@@ -187,7 +197,8 @@ class TopicController extends Controller
             'name' => $topic->name,
             'description' => $topic->description,
             'numSubtopic' => $topic->subtopics()->count(),
-            'isSubscribed' => $user->subscribe->checkHasSubscribed($topic->id, 'topic')
+            'isSubscribed' => $user->subscribe->checkHasSubscribed($topic->id, 'topic'),
+            'pic' => DImage($subtopic->avatar_img_id, 40, 40),
         ]);
 
         return $results;

@@ -12,6 +12,15 @@ use App\Http\Requests;
 
 class QuestionController extends Controller
 {
+    /**
+     * QuestionController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * show specific question detail

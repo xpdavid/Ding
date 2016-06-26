@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="userHome_profileHeaderLeft">
-                    <img src="xp_l.jpeg" alt="..." class="img-rounded">
+                    <img src="{{ DImage($user->settings->profile_pic_id, 100, 100) }}" alt="{{ $user->name }}" class="img-rounded">
                     <a class="btn btn-default btn-xs" href="/people/edit" role="button">Edit My Profile</a>
                 </div>
 
@@ -80,7 +80,7 @@
                   </span>
                     </p>
                     <div class="userHome_selfIntro">
-                        I am a happy programmer!
+                        {{ $user->self_intro }}
                     </div>
                 </div>
             </div>
@@ -95,11 +95,11 @@
             <a href="#" class="glyphicon glyphicon-menu-hamburger"></a>
             <a href="#">
                 My Question
-                <span>0</span>
+                <span>{{ $user->questions()->count() }}</span>
             </a>
             <a href="#">
                 My Answers
-                <span>0</span>
+                <span>{{ $user->answers()->count() }}</span>
             </a>
             <a href="#">
                 My Bookmarks

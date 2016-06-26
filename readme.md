@@ -50,6 +50,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 
 - `<body>` : this element is defined `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
 - `html: width: 100%; width: 100vw;` : to prevent scrollbar from repositioning web page
+- `body: font` : set font to `google font api font: 'Open Sans', sans-serif`
 - `.glyphicon` : this class is from `bootstrap` css and we override it as `margin-right:5px` because we always use put a icon in front of text.
 - `.noneDisplay ` : this class is to set display to `none`, pretty useful together with jquery toggle function
 - `.clearfix` : this class is to expend parent element when you have floating `div`

@@ -7,6 +7,10 @@ html {
   width: 100%; width: 100vw;
 }
 
+body {
+  font-family: 'helvetica' !important;
+}
+
 .glyphicon {
   margin-right: 5px;
 }
@@ -112,7 +116,7 @@ html {
   margin: 0 auto;
   width: 160px;
   height: 74px;
-  background: url(../ding-logo.png) no-repeat;
+  background: url(/static/images/ding-logo.png) no-repeat;
   background-size: contain
 }
 
@@ -371,10 +375,8 @@ html {
 }
 
 .userHome_followTopicItems a {
-  isplay: block;
-  height: 34px;
-  width: 34px;
-  border-radius: 3px
+  margin: 2px;
+  display: inline-block;
 }
 
 .userHome_followTopicItems a img{
@@ -1100,8 +1102,8 @@ html {
 }
 
 .topics_item_image {
-  width:50px;
-  height:50px;
+  width:40px;
+  height:40px;
   margin-top: 4px;
 }
 

@@ -12,6 +12,15 @@ use Illuminate\Http\Request;
 class UserCenterController extends Controller
 {
     protected $homeItemInPage = 15;
+    /**
+     * UserCenterController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Show notification page
@@ -59,6 +68,7 @@ class UserCenterController extends Controller
             array_push($results, [
                 'id' => $question->id,
                 'topics' => $topics,
+                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
                 'answer' => [
                     'id' => $answer->id,
                     'owner' => [

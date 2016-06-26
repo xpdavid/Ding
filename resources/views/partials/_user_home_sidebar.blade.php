@@ -1,14 +1,14 @@
 <div class="userHome_follows">
     <a href="#">
-        <span>Follows</span>
+        <span> Follower </span>
         <br>
-        <strong> 3 </strong>
+        <strong> {{ Auth::user()->subscribers()->count() }} </strong>
         <label> People <label>
     </a>
     <a href="#" class="userHome_followsMore">
-        <span>Followed</span>
+        <span> Follow </span>
         <br>
-        <strong> 12 </strong>
+        <strong> {{ Auth::user()->subscribe->users()->count() }} </strong>
         <label> People <label>
     </a>
 </div>
@@ -18,18 +18,18 @@
         Follows
     </div>
     <div class="userHome_followTopicItems">
-        <a href="#">
-            <img src="topic.png" class="img-rounded"/>
-        </a>
-        <a href="#">
-            <img src="topic.png" class="img-rounded"/>
-        </a>
+        @foreach(Auth::user()->subscribe->users as $user)
+            <a href="/people/{{ $user->url_name }}">
+                <img src="{{ DImage($user->settings->profile_pic_id, 25, 25) }}" class="img-rounded"
+                 alt="{{ $user->name }}"/>
+            </a>
+        @endforeach
     </div>
 </div>
 
 <div class="userHome_sideBarSection noborder">
     <div class="userHome_sideBarSectionInner">
-        This page has been viewed <span class="userHome_number"> 100 </span> times.
+        This page has been viewed <span class="userHome_number"> 32 </span> times.
     </div>
 </div>
 
