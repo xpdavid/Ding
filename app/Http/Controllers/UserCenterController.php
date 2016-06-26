@@ -28,7 +28,14 @@ class UserCenterController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function home() {
-        return view('userCenter.home');
+        $user = Auth::user();
+        $settings = $user->settings;
+        $answers = $user->answers;
+        $voteCount = 0;
+        foreach ($answers as $answer){
+            $voteCount = $voteCount + count($answer->vote_up_users) + count($answer->vote_down_users);
+        }
+        return view('userCenter.home', compact('user', 'settings', 'voteCount'));
     }
 
     public function postHome(Request $request) {

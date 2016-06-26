@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             // custom user information
             $table->string('bio')->nullable();
             $table->string('self_intro')->nullable();
-            $table->enum('sex', ['Male', 'Female', 'Secret'])->nullable();
+            $table->enum('sex', ['Male', 'Female', 'Secret'])->default('Secret');
             $table->string('url_name');
 
             $table->rememberToken();
