@@ -75,6 +75,13 @@ Route::controller('/subscribe', 'SubscribeController');
 // for user center controller
 Route::get('/notification', 'UserCenterController@notification');
 Route::post('/notification', 'UserCenterController@postNotification');
+Route::get('/subscribed', 'UserCenterController@subscribed');
+Route::post('/subscribed', 'UserCenterController@postSubscribed');
+Route::get('/invitation', 'UserCenterController@invitation');
+Route::post('/invitation', 'UserCenterController@postInvitation');
+
+// for notification
+Route::post('/notification/operation', 'NotificationController@operation');
 
 // for API controller
 Route::controller('/api', 'APIController');

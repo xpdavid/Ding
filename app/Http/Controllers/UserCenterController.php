@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Question;
-use App\Subscribe;
 use Auth;
+use App\User;
+use App\Question;
 use Carbon\Carbon;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -40,6 +40,120 @@ class UserCenterController extends Controller
         return view('userCenter.home');
     }
 
+    /**
+     * Show user subscribed question
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function subscribed() {
+        $count = Auth::user()->subscribe->questions()->count();
+        return view('userCenter.subscribed', compact('count'));
+    }
+
+    /**
+     * Show user received invitation
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function invitation() {
+        $count = Auth::user()->notifications()->where('type', 1)->count();
+        return view('userCenter.invitation', compact('count'));
+    }
+
+    /**
+     * Response ajax request to get invitation
+     *
+     * @return array
+     */
+    public function postInvitation(Request $request) {
+        $user = Auth::user();
+        // type 1 is invitation to answer question
+        $results = [];
+
+        // get page parameters
+        $page = $request->get('page') ? $request->get('page') : 1;
+        $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->homeItemInPage;
+
+        foreach ($user->notifications()->where('type', 1)->where('has_read', false)
+                     ->get()->forPage($page, $itemInPage)
+                 as $invitation) {
+            $inviter = User::find($invitation->subject_id);
+            $question = Question::find($invitation->object_id);
+            array_push($results, [
+                'inviter' => [
+                    'name' => $inviter->name,
+                    'id' => $inviter->id,
+                ],
+                'question' => [
+                    'title' => $question->title,
+                    'id' => $question->id,
+                    'numAnswer' => $question->answers()->count(),
+                    'numSubscriber' => $question->subscribers()->count(),
+                ],
+                'id' => $invitation->id,
+            ]);
+        }
+
+        // determine whether the results is empty
+        if(empty($results)) {
+            return [
+                'questions' => $results,
+                'status' => false
+            ];
+        } else {
+            return [
+                'questions' => $results,
+                'status' => true
+            ];
+        }
+    }
+
+
+
+    /**
+     * Response ajax request to get subscribed questions
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function postSubscribed(Request $request) {
+        $user = Auth::user();
+
+        // get page parameters
+        $page = $request->get('page') ? $request->get('page') : 1;
+        $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->homeItemInPage;
+        
+        $results = [];
+        foreach ($user->subscribe->questions->forPage($page, $itemInPage) as $question) {
+            array_push($results, [
+                'id' => $question->id,
+                'title' => $question->title,
+                'numAnswer' => $question->answers()->count(),
+                'visit' => 13,
+                'numSubscriber' => $question->subscribers()->count(),
+            ]);
+        }
+
+        // determine whether the results is empty
+        if(empty($results)) {
+            return [
+                'questions' => $results,
+                'status' => false
+            ];
+        } else {
+            return [
+                'questions' => $results,
+                'status' => true
+            ];
+        }
+    }
+
+    /**
+     * Response ajax request to get custom questions
+     *
+     * @param Request $request
+     * @return array
+     */
     public function postHome(Request $request) {
         $user = Auth::user();
         $page = $request->get('page') ? $request->get('page') : 1;
@@ -86,7 +200,19 @@ class UserCenterController extends Controller
                 'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
             ]);
         }
-        return $results;
+        // determine whether the results is empty
+        if(empty($results)) {
+            return [
+                'questions' => $results,
+                'status' => false
+            ];
+        } else {
+            return [
+                'questions' => $results,
+                'status' => true
+            ];
+        }
+
     }
 
     /**
@@ -102,7 +228,7 @@ class UserCenterController extends Controller
         // group by date and sort by date
         $notificationsByDay = $notifications->groupBy(function ($notification) {
             return Carbon::parse($notification->updated_at)->format('d/m/Y');
-        })->sort()->reverse()->forPage($day, 1);
+        })->sort()->forPage($day, 1);
         
         // format result
         $results = [];
@@ -116,6 +242,12 @@ class UserCenterController extends Controller
                 ]);
             }
             $results['items'] = $partials;
+        }
+        // determine whether the results is empty
+        if(empty($results)) {
+            $results['status'] = false;
+        } else {
+            $results['status'] = true;
         }
 
         return $results;

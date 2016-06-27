@@ -128,6 +128,10 @@ body {
   color: #666;
 }
 
+.font-greyLight {
+  color: #999;
+}
+
 .marginAuto {
   margin: 0 auto !important;
 }
@@ -1211,6 +1215,23 @@ body {
   margin: 0 0 0 52px;
 }
 
+// user center subscribed question
+.userCenter_subscribed_visit {
+  float: left;
+  padding: 2px;
+  color: #259;
+  height: 44px;
+  width: 55px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 4px;
+  background: #eff6fa;
+}
+
+.userCenter_invitation_body {
+  margin-right: 60px;
+  display: block;
+}
 
 
 

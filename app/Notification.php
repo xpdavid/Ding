@@ -160,4 +160,13 @@ class Notification extends Model
 
         return $content;
     }
+
+    /**
+     * Mark notification as read.
+     *
+     */
+    public function read() {
+        $this->has_read = true;
+        $this->save();
+    }
 }

@@ -1,0 +1,23 @@
+<!--this is the template for userCenter invite question item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each questions}}
+<div class="media">
+    <div class="float-right">
+        <button class="btn btn-default" onclick="ignoreInvitation('{{id}}')">Ignore</button>
+    </div>
+    <div class="userCenter_invitation_body">
+        <h4 class="media-heading"><a href="/question/{{question.id}}">{{question.title}}</a></h4>
+        <span class="font-greyLight">
+            <a href="/people/{{inviter.url_name}}">
+                {{inviter.name}}
+            </a> invites you
+            •
+            {{question.numAnswer}} Answers
+            •
+            <span id="subscribe_count_{{id}}">{{question.numSubscriber}}</span> Subscriber
+        </span>
+
+    </div>
+
+</div>
+{{/each}}

@@ -11,14 +11,14 @@
     </div>
 
 
-    <button class="btn btn-default btn-block" type="button" id="notification_more" onclick="getHomeQuestion()">More..</button>
+    <button class="btn btn-default btn-block" type="button" id="notification_more" onclick="genericGet('notification');">More..</button>
 
 @endsection
 
 @section('javascript')
 <script type="text/javascript">
     $(function() {
-        getOneDayNotification();
+        genericGet('notification');
     });
 </script>
 @endsection

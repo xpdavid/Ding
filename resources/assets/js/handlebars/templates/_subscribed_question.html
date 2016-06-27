@@ -1,0 +1,27 @@
+<!--this is the template for userCenter subscribed question item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each questions}}
+<div class="media">
+    <div class="media-left">
+        <div class="userCenter_subscribed_visit">
+            <strong class="text-center">{{visit}}</strong>
+            <div class="text-center">Visit</div>
+        </div>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading"><a href="#">{{title}}</a></h4>
+        <span class="font-greyLight">
+            <a href="#"
+               class="font-greyLight"
+               onclick="userHome_subscribe_question(event, 'subscribe_text_{{id}}', '{{id}}', 'subscribe_count_{{id}}')"
+            >
+                <span id="subscribe_text_{{id}}" class="subscribed">Unsubscribe</span>
+            </a>
+            •
+            {{numAnswer}} Answers
+            •
+            <span id="subscribe_count_{{id}}">{{numSubscriber}}</span> Subscriber
+        </span>
+    </div>
+</div>
+{{/each}}

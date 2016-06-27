@@ -84,6 +84,24 @@ function subscribeUser(user_id, op, callback) {
 }
 
 /**
+ * AJAX send operation to server
+ *
+ * @param notification_id
+ * @param op
+ * @param callback
+ */
+function notificationOperation(notification_id, op, callback) {
+    $.post('/notification/operation', {
+        op : op,
+        id : notification_id
+    }, function(results) {
+        if (callback && typeof callback == "function") {
+            callback(results);
+        }
+    })
+}
+
+/**
  * Highlight a element, if rollback is true, after two second, it will auto 'dehighlight'.
  *
  * @param elementID

@@ -43,14 +43,34 @@
             <div class="sideBar_section">
                 <ul class="sideBar_item">
                     @if(Request::is('notification'))
-                        <li class="sideBar_item_active"><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                        <li class="sideBar_item_active"><a href="/notification"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
                     @else
-                        <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
+                        <li><a href="/notification"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
                     @endif
-                    <li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> My Bookmark</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> My subscribe Question</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Wait for me to Answer <span class="badge">4</span></a></li>
+
+                    @if(Request::is('draft'))
+                        <li class="sideBar_item_active"><a href="/draft"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
+                    @else
+                        <li><a href="/draft"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
+                    @endif
+
+                    @if(Request::is('bookmark'))
+                        <li class="sideBar_item_active"><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Bookmark</a></li>
+                    @else
+                        <li><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Bookmark</a></li>
+                    @endif
+
+                    @if(Request::is('subscribed'))
+                        <li class="sideBar_item_active"><a href="/subscribed"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Subscribed Questions</a></li>
+                    @else
+                        <li><a href="/subscribed"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Subscribed Questions</a></li>
+                    @endif
+
+                    @if(Request::is('invitation'))
+                        <li class="sideBar_item_active"><a href="/invitation"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Invitaion</a></li>
+                    @else
+                        <li><a href="/invitation"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Invitaion</a></li>
+                    @endif
                 </ul>
             </div>
 
