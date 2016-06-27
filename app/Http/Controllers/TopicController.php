@@ -91,8 +91,13 @@ class TopicController extends Controller
         $subtopics = $topic->subtopics;
 
         $parent_tree_array = [];
-        $this->generateParentTopicTree($topic, [], $parent_tree_array);
-        $parent_tree = $this->renderParentTopicTree($parent_tree_array);
+        if (!$this->generateParentTopicTree($topic, [], $parent_tree_array)) {
+            // generate tree fail, abort
+            abort(500);
+        } else {
+            $parent_tree = $this->renderParentTopicTree($parent_tree_array);
+        }
+
 
         return view('topic.organization', compact('topic', 'parent_topics', 'subtopics', 'parent_tree'));
     }
@@ -198,7 +203,7 @@ class TopicController extends Controller
             'description' => $topic->description,
             'numSubtopic' => $topic->subtopics()->count(),
             'isSubscribed' => $user->subscribe->checkHasSubscribed($topic->id, 'topic'),
-            'pic' => DImage($subtopic->avatar_img_id, 40, 40),
+            'pic' => DImage($topic->avatar_img_id, 40, 40),
         ]);
 
         return $results;
@@ -224,6 +229,13 @@ class TopicController extends Controller
                 $topic->parent_topics()->detach($parent_topic_id);
 
                 $topic->parent_topics()->attach($parent_topic_id);
+
+                // validation the assignment
+                $results = [];
+                if (!$this->generateParentTopicTree($topic, [], $results)) {
+                    // generate tree fail, the current assignment is invalid
+                    $topic->parent_topics()->detach($parent_topic_id);
+                }
             }
 
         }
@@ -239,6 +251,13 @@ class TopicController extends Controller
                 $topic->subtopics()->detach($subtopic_id);
 
                 $topic->subtopics()->attach($subtopic_id);
+
+                // validation the assignment
+                $results = [];
+                if (!$this->generateParentTopicTree($topic, [], $results)) {
+                    // generate tree fail, the current assignment is invalid
+                    $topic->subtopics()->detach($subtopic_id);
+                }
             }
         }
 
@@ -265,8 +284,14 @@ class TopicController extends Controller
      * @param Topic $topic
      * @param $current_result
      * @param &$results
+     *
+     * @return mixed
      */
     private function generateParentTopicTree(Topic $topic, $current_result, &$results) {
+        if ($this->generateParentTopicTreeHelper($topic, $current_result)) {
+            // we have already visit the node, impossible for DAG, thus break.
+            return false;
+        }
         array_push($current_result, [
             'id' => $topic->id,
             'name' => $topic->name,
@@ -275,9 +300,30 @@ class TopicController extends Controller
             array_push($results, $current_result);
         } else {
             foreach ($topic->parent_topics as $parent_topic) {
-                $this->generateParentTopicTree($parent_topic, $current_result, $results);
+                $flag = $this->generateParentTopicTree($parent_topic, $current_result, $results);
+                if (!$flag) {
+                    // the previous recursion fail, we also fail
+                    return false;
+                }
             }
         }
+        return true;
+    }
+
+    /**
+     * Helper function check if topic is in current_results
+     *
+     * @param Topic $topic
+     * @param $current_result
+     * @return bool
+     */
+    private function generateParentTopicTreeHelper(Topic $topic, $current_result) {
+        foreach ($current_result as $item) {
+            if( $topic->id == $item['id']) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

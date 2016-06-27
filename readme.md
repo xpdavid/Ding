@@ -44,6 +44,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 5. form validator [Github](https://github.com/1000hz/bootstrap-validator)
 6. select2 (tag selector) [Github](https://github.com/select2/select2/releases)
 7. handlebars (javascript template engine) [Index](http://handlebarsjs.com)
+8. intervention\mage (laravel image system) [Index](http://image.intervention.io) (Please run `composer update` to get this plugin)
 
 
 ### There are several helper function you can use in the main.css file
@@ -78,6 +79,17 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 - `.margin-top` : set `margin-top` to `8px`;
 
 ##### Please update this when you have other helper css class added
+
+
+## Dynamics Image System Manual
+The `images` table has 5 columns `id` `reference_id` `path` `width` `height`.
+
+- To save an image.
+	- move the image to the folder `images/` (not `public` folder). Create a image instance (Image::create()) and save. Please set the `reference_id` equal to `id` so that we could distinct it as original image.
+	- 
+- To get an image.
+	- using this `url` (put it in the `src` field) : `/image/{reference_id}/{width}/{height}`, the system will automatically detect if the original image fit to this resolution. If not, it will create a new one by using `Intervention\Image`. You don't have to worry about the new one. Next time, using same `url`, the system will automatically find the one that fit the provided resolution.
+	- There are helper function in laravel help you generate this url. (Please run `composer dump-autoload`, the helper function is in file `app/Support/Dimage.php`) The function `Dimage($reference_id, $width, $height)`, which have global scope will, return the url.
 
 
 ## Milestone 1
