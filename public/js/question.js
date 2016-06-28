@@ -67,7 +67,7 @@ function showCommentPage(base_id, type, item_id, page, callback) {
             $('#' + base_id + '_content').html(template(processResults));
 
             // update nav bar
-            $('#' + base_id + '_nav').html(compileCommentPageNav(page, results.pages, base_id, type, item_id));
+            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, item_id, 'showCommentPage'));
 
             // check callback
             if(callback && typeof callback == "function"){
@@ -89,14 +89,15 @@ function showCommentPage(base_id, type, item_id, page, callback) {
  * @param base_id
  * @param type
  * @param item_id
+ * @param funcName (base_id, type, item_id, page, callback)
  * @returns {*}
  */
-function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
+function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
     // generate prev link
     var prev = {};
     if (currPage > 1) {
         var prevPage = currPage - 1;
-        prev.onclick = "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + prevPage + ")";
+        prev.onclick = funcName + "('" + base_id + "','" + type + "'," + item_id + "," + prevPage + ")";
     } else {
         prev.class = "disabled";
     }
@@ -105,7 +106,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
     var next = {};
     if (currPage < numPages) {
         var nextPage = currPage + 1;
-        next.onclick = "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + nextPage + ")";
+        next.onclick = funcName + "('" + base_id + "','" + type + "'," + item_id + "," + nextPage + ")";
     } else {
         next.class = "disabled";
     }
@@ -118,7 +119,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
         for(i = 1; i <= numPages; i++) {
             className = (i == currPage) ? 'active' : '';
             pages.push({
-                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                 name : i,
                 class : className
             });
@@ -129,7 +130,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
             for(i = 1; i <= 5; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                     name : i,
                     class : className
                 });
@@ -141,14 +142,14 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
             });
             // push last page
             pages.push({
-                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
                 name : numPages
             });
         } else if (numPages - currPage <=5) {
             // the current page is within last 5 page
             // push first page
             pages.push({
-                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
                 name : 1
             });
             // push '...' element
@@ -160,7 +161,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
             for(i = numPages - 4; i <= numPages; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                     name : i,
                     class : className
                 });
@@ -168,7 +169,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
         } else {
             // push the first page
             pages.push({
-                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
                 name : 1
             });
             // push '...' element
@@ -181,7 +182,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
             for(i = currPage - 1; i <= currPage + 1; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
                     name : i,
                     class : className
                 });
@@ -194,7 +195,7 @@ function compileCommentPageNav(currPage, numPages, base_id, type, item_id) {
             });
             // push last page
             pages.push({
-                onclick : "showCommentPage('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
                 name : numPages
             });
 
@@ -544,6 +545,10 @@ function show_question_subscribe(clickObject, question_id) {
  * @param page
  */
 function highlight_reply(reply_id, base_id, type, item_id, page) {
+    // all the parameters should not be empty
+    if (reply_id == '') {
+        return ;
+    }
     var $link = $('#' + base_id + '_trigger');
     showCommentPage(base_id, type, item_id, page, function() {
         $('#' + base_id).toggle();
@@ -552,6 +557,119 @@ function highlight_reply(reply_id, base_id, type, item_id, page) {
         highlight('reply_' + reply_id, true);
     });
 }
+
+/**
+ * Bookmark a item
+ *
+ * @param type
+ * @param item_id
+ * @param event
+ */
+var bookmark_to_type = null;
+var bookmark_to_id = null;
+function bookmark(type, item_id, event) {
+    if (event) {
+        event.preventDefault();
+    }
+    bookmark_to_type = type;
+    bookmark_to_id = item_id;
+    $('#bookmark_modal').modal('show');
+    bookmark_helper();
+}
+
+/**
+ * Send ajax call to show all bookmarks in the modal
+ */
+function bookmark_helper(callback) {
+    $.post('/bookmark', {
+        itemInPage : 1000,
+        current_type : bookmark_to_type,
+        current_id : bookmark_to_id
+    }, function(results) {
+        if (results.status) {
+            // compile template
+            var template = Handlebars.templates['_bookmark_modal_item.html'];
+            var processResults = {
+                bookmarks : results.data
+            };
+            // send data
+            $('#bookmark_modal_list').html(template(processResults));
+
+            // show modal
+            $('#bookmark_modal').modal('show');
+        } else {
+            var $bookmarkModalListEmpty = $('#bookmark_modal_list_empty');
+            $bookmarkModalListEmpty.click(function() {
+                $('a[href="#bookmark_create"]').tab('show');
+            });
+            $bookmarkModalListEmpty.show();
+        }
+        if(callback && typeof callback == "function") {
+            callback();
+        }
+    })
+}
+
+/**
+ * Create new bookmark
+ */
+function bookmark_create() {
+    var $bookmarkNewName = $('#bookmark_new_name');
+    if ($bookmarkNewName.val() == "") {
+        $bookmarkNewName.focus();
+        return ;
+    }
+    $.post('/bookmark/create', {
+        name : $bookmarkNewName.val(),
+        description : $('#bookmark_new_description').val(),
+        isPublic : $('input[name=bookmark_new_public]:checked').val()
+    }, function(results) {
+        bookmark_helper(function() {
+            $('a[href="#bookmark_add"]').tab('show');
+        });
+        // clear content
+        $bookmarkNewName.val('');
+        $('#bookmark_new_description').val('');
+        $('input[name=bookmark_new_public]:checked').val('');
+    });
+}
+
+/**
+ * Bookmark/debookmark the item according to the bookmark_to_type bookmark_to_id
+ * @param bookmark_id
+ * @param callback
+ */
+function bookmark_op(bookmark_id, callback) {
+    /**
+     * Process server response
+     * @param results
+     */
+    function processResult(results) {
+        $('#bookmark_modal_' + bookmark_id + '_numSubscriber').html(results.numSubscriber);
+        $('#bookmark_modal_' + bookmark_id + '_numAnswer').html(results.numAnswer);
+        $('#bookmark_modal_' + bookmark_id + '_numQuestion').html(results.numQuestion);
+        $('#bookmark_modal_' + bookmark_id + '_isIn').toggle(results.isIn);
+    }
+    var request = {
+        id : bookmark_id,
+        item_type : bookmark_to_type,
+        item_id : bookmark_to_id
+    };
+    if ($('#bookmark_modal_' + bookmark_id + '_isIn:visible').length == 0) {
+        // add the item
+        request.op = 'add';
+    } else {
+        // remove the item
+        request.op = 'remove';
+    }
+    $.post('/bookmark/operation', request, function(results) {
+        processResult(results);
+        if (callback && typeof callback == "function") {
+            callback(results);
+        }
+    });
+}
+
 
 
 

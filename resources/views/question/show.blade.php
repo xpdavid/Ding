@@ -30,7 +30,7 @@
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 Comment (<span id="question_comment_{{ $question->id }}_replies_count">{{ $question->replies->count() }}</span>)
             </a>
-            <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+            <a href="#" onclick="bookmark('question', '{{ $question->id }}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
             <a href="#"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>Invite Friends</a>
         </div>
 
@@ -163,7 +163,6 @@
         // onload event then load answers
         $(function() {
             getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers', function() {
-                //show_reply(reply_id, base_id, type, item_id, page)
                 highlight_reply('{{ $highlight['reply_id'] }}',
                         '{{ $highlight['base_id'] }}',
                         '{{ $highlight['type'] }}',

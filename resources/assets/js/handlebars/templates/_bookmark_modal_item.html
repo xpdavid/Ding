@@ -1,0 +1,21 @@
+<!--this is the template for bookmark item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each bookmarks}}
+<div class="bookmark_modal_item" onclick="bookmark_op('{{id}}')" id="bookmark_modal_{{id}}">
+    <h4>{{name}}</h4>
+    <span class="font-greyLight">
+        <span id="bookmark_modal_{{id}}_numQuestion">{{numQuestion}}</span> Questions •
+        <span id="bookmark_modal_{{id}}_numAnswer">{{numAnswer}}</span> Answers •
+        <span id="bookmark_modal_{{id}}_numSubscriber">{{numSubscriber}}</span> Subscribers
+    </span>
+    {{#if isIn}}
+        <span class="glyphicon glyphicon-ok float-right bookmark_modal_item_in"
+              id="bookmark_modal_{{id}}_isIn">
+        </span>
+    {{^}}
+        <span class="glyphicon glyphicon-ok float-right bookmark_modal_item_in noneDisplay"
+          id="bookmark_modal_{{id}}_isIn">
+        </span>
+    {{/if}}
+</div>
+{{/each}}

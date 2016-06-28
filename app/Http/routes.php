@@ -55,11 +55,18 @@ Route::post('/topic/{topic_id}/update', 'TopicController@update');
 Route::get('/topic/{topic_id}/organization', 'TopicController@organization');
 Route::post('/topic/questions', 'TopicController@getQuestions');
 
+// for bookmark
+Route::get('/people/{url_name}/bookmark', [ 'as' => 'people.bookmark', 'uses' => 'BookmarkController@show']);
+Route::post('/bookmark', 'BookmarkController@postBookmark');
+Route::post('/bookmark/create', 'BookmarkController@create');
+Route::post('/bookmark/operation', 'BookmarkController@operation');
+
 // for user controller
 Route::get('/people/edit', 'PeopleController@edit');
 Route::get('/people/{url_name}', 'PeopleController@show');
 Route::post('/people/update', 'PeopleController@update');
 Route::post('/people/delete', 'PeopleController@destroy');
+
 
 // for message controller
 Route::resource('/inbox', 'InboxController');

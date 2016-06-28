@@ -70,9 +70,12 @@
 
 {{--profile javascript support--}}
 {!! Html::script('js/profile.js') !!}
+{!! Html::script('js/question.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}
+
+@yield('javascript')
 
 </body>
 </html>

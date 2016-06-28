@@ -443,4 +443,40 @@ function generateItemUI(id, title, deleteAction) {
     return $content;
 }
 
+/**
+ * Show bookmark page
+ *
+ * @param base_id
+ * @param type
+ * @param item_id
+ * @param page
+ * @param callback
+ */
+function showBookmarkPage(base_id, type, item_id, page, callback) {
+    $.post('/bookmark', {
+        id : item_id,
+        page : page
+    }, function(results) {
+        if (results.status) {
+            // compile template
+            var template = Handlebars.templates['_bookmark_item.html'];
+            var processResults = {
+                bookmarks : results.data
+            };
+            
+            // send data
+            $('#' + base_id + '_content').html(template(processResults));
+
+            // update nav bar
+            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, item_id, 'showBookmarkPage'));
+
+            // check callback
+            if(callback && typeof callback == "function"){
+                callback();
+            }
+        } else {
+
+        }
+    });
+}
 

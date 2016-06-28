@@ -134,6 +134,15 @@ class User extends Authenticatable
         return $this->hasOne('App\Subscribe');
     }
 
+    /**
+     * A user created many bookmarks
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function bookmarks() {
+        return $this->hasMany('App\Bookmark');
+    }
+
 
     /**
      * A user is subscribed by many users' subscribe

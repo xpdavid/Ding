@@ -64,6 +64,15 @@ class Question extends Model
     }
 
     /**
+     * A question may belongs to many bookmarks
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bookmarks() {
+        return $this->belongsToMany('App\Bookmark');
+    }
+
+    /**
      * Get the excerpt of the question detail
      *
      * @return string

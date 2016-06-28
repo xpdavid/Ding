@@ -30,12 +30,8 @@ class PeopleController extends Controller
     public function show($url_name)
     {
         $user = User::findUrlName($url_name);
-        $topics = $user->specializations;
-        $settings = $user->settings;
-        $educationExp = $user->educationExps;
-        $job = $user->jobs;
 
-        return view('profile.index', compact('user', 'settings', 'educationExp', 'job'));
+        return view('profile.index', compact('user'));
     }
 
 

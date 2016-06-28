@@ -43,6 +43,10 @@ class Subscribe extends Model
         return $this->belongsToMany('App\User', 'subscribe_user');
     }
 
+    public function bookmarks() {
+        return $this->belongsToMany('App\Bookmark', 'subscribe_bookmark');
+    }
+
     /**
      * Check has subscribed to a specific model
      *

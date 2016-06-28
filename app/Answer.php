@@ -64,6 +64,15 @@ class Answer extends Model
     }
 
     /**
+     * A answer may belongs to many bookmarks
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bookmarks() {
+        return $this->belongsToMany('App\Bookmark', 'bookmark_answer');
+    }
+
+    /**
      * Display human readable created at date
      *
      * @return string

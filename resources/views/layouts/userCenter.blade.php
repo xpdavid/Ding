@@ -54,12 +54,6 @@
                         <li><a href="/draft"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
                     @endif
 
-                    @if(Request::is('bookmark'))
-                        <li class="sideBar_item_active"><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Bookmark</a></li>
-                    @else
-                        <li><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> Bookmark</a></li>
-                    @endif
-
                     @if(Request::is('subscribed'))
                         <li class="sideBar_item_active"><a href="/subscribed"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Subscribed Questions</a></li>
                     @else
@@ -89,6 +83,8 @@
 </div> <!--For contianer-->
 
 @include('partials._ask_question_model')
+
+@include('partials._bookmark_model')
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}

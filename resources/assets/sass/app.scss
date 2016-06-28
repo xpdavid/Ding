@@ -224,17 +224,12 @@ body {
   border-bottom: 1px solid #EEE
 }
 
-.userHome_layoutDivHead a {
-  color: #666;
+.userHome_layoutDivContent {
+  padding: 0 14px;
 }
 
-.userHome_layoutDivHead span {
-  display: inline-block;
-  float: right;
-}
-
-.userHome_layoutDivContentItem {
-
+.userHome_layoutItem {
+  padding: 12px 0;
 }
 
 
@@ -307,6 +302,14 @@ body {
   font-size: 16px;
   display: table;
   width: 100%;
+}
+
+.userHome_profileNavbar_active {
+  color: #222;
+  border: solid #ddd;
+  border-width: 0 1px;
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 2px #f0f0f0 inset;
 }
 
 .userHome_profileNavbar a {
@@ -1233,5 +1236,34 @@ body {
   display: block;
 }
 
+// for bookmark model
+.bookmark_modal_list {
+  max-height: 300px;
+  overflow: auto;
+  margin: 10px;
+}
+
+.bookmark_modal_item {
+  display: block;
+  margin: 8px;
+  border: solid 1px #DDD;
+  padding: 8px 12px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.bookmark_modal_item_in {
+  font-size: 30px;
+  color: #8ab923;
+  position: absolute;
+  top: 22px;
+  right: 10px;
+}
+
+.bookmark_modal_item:hover {
+  background-color: #F5F5F5
+}
 
 
