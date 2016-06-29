@@ -129,3 +129,83 @@ function bookmark_subscribe_click(clickObject, bookmark_id) {
         });
     }
 }
+
+/**
+ * Show the bookmark_edit form
+ */
+function bookmark_edit(event) {
+    if (event) {
+        event.preventDefault();
+    }
+    $('#bookmark_edit').toggle();
+    $('#bookmark_show').toggle();
+}
+
+/**
+ * Send AJAX to save bookmark update
+ * @param bookmark_id
+ */
+function bookmark_save_change(bookmark_id) {
+    $.post('/bookmark/' + bookmark_id + '/update', {
+        name : $('#bookmark_name').val(),
+        description : $('#bookmark_description').val(),
+        is_public : $('input[name=bookmark_is_public]:checked').val()
+    }, function(results) {
+        if (!results.status) {
+            swal("Update Fail", "There are subscribers of your bookmark!", "error");
+        } else {
+            $('#bookmark_show_name').val(results.name);
+            $('#bookmark_show_description').val(results.description);
+            if (results.is_public == "true") {
+                $('#bookmark_private_label').hide();
+                $('#bookmark_public').prop('checked', true);
+            } else {
+                $('#bookmark_private_label').show();
+                $('#bookmark_private').prop('checked', true);
+            }
+            bookmark_edit();
+        }
+
+    });
+}
+
+/**
+ * Send ajax request to delete bookmark
+ * @param bookmark_id
+ * @param event
+ */
+function bookmark_delete(bookmark_id, event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    swal({
+        title: "Are you sure?",
+        text: "You will cannot recover the bookmark!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        closeOnConfirm: false
+    }, function(){
+        $.post('/bookmark/' + bookmark_id + '/delete', {
+
+        }, function(results) {
+            if (results.status) {
+                swal({
+                    title: "Deleted",
+                    text: "Your bookmark has been deleted",
+                    type: "success",
+                    showCancelButton: false,
+                    confirmButtonText: "OK!",
+                    closeOnConfirm: false
+                }, function(){
+                    window.location = results.redirect;
+                });
+            } else {
+                swal("Delete Fail", "There are subscribers of your bookmark!", "error");
+            }
+        });
+    });
+
+}

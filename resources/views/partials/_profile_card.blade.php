@@ -98,12 +98,12 @@
             <span>{{ $user->answers()->count() }}</span>
         </a>
         @if(Route::current()->getName() == 'people.bookmark')
-            <a href="#" class="userHome_profileNavbar_active">
+            <a href="{{ route('people.bookmark', $user->url_name) }}" class="userHome_profileNavbar_active">
                 My Bookmarks
                 <span>{{ $user->bookmarks()->count() }}</span>
             </a>
         @else
-            <a href="#">
+            <a href="{{ route('people.bookmark', $user->url_name) }}">
                 My Bookmarks
                 <span>{{ $user->bookmarks()->count() }}</span>
             </a>

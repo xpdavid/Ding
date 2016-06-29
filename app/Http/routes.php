@@ -63,6 +63,8 @@ Route::post('/bookmark/operation', 'BookmarkController@operation');
 Route::post('/bookmark/hot', 'BookmarkController@hot');
 Route::get('/bookmark/{id}', 'BookmarkController@show');
 Route::post('/bookmark/{id}', 'BookmarkController@postShow');
+Route::post('/bookmark/{id}/update', 'BookmarkController@update');
+Route::post('/bookmark/{id}/delete', 'BookmarkController@delete');
 
 // for user controller
 Route::get('/people/edit', 'PeopleController@edit');

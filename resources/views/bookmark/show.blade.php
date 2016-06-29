@@ -8,8 +8,44 @@
     </div>
 
     <div class="clearfix">
-        <h3 class="font-black">{{ $bookmark->name }}</h3>
-        <p>{{ $bookmark->description }}</p>
+        <div id="bookmark_show">
+            <h3 class="font-black" id="bookmark_show_name">{{ $bookmark->name }}
+                    <span class="label label-info {{ $bookmark->is_public ? 'noneDisplay' : '' }}" id="bookmark_private_label">Private</span>
+            </h3>
+            <p id="bookmark_show_description">{{ $bookmark->description }}</p>
+        </div>
+        @if ($bookmark->owner->id == Auth::user()->id)
+            <div id="bookmark_edit" class="clearfix noneDisplay margin-top">
+                <div class="form-group">
+                    <label for="bookmark_name">Bookmark Name <span class="font-greyLight">(Your bookmark subscriber may be disturbed by the change of name)</span></label>
+                    <input type="email" value="{{ $bookmark->name }}" class="form-control" id="bookmark_name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="bookmark_description">Bookmark Description</label>
+                    <textarea class="form-control" id="bookmark_description" placeholder="Description" rows="3">{{ $bookmark->description }}</textarea>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" value="true" name="bookmark_is_public" id="bookmark_public" {{ $bookmark->is_public ? 'checked' : '' }}> Pulbic
+                                    <span class="font-greyLight">
+                                        You can change to private if there is not subscribers
+                                    </span>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" value="false" name="bookmark_is_public" id="bookmark_private" {{ $bookmark->is_public ? '' : 'checked' }}> Private
+                                    <span class="font-greyLight">
+                                        You can only view the bookmark by yourself
+                                    </span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary float-right"  onclick="bookmark_save_change('{{ $bookmark->id }}')">Edit</button>
+                <button type="button" class="btn btn-link float-right" onclick="bookmark_edit()">Cancel</button>
+            </div>
+        @endif
+
+
         <div class="horizontal_item">
             <a href="#"
                id="bookmark_comment_{{ $bookmark->id }}_trigger"
@@ -17,7 +53,11 @@
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 Comment (<span id="bookmark_comment_{{ $bookmark->id }}_replies_count">{{ $bookmark->replies()->count() }}</span>)
             </a>
-            <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
+            @if ($bookmark->owner->id == Auth::user()->id)
+                <a href="#" onclick="bookmark_edit(event)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Edit</a>
+                <a href="#" onclick="bookmark_delete('{{ $bookmark->id }}', event)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>Delete</a>
+            @endif
+            <a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>Report</a>
         </div>
         <div class="comment_box" id="bookmark_comment_{{ $bookmark->id }}">
             <div class="comment_spike">

@@ -147,6 +147,70 @@ class BookmarkController extends Controller
         $user->bookmarks()->save($bookmark);
     }
 
+    /**
+     * Answer ajax call to update a bookmark
+     *
+     * @param $bookmark_id
+     * @param Request $request
+     * @return array|void
+     */
+    public function update($bookmark_id, Request $request) {
+        $bookmark = Bookmark::findOrFail($bookmark_id);
+        if ($bookmark->owner->id != Auth::user()->id) {
+            // the bookmark is not owner by the user
+            return ;
+        }
+        if (!$request->get('is_public') && $bookmark->subscribers()->count() > 0) {
+            // you cannot change to private if it has subscribers
+            return [
+                'status' => false
+            ];
+        }
+        $bookmark->update([
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'is_public' => $request->get('is_public')
+        ]);
+        return [
+            'id' => $bookmark->id,
+            'name' => $bookmark->name,
+            'description' => $bookmark->description,
+            'is_public' => $bookmark->is_public,
+            'status' => true,
+        ];
+    }
+
+    /**
+     * AJAX delete bookmark
+     *
+     * @param $bookmark_id
+     * @return array
+     */
+    public function delete($bookmark_id) {
+        $user = Auth::user();
+        $bookmark = Bookmark::findOrFail($bookmark_id);
+        if ($bookmark->owner->id != Auth::user()->id) {
+            // the bookmark is not owner by the user
+            return [
+                'status' => false
+            ];
+        }
+        // we can't delete it if it has subscribers
+        if ($bookmark->subscribers()->count() > 0) {
+            return [
+                'status' => false
+            ];
+        }
+        // detach all relationship first
+        $bookmark->questions()->detach();
+        $bookmark->answers()->detach();
+        $bookmark->delete();
+        return [
+            'status' => true,
+            'redirect' => route('people.bookmark', $user->url_name)
+        ];
+    }
+
 
     /**
      * Ajax add a item in to the bookmark
@@ -159,6 +223,11 @@ class BookmarkController extends Controller
             'op' => 'required'
         ]);
         $bookmark = Bookmark::findOrFail($request->get('id'));
+        // security check, only can the owner make change
+        if ($bookmark->owner->id != Auth::user()->id) {
+            // terminate as it is not change by owner
+            return ;
+        }
         if ($request->get('op') == 'add') {
             // mark bookmark as updated
             $bookmark->updated_at = Carbon::now();
@@ -201,14 +270,18 @@ class BookmarkController extends Controller
      */
     public function postBookmark(Request $request) {
         $user = Auth::user();
-        // get auth user first
-        if ($request->exists('id')) {
+        $bookmarks = $user->bookmarks;
+        // get auth user first && get public bookmark
+        if ($request->exists('id') && ($request->get('id') != $user->id)) {
             $user = User::findOrFail($request->get('id'));
+            $bookmarks = $user->bookmarks()->where('is_public', true)->get();
         }
+
+
         // get necessary parameters
         $page = $request->exists('page') ? $request->get('page') : 1;
         $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
-        $pages = ceil($user->bookmarks()->count() / $itemInPage);
+        $pages = ceil($bookmarks->count() / $itemInPage);
 
         // check if we have parameter request check whether an item is in bookmark
         $current_item_id = $request->get('current_id');
@@ -216,7 +289,7 @@ class BookmarkController extends Controller
         $current_item_check = $current_item_id && $current_item_type;
 
         $results = [];
-        foreach ($user->bookmarks->forPage($page, $itemInPage) as $bookmark) {
+        foreach ($bookmarks->forPage($page, $itemInPage) as $bookmark) {
             // generate representatives
             $representatives = [];
             // for question

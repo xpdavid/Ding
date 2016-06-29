@@ -42,7 +42,7 @@
                                 <label>
                                     <input type="radio" value="true" name="bookmark_new_public" checked="checked"> Pulbic
                                     <span class="font-greyLight">
-                                        You cannot change to private later
+                                        You can change to private later if and only if there is not subscribers to this bookmark
                                     </span>
                                 </label>
                             </div>
