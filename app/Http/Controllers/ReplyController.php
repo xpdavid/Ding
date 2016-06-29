@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bookmark;
 use App\Notification;
 use Auth;
 use App\User;
@@ -11,6 +12,7 @@ use App\Question;
 use App\Http\Requests;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use SebastianBergmann\Comparator\Book;
 
 class ReplyController extends Controller
 {
@@ -65,92 +67,60 @@ class ReplyController extends Controller
         $page = ($request->get('page') < '0') ? 1 : $request->get('page'); // page must be positive numbers
         $user = Auth::user();
 
+        $item = null;
         // determine the operation
         switch ($request->get('type')) {
             case 'question' :
-                $question = Question::findOrFail($item_id);
-
-                $results = [];
-                foreach ($question->replies->sortBy('created_at')->forPage($page, $this->itemInPage) as $reply) {
-                    $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
-                    $from = [
-                        'user_id' => $reply->owner->id,
-                        'user_name' => $reply->owner->name,
-                        'user_pic' => DImage($reply->owner->settings->profile_pic_id, 25, 25),
-                    ];
-
-                    // whether the reply is to someone
-                    if ($reply->reply_to()->count() > 0) {
-                        $to = [
-                            'reply_id' => $reply->reply_to->id,
-                            'user_name' => $reply->reply_to->owner->name,
-                            'user_id' => $reply->reply_to->owner->name,
-                        ];
-                    } else {
-                        $to = [];
-                    }
-
-                    array_push($results, [
-                        'id' => $reply->id,
-                        'from' => $from,
-                        'to' => $to,
-                        'reply' => $reply->reply,
-                        'created_at' => $reply->createdAtHumanReadable,
-                        'for_item' => 'question',
-                        'for_item_id' => $question->id,
-                        'votes' => $reply->vote_up_users->count(),
-                        'vote_up_class' => $vote_up_class,
-                    ]);
-                }
-
-                return [
-                    'data' => $results,
-                    'itemInPage' => $this->itemInPage,
-                    'pages' => ceil($question->replies->count() / $this->itemInPage)
-                ];
-
+                $item = Question::findOrFail($item_id);
+                break;
             case 'answer':
-                $answer = Answer::findOrFail($item_id);
-
-                $results = [];
-                foreach ($answer->replies->sortBy('created_at')->forPage($page, $this->itemInPage) as $reply) {
-                    $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
-                    $from = [
-                        'user_id' => $reply->owner->id,
-                        'user_name' => $reply->owner->name,
-                        'user_pic' => DImage($reply->owner->settings->profile_pic_id, 25, 25),
-                    ];
-
-                    // whether the reply is to someone
-                    if ($reply->reply_to()->count() > 0) {
-                        $to = [
-                            'reply_id' => $reply->reply_to->id,
-                            'user_name' => $reply->reply_to->owner->name,
-                            'user_id' => $reply->reply_to->owner->name,
-                        ];
-                    } else {
-                        $to = [];
-                    }
-
-                    array_push($results, [
-                        'id' => $reply->id,
-                        'from' => $from,
-                        'to' => $to,
-                        'reply' => $reply->reply,
-                        'created_at' => $reply->createdAtHumanReadable,
-                        'for_item' => 'answer',
-                        'for_item_id' => $answer->id,
-                        'votes' => $reply->vote_up_users->count(),
-                        'vote_up_class' => $vote_up_class,
-                    ]);
-                }
-
-                return [
-                    'data' => $results,
-                    'itemInPage' => $this->itemInPage,
-                    'pages' => ceil($answer->replies->count() / $this->itemInPage)
-                ];
+                $item = Answer::findOrFail($item_id);
+                break;
+            case 'bookmark':
+                $item = Bookmark::findOrFail($item_id);
+                break;
+            default:
+                return ;
         }
+
+        $results = [];
+        foreach ($item->replies->sortBy('created_at')->forPage($page, $this->itemInPage) as $reply) {
+            $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
+            $from = [
+                'user_id' => $reply->owner->id,
+                'user_name' => $reply->owner->name,
+                'user_pic' => DImage($reply->owner->settings->profile_pic_id, 25, 25),
+            ];
+
+            // whether the reply is to someone
+            if ($reply->reply_to()->count() > 0) {
+                $to = [
+                    'reply_id' => $reply->reply_to->id,
+                    'user_name' => $reply->reply_to->owner->name,
+                    'user_id' => $reply->reply_to->owner->name,
+                ];
+            } else {
+                $to = [];
+            }
+
+            array_push($results, [
+                'id' => $reply->id,
+                'from' => $from,
+                'to' => $to,
+                'reply' => $reply->reply,
+                'created_at' => $reply->createdAtHumanReadable,
+                'for_item' => $request->get('type'),
+                'for_item_id' => $item->id,
+                'votes' => $reply->vote_up_users->count(),
+                'vote_up_class' => $vote_up_class,
+            ]);
+        }
+
+        return [
+            'data' => $results,
+            'itemInPage' => $this->itemInPage,
+            'pages' => ceil($item->replies->count() / $this->itemInPage)
+        ];
     }
 
     /**
@@ -172,6 +142,9 @@ class ReplyController extends Controller
                 break;
             case 'answer':
                 $item = Answer::findOrFail($item_id);
+                break;
+            case 'bookmark':
+                $item = Bookmark::findOrFail($item_id);
         }
 
         // get current user
@@ -282,7 +255,8 @@ class ReplyController extends Controller
             $from = [
                 'reply_id' => $reply->id,
                 'user_id' => $reply->owner->id,
-                'user_name' => $reply->owner->name
+                'user_name' => $reply->owner->name,
+                'user_avatar' => DImage($reply->owner->settings->profile_pic_id, 25, 25)
             ];
 
             // whether the reply is to someone

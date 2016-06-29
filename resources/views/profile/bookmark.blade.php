@@ -10,10 +10,10 @@
             <a href="/people/{{$user->url_name}}" class="float-left">{{ $user->name }}</a> 's Bookmark
             <a href="/people/{{$user->url_name}}" class="float-right">&lt;&lt; Back to the index</a>
         </div>
-        <div class="userHome_layoutDivContent" id="bookmark_0_content">
+        <div class="userHome_layoutDivContent" id="bookmark_content">
 
         </div>
-        <div class="text-center" id="bookmark_0_nav">
+        <div class="text-center" id="bookmark_nav">
 
         </div>
     </div>
@@ -23,7 +23,7 @@
 @section('javascript')
     <script type="text/javascript">
         $(function() {
-            showBookmarkPage(0, null, '{{ $user->id }}', 1, null);
+            showBookmarkPage('bookmark', null, '{{ $user->id }}', 1, null);
         });
     </script>
 @endsection

@@ -56,10 +56,13 @@ Route::get('/topic/{topic_id}/organization', 'TopicController@organization');
 Route::post('/topic/questions', 'TopicController@getQuestions');
 
 // for bookmark
-Route::get('/people/{url_name}/bookmark', [ 'as' => 'people.bookmark', 'uses' => 'BookmarkController@show']);
+Route::get('/people/{url_name}/bookmark', [ 'as' => 'people.bookmark', 'uses' => 'BookmarkController@index']);
 Route::post('/bookmark', 'BookmarkController@postBookmark');
 Route::post('/bookmark/create', 'BookmarkController@create');
 Route::post('/bookmark/operation', 'BookmarkController@operation');
+Route::post('/bookmark/hot', 'BookmarkController@hot');
+Route::get('/bookmark/{id}', 'BookmarkController@show');
+Route::post('/bookmark/{id}', 'BookmarkController@postShow');
 
 // for user controller
 Route::get('/people/edit', 'PeopleController@edit');

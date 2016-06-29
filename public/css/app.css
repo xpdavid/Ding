@@ -178,7 +178,7 @@ body {
   padding: 0 14px; }
 
 .userHome_layoutItem {
-  padding: 12px 0; }
+  padding: 15px; }
 
 .userHome_name {
   color: #000000 !important; }
@@ -687,7 +687,7 @@ body {
   padding: 8px 2px 8px 2px; }
 
 .sideBar_section {
-  border-bottom: 1px solid #ccc; }
+  border-bottom: 1px solid #eee; }
 
 .sideBar_sectionItem {
   margin: 10px 3px 10px 3px; }
@@ -961,9 +961,6 @@ body {
   background-color: #fff;
   padding: 0 20px; }
 
-.userProfile_card_content {
-  margin: 0 0 0 52px; }
-
 .userCenter_subscribed_visit {
   float: left;
   padding: 2px;
@@ -985,7 +982,6 @@ body {
   margin: 10px; }
 
 .bookmark_modal_item {
-  display: block;
   margin: 8px;
   border: solid 1px #DDD;
   padding: 8px 12px;

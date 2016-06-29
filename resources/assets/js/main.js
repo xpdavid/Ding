@@ -84,6 +84,24 @@ function subscribeUser(user_id, op, callback) {
 }
 
 /**
+ * Send ajax request to subscribe a bookmark
+ *
+ * @param bookmark_id
+ * @param op
+ * @param callback
+ */
+function subscribeBookmark(bookmark_id, op, callback) {
+    $.post('/subscribe/bookmark/' + bookmark_id, {
+        op : op
+    }, function(results) {
+        if (callback && typeof callback == "function") {
+            callback(results);
+        }
+    })
+}
+
+
+/**
  * AJAX send operation to server
  *
  * @param notification_id

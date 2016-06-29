@@ -229,7 +229,7 @@ body {
 }
 
 .userHome_layoutItem {
-  padding: 12px 0;
+  padding: 15px;
 }
 
 
@@ -848,7 +848,7 @@ body {
 }
 
 .sideBar_section {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #eee;
 }
 
 .sideBar_sectionItem {
@@ -1214,10 +1214,6 @@ body {
   padding: 0 20px
 }
 
-.userProfile_card_content {
-  margin: 0 0 0 52px;
-}
-
 // user center subscribed question
 .userCenter_subscribed_visit {
   float: left;
@@ -1244,7 +1240,6 @@ body {
 }
 
 .bookmark_modal_item {
-  display: block;
   margin: 8px;
   border: solid 1px #DDD;
   padding: 8px 12px;

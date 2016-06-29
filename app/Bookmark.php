@@ -55,6 +55,15 @@ class Bookmark extends Model
     }
 
     /**
+     * A bookmark may have comment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function replies() {
+        return $this->morphMany('App\Reply', 'for_item');
+    }
+
+    /**
      * Check if a item is in the bookmark
      *
      * @param $bookmark_id
@@ -74,5 +83,15 @@ class Bookmark extends Model
                 ->whereAnswerId($item_id)
                 ->count() > 0;
         }
+    }
+
+    /**
+     * Get all public bookmark
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopePublicItem($query) {
+        return $query->where('is_public', true);
     }
 }

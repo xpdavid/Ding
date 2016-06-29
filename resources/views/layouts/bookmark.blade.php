@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=500px, initial-scale=2">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Profile - Ding</title>
+    <title>Bookmark - Ding</title>
 
     <!-- Bootstrap -->
 {!! Html::style('css/bootstrap.min.css') !!}
@@ -32,22 +32,32 @@
 
 @include('partials._navbar')
 
-@include('partials._ask_question_model')
-
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            @yield('content')
+            @yield('left')
         </div>
 
 
         <div class="col-md-4">
-            @include('partials._user_home_sidebar')
+            @yield('right')
         </div>
 
     </div> <!--For row-->
 
+    <div class="row">
+        <div class="col-12-md">
+            @include('partials._site_copyright')
+        </div>
+    </div>
+
 </div> <!--For contianer-->
+
+@include('partials._ask_question_model')
+
+@include('partials._bookmark_model')
+
+@include('partials._show_comment_conversation')
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
@@ -61,19 +71,19 @@
 {{--select2 supporting file--}}
 {!! Html::script('js/select2.full.js') !!}
 
-{{--javascript template engine support--}}
-{!! Html::script('js/handlebars-latest.js') !!}
-{!! Html::script('js/templates.js') !!}
-
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
 {!! Html::script('js/navbar.js') !!}
 
+{{--javascript template engine support--}}
+{!! Html::script('js/handlebars-latest.js') !!}
+{!! Html::script('js/templates.js') !!}
+
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
 
-{{--profile javascript support--}}
-{!! Html::script('js/profile.js') !!}
+{{--bookmark javascript support--}}
+{!! Html::script('js/bookmark.js') !!}
 {!! Html::script('js/question.js') !!}
 
 {{--app supporting js file--}}

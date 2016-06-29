@@ -457,7 +457,7 @@ function showBookmarkPage(base_id, type, item_id, page, callback) {
         id : item_id,
         page : page
     }, function(results) {
-        if (results.status) {
+        if (results.data.length) {
             // compile template
             var template = Handlebars.templates['_bookmark_item.html'];
             var processResults = {

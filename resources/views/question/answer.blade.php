@@ -108,7 +108,7 @@
 
                 <div class="clearfix">
                     <div class="float-left"><strong>{{ $answer->owner->name }}</strong>, <span class="font-black">{{ $answer->owner->bio }}</span> </div>
-                    <img class="float-right" src="image/sample_icon.png" alt="">
+                    <img class="float-right" src="{{ DImage($answer->owner->settings->profile_pic_id, 25, 25) }}" alt="{{ $answer->owner->name }}">
                 </div>
 
                 <div>
@@ -127,7 +127,7 @@
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                         Comment (<span id="answer_comment_{{ $answer->id }}_replies_count">{{ $answer->replies()->count() }}</span>)
                     </a>
-                    <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+                    <a href="#" onclick="bookmark('answer', '{{$answer->id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
                     <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
                     <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
                 </div>
@@ -171,7 +171,7 @@
 
         {{--more answer here--}}
         <div>
-            @foreach($question->answers->take(3) as $other_answer)
+            @foreach($question->answers()->take(3)->get()->shuffle() as $other_answer)
                 @if($other_answer->id != $answer->id)
                     <div class="answer_overall">
                         <div class="answer_voting">
@@ -197,7 +197,7 @@
 
                         <div class="clearfix">
                             <div class="float-left"><strong>{{ $other_answer->owner->name }}</strong>, <span class="font-black">{{ $other_answer->owner->bio }}</span> </div>
-                            <img class="float-right" src="image/sample_icon.png" alt="">
+                            <img class="float-right" src="{{ DImage($other_answer->owner->settings->profile_pic_id, 25, 25) }}" alt="{{ $other_answer->owner->name }}">
                         </div>
 
                         <div>
@@ -214,7 +214,7 @@
                                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                                 Comment (<span id="answer_comment_{{ $other_answer->id }}_replies_count">{{ $other_answer->replies()->count() }}</span>)
                             </a>
-                            <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+                            <a href="#" onclick="bookmark('answer', '{{$other_answer->id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
                             <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
                             <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
                         </div>
@@ -289,39 +289,47 @@
     <div class="sideBar_section">
         <div class="sideBar_sectionItem">
             <div class="sideBar_sectionItem">
-                <h5>About Author</h5>
-                <div class="userProfile_card">
-                    <img class="avatar-img float-left" src="...">
-                    <button class="btn btn-success btn-xs float-right">Subscribe</button>
-                    <div class="userProfile_card_content">
-                        <p><a href="#">{{ $answer->owner->name }}</a></p>
-                        <div>{{ $answer->owner->bio }}</div>
+                <h4>About Author</h4>
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object avatar-img" src="{{ DImage($answer->owner->settings->profile_pic_id,50, 50) }}"
+                                 alt="{{ $answer->owner->name }}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <button class="btn btn-success btn-xs float-right">Subscribe</button>
+                        <h4 class="media-heading">{{ $answer->owner->name }}</h4>
+                        {{ $answer->owner->bio }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="sideBar_section">
-        <div class="sideBar_sectionItem">
+    @if($answer->bookmarks()->count() != 0)
+        <div class="sideBar_section">
             <div class="sideBar_sectionItem">
-                <h5>Being Bookmarked 32 times</h5>
-                <div>
-                    <strong><a href="#">abcdefg</a></strong>
-                    <div>
-                        <a href="#">xp</a> Created | <span>2412</span> Subscribe
-                    </div>
-                    <hr class="small_hrLight">
-                </div>
-                <div>
-                    <strong><a href="#">abcdefg</a></strong>
-                    <div>
-                        <a href="#">xp</a> Created | <span>2412</span> Subscribe
-                    </div>
+                <div class="sideBar_sectionItem">
+                    <h4>Being Bookmarked {{ $answer->bookmarks()->count() }} times</h4>
+                    @foreach($answer->bookmarks()->orderBy('updated_at')->take(5)->get() as $bookmark)
+                        <div>
+                            <strong>
+                                <a href="/bookmark/{{ $bookmark->id }}">{{ $bookmark->name }}</a>
+                            </strong>
+                            <div>
+                                <a href="/people/{{ $bookmark->owner->url_name }}">
+                                    {{ $bookmark->owner->name }}</a> Created |
+                                <span>{{ $bookmark->subscribers()->count() }}</span> Subscribe
+                            </div>
+                            <hr class="small_hrLight">
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+
 
     <div class="sideBar_section">
         <div class="sideBar_sectionItem">
@@ -343,8 +351,8 @@
         <div class="sideBar_sectionItem">
             <div class="sideBar_sectionItem">
                 <h5>Answer Status</h5>
-                <p>Created at {{ $answer->updated_at }}</p>
-                <p>Belonging Question has being view 324 times</p>
+                <p class="font-greyLight">Created at {{ $answer->updated_at }}</p>
+                <p class="font-greyLight">Belonging Question has being view 324 times</p>
             </div>
         </div>
     </div>

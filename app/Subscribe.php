@@ -71,6 +71,11 @@ class Subscribe extends Model
                     ->whereSubscribeId($this->id)
                     ->whereUserId($model_id)
                     ->count() > 0;
+            case 'bookmark' :
+                return DB::table('subscribe_bookmark')
+                    ->whereSubscribeId($this->id)
+                    ->whereBookmarkId($model_id)
+                    ->count() > 0;
             default :
                 return false;
         }

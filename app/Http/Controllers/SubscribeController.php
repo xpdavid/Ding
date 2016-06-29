@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bookmark;
 use Auth;
 use App\User;
 use App\Topic;
@@ -72,7 +73,8 @@ class SubscribeController extends Controller
         }
 
         return [
-            'status' => true
+            'status' => true,
+            'numSubscriber' => $topic->subscribers()->count()
         ];
 
     }
@@ -102,6 +104,40 @@ class SubscribeController extends Controller
 
         return [
             'status' => true
+        ];
+    }
+
+    /**
+     * Subscribe a bookmark
+     *
+     * @param $bookmark_id
+     * @param Request $request
+     * @return array
+     */
+    public function postBookmark($bookmark_id, Request $request) {
+        $user = Auth::user();
+        $bookmark = Bookmark::findOrFail($bookmark_id);
+        if (!$bookmark->is_public || $bookmark->owner->id == $user->id) {
+            // you cannot subscribe a unpublic bookmark
+            // you cannot subscribe yourself bookmark
+            return  [
+                'status' => false
+            ];
+        }
+        if ($request->exists('op') && $request->get('op') == 'unsubscribe') {
+            // unsubscribe a user
+            $user->subscribe->bookmarks()->detach($bookmark_id);
+        } else {
+            // subscribe a bookmark
+            // check duplicate subscribe
+            if (!$user->subscribe->checkHasSubscribed($bookmark_id, 'bookmark')) {
+                $user->subscribe->bookmarks()->save($bookmark);
+            }
+        }
+
+        return [
+            'status' => true,
+            'numSubscriber' => $bookmark->subscribers()->count()
         ];
     }
 }

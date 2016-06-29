@@ -586,7 +586,7 @@ function bookmark_helper(callback) {
         current_type : bookmark_to_type,
         current_id : bookmark_to_id
     }, function(results) {
-        if (results.status) {
+        if (results.data.length) {
             // compile template
             var template = Handlebars.templates['_bookmark_modal_item.html'];
             var processResults = {

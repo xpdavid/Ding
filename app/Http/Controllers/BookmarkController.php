@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Carbon\Carbon;
+use App\User;
 use App\Bookmark;
 use App\Question;
-use Illuminate\Http\Request;
-use Auth;
-use App\User;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 
 class BookmarkController extends Controller
 {
@@ -16,6 +17,7 @@ class BookmarkController extends Controller
      * @var int
      */
     protected $itemInPage = 8;
+    protected $maxItem = 20;
 
 
     /**
@@ -24,11 +26,101 @@ class BookmarkController extends Controller
      * @param $url_name
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($url_name) {
+    public function index($url_name) {
         $user = User::findUrlName($url_name);
 
         return view('profile.bookmark', compact('user'));
     }
+
+    /**
+     * Show specific bookmark
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show($id) {
+        $bookmark = Bookmark::findOrFail($id);
+
+        return view('bookmark.show', compact('bookmark'));
+    }
+
+
+    public function postShow($id, Request $request) {
+        $bookmark = Bookmark::findOrFail($id);
+        $user = Auth::user();
+
+        // get page parameters
+        $page = $request->exists('page') ? $request->get('page') : 1;
+        $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+
+        switch ($request->get('type')) {
+            case 'question':
+                $pages = ceil($bookmark->questions()->count() / $itemInPage);
+
+                $results = [];
+                foreach ($bookmark->questions->forPage($page, $itemInPage) as $question) {
+                    array_push($results, [
+                        'id' => $question->id,
+                        'title' => $question->title
+                    ]);
+                }
+
+                return [
+                    'data' => $results,
+                    'pages' => $pages
+                ];
+
+                break;
+            case 'answer':
+                $groupByQuestion = $bookmark->answers->groupBy(function($item, $key) {
+                    return $item->question->id;
+                });
+
+                $pages = ceil($groupByQuestion->count() / $itemInPage);
+
+                $results = [];
+
+                foreach ($groupByQuestion->forPage($page, $itemInPage) as $question_id => $answers) {
+                    $question = Question::findOrFail($question_id);
+                    $arr = [
+                        'question' => [
+                            'id' => $question_id,
+                            'title' => $question->title
+                        ]
+                    ];
+                    $answers_arr = [];
+                    foreach ($answers as $answer) {
+                        $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
+                        $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
+                        array_push($answers_arr, [
+                            'id' => $answer->id,
+                            'user_name' => $answer->owner->name,
+                            'user_id' => $answer->owner->id,
+                            'user_bio' => $answer->owner->bio,
+                            'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
+                            'answer' => $answer->answer,
+                            'created_at' => $answer->createdAtHumanReadable,
+                            'votes' => $answer->netVotes,
+                            'numComment' => $answer->replies->count(),
+                            'vote_up_class' => $vote_up_class,
+                            'vote_down_class' => $vote_down_class
+                        ]);
+                    }
+                    $arr['answers'] = $answers_arr;
+
+                    array_push($results, $arr);
+                }
+
+                return [
+                    'data' => $results,
+                    'pages' => $pages
+                ];
+
+                break;
+        }
+    }
+
+
 
     /**
      * Response ajax call to store a new bookmark
@@ -68,6 +160,8 @@ class BookmarkController extends Controller
         ]);
         $bookmark = Bookmark::findOrFail($request->get('id'));
         if ($request->get('op') == 'add') {
+            // mark bookmark as updated
+            $bookmark->updated_at = Carbon::now();
             switch ($request->get('item_type')) {
                 // detach first, we cannot afford bookmark twice
                 case 'question':
@@ -107,6 +201,7 @@ class BookmarkController extends Controller
      */
     public function postBookmark(Request $request) {
         $user = Auth::user();
+        // get auth user first
         if ($request->exists('id')) {
             $user = User::findOrFail($request->get('id'));
         }
@@ -124,10 +219,20 @@ class BookmarkController extends Controller
         foreach ($user->bookmarks->forPage($page, $itemInPage) as $bookmark) {
             // generate representatives
             $representatives = [];
-            foreach ($bookmark->questions()->take(2) as $question) {
+            // for question
+            foreach ($bookmark->questions->take(2) as $question) {
                 array_push($representatives, [
-                    'name' => $question,
-                    'url' => '/question/' . $question->id
+                    'name' => $question->title,
+                    'url' => '/question/' . $question->id,
+                    'type' => 'Question'
+                ]);
+            }
+            // for answers
+            foreach ($bookmark->answers->take(2) as $answer) {
+                array_push($representatives, [
+                    'name' => $answer->question->title,
+                    'url' => '/question/' . $answer->question->id . '/answer/' . $answer->id,
+                    'type' => 'Answer'
                 ]);
             }
             $arr = [
@@ -145,19 +250,39 @@ class BookmarkController extends Controller
             array_push($results, $arr);
         }
 
-        // determine whether the results is empty
-        if(empty($results)) {
-            return [
-                'data' => $results,
-                'status' => false,
-                'pages' => $pages
-            ];
-        } else {
-            return [
-                'data' => $results,
-                'status' => true,
-                'pages' => $pages
-            ];
+        return [
+            'data' => $results,
+            'status' => false,
+            'pages' => $pages
+        ];
+    }
+
+    /**
+     * Answer ajax call to return hot topics
+     */
+    public function hot(Request $request) {
+        $maxItem = $request->exists('maxItem') ? $request->get('maxItem') : $this->maxItem;
+        $page = $request->exists('page') ? $request->get('page') : 1;
+        $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+        $pages = ceil(Bookmark::publicItem()->count() / $itemInPage);
+
+        $results = [];
+        foreach (Bookmark::publicItem()->orderBy('updated_at')->take($maxItem)->get()
+                     ->sortByDesc(function($item, $index) {
+                            return $item->subscribers()->count();
+                    })->forPage($page, $itemInPage) as $bookmark) {
+            array_push($results, [
+                'id' => $bookmark->id,
+                'name' => $bookmark->name,
+                'numQuestion' => $bookmark->questions()->count(),
+                'numAnswer' => $bookmark->answers()->count(),
+                'numSubscriber' => $bookmark->subscribers()->count(),
+            ]);
         }
+
+        return [
+            'pages' => $pages,
+            'data' => $results,
+        ];
     }
 }
