@@ -11,7 +11,7 @@
             </div>
             <div class="media-body topics_more">
                 <div class="clearfix">
-                    <div class="float-left topics_name"><a href="/topic/{{left.id}}">{{left.name}}</a></div>
+                    <div class="float-left topics_name"><a href="/topic/{{left.id}}">{{{left.name}}}</a></div>
                     {{#if left.isSubscribed}}
                         <a class="float-right topics_subscribe active"
                            href="#"
@@ -46,7 +46,7 @@
                 </div>
                 <div class="media-body topics_more">
                     <div class="clearfix">
-                        <div class="float-left topics_name"><a href="/topic/{{right.id}}">{{right.name}}</a></div>
+                        <div class="float-left topics_name"><a href="/topic/{{right.id}}">{{{right.name}}}</a></div>
                         {{#if right.isSubscribed}}
                             <a class="float-right topics_subscribe active"
                                href="#"

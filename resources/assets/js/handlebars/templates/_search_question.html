@@ -1,0 +1,9 @@
+<!--this is the template for search engine question item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each questions}}
+<div>
+    <h4><a href="/question/{{id}}">{{{title}}}</a></h4>
+    <p>{{{content}}}</p>
+    <hr class="small_hrLight">
+</div>
+{{/each}}

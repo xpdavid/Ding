@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Conversation;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -169,8 +170,12 @@ class User extends Authenticatable
      * @param $name
      * @return mixed
      */
-    public function scopeSimilarMatch($query, $name) {
-        return $query->where('name', 'REGEXP', '[' . $name . ']');
+    public function scopeSimilarMatch($query, $name, $range = null) {
+        $result = $query->where('name', 'REGEXP', '[' . $name . ']');
+        if ($range != null) {
+          $result = $result->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString());
+        }
+        return $result;
     }
 
     /**
@@ -180,8 +185,12 @@ class User extends Authenticatable
      * @param $name
      * @return mixed
      */
-    public function scopeNoneSimilarMatch($query, $name) {
-        return $query->where('name', 'LIKE', '%' . $name . '%');
+    public function scopeNoneSimilarMatch($query, $name, $range = null) {
+        $result = $query->where('name', 'LIKE', '%' . $name . '%');
+        if ($range != null) {
+            $result = $result->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString());
+        }
+        return $result;
     }
 
 

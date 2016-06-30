@@ -101,6 +101,10 @@ Route::controller('/api', 'APIController');
 // for user setting
 Route::resource('/settings', 'SettingsController');
 
+// for search
+Route::get('/search', ['as' => 'search', 'uses' => 'SearchController@index']);
+Route::post('/search', 'SearchController@postSearch');
+
 
 // for dynamic image system
 Route::get('/image/{reference_id}/{width}/{height}', 'ImageController@image');

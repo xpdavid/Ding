@@ -91,7 +91,7 @@ function navbar_noticeBarAJAX(callback) {
  * description: set asynchronous searching post query
  */
 function navbar_searching() {
-    var $input = $('#navbar_seraching');
+    var $input = $('#navbar_searching');
     $input.typeahead({
         delay : 500,
         source : function(query, process) {
@@ -136,6 +136,14 @@ function navbar_searching() {
         items : 'all',
         sorter : function(items) { return items}, // don't sort it!
         width : '540px'
+    });
+
+    // navbar search icon click redirect
+    $('#navbar_searching_click').click(function() {
+        if (typeof searchType == "undefined") {
+            searchType = 'question';
+        }
+        window.location = '/search?type=' + searchType + '&query=' + $('#navbar_searching').val();
     });
 }
 

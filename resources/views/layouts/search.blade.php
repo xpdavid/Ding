@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=500px, initial-scale=2">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bookmark - Ding</title>
+    <title>Search - Ding</title>
 
     <!-- Bootstrap -->
 {!! Html::style('css/bootstrap.min.css') !!}
@@ -57,8 +57,6 @@
 
 @include('partials._bookmark_model')
 
-@include('partials._show_comment_conversation')
-
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
 
@@ -82,10 +80,9 @@
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
 
-{{--bookmark javascript support--}}
-{!! Html::script('js/bookmark.js') !!}
+{{--search javascript support--}}
 {!! Html::script('js/question.js') !!}
-{!! Html::script('js/userCenter.js') !!}
+{!! Html::script('js/search.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}

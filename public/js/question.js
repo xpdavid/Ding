@@ -97,7 +97,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
     var prev = {};
     if (currPage > 1) {
         var prevPage = currPage - 1;
-        prev.onclick = funcName + "('" + base_id + "','" + type + "'," + item_id + "," + prevPage + ")";
+        prev.onclick = funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + prevPage + ")";
     } else {
         prev.class = "disabled";
     }
@@ -106,7 +106,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
     var next = {};
     if (currPage < numPages) {
         var nextPage = currPage + 1;
-        next.onclick = funcName + "('" + base_id + "','" + type + "'," + item_id + "," + nextPage + ")";
+        next.onclick = funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + nextPage + ")";
     } else {
         next.class = "disabled";
     }
@@ -119,7 +119,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
         for(i = 1; i <= numPages; i++) {
             className = (i == currPage) ? 'active' : '';
             pages.push({
-                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + i + ")",
                 name : i,
                 class : className
             });
@@ -130,7 +130,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
             for(i = 1; i <= 5; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + i + ")",
                     name : i,
                     class : className
                 });
@@ -142,14 +142,14 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
             });
             // push last page
             pages.push({
-                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + numPages + ")",
                 name : numPages
             });
         } else if (numPages - currPage <=5) {
             // the current page is within last 5 page
             // push first page
             pages.push({
-                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + 1 + ")",
                 name : 1
             });
             // push '...' element
@@ -161,7 +161,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
             for(i = numPages - 4; i <= numPages; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + i + ")",
                     name : i,
                     class : className
                 });
@@ -169,7 +169,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
         } else {
             // push the first page
             pages.push({
-                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + 1 + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + 1 + ")",
                 name : 1
             });
             // push '...' element
@@ -182,7 +182,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
             for(i = currPage - 1; i <= currPage + 1; i++) {
                 className = (i == currPage) ? 'active' : '';
                 pages.push({
-                    onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + i + ")",
+                    onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + i + ")",
                     name : i,
                     class : className
                 });
@@ -195,7 +195,7 @@ function compilePageNav(currPage, numPages, base_id, type, item_id, funcName) {
             });
             // push last page
             pages.push({
-                onclick : funcName + "('" + base_id + "','" + type + "'," + item_id + "," + numPages + ")",
+                onclick : funcName + "('" + base_id + "','" + type + "','" + item_id + "'," + numPages + ")",
                 name : numPages
             });
 

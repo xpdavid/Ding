@@ -41,8 +41,8 @@
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control typeahead" placeholder="Search for Answers.." autocomplete="off" id="navbar_seraching">
-                        <div class="input-group-addon navbar_clickable">
+                        <input type="text" value="{{ Request::get('query') }}" class="form-control typeahead" placeholder="Search for Answers.." autocomplete="off" id="navbar_searching">
+                        <div class="input-group-addon navbar_clickable" id="navbar_searching_click">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                         </div>
                     </div>

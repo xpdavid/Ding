@@ -97,4 +97,24 @@ class Answer extends Model
     public function getNetVotesAttribute() {
         return $this->vote_up_users()->count() - $this->vote_down_users()->count();
     }
+
+
+    /**
+     * Search for answers
+     *
+     * @param $query
+     * @param $key
+     * @param null $range
+     * @return mixed
+     */
+    public function scopeNoneSimilarMatch($query, $key, $range = null) {
+        if ($range != null) {
+            return $query->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString())
+                ->where('answer', 'LIKE', '%' . $key . '%');
+
+        } else {
+            return $query->where('answer', 'LIKE' , '%' . $key . '%');
+        }
+
+    }
 }

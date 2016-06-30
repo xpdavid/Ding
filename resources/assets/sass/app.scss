@@ -94,8 +94,8 @@ body {
 }
 
 .avatar-img {
-  width: 41px;
-  height: 41px;
+  width: 43px;
+  height: 43px;
 }
 
 .pagination>li>span {
@@ -1259,6 +1259,24 @@ body {
 
 .bookmark_modal_item:hover {
   background-color: #F5F5F5
+}
+
+.page_search em {
+  font-style: normal;
+  color: #c20a0a;
+  font-weight: 500;
+}
+
+// for profile card css
+.profile_card_col .col {
+  float: left;
+  padding: 0 1em;
+  border-right: 1px solid #eee;
+  text-align: center;
+}
+
+.profile_card {
+  width: 300px !important;
 }
 
 

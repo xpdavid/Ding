@@ -16,7 +16,7 @@ function showBookmarkQuestionPage(base_id, type, bookmark_id, page, callback) {
         if (!results.data.length) {
             return ;
         }
-        var template = Handlebars.templates['_highlight_question_short.html'];
+        var template = Handlebars.templates['_subscribed_question.html'];
         // show questions
         $('#' + base_id + '_content').html(template({
             questions : results.data

@@ -1,0 +1,37 @@
+<!--this is the template for search engine user item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each users}}
+<div class="clearfix">
+    <div class="float-left">
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object avatar-img" src="{{img}}"
+                         alt="{{name}}">
+                </a>
+            </div>
+            <div class="media-body profile_card">
+                <h4 class="media-heading"><a href="/people/{{url_name}}">{{{name}}}</a></h4>
+                <p class="font-greyLight">{{bio}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="float-right">
+        <div class="profile_card_col">
+            <div class="col">
+                <a href="#">
+                    <strong>{{numAnswer}}</strong>
+                    <div>Answers</div>
+                </a>
+            </div>
+            <div class="col noborder">
+                <a href="#">
+                    <strong>{{numSubscriber}}</strong>
+                    <div>Subscribers</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}

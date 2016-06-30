@@ -61,7 +61,11 @@ class BookmarkController extends Controller
                 foreach ($bookmark->questions->forPage($page, $itemInPage) as $question) {
                     array_push($results, [
                         'id' => $question->id,
-                        'title' => $question->title
+                        'title' => $question->title,
+                        'numAnswer' => $question->answers()->count(),
+                        'visit' => 13,
+                        'numSubscriber' => $question->subscribers()->count(),
+                        'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
                     ]);
                 }
 

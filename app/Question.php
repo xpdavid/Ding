@@ -137,4 +137,27 @@ class Question extends Model
     public function scopeNoneSimilarMatch($query, $title) {
         return $query->where('title', 'LIKE', '%' . $title . '%');
     }
+
+
+    /**
+     * search for both title and content
+     *
+     * @param $query
+     * @param $key
+     * @param $range (optional)
+     * @return mixed
+     */
+    public function scopeNoneSimilarMatchAll($query, $key, $range = null) {
+        if ($range != null) {
+            return $query->where(function($query) use ($key) {
+                return $query->orWhere('title', 'LIKE' , '%' . $key . '%')
+                    ->orWhere('content', 'LIKE' , '%' . $key . '%');
+            })->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString());
+
+        } else {
+            return $query->orWhere('title', 'LIKE' , '%' . $key . '%')
+                ->orWhere('content', 'LIKE' , '%' . $key . '%');
+        }
+
+    }
 }

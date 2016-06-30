@@ -15,7 +15,11 @@
                class="font-greyLight"
                onclick="userHome_subscribe_question(event, 'subscribe_text_{{id}}', '{{id}}', 'subscribe_count_{{id}}')"
             >
-                <span id="subscribe_text_{{id}}" class="subscribed">Unsubscribe</span>
+                {{#if subscribed}}
+                    <span id="subscribe_text_{{id}}" class="subscribed">Unsubscribe</span>
+                {{^}}
+                    <span id="subscribe_text_{{id}}" class="">Subscribe</span>
+                {{/if}}
             </a>
             •
             {{numAnswer}} Answers
