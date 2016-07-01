@@ -182,64 +182,6 @@ function topicAutocomplete(inputId, selectNum) {
 }
 
 /**
- * Send ajax call to subscribe a question
- *
- * @param event
- * @param clickObject
- * @param topic_id
- */
-function topics_subscribe(event, clickObject, topic_id) {
-    event.preventDefault();
-    var $click = $(clickObject);
-    if ($click.hasClass('active')) {
-        // is already subscribed
-        subscribeTopic(topic_id, 'unsubscribe', function() {
-            // remove class
-            $click.removeClass('active');
-            // show subscribe text
-            $click.find('span:nth-child(1)').show();
-            $click.find('span:nth-child(2)').text('');
-            $click.find('span:nth-child(2)').text('Subscribe')
-        });
-    } else {
-        // current operation is subscribe the topic
-        subscribeTopic(topic_id, null, function() {
-            // add active class
-            $click.addClass('active');
-            // show unsubscribe text
-            $click.find('span:nth-child(1)').hide();
-            $click.find('span:nth-child(2)').text('');
-            $click.find('span:nth-child(2)').text('Unsubscribe')
-        });
-    }
-}
-
-/**
- * trigger subscribe button in specific topic page
- *
- * @param clickObject
- * @param topic_id
- */
-function topic_show_subscribe(clickObject, topic_id) {
-    var $button = $(clickObject);
-    if ($button.hasClass('btn-success')) {
-        // has not subscribed yet
-        subscribeQuestion(topic_id, null, function() {
-            $button.html('Unsubscribe');
-            $button.removeClass('btn-success');
-            $button.addClass('btn-warning');
-        });
-    } else {
-        // has subscribed
-        subscribeQuestion(topic_id, 'unsubscribe', function() {
-            $button.html('Subscribe');
-            $button.removeClass('btn-warning');
-            $button.addClass('btn-success');
-        });
-    }
-}
-
-/**
  * show topic with specific sort method
  *
  * @param sorted

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bookmark;
+use App\Notification;
 use Auth;
 use App\User;
 use App\Topic;
@@ -61,11 +62,11 @@ class SubscribeController extends Controller
      */
     public function postTopic($topic_id, Request $request) {
         $user = Auth::user();
+        $topic = Topic::findOrFail($topic_id);
         if ($request->exists('op') && $request->get('op') == 'unsubscribe') {
             // unsubscribe a topic
             $user->subscribe->topics()->detach($topic_id);
         } else {
-            $topic = Topic::findOrFail($topic_id);
             // check duplicate subscribe
             if (!$user->subscribe->checkHasSubscribed($topic_id, 'topic')) {
                 $user->subscribe->topics()->save($topic);
@@ -87,23 +88,34 @@ class SubscribeController extends Controller
      * @return array(json)
      */
     public function postUser($user_id, Request $request) {
+        $follow_user = User::findOrFail($user_id);
         $user = Auth::user();
         if ($request->exists('op') && $request->get('op') == 'unsubscribe') {
             // unsubscribe a user
             $user->subscribe->users()->detach($user_id);
+            return [
+                'status' => true,
+                'numSubscriber' => $follow_user->subscribers()->count()
+            ];
         } else {
             // subscribe a user
-            if (!$user_id == $user->id) {
-                $follow_user = User::findOrFail($user_id);
+            if ($user_id != $user->id) {
+                // you cannot subscribe yourself
                 // check duplicate subscribe
                 if (!$user->subscribe->checkHasSubscribed($user_id, 'user')) {
                     $user->subscribe->users()->save($follow_user);
+                    // send notification to the follow user
+                    Notification::notification($follow_user, 10, $user->id, $user->id);
+                    return [
+                        'status' => true,
+                        'numSubscriber' => $follow_user->subscribers()->count()
+                    ];
                 }
             }
         }
 
         return [
-            'status' => true
+            'status' => false,
         ];
     }
 

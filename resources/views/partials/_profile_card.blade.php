@@ -83,8 +83,20 @@
 
     </div>
 
-    <div class="userHome_pointSummary">
-        Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="userHome_number">10</span> Vote, <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <span class="userHome_number">10</span> Thanks
+    <div class="userHome_pointSummary clearfix">
+        <div class="float-left margin-top">
+            Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="userHome_number">10</span> Vote, <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <span class="userHome_number">10</span> Thanks
+        </div>
+        @if($user->id != Auth::user()->id)
+            <div class="float-right">
+                @if(Auth::user()->subscribe->checkHasSubscribed($user->id, 'user'))
+                    <button class="btn btn-default" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Unsubscribe</button>
+                @else
+                    <button class="btn btn-success" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Subscribe</button>
+                @endif
+                <button class="btn btn-default"><span class="space-right"></span><span class="glyphicon glyphicon-envelope"></span></button>
+            </div>
+        @endif
     </div>
 
     <div class="userHome_profileNavbar">

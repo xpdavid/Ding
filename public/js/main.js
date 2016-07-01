@@ -50,6 +50,64 @@ function subscribeTopic(topic_id, op, callback) {
 }
 
 /**
+ * Send ajax call to subscribe a question
+ *
+ * @param event
+ * @param clickObject
+ * @param topic_id
+ */
+function topics_subscribe(event, clickObject, topic_id) {
+    event.preventDefault();
+    var $click = $(clickObject);
+    if ($click.hasClass('active')) {
+        // is already subscribed
+        subscribeTopic(topic_id, 'unsubscribe', function() {
+            // remove class
+            $click.removeClass('active');
+            // show subscribe text
+            $click.find('span:nth-child(1)').show();
+            $click.find('span:nth-child(2)').text('');
+            $click.find('span:nth-child(2)').text('Subscribe')
+        });
+    } else {
+        // current operation is subscribe the topic
+        subscribeTopic(topic_id, null, function() {
+            // add active class
+            $click.addClass('active');
+            // show unsubscribe text
+            $click.find('span:nth-child(1)').hide();
+            $click.find('span:nth-child(2)').text('');
+            $click.find('span:nth-child(2)').text('Unsubscribe')
+        });
+    }
+}
+
+/**
+ * trigger subscribe button in specific topic page
+ *
+ * @param clickObject
+ * @param topic_id
+ */
+function topic_show_subscribe(clickObject, topic_id) {
+    var $button = $(clickObject);
+    if ($button.hasClass('btn-success')) {
+        // has not subscribed yet
+        subscribeQuestion(topic_id, null, function() {
+            $button.html('Unsubscribe');
+            $button.removeClass('btn-success');
+            $button.addClass('btn-warning');
+        });
+    } else {
+        // has subscribed
+        subscribeQuestion(topic_id, 'unsubscribe', function() {
+            $button.html('Subscribe');
+            $button.removeClass('btn-warning');
+            $button.addClass('btn-success');
+        });
+    }
+}
+
+/**
  * Send ajax request to subscribe a question
  *
  * @param question_id
@@ -81,6 +139,36 @@ function subscribeUser(user_id, op, callback) {
             callback(results);
         }
     })
+}
+
+/**
+ * Subscribe user by click button
+ * @param clickObject
+ * @param user_id
+ */
+function user_button_subscribe(clickObject, user_id, textID) {
+    var $button = $(clickObject);
+    if ($button.hasClass('btn-success')) {
+        // has not subscribed yet
+        subscribeUser(user_id, null, function(results) {
+            $button.html('Unsubscribe');
+            $button.removeClass('btn-success');
+            $button.addClass('btn-default');
+            if (textID) {
+                $('#' + textID).html(results.numSubscriber);
+            }
+        });
+    } else {
+        // has subscribed
+        subscribeUser(user_id, 'unsubscribe', function(results) {
+            $button.html('Subscribe');
+            $button.removeClass('btn-default');
+            $button.addClass('btn-success');
+            if (textID) {
+                $('#' + textID).html(results.numSubscriber);
+            }
+        });
+    }
 }
 
 /**

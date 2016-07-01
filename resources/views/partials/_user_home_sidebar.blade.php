@@ -2,26 +2,26 @@
     <a href="#">
         <span> Follower </span>
         <br>
-        <strong> {{ Auth::user()->subscribers()->count() }} </strong>
-        <label> People <label>
+        <strong id="user_numSubscriber"> {{ $user->subscribers()->count() }} </strong>
+        <label> People </label>
     </a>
     <a href="#" class="userHome_followsMore">
         <span> Follow </span>
         <br>
-        <strong> {{ Auth::user()->subscribe->users()->count() }} </strong>
-        <label> People <label>
+        <strong> {{ $user->subscribe->users()->count() }} </strong>
+        <label> People </label>
     </a>
 </div>
 
 <div class="userHome_sideBarSection">
     <div class="userHome_followTopicTitile">
-        Follows
+        Subscribed Topics
     </div>
     <div class="userHome_followTopicItems">
-        @foreach(Auth::user()->subscribe->users as $user)
-            <a href="/people/{{ $user->url_name }}">
-                <img src="{{ DImage($user->settings->profile_pic_id, 25, 25) }}" class="img-rounded"
-                 alt="{{ $user->name }}"/>
+        @foreach($user->subscribe->topics as $topic)
+            <a href="/topic/{{ $topic->id }}">
+                <img src="{{ DImage($topic->avatar_img_id, 25, 25) }}" class="img-rounded"
+                 alt="{{ $topic->name }}"/>
             </a>
         @endforeach
     </div>

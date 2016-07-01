@@ -106,15 +106,18 @@ class SearchController extends Controller
                 $users = User::noneSimilarMatch($query)
                     ->skip(($page - 1) * $itemInPage)->take($itemInPage)->get();
                 $results = [];
-                foreach ($users as $user) {
+                foreach ($users as $s_user) {
+                    // don't search yourself
+                    if ($user->id == $s_user->id) continue;
                     array_push($results, [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'bio' => $user->bio,
-                        'numAnswer' => $user->answers()->count(),
-                        'numSubscriber' => $user->subscribers()->count(),
-                        'url_name' => $user->url_name,
-                        'img' => DImage($user->settings->profile_pic_id, 50, 50)
+                        'id' => $s_user->id,
+                        'name' => $s_user->name,
+                        'bio' => $s_user->bio,
+                        'numAnswer' => $s_user->answers()->count(),
+                        'numSubscriber' => $s_user->subscribers()->count(),
+                        'isSubscribe' => $user->subscribe->checkHasSubscribed($s_user->id, 'user'),
+                        'url_name' => $s_user->url_name,
+                        'img' => DImage($s_user->settings->profile_pic_id, 50, 50)
                     ]);
                 }
 

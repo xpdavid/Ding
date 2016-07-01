@@ -298,7 +298,7 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <button class="btn btn-success btn-xs float-right">Subscribe</button>
+                        <button class="btn btn-success btn-xs float-right" onclick="user_button_subscribe(this, '{{ $answer->owner->id }}', null);">Subscribe</button>
                         <h4 class="media-heading">{{ $answer->owner->name }}</h4>
                         {{ $answer->owner->bio }}
                     </div>

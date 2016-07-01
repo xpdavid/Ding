@@ -2,7 +2,7 @@
 <!--the template will rendered by javascript template engine `handlebars.js`-->
 {{#each questions}}
 <div class="font-bold clearfix">
-    <a href="/question/{{id}}" class="float-left">{{title}}</a>
+    <a href="/question/{{id}}" class="float-left highlight_title_short">{{title}}</a>
     <div class="float-right space-right">
         {{#each topics}}
             <a href="topic/{{id}}" class="font-grey">{{name}}</a>

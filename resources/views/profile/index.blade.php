@@ -30,3 +30,8 @@
 
 
 @endsection
+
+
+@section('side')
+    @include('partials._user_home_sidebar', ['user' => $user])
+@endsection

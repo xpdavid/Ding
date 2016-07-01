@@ -42,7 +42,7 @@
 
 
         <div class="col-md-4">
-            @include('partials._user_home_sidebar')
+            @yield('side')
         </div>
 
     </div> <!--For row-->
