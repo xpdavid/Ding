@@ -136,12 +136,20 @@ class AnswerController extends Controller
         $user->answers()->save($answer);
         $question->answers()->save($answer);
 
-        // notify all the subscribe user
+        // notify all the question subscribe user
         foreach ($question->subscribers as $subscriber) {
             $owner = $subscriber->owner;
             // cannot be self-notified
             if ($owner->id == $user->id) continue;
             // type 2 notification, user answer question
+            Notification::notification($owner, 2, $user->id, $answer->id);
+        }
+
+        // notify all user subscribers
+        foreach ($user->subscribers as $subscriber) {
+            $owner = $subscriber->owner;
+            // it is ok to notify twice as the sanme notification will mark as updated
+            // rather than create a new one
             Notification::notification($owner, 2, $user->id, $answer->id);
         }
 
@@ -188,6 +196,13 @@ class AnswerController extends Controller
                 if ($user->id != $answer->owner->id) {
                     Notification::notification($answer->owner, 7, $user->id, $answer_id);
                 }
+
+                // notify all user subscribers
+                foreach ($user->subscribers as $subscriber) {
+                    $owner = $subscriber->owner;
+                    Notification::notification($owner, 7, $user->id, $answer_id);
+                }
+
                 break;
             case 'down' :
                 $answer->vote_down_users()->save($user);

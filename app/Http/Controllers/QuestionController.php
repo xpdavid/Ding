@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notification;
 use Auth;
 use App\Reply;
 use App\Topic;
@@ -86,6 +87,12 @@ class QuestionController extends Controller
         foreach ($request->get('question_topics') as $topic_id) {
             $topic = Topic::findOrFail($topic_id);
             $topic->questions()->save($question);
+        }
+        
+        // notification to user subscribers
+        foreach ($user->subscribers as $subscriber) {
+            $owner = $subscriber->owner;
+            Notification::notification($owner, 12, $user->id, $question->id);
         }
 
         return redirect(action('QuestionController@show', $question->id));

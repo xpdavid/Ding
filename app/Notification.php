@@ -111,18 +111,22 @@ class Notification extends Model
      * 4.	{{User}} @ you in his/her {{question}}
      * 5.	{{User}} @ you in his/her {{reply}}
      * 6.	{{User}} reply your {{Reply}}
-     * 7.	{{User}} vote up your answers {{answer}}
-     * 8.	Someone vote down your answers {{answer}}
+     * 7.	{{User}} vote up (your) answers {{answer}}
+     * 8.	Someone vote down (your) answers {{answer}}
      * 9.	{{User}} vote up your reply {{Reply}}
      * 10.	{{User}} subscribe you.
      * 11.	{{User}} send message to you
-     *
+     * 12.  {{User}} post a question : {{Question}}
+     * 13.  {{User}} subscribe to a question : {{Question}}
+     * 14.  {{User}} subscribe to a topic : {{Topic}}
      * @return string
      */
     public function getRenderedContentAttribute() {
         $subject = null;
         $object = null;
         switch ($this->type) {
+            case 13:
+            case 12:
             case 4:
             case 1:
                 $subject = User::findOrFail($this->subject_id);
@@ -149,6 +153,11 @@ class Notification extends Model
             case 11:
                 $subject = User::findOrFail($this->subject_id);
                 $object = Message::findOrFail($this->object_id);
+                break;
+            case 14:
+                $subject = User::findOrFail($this->subject_id);
+                $object = Topic::findOrFail($this->object_id);
+                break;
         }
 
         $view = View::make('notification.type_' . $this->type,

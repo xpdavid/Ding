@@ -166,6 +166,8 @@ class UserCenterController extends Controller
         foreach ($questions as $question) {
             // take 10 recent answer
             $answer = $question->answers()->orderBy('created_at', 'desc')->take(5)->get();
+            // skip the question without answer
+            if ($question->answers()->count() == 0) continue;
             // use the answer with the highest vote
             $answer = $answer->sortByDesc('netVotes')->first();
             // generate topics
@@ -223,12 +225,15 @@ class UserCenterController extends Controller
      */
     public function postNotification(Request $request) {
         $user = Auth::user();
-        $notifications = $user->notifications;
+        // stable sort thus we sort all first
+        $notifications = $user->notifications()->orderBy('created_at', 'desc')->get();
         $day = $request->get('day') ? $request->get('day') : 1;
         // group by date and sort by date
         $notificationsByDay = $notifications->groupBy(function ($notification) {
             return Carbon::parse($notification->updated_at)->format('d/m/Y');
-        })->sort()->forPage($day, 1);
+        })->sortByDesc(function($item, $key) {
+            return Carbon::createFromFormat('d/m/Y', $key)->timestamp;
+        })->forPage($day, 1);
         
         // format result
         $results = [];

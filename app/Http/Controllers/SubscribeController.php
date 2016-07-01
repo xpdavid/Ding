@@ -46,6 +46,12 @@ class SubscribeController extends Controller
             }
         }
 
+        // notification to user subscribers
+        foreach ($user->subscribers as $subscriber) {
+            $owner = $subscriber->owner;
+            Notification::notification($owner, 13, $user->id, $question->id);
+        }
+
         return [
             'status' => true,
             'numSubscriber' => $question->subscribers()->count()
@@ -71,6 +77,12 @@ class SubscribeController extends Controller
             if (!$user->subscribe->checkHasSubscribed($topic_id, 'topic')) {
                 $user->subscribe->topics()->save($topic);
             }
+        }
+
+        // notification to user subscribers
+        foreach ($user->subscribers as $subscriber) {
+            $owner = $subscriber->owner;
+            Notification::notification($owner, 14, $user->id, $topic->id);
         }
 
         return [
