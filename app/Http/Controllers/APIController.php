@@ -67,7 +67,8 @@ class APIController extends Controller
                         array_push($results, [
                             'id' => $topic->id,
                             'name' => $topic->name,
-                            'category' => 'Topic'
+                            'category' => 'Topic',
+                            'url' => action('TopicController@show', $topic->id)
                         ]);
                     }
 
@@ -92,7 +93,7 @@ class APIController extends Controller
                             'url' => action('QuestionController@show', $question->id),
                             'title' => $question->title,
                             'numAnswers' => $question->answers()->count(),
-                            'category' => 'Question'
+                            'category' => 'Question',
                         ]);
                     }
 
@@ -116,7 +117,8 @@ class APIController extends Controller
                         array_push($results, [
                             'id' => $user->id,
                             'name' => $user->name,
-                            'category' => 'People'
+                            'category' => 'People',
+                            'url' => action('PeopleController@show', $user->url_name)
                         ]);
                     }
 

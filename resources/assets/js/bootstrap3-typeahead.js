@@ -57,7 +57,11 @@
     this.render = this.options.render || this.render;
     this.updater = this.options.updater || this.updater;
     this.displayText = this.options.displayText || this.displayText;
+
     this.bottomElement = this.options.bottomElement || this.bottomElement;
+    this.addItemBefore = this.options.addItemBefore || this.addItemBefore;
+    this.beforeShownKeyup = this.options.beforeShownKeyup || this.beforeShownKeyup;
+
     this.width = this.options.width || this.width;
     this.source = this.options.source;
     this.delay = this.options.delay;
@@ -178,8 +182,20 @@
 
       // Add item
       if (this.options.addItem){
-        items.push(this.options.addItem);
+          if (typeof this.options.addItem == "function") {
+              items.push(this.options.addItem());
+          } else {
+              items.push(this.options.addItem);
+          }
       }
+        // add item before
+        if (this.options.addItemBefore){
+            if (typeof this.options.addItemBefore == "function") {
+                items.unshift(this.options.addItemBefore());
+            } else {
+                items.unshift(this.options.addItemBefore);
+            }
+        }
 
       if (this.options.items == 'all') {
         return this.render(items).show();
@@ -287,7 +303,10 @@
 
 
       // append bottom element
-      this.$menu.append(this.bottomElement.html);
+        if (this.bottomElement) {
+            this.$menu.append(this.bottomElement.html);
+        }
+
       return this;
     },
 
@@ -407,6 +426,10 @@
     },
 
     keyup: function (e) {
+        // beforeShownKeyup
+        if (!this.shown && this.options.beforeShownKeyup && typeof this.options.beforeShownKeyup == "function") {
+            this.options.beforeShownKeyup(e);
+        }
       switch(e.keyCode) {
         case 40: // down arrow
         case 38: // up arrow
@@ -499,12 +522,16 @@
         scrollHeight: 0,
         autoSelect: true,
         afterSelect: $.noop,
+
         addItem: false,
+        addItemBefore: false,
+      beforeShownKeyup : false,
+
         delay: 0,
         separator: 'category',
         headerHtml: '<li class="dropdown-header"></li>',
         headerDivider: '<li class="divider" role="separator"></li>',
-        bottomElement: '',
+        bottomElement: false,
         width: '100%'
   };
 

@@ -45,12 +45,38 @@
 
 @endsection
 
+
+@section('right')
+    @if ($type == 'question' || $type == 'answer')
+        {{--show topics tips--}}
+        <h4>Topics</h4>
+        <hr class="small_hrLight">
+    @endif
+
+    <div class="page_search" id="search_page_right_content">
+
+    </div>
+
+    <div class="invisible" id="search_page_right_nav">
+
+    </div>
+@endsection
+
 @section('javascript')
 <script type="text/javascript">
     $(function() {
         searchRange = '{{ $range }}';
         searchType = '{{ $type }}';
         showResultPage('search_page', '{{ $type }}', '{{ $query }}', 1, null);
+        @if ($type == 'question' || $type == 'answer')
+            showResultPage('search_page_right', 'topic', '{{ $query }}', 1, function() {
+                // set callback function to break the line
+                $('#search_page_right_content').find('.col-md-6').each(function() {
+                    $(this).removeClass('col-md-6');
+                    $(this).addClass('col-md-12');
+                });
+            });
+        @endif
     })
 </script>
 @endsection

@@ -97,6 +97,11 @@ function showResultPage(base_id, type, query, page, callback) {
                 compilePageNav(page, results.pages, base_id, type, query, 'showResultPage')
             );
         }
+
+        // check callback
+        if (callback && typeof callback == "function") {
+            callback();
+        }
     });
 }
 

@@ -126,25 +126,40 @@ function navbar_searching() {
             }
         },
         afterSelect : function(item) {
-            if (item || item.url) {
+            if (item && item.url) {
                 window.location.replace(item.url);
             }
         },
-        bottomElement : {
-            html : "<li class='nav_search_box_hint'>Click for more results</li>",
-        },
         items : 'all',
         sorter : function(items) { return items}, // don't sort it!
-        width : '540px'
+        width : '540px',
+        addItemBefore : function() {
+            return {
+                'name' : $('#navbar_searching').val(),
+                'url' : '/search?type=question&query=' + $('#navbar_searching').val(),
+                'category' : 'Press Enter for more results'
+            };
+        },
+        beforeShownKeyup : function(e) {
+            if (e.keyCode == 13) {
+                navbar_searching_click();
+            }
+        }
     });
 
-    // navbar search icon click redirect
-    $('#navbar_searching_click').click(function() {
-        if (typeof searchType == "undefined") {
-            searchType = 'question';
-        }
-        window.location = '/search?type=' + searchType + '&query=' + $('#navbar_searching').val();
-    });
+    // bind enter event
+    
+
+}
+
+/**
+ * navbar search icon click redirect
+ */
+function navbar_searching_click() {
+    if (typeof searchType == "undefined") {
+        searchType = 'question';
+    }
+    window.location = '/search?type=' + searchType + '&query=' + $('#navbar_searching').val();
 }
 
 /**
