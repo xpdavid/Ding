@@ -10,7 +10,9 @@
         <div class="row">
             <div class="userHome_profileHeaderLeft">
                 <img src="{{ DImage($user->settings->profile_pic_id, 100, 100) }}" alt="{{ $user->name }}" class="img-rounded">
-                <a class="btn btn-default btn-xs" href="/people/edit" role="button">Edit My Profile</a>
+                @if($user->id == Auth::user()->id)
+                    <a class="btn btn-default btn-xs" href="/people/edit" role="button">Edit My Profile</a>
+                @endif
             </div>
 
             <div class="userHome_profileHeaderRight">
@@ -19,19 +21,17 @@
                   <span class="userHome_profileItem">
                     <a href="#">
                       @if (count($user->educationExps) > 0)
-                            {{$educationExp->first()->institution}}
+                            {{$user->educationExps->first()->institution}}
                         @else
-                            Fill up your institution
+                            Not fill up yet
                         @endif
                     </a>
                   </span>
                   <span class="userHome_profileMoreItem">
                     <a href="#">
-                      @if ((count($user->educationExps) > 0) && (count($user->educationExps->first()->major) > 0))
+                      @if (count($user->educationExps) > 0)
                             {{$user->educationExps->first()->major}}
-                        @else
-                            Fill up your major
-                        @endif
+                      @endif
                     </a>
                   </span>
                   <span class="userHome_profileMoreItem">
@@ -42,10 +42,19 @@
                     <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
                   <span class="userHome_profileItem">
                     <a href="#">
-                      @if (count($user->job) > 0)
-                            {{ $user->job->first()->full_name }}
+                      @if (count($user->jobs) > 0)
+                            {{ $user->jobs->first()->organization }}
                         @else
-                            Fill up your occupation
+                            Not fill up yet
+                        @endif
+                    </a>
+                  </span>
+                  <span class="userHome_profileMoreItem">
+                    <a href="#">
+                      @if (count($user->jobs) > 0)
+                            {{$user->jobs->first()->designation}}
+                        @else
+                            Not fill up yet
                         @endif
                     </a>
                   </span>
@@ -61,7 +70,7 @@
                   </span>
                   <span class="userHome_profileMoreItem">
                       @if ($user->settings->display_facebook)
-                          <a href="#">Email</a>
+                          <a href="#">Facebook</a>
                       @else
                           Facebook
                       @endif

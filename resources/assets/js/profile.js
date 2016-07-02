@@ -8,8 +8,6 @@ Section for user profile edit
  * @param $id
  */
 function genericUserProfileEditToggleSetting(id) {
-    // hide two div
-    $(id + '_edit').toggle();
 
     $(id).find('a').click(function(e) {
         e.preventDefault();
@@ -24,33 +22,8 @@ function genericUserProfileEditToggleSetting(id) {
         $(id).toggle();
         $(id + '_edit').toggle();
     });
-
-    $(id + '_edit').find('button').click(function(e) {
-
-        $(id).toggle();
-        $(id + '_edit').toggle();
-    });
     
 }
-
-$(window).on('load', function() {
-    // try bind every button with the event 'click and then toggle'
-    try {
-        genericUserProfileEditToggleSetting('#user_sex');
-        genericUserProfileEditToggleSetting('#user_display_facebook');
-        genericUserProfileEditToggleSetting('#user_display_email');
-        genericUserProfileEditToggleSetting('#user_bio');
-        genericUserProfileEditToggleSetting('#user_self_intro');
-        genericUserProfileEditToggleSetting('#user_education');
-        genericUserProfileEditToggleSetting('#user_job');
-        genericUserProfileEditToggleSetting('#user_specialization');
-
-    } catch (e) {
-        console.log('edit button event binding fail');
-    }
-})
-
-
 
 /**
  * Show edit button when cursor hover
@@ -58,15 +31,22 @@ $(window).on('load', function() {
  * @param id
  */
 function genericUserProfileEditHover(id) {
-    $(id).find('a').toggle();
-
-    $(id).parent().parent().parent().hover(function() {
-        $(id).find('a').toggle();
+    $(id + '_edit_button').hide();
+    $(id + '_layout').hover(function() {
+        $(id + '_edit_button').toggle();
     });
 }
 
+/**
+ * Generic method to bind list delete button hover event
+ *
+ * @param id
+ */
 function genericUserProfileListEditHover(id) {
     $( "li[id^=" + id + "]" ).each(function(index, liUI) {
+        if (!$(liUI).children('a').is(':visible')) {
+            return ;
+        }
         $(liUI).children('a').toggle();
 
         $(liUI).hover(function() {
@@ -75,58 +55,86 @@ function genericUserProfileListEditHover(id) {
     });
 }
 
-$(function() {
-    // try bind every div with hover event
-    try {
-        genericUserProfileEditHover('#user_sex');
-        genericUserProfileEditHover('#user_display_facebook');
-        genericUserProfileEditHover('#user_display_email');
-        genericUserProfileEditHover('#user_bio');
-        genericUserProfileEditHover('#user_self_intro');
-
-        // for listing (using li), bind every li with hover event
-        genericUserProfileListEditHover('educationExp');
-        genericUserProfileListEditHover('job');
-        genericUserProfileListEditHover('specialization');
-
-    } catch (e) {
-        console.log('hover event binding fail');
-    }
-})
-
-
 /**
  * Popup candidate text for the input field (type-ahead)
- *
+ * @param id
+ * @param array request
  */
-function genericTypeAhead(id, source_url) {
+function genericTypeAhead(id, type) {
     $(id).typeahead({
         delay: 400,
+        minLength: 1,
         source: function (query, process) {
-            $.ajax({
-                url: source_url,
-                data: {query: query},
-                dataType: 'json'
+            $.post({
+                url: '/api/autocomplete',
+                data: {
+                    queries : [{
+                        type : type,
+                        max_match : 10,
+                        use_similar : 0,
+                        term : query,
+                    }]
+                },
             }).done(function(response) {
                 return process(response);
             });
-        }
+        },
     });
 }
 
+/**
+ * Bind input field event
+ */
 $(function() {
     // try bind every input field with type-ahead
     try {
-        genericTypeAhead('[name="institution"]', '/api/institution-list');
-        genericTypeAhead('[name="major"]', '/api/major-list');
-        genericTypeAhead('[name="organization"]', '/api/organization-list');
-        genericTypeAhead('[name="designation"]', '/api/designation-list');
-        genericTypeAhead('[name="specialization"]', '/api/specialization-list');
+        genericTypeAhead('[name="institution"]', 'institution');
+        genericTypeAhead('[name="major"]', 'major');
+        genericTypeAhead('[name="organization"]', 'organization');
+        genericTypeAhead('[name="designation"]', 'designation');
+        $('#specializations').select2({
+            width: '100%',
+            dropdownAutoWidth : true,
+            placeholder: 'Please select some topics',
+            minimumInputLength : 1,
+            ajax: {
+                url: "/api/autocomplete",
+                dataType: 'json',
+                method: 'POST',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        queries: [{
+                            type : 'topic',
+                            term : params.term, // search term
+                            max_match: 10,
+                            use_similar: 0,
+                        }]
+                    };
+                },
+                processResults: function(data, params) {
+                    var process_data = [];
+                    $.each(data, function(index, item) {
+                        process_data.push({
+                            id : item.id,
+                            text : item.name
+                        });
+                    });
+                    return {
+                        results : process_data
+                    }
+                }
+            },
+        });
     } catch (e) {
         console.log('hover event binding fail');
     }
-})
+});
 
+/**
+ * Send ajax request to save user sex
+ *
+ */
 function saveUserSex() {
     $.post({
         url: '/people/update',
@@ -137,13 +145,18 @@ function saveUserSex() {
         dataType: 'json'
     }).done(function() {
         $("#user_sex_status").text($("#user_sex_radio input[type='radio']:checked").val());
+        // hide the form
+        $('#user_sex_edit').toggle();
+        $('#user_sex').toggle();
     }).fail(function() {
         console.log('save user sex fail.');
     });
-
-    return false;
 }
 
+/**
+ * Send ajax request to save user setting to displaying facebook
+ *
+ */
 function saveUserDisplayFacebook() {
     $.post({
         url: '/people/update',
@@ -152,15 +165,20 @@ function saveUserDisplayFacebook() {
             type: 'facebook',
         },
         dataType: 'json'
-    }).done(function() {
-        $("#user_display_facebook_status").text($("#user_display_facebook_radio input[type='radio']:checked").val());
+    }).done(function(data) {
+        $("#user_display_facebook_status").text(data.facebook ? 'Yes' : 'No');
+        // hide the form
+        $('#user_display_facebook_edit').toggle();
+        $('#user_display_facebook').toggle();
     }).fail(function() {
         console.log('save user display facebook fail.');
     });
-
-    return false;
 }
 
+/**
+ * Send ajax request to save user setting to displaying facebook
+ *
+ */
 function saveUserDisplayEmail() {
     $.post({
         url: '/people/update',
@@ -169,47 +187,62 @@ function saveUserDisplayEmail() {
             type: 'email',
         },
         dataType: 'json'
-    }).done(function() {
-        $("#user_display_email_status").text($("#user_display_email_radio input[type='radio']:checked").val());
+    }).done(function(data) {
+        $("#user_display_email_status").text(data.email ? 'Yes' : 'No');
+        // hide the form
+        $('#user_display_email_edit').toggle();
+        $('#user_display_email').toggle();
     }).fail(function() {
         console.log('save user display email fail.');
     });
 
-    return false;
 }
 
+/**
+ * Send ajax request to save user bio
+ *
+ */
 function saveUserBio() {
+    if ( $("#user_bio_input").val() == "") {
+        $("#user_bio_input").focus();
+        return ;
+    }
     $.post({
         url: '/people/update',
         data: {
-            bio : $("#user_bio_edit input[type='text']").val(),
+            bio : $("#user_bio_input").val(),
             type: 'bio',
         },
         dataType: 'json'
-    }).done(function() {
-        $("#user_bio_status").text($("#user_bio_edit input[type='text']").val());
+    }).done(function(data) {
+        $("#user_bio_status").text(data.bio);
+        // hide the form
+        $('#user_bio_edit').toggle();
+        $('#user_bio').toggle();
     }).fail(function() {
         console.log('save user bio fail.');
     });
-
-    return false;
 }
 
+/**
+ * Send ajax request to save user self intro
+ */
 function saveUserIntro() {
     $.post({
         url: '/people/update',
         data: {
-            intro : $("#user_self_intro_edit").find('textarea').val(),
+            intro : $("#user_self_intro_input").val(),
             type: 'intro',
         },
         dataType: 'json'
-    }).done(function() {
-        $("#user_self_intro_status").text($("#user_self_intro_edit").find('textarea').val());
+    }).done(function(data) {
+        $("#user_self_intro_status").text(data.self_intro);
+        // hide the form
+        $('#user_self_intro_edit').toggle();
+        $('#user_self_intro').toggle();
     }).fail(function() {
         console.log('save user self-intro fail.');
     });
-
-    return false;
 }
 
 
@@ -227,24 +260,32 @@ function saveEducationExp() {
         },
         dataType: 'json'
     }).done(function(data) {
-        // generate education experience name
-        var educationExpName = $('[name="institution"]').val();
-        if ($('[name="major"]').val() != "") {
-            educationExpName = educationExpName + ' ⋅ ' + $('[name="major"]').val();
-        }
-
-        // append generate item to the list
-        $('#user_education_list').append(
-            generateItemUI(
-                'educationExp' + data.educationExp_id,
-                educationExpName,
-                'detachEducationExp(event, ' + data.educationExp_id  + ')'
-            )
-        );
-
+        // empty data
+        if (!data.status) return;
         // clear value
         $('[name="institution"]').val("");
         $('[name="major"]').val("");
+        // check has the same experience
+        if ($('#educationExp_' + data.id).length != 0) {
+            // do nothing
+            return ;
+        }
+
+        var template = Handlebars.templates['_profile_edit_item.html'];
+
+        // append generate item to the list
+        $('#user_education_list').append(
+            template({
+                items : [{
+                    id : 'educationExp_' + data.id,
+                    name : {
+                        name : data.name,
+                        url : ''
+                    },
+                    delete_onclick : 'detachEducationExp(event, ' + data.id + ')'
+                }]
+            })
+        );
 
         // re-bind the new listing with hover event
         genericUserProfileListEditHover('educationExp');
@@ -274,7 +315,7 @@ function detachEducationExp(event, EducationExp_id) {
         },
         dataType: 'json'
     }).done(function() {
-        $('#educationExp' + EducationExp_id).remove();
+        $('#educationExp_' + EducationExp_id).remove();
     }).fail(function() {
         console.log('delete education experience fail.');
     });
@@ -296,21 +337,36 @@ function saveJob() {
         },
         dataType: 'json'
     }).done(function(data) {
-        // generate job name
-        var jobName = $('[name="organization"]').val() + ' ⋅ ' + $('[name="designation"]').val();
-
-        // append generate item to the list
-        $('#user_job_list').append(
-            generateItemUI(
-                'job' + data.job_id,
-                jobName,
-                'detachJob(event, ' + data.job_id  + ')'
-            )
-        );
+        // empty data
+        if (!data.status) return;
 
         // clear value
         $('[name="organization"]').val("");
         $('[name="designation"]').val("");
+
+        // check has the same experience
+        if ($('#job_' + data.id).length != 0) {
+            // do nothing
+            return ;
+        }
+        var template = Handlebars.templates['_profile_edit_item.html'];
+
+        // append generate item to the list
+        $('#user_job_list').append(
+            template({
+                items : [{
+                    id : 'job_' + data.id,
+                    name : {
+                        name : data.name,
+                        url : ''
+                    },
+                    delete_onclick : 'detachJob(event, ' + data.id + ')'
+                }]
+            })
+        );
+
+        // re-bind the new listing with hover event
+        genericUserProfileListEditHover('specialization');
 
     }).fail(function() {
         console.log('save job fail.');
@@ -327,7 +383,9 @@ function saveJob() {
  * @returns {boolean}
  */
 function detachJob(event, job_id) {
-    event.preventDefault(); // prevent default html anchor
+    if (event) {
+        event.preventDefault(); // prevent default html anchor
+    }
 
     $.post({
         url: '/people/delete',
@@ -337,7 +395,7 @@ function detachJob(event, job_id) {
         },
         dataType: 'json'
     }).done(function() {
-        $('#job' + job_id).remove();
+        $('#job_' + job_id).remove();
     }).fail(function() {
         console.log('delete job fail.');
     });
@@ -350,31 +408,55 @@ function detachJob(event, job_id) {
  * @param url_name
  */
 function saveSpecialization() {
+    var $input = $('#specializations');
+    if ($input.val() == "") {
+        $input.focus();
+        return ;
+    }
     $.post({
         url: '/people/update',
         data: {
-            specialization : $('[name="specialization"]').val(),
+            specializations : $input.val(),
             type : 'specialization'
         },
         dataType: 'json'
     }).done(function(data) {
-        // display edit button
-        $('#user_specialization_edit').find('a').click();
+        // empty data
+        if (!data.length) return;
+        var template = Handlebars.templates['_profile_edit_item.html'];
 
-        // generate specialization name
-        var specializationName = $('[name="specialization"]').val();
+        var process = [];
+        $.each(data, function(index, item) {
+            // check if has already in the list
+            if ($('#specialization_' + item.id).length != 0) return ;
+            // process results
+            process.push({
+                id : 'specialization_' + item.id,
+                name : {
+                    url : '/topic/' + item.id,
+                    name : item.name
+                },
+                delete_onclick : 'detachSpecialization(event, ' + item.id + ')',
+                img_url : item.img
+            });
+        });
 
         // append generate item to the list
         $('#user_specialization_list').append(
-            generateItemUI(
-                'specialization' + data.specialization_id,
-                specializationName,
-                'detachSpecialization(event, ' + data.specialization_id  + ')'
-            )
+            template({
+                items : process
+            })
         );
 
         // clear value
-        $('[name="specialization_name"]').val("");
+        $('#specializations').val('').change()
+
+        // hide the form
+        $('#user_specialization_edit').toggle();
+        $('#user_specialization').toggle();
+
+        // re-bind the new listing with hover event
+        genericUserProfileListEditHover('specialization');
 
     }).fail(function() {
         console.log('save specialization fail.');
@@ -391,7 +473,9 @@ function saveSpecialization() {
  * @returns {boolean}
  */
 function detachSpecialization(event, specialization_id) {
-    event.preventDefault(); // prevent default html anchor
+    if (event) {
+        event.preventDefault(); // prevent default html anchor
+    }
 
     $.post({
         url: '/people/delete',
@@ -401,7 +485,7 @@ function detachSpecialization(event, specialization_id) {
         },
         dataType: 'json'
     }).done(function() {
-        $('#specialization' + specialization_id).remove();
+        $('#specialization_' + specialization_id).remove();
     }).fail(function() {
         console.log('delete specialization fail.');
     });
@@ -409,39 +493,6 @@ function detachSpecialization(event, specialization_id) {
     return false;
 }
 
-
-/**
- * generate ItemUI so that we can add item without refresh
- *
- * there need a function that auto find img by using some keywords
- *
- * @param title
- * @param deleteAction
- */
-function generateItemUI(id, title, deleteAction) {
-    titleUI = $('#itemContent_title');
-    deleteButtonUI = $('#itemContent_delete');
-
-    // set value
-    titleUI.html(title);
-    deleteButtonUI.attr('onclick', deleteAction);
-    $('#itemContent').find('li').attr('id', id);
-
-    // clear the all attribute
-    titleUI.attr('id', '');
-    deleteButtonUI.attr('id', '');
-
-    // copy
-    $content = $('#itemContent').html();
-
-    // clear the all content
-    titleUI.attr('id', 'itemContent_title');
-    deleteButtonUI.attr('id', 'itemContent_delete');
-    $('#itemContent').find('li').attr('id', "");
-    titleUI.html("");
-
-    return $content;
-}
 
 /**
  * Show bookmark page

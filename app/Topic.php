@@ -44,30 +44,10 @@ class Topic extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function specialist() {
-        return $this->belongsToMany('App\User', 'user_specialization', 'user_id', 'topic_id');
+    public function specialists() {
+        return $this->belongsToMany('App\User', 'user_specialization', 'topic_id', 'user_id');
     }
-
-    /**
-     * find the topic in database
-     * if it does not exsit, then create it and return
-     *
-     * @param $topicName
-     * @return Topic
-     */
-    public static function findOrCreate($topicName) {
-        $candidates = Topic::where('name', $topicName);
-        if($candidates->count() > 0) {
-            return $candidates->first();
-        } else {
-            $newTopic = Topic::create([
-                'name' => $topicName,
-                'description' => ''
-            ]);
-            return $newTopic;
-        }
-    }
-
+    
 
     /**
      * A topic has it parent topics

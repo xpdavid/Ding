@@ -15,25 +15,6 @@ class APIController extends Controller
 {
 
     /**
-     * Get all the institutions
-     *
-     * this is api function
-     */
-    public function getInstitutionList() {
-        return EducationExp::getInstitutionList();
-    }
-
-    /**
-     * Get all the majors
-     *
-     * this is api function
-     */
-    public function getMajorList() {
-        return EducationExp::getMajorList();
-    }
-
-
-    /**
      * Response ajax request for query relevant terms.
      *
      * @param Request $request
@@ -122,6 +103,65 @@ class APIController extends Controller
                         ]);
                     }
 
+                    break;
+
+                case 'institution':
+                    $term = $query['term']; // the keyword
+                    $max_matches = $query['max_match']; // the maximum match
+
+                    // leave the max_matches as numbers only
+                    $max_matches = ($max_matches != "0") ? $max_matches : '0';
+
+                    // search by institution name
+                    $educationExps = EducationExp::institutionSearch($term)->take($max_matches)->get();
+
+                    foreach ($educationExps as $educationExp) {
+                        array_push($results, $educationExp->institution);
+                    }
+
+                    break;
+                case 'major':
+                    $term = $query['term']; // the keyword
+                    $max_matches = $query['max_match']; // the maximum match
+
+                    // leave the max_matches as numbers only
+                    $max_matches = ($max_matches != "0") ? $max_matches : '0';
+
+                    // search by institution name
+                    $educationExps = EducationExp::majorSearch($term)->take($max_matches)->get();
+
+                    foreach ($educationExps as $educationExp) {
+                        array_push($results, $educationExp->major);
+                    }
+
+                    break;
+                case 'organization' :
+                    $term = $query['term']; // the keyword
+                    $max_matches = $query['max_match']; // the maximum match
+
+                    // leave the max_matches as numbers only
+                    $max_matches = ($max_matches != "0") ? $max_matches : '0';
+
+                    // search by institution name
+                    $jobs = Job::organizationSearch($term)->take($max_matches)->get();
+
+                    foreach ($jobs as $job) {
+                        array_push($results, $job->organization);
+                    }
+                    break;
+                case 'designation' :
+                    $term = $query['term']; // the keyword
+                    $max_matches = $query['max_match']; // the maximum match
+
+                    // leave the max_matches as numbers only
+                    $max_matches = ($max_matches != "0") ? $max_matches : '0';
+
+                    // search by institution name
+                    $jobs = Job::designationSearch($term)->take($max_matches)->get();
+
+                    foreach ($jobs as $job) {
+                        array_push($results, $job->designation);
+                    }
                     break;
             }
         }

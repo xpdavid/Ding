@@ -23,8 +23,8 @@ class Job extends Model
 	 * find the job in database 
 	 * if it does not exsit, then create it and return
 	 *
-	 * @param $institution
-	 * @param $major
+	 * @param $organization
+	 * @param $designation
 	 * @return EducationExp
 	 */
 	public static function findOrCreate($organization, $designation) {
@@ -41,36 +41,35 @@ class Job extends Model
 	}
 
 
-	/**
-	 * Get all the distinct organizations in the database
-	 *
-	 * @return array
-	 */
-	public static function getOrganizationList() {
-	    $orgnization_list = Job::select('organization')
-	        ->distinct()
-	        ->get()
-	        ->lists('organization')
-	        ->all();
+    /**
+     * Search the distinct organization name in the database
+     *
+     * @param $query
+     * @param $term
+     * @return mixed
+     */
+    public static function scopeOrganizationSearch($query, $term) {
+        return Job::select('organization')
+            ->distinct()->where('organization', 'LIKE', '%' . $term . '%');
+    }
 
-	    return $orgnization_list;
-	}
+    /**
+     * Search the distinct designation name in the database
+     *
+     * @param $query
+     * @param $term
+     * @return mixed
+     */
+    public static function scopeDesignationSearch($query, $term) {
+        return Job::select('designation')
+            ->distinct()->where('designation', 'LIKE', '%' . $term . '%');
+    }
 
-	/**
-	 * Get all the distinct designations in the database
-	 *
-	 * @return array
-	 */
-	public static function getDesignationList() {
-	    $designation_list = Job::select('designation')
-	        ->distinct()
-	        ->get()
-	        ->lists('designation')
-	        ->all();
-
-	    return $designation_list;
-	}
-
+    /**
+     * return the full name of the job
+     *
+     * @return string
+     */
 	public function getFullNameAttribute() {
 	    return $this->organization . ' ⋅ ' . $this->designation;
 	}

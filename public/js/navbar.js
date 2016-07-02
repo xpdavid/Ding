@@ -144,7 +144,8 @@ function navbar_searching() {
             if (e.keyCode == 13) {
                 navbar_searching_click();
             }
-        }
+        },
+        noResultHide : false
     });
 
     // bind enter event

@@ -955,6 +955,29 @@ body {
   transition: background-color 800ms linear;
 }
 
+.invite_box {
+  position: relative;
+  margin: 10px 0 35px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.invite_search_box {
+  position: relative;
+}
+
+.invite_search_box_icon {
+  position: absolute;
+  top: 10px;
+  right: 17px;
+}
+
+.invite_list_item {
+  padding: 15px 15px 8px 15px;
+}
+
 .reply_op {
   display: none;
 }
@@ -1281,6 +1304,16 @@ body {
 
 .profile_card {
   width: 300px !important;
+}
+
+.profile_card_left {
+  position: relative;
+}
+
+.profile_card_button {
+  position: absolute;
+  right: 20px;
+  top: 13px;
 }
 
 

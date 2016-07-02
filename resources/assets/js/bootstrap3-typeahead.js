@@ -60,6 +60,7 @@
 
     this.bottomElement = this.options.bottomElement || this.bottomElement;
     this.addItemBefore = this.options.addItemBefore || this.addItemBefore;
+      this.noResultHide = this.options.noResultHide || this.noResultHide;
     this.beforeShownKeyup = this.options.beforeShownKeyup || this.beforeShownKeyup;
 
     this.width = this.options.width || this.width;
@@ -170,9 +171,9 @@
 
       items = this.sorter(items);
 
-      // if (!items.length && !this.options.addItem) {
-      //   return this.shown ? this.hide() : this;
-      // }
+      if (this.options.noResultHide && !items.length && !this.options.addItem) {
+        return this.shown ? this.hide() : this;
+      }
 
       if (items.length > 0) {
         this.$element.data('active', items[0]);
@@ -526,6 +527,7 @@
         addItem: false,
         addItemBefore: false,
       beforeShownKeyup : false,
+      noResultHide : true,
 
         delay: 0,
         separator: 'category',

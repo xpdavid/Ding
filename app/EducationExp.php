@@ -35,33 +35,27 @@ class EducationExp extends Model
 
 
     /**
-     * Get all the distinct institution in the database
+     * Search the distinct institution name in the database
      *
-     * @return array
+     * @param $query
+     * @param $term
+     * @return mixed
      */
-    public static function getInstitutionList() {
-        $institution_list = EducationExp::select('institution')
-            ->distinct()
-            ->get()
-            ->lists('institution')
-            ->all();
-
-        return $institution_list;
+    public static function scopeInstitutionSearch($query, $term) {
+        return EducationExp::select('institution')
+            ->distinct()->where('institution', 'LIKE', '%' . $term . '%');
     }
 
     /**
-     * Get all the distinct major in the database
+     * Search the distinct major name in the database
      *
-     * @return array
+     * @param $query
+     * @param $term
+     * @return mixed
      */
-    public static function getMajorList() {
-        $major_list = EducationExp::select('major')
-            ->distinct()
-            ->get()
-            ->lists('major')
-            ->all();
-
-        return $major_list;
+    public static function scopeMajorSearch($query, $term) {
+        return EducationExp::select('major')
+            ->distinct()->where('major', 'LIKE', '%' . $term . '%');
     }
 
 
@@ -86,6 +80,11 @@ class EducationExp extends Model
         }
     }
 
+    /**
+     * return the full name of the education experience
+     *
+     * @return mixed|string
+     */
     public function getFullNameAttribute() {
         $fullname = $this->institution;
         if ($this->major) {

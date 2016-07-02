@@ -44,7 +44,29 @@ class PeopleController extends Controller
     {   
         $user = Auth::user();
         $settings = $user->settings;
-        return view('profile.edit', compact('user', 'settings'));
+
+        // generate process
+        $count = 0;
+        if ($settings->profile_pic_id != 0) {
+            $count += 2;
+        }
+        if ($user->bio != "") {
+            $count += 2;
+        }
+        if ($user->self_intro != "") {
+            $count++;
+        }
+        if ($user->educationExps()->count() > 0) {
+            $count += 2;
+        }
+        if ($user->specializations()->count() > 0) {
+            $count += 3;
+        }
+        $progress = ceil(($count / 10) * 100);
+
+
+
+        return view('profile.edit', compact('user', 'settings', 'progress'));
     }
 
     /**
@@ -59,21 +81,43 @@ class PeopleController extends Controller
     {
         $user = Auth::user();
         $settings = $user->settings;
-        $topic = $user->specializations;
         
         switch ($request->get('type')) {
             case 'education':
                 $educationExp = EducationExp::findOrCreate($request->get('institution'), $request->get('major'));
-                $user->educationExps()->save($educationExp);
-                return ['educationExp_id' => $educationExp->id];
+                // prevent duplicate saving
+                $user->educationExps()->detach($educationExp->id);
+                $user->educationExps()->attach($educationExp->id);
+                return [
+                    'name' => $educationExp->full_name,
+                    'id' => $educationExp->id,
+                    'status' => true
+                ];
             case 'job':
                 $job = Job::findOrCreate($request->get('organization'), $request->get('designation'));
-                $user->jobs()->save($job);
-                return ['job_id' => $job->id];
+                // prevent duplicate saving
+                $user->jobs()->detach($job->id);
+                $user->jobs()->attach($job->id);
+                return [
+                    'name' => $job->full_name,
+                    'id' => $job->id,
+                    'status' => true
+                ];
             case 'specialization':
-                $specialization = Topic::findOrCreate($request->get('specialization'));
-                $user->specializations()->save($specialization);
-                return ['specialization_id' => $specialization->id];
+                $results = [];
+                foreach ($request->get('specializations') as $topic_id) {
+                    // detach first to prevent multiple saving
+                    $user->specializations()->detach($topic_id);
+                    $user->specializations()->attach($topic_id);
+                    // find topic
+                    $topic = Topic::findOrFail($topic_id);
+                    array_push($results, [
+                        'id' => $topic->id,
+                        'name' => $topic->name,
+                        'img' => DImage($topic->avatar_img_id, 40, 40),
+                    ]);
+                }
+                return $results;
             case 'sex':
                 $user->update(['sex' => $request->get('sex')]);
                 return 1;
@@ -84,7 +128,9 @@ class PeopleController extends Controller
                 else {
                     $settings->update(['display_facebook' => false]);   
                 }
-                return 1;
+                return [
+                    'facebook' => $settings->display_facebook
+                ];
             case 'email':
                 if ($request->get('email') == 'Yes') {
                     $settings->update(['display_email' => true]);
@@ -92,13 +138,19 @@ class PeopleController extends Controller
                 else {
                     $settings->update(['display_email' => false]);   
                 }
-                return 1;
+                return [
+                    'email' => $settings->display_email
+                ];
             case 'bio':
                 $user->update(['bio' => $request->get('bio')]);
-                return 1;
+                return [
+                    'bio' => $user->bio
+                ];
             case 'intro':
                 $user->update(['self_intro' => $request->get('intro')]);
-                return 1;
+                return [
+                    'self_intro' => $user->self_intro
+                ];
             default:
                 break;
         }

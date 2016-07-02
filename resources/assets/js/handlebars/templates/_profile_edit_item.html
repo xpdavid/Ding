@@ -1,0 +1,14 @@
+{{#each items}}
+    <li id="{{id}}">
+        <div class="userEdit_itemListDetail">
+            <div class="userEdit_itemListDetailImage">
+                <img src="{{img_url}}" class="img-rounded" alt="{{name.name}}" />
+            </div>
+            <div class="userEdit_itemListDetailContent">
+                <a href="{{name.url}}" >{{name.name}}</a>
+            </div>
+        </div>
+        <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton"
+           onclick="{{delete_onclick}}">Delete</a>
+    </li>
+{{/each}}
