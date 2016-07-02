@@ -93,3 +93,11 @@
 </div><!-- /.modal -->
 
 @endsection
+
+@section('javascript')
+    <script type="text/javascript">
+        $(function() {
+            user_name_autocomplete('receive_message_users');
+        });
+    </script>
+@endsection

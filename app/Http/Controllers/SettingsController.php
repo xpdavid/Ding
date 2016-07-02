@@ -4,79 +4,57 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Hash;
-use DB;
+use Redirect;
+use App\User;
 use Illuminate\Http\Request;
-use App\Blocking;
-
 use App\Http\Requests;
 
 class SettingsController extends Controller
 {
     /**
-     * SettingsController constructor.
+     * get the basic settings page
      *
-     * define middleware
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+    public function getBasic() {
         $user = Auth::user();
         $settings = $user->settings;
-        $blockings = $user->blockings;
-        return view('settings.index', compact('user', 'settings', 'blockings'));
+        return view('settings.basic', compact('user', 'settings'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * get the account settings page
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
-    {
-        //
+    public function getAccount() {
+        $user = Auth::user();
+        $settings = $user->settings;
+        return view('settings.account', compact('user', 'settings'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * get the notification setting
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function store(Request $request)
-    {
-        //
+    public function getNotification() {
+        $user = Auth::user();
+        $settings = $user->settings;
+        return view('settings.notification', compact('user', 'settings'));
     }
 
     /**
-     * Display the specified resource.
+     * get blocking user setting
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($id)
-    {
-        //
+    public function getBlocking() {
+        $user = Auth::user();
+        $settings = $user->settings;
+        return view('settings.block', compact('user', 'settings'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -85,69 +63,71 @@ class SettingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function postUpdate(Request $request)
     {
         $user = Auth::user();
         $settings = $user->settings;
         $blockings = $user->blockings;
         
-        if ($request->name){
-            $user->update(['name' => $request->name]);
+        if ($request->has('name')){
+            $user->update(['name' => $request->get('name')]);
         }
 
-        if ($request->personal_domain != ''){
+        if ($request->has('personal_domain')){
             $settings->update(['personal_domain_modified' => true]);
-            $user->update(['url_name' => $request->personal_domain]);
+            $user->update(['url_name' => $request->get('personal_domain')]);
         }
 
-        if ($request->new_password != ''){
-            if ( Hash::check($request->old_password, $user->password)){
-                $user->update([
-                    'password' => Hash::make($request->new_password),
+        if ($request->has('new_password') && $request->has('old_password') && $request->has('confirm_password')){
+            if (Hash::check($request->get('old_password'), $user->password)){
+                if($request->get('confirm_password') == $request->get('new_password')) {
+                    $user->update([
+                        'password' => Hash::make($request->get('new_password')),
                     ]);
-            }
-            else{
-                return 'Wrong password';
+                } else {
+                    return Redirect::back()->withErrors(['Password mismatch']);
+                }
+            } else {
+                return Redirect::back()->withErrors(['Old Password Wrong']);
             }
         }
 
-        if ($request->receiving_messages){
+        if ($request->has('receiving_messages')){
+
             $settings->update([
-                'receiving_messages' => $request->receiving_messages,
-                'receiving_invitations' => $request->receiving_invitations,
-                'receiving_updates' => $request->receiving_updates,
-                'receiving_replies' => $request->receiving_replies,
-                'receiving_votings' => $request->receiving_votings,
-                'receiving_reply_votings' => $request->receiving_reply_votings,
-                'receiving_subscriptions' => $request->receiving_subscriptions
+                'receiving_messages' => $request->get('receiving_messages'),
+                'email_messages' => $request->get('email_messages'),
+                'receiving_invitations' => $request->get('receiving_invitations'),
+                'email_invitations' => $request->get('email_invitations'),
+                'receiving_updates' => $request->get('receiving_updates'),
+                'email_updates' => $request->get('email_updates'),
+                'receiving_replies' => $request->get('receiving_replies'),
+                'email_replies' => $request->get('email_replies'),
+                'receiving_votings' => $request->get('receiving_votings'),
+                'email_votings' => $request->get('email_votings'),
+                'receiving_reply_votings' => $request->get('receiving_reply_votings'),
+                'email_reply_votings' => $request->get('email_reply_votings'),
+                'receiving_subscriptions' => $request->get('receiving_subscriptions'),
+                'email_subscriptions' => $request->get('email_subscriptions')
                 ]);
         }
 
-        if ($request->email_to_be_blocked != ''){
-            $results = DB::select('select id from users where email = ?', [$request->email_to_be_blocked]);
-            if ($results){
-                $blocking = new Blocking([
-                    'user_id' => $user->id,
-                    'blocked_id' => $results[0]->id
-                    ]);
-                $blocking->save();
-            }
-            else{
-                return 'User Not Found';
-            }
+        if ($request->has('cancel_block')) {
+            $user = Auth::user();
+            $user->blockings()->detach($request->get('cancel_block'));
         }
 
-        return back();
-    }
+        if ($request->has('block_users') != ''){
+            $user = Auth::user();
+            foreach ($request->get('block_users') as $block_user_id) {
+                // i think you cannot block yourself
+                if ($block_user_id == $user->id) continue;
+                $user->blockings()->detach($block_user_id);
+                $user->blockings()->attach($block_user_id);
+            }
+            return Redirect::back();
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return Redirect::back();
     }
 }

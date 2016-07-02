@@ -101,7 +101,7 @@ Route::post('/notification/operation', 'NotificationController@operation');
 Route::controller('/api', 'APIController');
 
 // for user setting
-Route::resource('/settings', 'SettingsController');
+Route::controller('/settings', 'SettingsController');
 
 // for search
 Route::get('/search', ['as' => 'search', 'uses' => 'SearchController@index']);

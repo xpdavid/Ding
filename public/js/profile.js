@@ -531,3 +531,28 @@ function showBookmarkPage(base_id, type, item_id, page, callback) {
     });
 }
 
+/**
+ * Send ajax request to cancel blocking
+ *
+ * @param block_id
+ */
+function cancelBlocking(event, block_id) {
+    if (event) {
+        event.preventDefault();
+    }
+    swal({
+        title: "Are you sure?",
+        text: "You will continue receive any update from this user!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, cancel it!",
+        closeOnConfirm: false
+    }, function(){
+        $.post('/settings/update', {
+            'cancel_block' : block_id
+        }, function(data) {
+            window.location.replace('/settings/blocking');
+        });
+    });
+}
+

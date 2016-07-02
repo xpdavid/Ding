@@ -43,6 +43,8 @@ class Notification extends Model
      * @param $object_id
      */
     public static function notification(User $user, $type, $subject_id, $object_id) {
+        // check blocking
+
         if (static::hasNotification($user->notifications(), $type, $subject_id, $object_id)) {
             // already has the same notification
             $notification = static::getNotification($user->notifications(), $type, $subject_id, $object_id);

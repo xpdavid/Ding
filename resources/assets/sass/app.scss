@@ -517,15 +517,11 @@ body {
 }
 
 .userSetting_Item a {
-  margin-right: 10px;
+  cursor: pointer;
 }
 
 .userSetting_Item a:hover {
   background: #eff6fa;
-}
-
-.userSetting_labelAdjust {
-  width: 18% !important;
 }
 
 .userEdit_completeBar {

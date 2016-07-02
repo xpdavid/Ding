@@ -230,11 +230,21 @@ class User extends Authenticatable
         return $this->hasOne('App\Settings');
     }
 
-    /** Define eloquent relationship between User and Blocking
+    /**
+     *  Define eloquent relationship between User and Blocking
     *   A user may block many other users
     */
     public function blockings() {
-        return $this->hasMany('App\Blocking');
+        return $this->belongsToMany('App\User', 'blockings', 'user_id', 'blocked_id');
+    }
+
+    /**
+     * A user could be blocked by many other users
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function be_blocked() {
+        return $this->belongsToMany('App\User', 'blockings', 'blocked_id', 'user_id');
     }
 
 }

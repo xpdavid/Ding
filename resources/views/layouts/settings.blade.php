@@ -21,6 +21,9 @@
     {{--sweetalert supporting file--}}
     {!! Html::style('css/sweetalert.css') !!}
 
+    {{--select2 supporting file--}}
+    {!! Html::style('css/select2.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
@@ -31,7 +34,16 @@
 
 @yield('content')
 
-@include('partials._site_copyright')
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @include('partials._site_copyright')
+        </div>
+    </div>
+</div>
+
+@include('partials._ask_question_model')
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
@@ -42,15 +54,25 @@
 {{--sweetalert supporting file--}}
 {!! Html::script('js/sweetalert.min.js') !!}
 
+{{--select2 supporting file--}}
+{!! Html::script('js/select2.full.js') !!}
+
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}
 
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
 
+{{--javascript support for setting--}}
+{!! Html::script('js/profile.js') !!}
+
+{{--javascript support for navbar--}}
 {!! Html::script('js/navbar.js') !!}
 
+{{--javascript support for validator--}}
 {!! Html::script('js/validator.js') !!}
+
+@yield('javascript');
 
 </body>
 </html>
