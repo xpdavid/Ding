@@ -223,3 +223,14 @@ function highlight(elementID, rollback) {
     }
 
 }
+
+/**
+ * Highlight the keyword when the search is done
+ *
+ * @param text
+ * @param keyword
+ */
+function highlight_keyword(text, keyword) {
+    var reg = new RegExp(keyword, 'gi');
+    return text.replace(reg, function(str) {return '<em>'+str+'</em>'});
+}

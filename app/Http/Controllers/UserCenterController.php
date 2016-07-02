@@ -83,6 +83,7 @@ class UserCenterController extends Controller
                 'inviter' => [
                     'name' => $inviter->name,
                     'id' => $inviter->id,
+                    'url_name' => $inviter->url_name
                 ],
                 'question' => [
                     'title' => $question->title,

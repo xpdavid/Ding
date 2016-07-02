@@ -193,6 +193,17 @@ class User extends Authenticatable
         return $result;
     }
 
+    /**
+     * Get the answers that belong to the topic
+     *
+     * @param $topic_id
+     */
+    public function answersInTopic($topic_id) {
+        return $this->answers->filter(function($answer) use ($topic_id) {
+            return in_array($topic_id, $answer->question->topics->lists('id')->all());
+        });
+    }
+
 
     /**
      * Defined eloquent relationship : A student could have many jobs

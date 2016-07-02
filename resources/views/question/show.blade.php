@@ -31,7 +31,7 @@
                 Comment (<span id="question_comment_{{ $question->id }}_replies_count">{{ $question->replies->count() }}</span>)
             </a>
             <a href="#" onclick="bookmark('question', '{{ $question->id }}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
-            <a href="#"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>Invite Friends</a>
+            <a href="#" onclick="invite_panel(event, '{{ $question->id }}')"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>Invite Friends</a>
         </div>
 
         <div class="comment_box" id="question_comment_{{ $question->id }}">
@@ -61,6 +61,30 @@
                         <button class="btn btn-primary" type="submit"
                                 onclick="saveComment('question_comment_{{ $question->id }}', '{{ $question->id }}', 'question')">Submit</button>
                     </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="invite_box" id="invite_box">
+            <div class="invite_spike">
+                <div class="invite_spike_arrow"></div>
+            </div>
+
+            <div class="row invite_list_item">
+                <div class="form-group col-md-5">
+                    <input type="text" class="form-control invite_search_box" id="invite_user_search">
+                    <span class="glyphicon glyphicon-search invite_search_box_icon font-greyLight"></span>
+                </div>
+                <div class="col-md-7">
+                    <span class="font-greyLight">You can invite other user which you may think could answer the question</span>
+                </div>
+            </div>
+            <hr class="small_hrLight">
+
+            <div class="invite_list">
+                <div class="invite_box_search" id="question_invite_content">
+
                 </div>
 
             </div>
@@ -169,6 +193,8 @@
                         '{{ $highlight['item_id'] }}',
                         '{{ $highlight['page'] }}');
             });
+
+            invite_search_box('{{ $question->id }}');
         })
     </script>
 @endsection

@@ -671,5 +671,97 @@ function bookmark_op(bookmark_id, callback) {
 }
 
 
+/**
+ * Trigger invite panel
+ *
+ * @param event
+ * @param id
+ */
+function invite_panel(event, id) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    if (!$('#invite_box').data('click')) {
+        invite_panel_recommend_invitee(id);
+        $('#invite_box').data('click', true);
+    }
+
+    $('#invite_box').toggle();
+}
+
+/**
+ * Get recommended invitee
+ *
+ * @param id
+ */
+function invite_panel_recommend_invitee(id) {
+    $.post('/question/' + id + '/invite_panel', {}, function(results) {
+        var template = Handlebars.templates['_invite_item.html'];
+        $('#question_invite_content').html(template({
+            users : results
+        }));
+    })
+}
+
+/**
+ * User search invitee
+ *
+ */
+function search_invitee(term, id) {
+    $.post('/question/' + id + '/invite_panel', {
+        user : term
+    }, function(results) {
+        var template = Handlebars.templates['_invite_item.html'];
+        $.each(results, function(index, item) {
+            item.name = highlight_keyword(item.name, term);
+        });
+
+        $('#question_invite_content').html(template({
+            users : results
+        }));
+    })
+}
+
+/**
+ * Bind change keyup paste event to the search box
+ */
+var invite_search_box_timer = null;
+function invite_search_box(question_id) {
+    $('#invite_user_search').bind('change keyup paste', function() {
+        clearInterval(invite_search_box_timer);
+        invite_search_box_timer = setTimeout(function() {
+            if ($('#invite_user_search').val() == "") {
+                invite_panel_recommend_invitee(question_id);
+            } else {
+                search_invitee($('#invite_user_search').val(), question_id);
+            }
+        }, 500);
+    });
+}
+
+/**
+ * Send ajax request to invite a user
+ *
+ * @param button
+ * @param user_id
+ * @param question_id
+ */
+function invite_user(button, user_id, question_id) {
+    $button = $(button);
+    $.post('/question/' + question_id + '/invite', {
+        user_id : user_id,
+        question_id : question_id
+    }, function(data) {
+        if (data.status) {
+            $button.html('Invited');
+            $button.removeClass('btn-success');
+            $button.addClass('btn-default');
+            $button.prop('disabled', true);
+        }
+    })
+}
+
+
 
 

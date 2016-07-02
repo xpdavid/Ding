@@ -962,6 +962,7 @@ body {
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  display: none;
 }
 
 .invite_search_box {
@@ -972,6 +973,12 @@ body {
   position: absolute;
   top: 10px;
   right: 17px;
+}
+
+.invite_box_search em {
+  font-style: normal;
+  color: #c20a0a;
+  font-weight: 500;
 }
 
 .invite_list_item {
@@ -1313,7 +1320,7 @@ body {
 .profile_card_button {
   position: absolute;
   right: 20px;
-  top: 13px;
+  top: 38px;
 }
 
 
