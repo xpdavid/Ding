@@ -1,10 +1,17 @@
 @extends('layouts.topic')
 
 @section('left')
+    @include('partials._crop_image_model', [
+        'url' => '/topic/upload',
+        'image' => DImage($topic->avatar_img_id),
+        'id' => $topic->id,
+        'type' => ''
+    ])
+
     <div class="media margin-top topic_item">
         <div class="media-left">
             <a href="#">
-                <img class="media-object topic_avatar" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
+                <img class="media-object topic_avatar img-rounded" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
             </a>
         </div>
         <div class="media-body">
@@ -149,6 +156,22 @@
         </div>
     </div>
 
+    <hr class="small_hrLight">
+
+    <div class="topic_manage_item clearfix">
+        <div class="topic_manage_title">
+            <h5>Topic Image</h5>
+        </div>
+        <div class="topic_manage_content">
+            <div id="img_topics_trigger" class="margin-top">
+                <img class="media-object topic_avatar img-rounded" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
+                <button type="button" class="btn btn-default btn-xs margin-top" data-toggle="modal" data-target="#crop_image">
+                    Upload New Image
+                </button>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
@@ -172,6 +195,8 @@
         $("#delete_subtopics").select2({
             width : '300px'
         });
+
+        cropImage('crop_img');
     });
 </script>
 @endsection

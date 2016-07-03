@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use IImage;
 use App\Topic;
+use App\Image;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -278,6 +280,64 @@ class TopicController extends Controller
 
 
     /**
+     * Response ajax request to store topic img
+     *
+     * @param Request $request
+     * @return array(json)
+     */
+    public function upload(Request $request) {
+        $this->validate($request, [
+            'croppedImage' => 'required|mimes:jpeg,bmp,png',
+            'id' => 'required|integer'
+        ]);
+
+        $img = $request->file('croppedImage');
+        $topic = Topic::findOrFail($request->get('id'));
+
+        // generate file name
+        $filename = 'topic-' . $topic->id . '.' . $img->extension();
+        
+        // resize the image
+        $img_resize = IImage::make($img->getRealPath());
+        // resize the image to a width of 512 and constrain aspect ratio (auto height)
+        $img_resize->resize(512, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+
+        // delete old file
+        // exists than delete
+        if (Image::where('id', '=', $topic->avatar_img_id)->exists()) {
+            $old_img = Image::findOrFail($topic->avatar_img_id);
+            $old_img->deleteAll();
+        }
+
+        // create new image instance
+        $img_database = Image::create([
+            'path' => 'images/topic/' . $filename,
+            'width' => 512,
+            'height' => $img_resize->height()
+        ]);
+        $img_database->save();
+
+        // update reference id
+        $img_database->reference_id = $img_database->id;
+        $img_database->save();
+
+        // update new user pic id
+        $topic->avatar_img_id = $img_database->id;
+        $topic->save();
+
+        // save new image
+        $img_resize->save(base_path('images/topic/' . $filename), 50); // medium quality
+
+        return [
+            'status' => 'true'
+        ];
+    }
+
+
+    /**
      * Recursive process to generate parent topic tree
      * DFS searching technique
      *
@@ -345,4 +405,6 @@ class TopicController extends Controller
         }
         return $final_result;
     }
+
+
 }

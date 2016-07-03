@@ -56,6 +56,7 @@ Route::get('/topic/{topic_id}/edit', 'TopicController@edit');
 Route::post('/topic/{topic_id}/update', 'TopicController@update');
 Route::get('/topic/{topic_id}/organization', 'TopicController@organization');
 Route::post('/topic/questions', 'TopicController@getQuestions');
+Route::post('/topic/upload', 'TopicController@upload');
 
 // for bookmark
 Route::get('/people/{url_name}/bookmark', [ 'as' => 'people.bookmark', 'uses' => 'BookmarkController@index']);

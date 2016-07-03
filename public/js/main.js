@@ -275,4 +275,114 @@ function user_name_autocomplete(id) {
         },
     });
 }
+
+/**
+ * Bind the upload button with event
+ */
+function cropImage(img_id) {
+    // Import image
+    var $inputImage = $('#' + img_id + '_upload');
+    var $image = $('#' + img_id);
+    var URL = window.URL || window.webkitURL;
+    var blobURL;
+
+    $image.cropper({
+        aspectRatio: 1 / 1,
+        crop: function(e) {
+            // Output the result data for cropping image.
+
+        },
+        viewMode : 0,
+        minContainerWidth : '500',
+        minContainerHeight : '300'
+    });
+
+    if (URL) {
+        $inputImage.change(function () {
+            var files = this.files;
+            var file;
+
+            if (!$image.data('cropper')) {
+                return;
+            }
+
+            if (files && files.length) {
+                file = files[0];
+
+                if (/^image\/\w+$/.test(file.type)) {
+                    blobURL = URL.createObjectURL(file);
+                    $image.one('built.cropper', function () {
+
+                        // Revoke when load complete
+                        URL.revokeObjectURL(blobURL);
+                    }).cropper('reset').cropper('replace', blobURL);
+                    $inputImage.val('');
+                } else {
+                    window.alert('Please choose an image file.');
+                }
+            }
+        });
+    } else {
+        $inputImage.prop('disabled', true).parent().addClass('disabled');
+    }
+
+    // reset button
+    $('#' + img_id + '_reset').click(function() {
+        $image.cropper('reset');
+    });
+
+    // left rotate button
+    $('#' + img_id + '_left_rotate').click(function() {
+        $image.cropper('rotate', -45);
+    });
+
+    // right rotate button
+    $('#' + img_id + '_right_rotate').click(function() {
+        $image.cropper('rotate', 45);
+    });
+
+
+    var $uploadClick = $('#' + img_id + '_upload_click');
+    $uploadClick.click(function() {
+        $uploadClick.prop('disabled', true);
+        $uploadClick.html('Uploading..');
+
+
+        var id = $uploadClick.data('id');
+        var type = $uploadClick.data('type');
+        var url = $uploadClick.data('url');
+
+        $image.cropper('getCroppedCanvas').toBlob(function (blob) {
+            var formData = new FormData();
+
+            formData.append('croppedImage', blob);
+            formData.append('id', id);
+            formData.append('type', type);
+
+            $.ajax(url, {
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    swal({
+                        title : "Upload Success",
+                        text : "The picture has changed!",
+                        type : "success"
+                    }, function() {
+                        window.location.reload();
+                    });
+                },
+                error: function () {
+                    swal("Upload Error", "Sever post a question :(", "error");
+                    $uploadClick.prop('disabled', false);
+                    $uploadClick.html('Upload');
+                }
+            });
+        });
+
+    });
+}
+
+
 //# sourceMappingURL=main.js.map

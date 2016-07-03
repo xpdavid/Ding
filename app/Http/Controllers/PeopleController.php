@@ -11,6 +11,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use IImage;
+use File;
 use Hash;
 use Log;
 
@@ -196,18 +197,24 @@ class PeopleController extends Controller
      */
     public function upload(Request $request) {
         $this->validate($request, [
-            'croppedImage' => 'required|mimes:jpeg,bmp,png' // file not exceed 6MB
+            'croppedImage' => 'required|mimes:jpeg,bmp,png'
         ]);
 
         $img = $request->file('croppedImage');
         $user = Auth::user();
 
         // generate file name
-        $filename = md5(time() . $img->getClientOriginalName()) . '.' . $img->extension();
+        $filename = 'profile-' . $user->id . '.' . $img->extension();
+        $relative_fullpath = 'images/user/' . $user->id . '/' . $filename;
 
+        // check if user folder exist
+        if (!File::exists(base_path('images/user/' . $user->id))) {
+            File::makeDirectory(base_path('images/user/' . $user->id), $mode = 0777, true, true);
+        }
+        
         // resize the image
         $img_resize = IImage::make($img->getRealPath());
-        // resize the image to a width of 300 and constrain aspect ratio (auto height)
+        // resize the image to a width of 1024 and constrain aspect ratio (auto height)
         $img_resize->resize(1024, null, function ($constraint) {
             $constraint->aspectRatio();
         });
@@ -223,7 +230,7 @@ class PeopleController extends Controller
 
         // create new image instance
         $img_database = Image::create([
-            'path' => 'images/' . $filename,
+            'path' => $relative_fullpath,
             'width' => 800,
             'height' => $img_resize->height()
         ]);
@@ -239,7 +246,7 @@ class PeopleController extends Controller
         $settings->save();
 
         // save new image
-        $img_resize->save(base_path('images/' . $filename), 50); // medium quality
+        $img_resize->save(base_path($relative_fullpath), 50); // medium quality
 
         return [
             'status' => 'true'
