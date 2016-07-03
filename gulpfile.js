@@ -15,6 +15,7 @@ elixir(function(mix) {
     var bootstrapPath = 'resources/assets/bootstrap';
     var sweetalertPath = 'resources/assets/sweetalert';
     var select2Path = 'resources/assets/select2';
+    var cropperPath = 'resources/assets/cropper';
 
     var cssPath = 'resources/assets/css';
     var jsPath = 'resources/assets/js';
@@ -33,6 +34,12 @@ elixir(function(mix) {
     // for select2
     mix.copy(select2Path + '/css', 'public/css')
         .copy(select2Path + '/js', 'public/js');
+
+    // for cropper
+    mix.copy(cropperPath + '/cropper.css', 'public/css');
+    mix.copy(cropperPath + '/cropper.js', 'public/js');
+    // for cropper canvas to blob support
+    mix.copy(cropperPath + '/canvas-to-blob.js', 'public/js');
     
     // for project css file
     mix.sass('app.scss');

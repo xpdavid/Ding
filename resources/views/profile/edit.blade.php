@@ -18,6 +18,63 @@
         </div>
     </div>
 
+    {{--// crop image model--}}
+    <div class="modal fade" id="crop_image" tabindex="-1" role="dialog" aria-labelledby="crop_image">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Crop Image</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="crop_img_bound center-block">
+                                <img src="{{ DImage($settings->profile_pic_id) }}" id="crop_img" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center margin-top">
+                            <div class="btn-group" role="group">
+                                <button type="button" id="crop_img_left_rotate" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Rotate Left">
+                                    <span>
+                                      <span class="glyphicon glyphicon-chevron-left clear_margin"></span>
+                                    </span>
+                                </button>
+                                <button type="button" id="crop_img_right_rotate" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Rotate Right">
+                                    <span>
+                                      <span class="glyphicon glyphicon-chevron-right clear_margin"></span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" id="crop_img_reset" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Reset">
+                                    <span>
+                                      <span class="glyphicon glyphicon-refresh clear_margin"></span>
+                                    </span>
+                                </button>
+                                <label class="btn btn-primary btn-upload" data-toggle="tooltip" data-placement="bottom" title="Upload File">
+                                    <input type="file" class="sr-only" id="crop_img_upload" name="file" accept="image/*">
+                                    <span>
+                                      <span class="glyphicon glyphicon-folder-open clear_margin"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="crop_img_upload_click"
+                            data-url="/people/upload" data-id="" data-type=""
+                    >Upload</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <!-- My Profile Edit -->
     <div class="userHome_layoutDiv">
         <div class="userHome_layoutDivHead">
@@ -31,6 +88,12 @@
                     </div>
                     <div class="col-sm-6">
                         <img src="{{ DImage($settings->profile_pic_id, 100, 100) }}" alt="{{ $user->name }}" class="img-rounded" />
+                        <!-- Button trigger crop modal -->
+                        <div class="margin-top">
+                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#crop_image">
+                                Upload New Image
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -391,6 +454,13 @@
                 genericUserProfileEditToggleSetting('#user_education');
                 genericUserProfileEditToggleSetting('#user_job');
                 genericUserProfileEditToggleSetting('#user_specialization');
+
+                // open tooltipc option
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip({container: 'body'})
+                })
+
+                cropImage('crop_img', 'crop_img_upload');
 
             } catch (e) {
                 console.log('hover event binding fail');

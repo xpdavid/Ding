@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Image;
 use App\User;
 use App\EducationExp;
 use App\Job;
@@ -9,6 +10,8 @@ use App\Topic;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use IImage;
+use Hash;
 use Log;
 
 class PeopleController extends Controller
@@ -184,6 +187,63 @@ class PeopleController extends Controller
 
         abort(401);
     }
-    
+
+
+    /**
+     * Answer ajax request to upload user profile pic
+     *
+     * @param Request $request
+     */
+    public function upload(Request $request) {
+        $this->validate($request, [
+            'croppedImage' => 'required|mimes:jpeg,bmp,png' // file not exceed 6MB
+        ]);
+
+        $img = $request->file('croppedImage');
+        $user = Auth::user();
+
+        // generate file name
+        $filename = md5(time() . $img->getClientOriginalName()) . '.' . $img->extension();
+
+        // resize the image
+        $img_resize = IImage::make($img->getRealPath());
+        // resize the image to a width of 300 and constrain aspect ratio (auto height)
+        $img_resize->resize(1024, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+
+        // delete old file
+        // exists than delete
+        if (Image::where('id', '=', $user->settings->profile_pic_id)->exists()) {
+            $old_img = Image::findOrFail($user->settings->profile_pic_id);
+            $old_img->deleteAll();
+        }
+
+
+        // create new image instance
+        $img_database = Image::create([
+            'path' => 'images/' . $filename,
+            'width' => 800,
+            'height' => $img_resize->height()
+        ]);
+        $img_database->save();
+
+        // update reference id
+        $img_database->reference_id = $img_database->id;
+        $img_database->save();
+
+        // update new user pic id
+        $settings = $user->settings;
+        $settings->profile_pic_id = $img_database->id;
+        $settings->save();
+
+        // save new image
+        $img_resize->save(base_path('images/' . $filename), 50); // medium quality
+
+        return [
+            'status' => 'true'
+        ];
+    }
 
 }

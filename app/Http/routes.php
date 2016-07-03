@@ -73,6 +73,7 @@ Route::get('/people/edit', 'PeopleController@edit');
 Route::get('/people/{url_name}', 'PeopleController@show');
 Route::post('/people/update', 'PeopleController@update');
 Route::post('/people/delete', 'PeopleController@destroy');
+Route::post('/people/upload', 'PeopleController@upload');
 
 
 // for message controller
@@ -110,4 +111,5 @@ Route::post('/search', 'SearchController@postSearch');
 
 // for dynamic image system
 Route::get('/image/{reference_id}/{width}/{height}', 'ImageController@image');
+Route::get('/image/{reference_id}', 'ImageController@original_image');
 

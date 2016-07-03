@@ -1047,4 +1047,9 @@ body {
   right: 20px;
   top: 38px; }
 
+.crop_img_bound {
+  max-width: 100%;
+  width: 500px;
+  height: 320px; }
+
 /*# sourceMappingURL=app.css.map */

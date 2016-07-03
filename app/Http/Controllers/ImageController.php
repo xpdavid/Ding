@@ -35,4 +35,15 @@ class ImageController extends Controller
             abort(404);
         }
     }
+
+    /**
+     * Response request to get original image
+     *
+     * @param $reference_id
+     * @return mixed
+     */
+    public function original_image($reference_id) {
+        $img = Image::findOrFail($reference_id);
+        return $img->toIImage()->response();
+    }
 }

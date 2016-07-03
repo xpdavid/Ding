@@ -45,6 +45,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 6. select2 (tag selector) [Github](https://github.com/select2/select2/releases)
 7. handlebars (javascript template engine) [Index](http://handlebarsjs.com)
 8. intervention\mage (laravel image system) [Index](http://image.intervention.io) (Please run `composer update` to get this plugin)
+9. `cropper.js` (crop image jquery plugin) [Github](https://github.com/fengyuanchen/cropper/blob/master/README.md)
 
 
 ### There are several helper function you can use in the main.css file
