@@ -19,7 +19,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
         'bio' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-        'self_intro' => $faker->text()
+        'self_intro' => $faker->text(),
+        'url_name' => str_random(10)
     ];
 });
 

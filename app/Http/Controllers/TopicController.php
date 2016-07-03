@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use IImage;
+use File;
 use App\Topic;
 use App\Image;
 use App\Http\Requests;
@@ -296,7 +297,12 @@ class TopicController extends Controller
 
         // generate file name
         $filename = 'topic-' . $topic->id . '.' . $img->extension();
-        
+
+        // check if topic folder exist
+        if (!File::exists(base_path('images/topic'))) {
+            File::makeDirectory(base_path('images/topic'), $mode = 0777, true, true);
+        }
+
         // resize the image
         $img_resize = IImage::make($img->getRealPath());
         // resize the image to a width of 512 and constrain aspect ratio (auto height)
