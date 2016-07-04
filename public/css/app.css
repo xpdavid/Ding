@@ -1048,6 +1048,9 @@ body {
   right: 20px;
   top: 38px; }
 
+.profile_bottom_content {
+  padding-top: 20px; }
+
 .crop_img_bound {
   max-width: 100%;
   width: 500px;

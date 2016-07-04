@@ -71,7 +71,14 @@ Route::post('/bookmark/{id}/delete', 'BookmarkController@delete');
 
 // for user controller
 Route::get('/people/edit', 'PeopleController@edit');
-Route::get('/people/{url_name}', 'PeopleController@show');
+Route::get('/people/{url_name}', [ 'as' => 'people.index', 'uses' => 'PeopleController@show']);
+Route::get('/people/{url_name}/follow', 'PeopleController@follow');
+Route::get('/people/{url_name}/follower', 'PeopleController@follower');
+Route::get('/people/{url_name}/question', [ 'as' => 'people.question', 'uses' => 'PeopleController@question']);
+Route::get('/people/{url_name}/answer', [ 'as' => 'people.answer', 'uses' => 'PeopleController@answer']);
+Route::post('/people/{url_name}/question', 'PeopleController@postQuestion');
+Route::post('/people/{url_name}/answer', 'PeopleController@postAnswer');
+Route::post('/people/{url_name}/follow-follower', 'PeopleController@postFollowFollower');
 Route::post('/people/update', 'PeopleController@update');
 Route::post('/people/delete', 'PeopleController@destroy');
 Route::post('/people/upload', 'PeopleController@upload');

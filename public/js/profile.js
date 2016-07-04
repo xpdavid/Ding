@@ -533,6 +533,161 @@ function showBookmarkPage(base_id, type, item_id, page, callback) {
 }
 
 /**
+ * Show current user's subscribed users
+ *
+ * @param base_id
+ * @param type
+ * @param url_name
+ * @param page
+ * @param callback
+ */
+function showFollowFollowerPage(base_id, type, url_name, page, callback) {
+    $.post('/people/' + url_name + '/follow-follower', {
+        page : page,
+        type : type,
+    }, function(results) {
+        if (results.data.length) {
+            // compile template
+            var template = Handlebars.templates['_search_user.html'];
+            var processResults = {
+                users : results.data
+            };
+
+            // send data
+            $('#' + base_id + '_content').html(template(processResults));
+
+            // update nav bar
+            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, url_name, 'showFollowFollowerPage'));
+
+            // check callback
+            if(callback && typeof callback == "function"){
+                callback();
+            }
+        } else {
+
+        }
+    });
+}
+
+/**
+ * send ajax call to get user's questions
+ *
+ * @param base_id
+ * @param itemInPage
+ * @param url_name
+ * @param page
+ * @param append
+ */
+function showUserQuestionPage(base_id, itemInPage, url_name, page, append, callback) {
+    // check use append
+    if(!append){
+        $('#' + base_id + '_content').html('');
+        $('#' + base_id + '_nav').html('');
+    }
+    $.post('/people/' + url_name + '/question', {
+        page : page,
+        itemInPage : itemInPage,
+    }, function(results) {
+        if (results.data.length) {
+            // compile template
+            var template = Handlebars.templates['_subscribed_question.html'];
+            var processResults = {
+                questions : results.data
+            };
+
+            // send data
+            $('#' + base_id + '_content').append(template(processResults));
+
+            // update nav bar
+            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, itemInPage, url_name, 'showUserQuestionPage'));
+        } else {
+
+        }
+
+        // check call back
+        if (callback && typeof callback == "function") {
+            callback(results);
+        }
+    });
+}
+
+
+/**
+ * send ajax call to get user's answers
+ *
+ * @param base_id
+ * @param itemInPage
+ * @param url_name
+ * @param page
+ * @param append
+ */
+function showUserAnswerPage(base_id, itemInPage, url_name, page, append, callback) {
+    // check use append
+    if(!append){
+        $('#' + base_id + '_content').html('');
+        $('#' + base_id + '_nav').html('');
+    }
+    $.post('/people/' + url_name + '/answer', {
+        page : page,
+        itemInPage : itemInPage,
+    }, function(results) {
+        if (results.data.length) {
+            
+            $.each(results.data, function(index, item) {
+                var template_question = Handlebars.templates['_topic_question_item.html'];
+                // compile question first
+                $('#' + base_id + '_content').append(template_question({
+                    questions: [item.question]
+                }));
+
+                // compile answers
+                var template_answer = Handlebars.templates['_answer_item.html'];
+                $('#topic_question_' + item.question.id + '_content').html(template_answer({
+                    answers : item.answers
+                }));
+
+                // remove profile since it is the same
+                $.each(item.answers, function(index, answer) {
+                    $('#answer_' + answer.id + '_profile').remove();
+                })
+            });
+
+            // update nav bar
+            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, itemInPage, url_name, 'showUserAnswerPage'));
+        } else {
+
+        }
+
+        // check call back
+        if (callback && typeof callback == "function") {
+            callback(results);
+        }
+    });
+}
+
+var profileGetMoreQuestion_page = 1;
+function profileGetMoreQuestion(url_name) {
+    showUserQuestionPage('question', 4, url_name, profileGetMoreQuestion_page, true, function(results) {
+        if(results.data.length == 0) {
+            $('#question_button').prop('disabled', true);
+            $('#question_button').html('No More Already');
+        }
+    });
+    profileGetMoreQuestion_page++;
+}
+
+var profileGetMoreAnswer_page = 1;
+function profileGetMoreAnswer(url_name) {
+    showUserAnswerPage('answer', 3, url_name, profileGetMoreAnswer_page, true, function(results) {
+        if(results.data.length == 0) {
+            $('#answer_button').prop('disabled', true);
+            $('#answer_button').html('No More Already');
+        }
+    });
+    profileGetMoreAnswer_page++;
+}
+
+/**
  * Send ajax request to cancel blocking
  *
  * @param block_id

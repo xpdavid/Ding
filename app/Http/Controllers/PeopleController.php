@@ -6,11 +6,12 @@ use Log;
 use File;
 use Hash;
 use IImage;
-use App\Visitor;
 use App\Job;
 use App\User;
 use App\Topic;
 use App\Image;
+use App\Visitor;
+use App\Question;
 use App\EducationExp;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PeopleController extends Controller
 {
+    protected $itemInPage = 10;
+
     /**
      * PeopleController constructor.
      */
@@ -73,8 +76,199 @@ class PeopleController extends Controller
         $progress = ceil(($count / 10) * 100);
 
 
-
         return view('profile.edit', compact('user', 'settings', 'progress'));
+    }
+
+    /**
+     * Show all subscribed user
+     */
+    public function follow($url_name) {
+        $user = User::findUrlName($url_name);
+
+        return view('profile.follow', compact('user'));
+    }
+
+    /**
+     * Show all user follower's
+     *
+     * @param $url_name
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function follower($url_name) {
+        $user = User::findUrlName($url_name);
+
+        return view('profile.follower', compact('user'));
+    }
+
+    /**
+     * Show all user questions
+     *
+     * @param $url_name
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function question($url_name) {
+        $user = User::findUrlName($url_name);
+
+        return view('profile.question', compact('user'));
+    }
+
+    /**
+     * Answer ajax call to get user's questions
+     *
+     * @param $url_name
+     * @param Request $request
+     *
+     * @return array(json)
+     */
+    public function postQuestion($url_name, Request $request) {
+        $user = User::findUrlName($url_name);
+
+        $questions = $user->questions;
+
+        // get page parameters
+        $page = $request->exists('page') ? $request->get('page') : 1;
+        $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+        $pages = ceil($questions->count() / $itemInPage);
+
+        $results = [];
+        foreach ($questions->forPage($page, $itemInPage) as $question) {
+            array_push($results, [
+                'id' => $question->id,
+                'title' => $question->title,
+                'numAnswer' => $question->answers()->count(),
+                'visit' => $question->hit->total,
+                'numSubscriber' => $question->subscribers()->count(),
+            ]);
+        }
+
+        return [
+            'data' => $results,
+            'pages' => $pages
+        ];
+
+    }
+
+    /**
+     * Answer ajax call to get all user's answer
+     *
+     * @param $url_name
+     * @param Request $request
+     * @return array
+     */
+    public function postAnswer($url_name, Request $request) {
+        $user = User::findUrlName($url_name);
+        $answers = $user->answers;
+        // get page parameters
+        $page = $request->exists('page') ? $request->get('page') : 1;
+        $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+
+        $groupByQuestion = $answers->groupBy(function($item, $key) {
+            return $item->question->id;
+        });
+
+        // calculate total page
+        $pages = ceil($groupByQuestion->count() / $itemInPage);
+
+        $results = [];
+        foreach ($groupByQuestion->forPage($page, $itemInPage) as $question_id => $answers) {
+            $question = Question::findOrFail($question_id);
+            $arr = [
+                'question' => [
+                    'id' => $question_id,
+                    'title' => $question->title
+                ]
+            ];
+            $answers_arr = [];
+            foreach ($answers as $answer) {
+                $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
+                $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
+                array_push($answers_arr, [
+                    'id' => $answer->id,
+                    'user_name' => $answer->owner->name,
+                    'user_id' => $answer->owner->id,
+                    'user_bio' => $answer->owner->bio,
+                    'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
+                    'answer' => $answer->answer,
+                    'created_at' => $answer->createdAtHumanReadable,
+                    'votes' => $answer->netVotes,
+                    'numComment' => $answer->replies->count(),
+                    'vote_up_class' => $vote_up_class,
+                    'vote_down_class' => $vote_down_class,
+                    'canVote' => $answer->owner->canAnswerVoteBy($user)
+                ]);
+            }
+            $arr['answers'] = $answers_arr;
+
+            array_push($results, $arr);
+        }
+
+        return [
+            'data' => $results,
+            'pages' => $pages
+        ];
+    }
+
+    /**
+     * Show all user answers
+     *
+     * @param $url_name
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function answer($url_name) {
+        $user = User::findUrlName($url_name);
+
+        return view('profile.answer', compact('user'));
+    }
+
+    /**
+     * Answer ajax call
+     * Show all user subscribed users
+     *
+     * @param $url_name
+     * @param Request $request
+     * @return array
+     */
+    public function postFollowFollower($url_name, Request $request) {
+        $user = User::findUrlName($url_name);
+
+        $auth_user = Auth::user();
+
+        $users = $user->subscribe->users;
+        switch ($request->get('type')) {
+            case 'follow' :
+                $users = $user->subscribe->users;
+                break;
+            case 'follower' :
+                $users = $user->subscribers->map(function($subscribe) {
+                    return $subscribe->owner;
+                });
+        }
+
+        // get page parameters
+        $page = $request->exists('page') ? $request->get('page') : 1;
+        $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+        $pages = ceil($users->count() / $itemInPage);
+
+        $results = [];
+        foreach ($users->forPage($page, $itemInPage) as $s_user) {
+            array_push($results, [
+                'id' => $s_user->id,
+                'name' => $s_user->name,
+                'bio' => $s_user->bio,
+                'numAnswer' => $s_user->answers()->count(),
+                'numSubscriber' => $s_user->subscribers()->count(),
+                'isSubscribe' => $auth_user->subscribe->checkHasSubscribed($s_user->id, 'user'),
+                'url_name' => $s_user->url_name,
+                'img' => DImage($s_user->settings->profile_pic_id, 50, 50),
+                'canSubscribe' => $s_user->canSubscribedBy($auth_user)
+            ]);
+        }
+
+        return [
+            'data' => $results,
+            'pages' => $pages
+        ];
+        
     }
 
     /**

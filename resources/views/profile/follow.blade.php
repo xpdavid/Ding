@@ -4,16 +4,15 @@
     @include('partials._profile_card', ['user' => $user])
 
 
-    <!-- My bookmark -->
     <div class="userHome_layoutDiv">
         <div class="userHome_layoutDivHead">
-            <a href="/people/{{$user->url_name}}" class="float-left">{{ $user->name }}</a> 's Bookmark
+            <a href="/people/{{$user->url_name}}" class="float-left">{{ $user->name }}</a> 's Follow
             <a href="/people/{{$user->url_name}}" class="float-right">&lt;&lt; Back to the index</a>
         </div>
-        <div class="userHome_layoutDivContent" id="bookmark_content">
+        <div class="userHome_layoutDivContent profile_bottom_content" id="follow_content">
 
         </div>
-        <div class="text-center" id="bookmark_nav">
+        <div class="text-center" id="follow_nav">
 
         </div>
     </div>
@@ -27,7 +26,7 @@
 @section('javascript')
     <script type="text/javascript">
         $(function() {
-            showBookmarkPage('bookmark', null, '{{ $user->id }}', 1, null);
+            showFollowFollowerPage('follow', 'follow', '{{ $user->url_name }}', 1, null);
         });
     </script>
 @endsection

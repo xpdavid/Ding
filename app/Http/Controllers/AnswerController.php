@@ -169,6 +169,7 @@ class AnswerController extends Controller
             'created_at' => $answer->createdAtHumanReadable,
             'votes' => $answer->netVotes,
             'numComment' => $answer->replies->count(),
+            'canVote' => true,
             'status' => true
         ];
     }

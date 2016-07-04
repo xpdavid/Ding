@@ -109,29 +109,30 @@
     </div>
 
     <div class="userHome_profileNavbar">
-        <a href="#" class="glyphicon glyphicon-menu-hamburger"></a>
-        <a href="#">
-            My Question
+        <a href="{{ route('people.index', $user->url_name) }}"
+           class="{{ Route::current()->getName() == 'people.index' ? 'userHome_profileNavbar_active' : '' }}"
+        >
+            <span class="space-right"></span><span class="glyphicon glyphicon-menu-hamburger"></span>
+        </a>
+        <a href="{{ route('people.question', $user->url_name) }}"
+           class="{{ Route::current()->getName() == 'people.question' ? 'userHome_profileNavbar_active' : '' }}">
+            Questions
             <span>{{ $user->questions()->count() }}</span>
         </a>
-        <a href="#">
-            My Answers
+        <a href="{{ route('people.answer', $user->url_name) }}"
+           class="{{ Route::current()->getName() == 'people.answer' ? 'userHome_profileNavbar_active' : '' }}">
+            Answers
             <span>{{ $user->answers()->count() }}</span>
         </a>
-        @if(Route::current()->getName() == 'people.bookmark')
-            <a href="{{ route('people.bookmark', $user->url_name) }}" class="userHome_profileNavbar_active">
-                My Bookmarks
-                <span>{{ $user->bookmarks()->count() }}</span>
-            </a>
-        @else
-            <a href="{{ route('people.bookmark', $user->url_name) }}">
-                My Bookmarks
-                <span>{{ $user->bookmarks()->count() }}</span>
-            </a>
-        @endif
+
+        <a href="{{ route('people.bookmark', $user->url_name) }}"
+           class="{{ Route::current()->getName() == 'people.bookmark' ? 'userHome_profileNavbar_active' : '' }}">
+            Bookmarks
+            <span>{{ $user->bookmarks()->where('is_public', true)->count() }}</span>
+        </a>
 
         <a href="#">
-            My Edit
+            Edit
             <span>0</span>
         </a>
     </div>

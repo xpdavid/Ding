@@ -1,11 +1,11 @@
 <div class="userHome_follows">
-    <a href="#">
+    <a href="/people/{{ $user->url_name }}/follower">
         <span> Follower </span>
         <br>
         <strong id="user_numSubscriber"> {{ $user->subscribers()->count() }} </strong>
         <label> People </label>
     </a>
-    <a href="#" class="userHome_followsMore">
+    <a href="/people/{{ $user->url_name }}/follow" class="userHome_followsMore">
         <span> Follow </span>
         <br>
         <strong> {{ $user->subscribe->users()->count() }} </strong>

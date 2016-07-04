@@ -139,6 +139,7 @@ class ReplyController extends Controller
         ]);
 
         // determine related model
+        $item = Question::findOrFail($item_id);
         switch ($request->get('type')) {
             case 'question':
                 $item = Question::findOrFail($item_id);
