@@ -279,4 +279,68 @@ class User extends Authenticatable
         return $this->belongsToMany('App\User', 'blockings', 'blocked_id', 'user_id');
     }
 
+    /**
+     * An user can hide some topics.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function hide_topics() {
+        return $this->belongsToMany('App\Topic', 'hide_topic', 'user_id', 'topic_id');
+    }
+
+    /**
+     * Filter questions collection base on interest
+     *
+     * @param $questions
+     * @return mixed
+     */
+    public function filterQuestions($questions) {
+        // filter base on user setting
+        $filter = $questions;
+        if ($this->hide_topics()->count() > 0) {
+            $filter = $questions->filter(function($question) {
+                $result = true;
+                foreach ($question->topics as $topic) {
+                    foreach ($this->hide_topics as $hide_topic) {
+                        $result = $result && !$topic->isSubtopicOf($hide_topic);
+                        if (!$result) {
+                            break;
+                        }
+                    }
+                    if (!$result) {
+                        break;
+                    }
+                }
+                return $result;
+            });
+        }
+
+        return $filter;
+
+    }
+
+    /**
+     * Filter certain topics base on user setting
+     *
+     * @param $topics
+     * @return mixed
+     */
+    public function filterTopics($topics) {
+        // filter base on user setting
+        $filter = $topics;
+        if ($this->hide_topics()->count() > 0) {
+            $filter = $topics->filter(function($topic) {
+                $result = true;
+                foreach ($this->hide_topics as $hide_topic) {
+                    $result = $result && !$topic->isSubtopicOf($hide_topic);
+                    if (!$result) {
+                        break;
+                    }
+                }
+                return $result;
+            });
+        }
+        return $filter;
+    }
+
 }

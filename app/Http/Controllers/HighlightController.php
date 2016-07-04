@@ -52,6 +52,10 @@ class HighlightController extends Controller
         // page system
         $questions = $questions->forPage($page, $itemInPage);
 
+        // filter base on user setting
+        $questions = $user->filterQuestions($questions);
+
+
         foreach ($questions as $question) {
             $answer = $question->hotAnswer;
             // generate topics
@@ -117,8 +121,13 @@ class HighlightController extends Controller
                 $questions = Question::monthQuestions();
                 break;
         }
+
         // page system
         $questions = $questions->forPage($page, $itemInPage);
+
+        // filter base on user setting
+        $questions = $user->filterQuestions($questions);
+
         foreach ($questions as $question) {
             $answer = $question->hotAnswer;
             // generate topics

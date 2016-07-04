@@ -970,7 +970,7 @@ body {
   margin: 5px 0 0 0; }
 
 .topic_home_topic_list_item_text {
-  padding: 18px 9px 0; }
+  padding: 14px 9px 0; }
 
 .answer_moreAnswer {
   color: #999;
@@ -1040,7 +1040,8 @@ body {
   width: 300px !important; }
 
 .profile_card_left {
-  position: relative; }
+  position: relative;
+  min-height: 80px; }
 
 .profile_card_button {
   position: absolute;

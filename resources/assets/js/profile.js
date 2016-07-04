@@ -556,3 +556,29 @@ function cancelBlocking(event, block_id) {
         });
     });
 }
+
+
+/**
+ * Send ajax request to cancel hide topic
+ *
+ * @param topic_id
+ */
+function cancelHideTopic(event, topic_id) {
+    if (event) {
+        event.preventDefault();
+    }
+    swal({
+        title: "Are you sure?",
+        text: "You will continue receive any update from this topic!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, cancel it!",
+        closeOnConfirm: false
+    }, function(){
+        $.post('/settings/update', {
+            'cancel_hide_topic' : topic_id
+        }, function(data) {
+            window.location.replace('/settings/blocking');
+        });
+    });
+}

@@ -1224,7 +1224,7 @@ body {
 
 // topic home css style
 .topic_home_topic_list_item_text {
-  padding: 18px 9px 0;
+  padding: 14px 9px 0;
 }
 
 // answer page css style
@@ -1311,6 +1311,7 @@ body {
 
 .profile_card_left {
   position: relative;
+  min-height: 80px;
 }
 
 .profile_card_button {

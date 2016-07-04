@@ -65,7 +65,7 @@ class UserCenterController extends Controller
      */
     public function bookmark() {
         $user = Auth::user();
-        $myBookmark_count = $user->bookmarks()->count();    
+        $myBookmark_count = $user->bookmarks()->count();
         $subscribedBookmark_count = $user->subscribe->bookmarks()->count();
         return view('userCenter.bookmark', compact('myBookmark_count', 'subscribedBookmark_count'));
     }
@@ -171,9 +171,12 @@ class UserCenterController extends Controller
         $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->homeItemInPage;
         // calculate how many question each topic should take
         $results = [];
-        $questions = Question::news();
 
-        foreach ($questions->forPage($page, $itemInPage) as $question) {
+        $questions = Question::news()->forPage($page, $itemInPage);
+        // filter base on user hide topics attribute
+        $questions = $user->filterQuestions($questions);
+
+        foreach ($questions as $question) {
             $answer = $question->hotAnswer;
             // generate topics
             $topics = [];

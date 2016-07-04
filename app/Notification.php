@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use View;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
@@ -44,6 +45,12 @@ class Notification extends Model
      */
     public static function notification(User $user, $type, $subject_id, $object_id) {
         // check blocking
+        $current_user = Auth::user();
+        if ($user->blockings()->count() > 0) {
+            if (in_array($current_user->id, $user->blockings->lists('id')->all())) {
+                return ;
+            }
+        }
 
         if (static::hasNotification($user->notifications(), $type, $subject_id, $object_id)) {
             // already has the same notification

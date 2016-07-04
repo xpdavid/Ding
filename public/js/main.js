@@ -277,6 +277,47 @@ function user_name_autocomplete(id) {
 }
 
 /**
+ * auto complete for topics
+ * @param id
+ */
+function topic_autocomplete(id) {
+    $('#' + id).select2({
+        width: '100%',
+        dropdownAutoWidth : true,
+        placeholder: 'Please select some topics',
+        minimumInputLength : 1,
+        ajax: {
+            url: "/api/autocomplete",
+            dataType: 'json',
+            method: 'POST',
+            delay: 250,
+            data: function (params) {
+                return {
+                    queries: [{
+                        type : 'topic',
+                        term : params.term, // search term
+                        max_match: 10,
+                        use_similar: 0,
+                    }]
+                };
+            },
+            processResults: function(data, params) {
+                var process_data = [];
+                $.each(data, function(index, item) {
+                    process_data.push({
+                        id : item.id,
+                        text : item.name
+                    });
+                });
+                return {
+                    results : process_data
+                }
+            }
+        },
+    });
+}
+
+/**
  * Bind the upload button with event
  */
 function cropImage(img_id) {

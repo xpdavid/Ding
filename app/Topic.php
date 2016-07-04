@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -103,11 +104,12 @@ class Topic extends Model
      * Get hot topics
      */
     public static function getHotTopics() {
-        return Topic::all()->sortByDesc(function($topic) {
+        $topics =  Topic::all()->sortByDesc(function($topic) {
             $numSubscriber = $topic->subscribers()->count();
             $numHit = $topic->hit->total;
             return $numSubscriber * 2 + $numHit * 3;
         });
+        return Auth::user()->filterTopics($topics);
     }
 
 
@@ -160,6 +162,15 @@ class Topic extends Model
     }
 
     /**
+     * A topic is hidden to many users.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function be_hidden() {
+        return $this->belongsToMany('App\Topic', 'hide_topic', 'topic_id', 'user_id');
+    }
+
+    /**
      * define query scope. like match $name
      *
      * @param $query
@@ -182,6 +193,29 @@ class Topic extends Model
                 ->from('topic_subtopic')
                 ->whereRaw('topic_subtopic.subtopic_id = topics.id');
         });
+    }
+
+    /**
+     * Determine if a given topic is current topic's parent topic
+     *
+     * @param $topic
+     * @return bool
+     */
+    public function isSubtopicOf($topic) {
+        if ($this->id == $topic->id) {
+            return true;
+        } else if ($this->parent_topics()->count() == 0) {
+            return false;
+        } else {
+            $results = false;
+            foreach ($this->parent_topics as $parent_topic) {
+                $results = $results || $parent_topic->isSubtopicOf($topic);
+                if ($results) {
+                    break;
+                }
+            }
+            return $results;
+        }
     }
 
 }

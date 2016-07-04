@@ -86,6 +86,8 @@
 
 @include('partials._ask_question_model')
 
+@include('partials._show_comment_conversation')
+
 @include('partials._bookmark_model')
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}

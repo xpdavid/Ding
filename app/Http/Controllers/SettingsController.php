@@ -128,6 +128,21 @@ class SettingsController extends Controller
             return Redirect::back();
         }
 
+        if ($request->has('hide_topics')) {
+            $user = Auth::user();
+            foreach ($request->get('hide_topics') as $topic_id) {
+                $user->hide_topics()->attach($topic_id);
+            }
+        }
+
+        if ($request->has('cancel_hide_topic')) {
+            $user = Auth::user();
+            $cancel_topic_id = $request->get('cancel_hide_topic');
+
+            $user->subscribe->topics()->detach($cancel_topic_id);
+            $user->hide_topics()->detach($cancel_topic_id);
+        }
+
         return Redirect::back();
     }
 }

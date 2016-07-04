@@ -138,7 +138,7 @@ class QuestionController extends Controller
                 }
             }
 
-            // second to answered user
+            // second to answered user (magic algorithm)
             if (count($users) < $max_users) {
                 foreach ($topics as $topic) {
                     $take_item = $topic->questions()->count() > $max_users ? $max_users : $topic->questions()->count();
