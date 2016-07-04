@@ -158,11 +158,17 @@ class QuestionController extends Controller
         if(($key = array_search(Auth::user()->id, $users)) !== false) {
             unset($users[$key]);
         }
-
+        
 
         $results = [];
         foreach ($users as $user_id) {
             $user = User::findOrFail($user_id);
+
+            // check invitation validation
+            if(!$user->canBeInvitedBy($auth_user)) {
+                continue;
+            }
+
             $topics_arr = [];
             foreach ($topics as $topic) {
                 array_push($topics_arr, [
@@ -202,6 +208,14 @@ class QuestionController extends Controller
 
         $invitee = User::findOrFail($request->get('user_id'));
         $inviter = Auth::user();
+
+        if (!$invitee->canBeInvitedBy($inviter)) {
+            return [
+                'false' => true,
+                'error' => 'The user has set only the people he/she subscribe to can send invitation'
+            ];
+        }
+
         $question = Question::findOrFail($request->get('question_id'));
 
         // send notification to user

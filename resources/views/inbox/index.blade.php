@@ -56,7 +56,17 @@
 
         </div>
         <div class="col-md-4">
-            <div class="alert alert-success" role="alert">If you are worry about span, maybe <a href="#" class="alert-link">Setting</a> is a good place to prevent it.</div>
+            <div class="alert alert-success" role="alert">If you worry about span, maybe <a href="/settings/notification" class="alert-link">Setting</a> is a good place to prevent it.</div>
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    Message sending fail:
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
     </div> <!-- for row -->
 </div>

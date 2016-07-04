@@ -98,12 +98,14 @@ class AnswerController extends Controller
                 'user_id' => $answer->owner->id,
                 'user_bio' => $answer->owner->bio,
                 'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
+                'user_url' => action('PeopleController@show', $answer->owner->url_name),
                 'answer' => $answer->answer,
                 'created_at' => $answer->createdAtHumanReadable,
                 'votes' => $answer->netVotes,
                 'numComment' => $answer->replies->count(),
                 'vote_up_class' => $vote_up_class,
-                'vote_down_class' => $vote_down_class
+                'vote_down_class' => $vote_down_class,
+                'canVote' => $answer->owner->canAnswerVoteBy($user)
             ]);
         }
 
@@ -143,6 +145,8 @@ class AnswerController extends Controller
             $owner = $subscriber->owner;
             // cannot be self-notified
             if ($owner->id == $user->id) continue;
+            // check user settings
+            if (!$subscriber->owner->canReceiveQuestionUpdateBy($user)) continue;
             // type 2 notification, user answer question
             Notification::notification($owner, 2, $user->id, $answer->id);
         }
@@ -185,6 +189,14 @@ class AnswerController extends Controller
         // get necessary param
         $user = Auth::user();
         $answer = Answer::findOrFail($answer_id);
+
+        // check user settings
+        if (!$answer->owner->canAnswerVoteBy($user)) {
+            // you cannot vote the user's answer
+            return [
+                'status' => false
+            ];
+        }
 
         // detach all relationship first
         $answer->vote_up_users()->detach($user->id);

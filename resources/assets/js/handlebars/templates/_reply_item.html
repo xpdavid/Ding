@@ -24,29 +24,34 @@
 
             </div>
             <div class="comment_item_content">
-                {{reply}}
+                {{{reply}}}
             </div>
         </div>
         <div class="float-left horizontal_item">
             <a href="#">{{created_at}}</a>
             <span class="reply_op">
-                <a href="#" onclick="reply_comment(event, '{{id}}')"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Reply</a>
-                <a href="#" class="{{vote_up_class}}" id="vote_reply_{{id}}_up" onclick="vote_reply(event, '{{id}}')"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+                {{#if canReply}}
+                    <a href="#" onclick="reply_comment(event, '{{id}}')"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>Reply</a>
+                {{/if}}
+                {{#if canVote}}
+                    <a href="#" class="{{vote_up_class}}" id="vote_reply_{{id}}_up" onclick="vote_reply(event, '{{id}}')"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+                {{/if}}
                 <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Report</a>
             </span>
         </div>
         <div class="float-right"><span id="vote_reply_{{id}}_count">{{votes}}</span> vote(s)</div>
         <span class="clearfix"></span>
-
-        <div class="comment_for_user clearfix" id="reply_comment_{{id}}">
-            <div class="form-group">
-                <input type="email" class="form-control" id="{{for_item}}_comment_{{for_item_id}}_reply_{{id}}" placeholder="Write Your Comment Here">
+        {{#if canReply}}
+            <div class="comment_for_user clearfix" id="reply_comment_{{id}}">
+                <div class="form-group">
+                    <input type="email" class="form-control" id="{{for_item}}_comment_{{for_item_id}}_reply_{{id}}" placeholder="Write Your Comment Here">
+                </div>
+                <div class="float-right form-group">
+                    <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'reply_comment_{{id}}')">Cancel</a>
+                    <button class="btn btn-primary" type="submit" onclick="saveComment('{{for_item}}_comment_{{for_item_id}}', '{{for_item_id}}' ,'{{for_item}}', '{{id}}')">Comment</button>
+                </div>
             </div>
-            <div class="float-right form-group">
-                <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'reply_comment_{{id}}')">Cancel</a>
-                <button class="btn btn-primary" type="submit" onclick="saveComment('{{for_item}}_comment_{{for_item_id}}', '{{for_item_id}}' ,'{{for_item}}', '{{id}}')">Comment</button>
-            </div>
-        </div>
+        {{/if}}
 
     </div>
 </div>

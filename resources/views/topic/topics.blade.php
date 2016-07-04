@@ -42,7 +42,7 @@
                     <div class="media topics_item">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object topics_item_image" src="{{ DImage($popular_topic->avatar_img_id, 40, 40) }}" alt="{{ $popular_topic->name }}">
+                                <img class="media-object topics_item_image img-rounded" src="{{ DImage($popular_topic->avatar_img_id, 40, 40) }}" alt="{{ $popular_topic->name }}">
                             </a>
                         </div>
                         <div class="media-body topics_more">
@@ -66,7 +66,6 @@
                                     </a>
                                 @endif
                             </div>
-                            <p class="font-black"></p>
                             <p class="font-black">{{ $popular_topic->subscribers()->count() }} subscribe</p>
                         </div>
                         <div class="topics_item_hots">

@@ -3,20 +3,28 @@
 {{#each answers}}
 <div class="answer_overall" id="answer_{{id}}">
     <div class="answer_voting">
-        <button type="button" id="vote_answer_{{id}}_up" class="btn btn-primary {{vote_up_class}}" onclick="vote_answer('{{id}}', 'up')">
-            <div>
-                <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
-            </div>
-            <span class="vote_answer_{{id}}_count">{{votes}}</span>
-        </button>
-        <button type="button" id="vote_answer_{{id}}_down" class="btn btn-primary {{vote_down_class}}" onclick="vote_answer('{{id}}', 'down')">
-            <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
-        </button>
+        {{#if canVote}}
+            <button type="button" id="vote_answer_{{id}}_up" class="btn btn-primary {{vote_up_class}}" onclick="vote_answer('{{id}}', 'up')">
+                <div>
+                    <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
+                </div>
+                <span class="vote_answer_{{id}}_count">{{votes}}</span>
+            </button>
+            <button type="button" id="vote_answer_{{id}}_down" class="btn btn-primary {{vote_down_class}}" onclick="vote_answer('{{id}}', 'down')">
+                <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
+            </button>
+        {{^}}
+            <button type="button"  class="btn btn-primary" disabled>
+                <div>
+                </div>
+                <span>{{votes}}</span>
+            </button>
+        {{/if}}
     </div>
 
 
     <div class="clearfix">
-        <div class="float-left"><strong>{{user_name}}</strong>, <span class="font-black">{{user_bio}}</span> </div>
+        <div class="float-left"><a href="{{user_url}}" class="font-black"><strong>{{user_name}}</strong></a> , <span class="font-black">{{user_bio}}</span> </div>
         <img class="float-right" src="{{user_pic}}" alt="{{user_name}}">
     </div>
 

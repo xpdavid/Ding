@@ -5,27 +5,38 @@
     <div class="answer_voting">
         <img src="{{topic_pic}}" class="img-rounded avatar-img">
         {{#if answer}}
-            <button type="button"
-                    class="btn btn-primary questions_sideButton"
-                    onclick="userHome_vote_button_trigger(this, 'vote_buttons_answer_{{answer.id}}')"
-            >
-                {{answer.netVotes}}
-            </button>
+            {{#if answer.canVote}}
+                <button type="button"
+                        class="btn btn-primary questions_sideButton"
+                        onclick="userHome_vote_button_trigger(this, 'vote_buttons_answer_{{answer.id}}')"
+                >
+                    {{answer.netVotes}}
+                </button>
+            {{^}}
+                <button type="button"
+                        class="btn btn-primary questions_sideButton" disabled
+                >
+                    {{answer.netVotes}}
+                </button>
+            {{/if}}
+
         {{/if}}
     </div>
 
     {{#if answer}}
-        <div class="answer_voting noneDisplay" id="vote_buttons_answer_{{answer.id}}">
-            <button type="button" id="vote_answer_{{answer.id}}_up" class="btn btn-primary {{answer.vote_up_class}}" onclick="vote_answer('{{answer.id}}', 'up')">
-                <div>
-                    <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
-                </div>
-                <span class="vote_answer_{{answer.id}}_count">{{answer.netVotes}}</span>
-            </button>
-            <button type="button" id="vote_answer_{{answer.id}}_down" class="btn btn-primary {{answer.vote_down_class}}" onclick="vote_answer('{{answer.id}}', 'down')">
-                <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
-            </button>
-        </div>
+        {{#if answer.canVote}}
+            <div class="answer_voting noneDisplay" id="vote_buttons_answer_{{answer.id}}">
+                <button type="button" id="vote_answer_{{answer.id}}_up" class="btn btn-primary {{answer.vote_up_class}}" onclick="vote_answer('{{answer.id}}', 'up')">
+                    <div>
+                        <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
+                    </div>
+                    <span class="vote_answer_{{answer.id}}_count">{{answer.netVotes}}</span>
+                </button>
+                <button type="button" id="vote_answer_{{answer.id}}_down" class="btn btn-primary {{answer.vote_down_class}}" onclick="vote_answer('{{answer.id}}', 'down')">
+                    <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
+                </button>
+            </div>
+        {{/if}}
     {{/if}}
 
     <div class="questions_questionTopic">

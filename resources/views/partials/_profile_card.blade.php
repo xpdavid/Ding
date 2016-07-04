@@ -96,7 +96,7 @@
         <div class="float-left margin-top">
             Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="userHome_number">10</span> Vote, <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <span class="userHome_number">10</span> Thanks
         </div>
-        @if($user->id != Auth::user()->id)
+        @if(($user->id != Auth::user()->id) && ($user->canSubscribedBy(Auth::user())))
             <div class="float-right">
                 @if(Auth::user()->subscribe->checkHasSubscribed($user->id, 'user'))
                     <button class="btn btn-default" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Unsubscribe</button>

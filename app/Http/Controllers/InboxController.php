@@ -20,9 +20,7 @@ use Illuminate\Http\Request;
 class InboxController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * InboxController constructor.
      */
     public function __construct()
     {
@@ -51,6 +49,18 @@ class InboxController extends Controller
     public function store(Request $request)
     {
         $current_user = Auth::user();
+        $users_id = $request->get('users');
+        // check blocking
+        foreach ($users_id as $user_id) {
+            $to_user = User::findOrFail($user_id);
+            if (!$current_user->canSendMessageTo($to_user)) {
+                return redirect()
+                    ->back()
+                    ->withErrors(['There are some users who block you or some users set they only can receive message from users who they subscribe to.']);
+            }
+        }
+
+
         // Every store will create a new conversation
         $conversation = Conversation::create(['can_reply' => true]);
 
@@ -64,7 +74,6 @@ class InboxController extends Controller
         $current_user->sentMessages()->save($message);
         
         // participators have many conversation
-        $users_id = $request->get('users');
         foreach ($users_id as $user_id) {
             if ($user_id == $current_user->id) continue;
             $user = User::findOrFail($user_id);

@@ -8,11 +8,35 @@
 
 <div class="sideBar_section">
     @foreach(App\Topic::getHotTopics()->take(8) as $topic)
-        <div class="clearfix sideBar_sectionItem">
-            <img class="img-rounded float-left space-right avatar-img"
-                 src="{{ DImage($topic->avatar_img_id, 40, 40) }}" alt="{{ $topic->name }}">
-            <a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a>
-            <div class="font-grey">{{ $topic->subscribers()->count() }} substribe</div>
+        <div class="media topics_item">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object topics_item_image img-rounded" src="{{ DImage($topic->avatar_img_id, 40, 40) }}" alt="{{ $topic->name }}">
+                </a>
+            </div>
+            <div class="media-body topics_more">
+                <div class="clearfix">
+                    <div class="float-left topics_name">
+                        <a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a>
+                    </div>
+                    @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
+                        <a class="float-right topics_subscribe active"
+                           href="#"
+                           onclick="topics_subscribe(event, this, '{{ $topic->id }}')">
+                            <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
+                            <span>Unsubscribe</span>
+                        </a>
+                    @else
+                        <a class="float-right topics_subscribe"
+                           href="#"
+                           onclick="topics_subscribe(event, this, '{{ $topic->id }}')">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            <span>Subscribe</span>
+                        </a>
+                    @endif
+                </div>
+                <p class="font-black">{{ $topic->subscribers()->count() }} subscribe</p>
+            </div>
         </div>
     @endforeach
 </div>

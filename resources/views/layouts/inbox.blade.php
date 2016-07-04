@@ -66,6 +66,6 @@
 {{--inbox javascript support--}}
 {!! Html::script('js/inbox.js') !!}
 
-@section('javascript')
+@yield('javascript')
 </body>
 </html>

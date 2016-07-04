@@ -33,13 +33,15 @@
                     <div>Subscribers</div>
                 </a>
             </div>
-            <div class="col margin-top noborder">
-                {{#if isSubscribe}}
-                <button class="btn btn-default btn-sm" onclick="user_button_subscribe(this, '{{id}}', 'user{{id}}_numSubscriber')">Unsubscribe</button>
-                {{^}}
-                <button class="btn btn-success btn-sm" onclick="user_button_subscribe(this, '{{id}}', 'user{{id}}_numSubscriber')">Subscribe</button>
-                {{/if}}
-            </div>
+            {{#if canSubscribe}}
+                <div class="col margin-top noborder">
+                    {{#if isSubscribe}}
+                    <button class="btn btn-default btn-sm" onclick="user_button_subscribe(this, '{{id}}', 'user{{id}}_numSubscriber')">Unsubscribe</button>
+                    {{^}}
+                    <button class="btn btn-success btn-sm" onclick="user_button_subscribe(this, '{{id}}', 'user{{id}}_numSubscriber')">Subscribe</button>
+                    {{/if}}
+                </div>
+            {{/if}}
 
         </div>
     </div>

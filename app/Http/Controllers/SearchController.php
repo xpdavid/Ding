@@ -89,7 +89,8 @@ class SearchController extends Controller
                             'votes' => $answer->netVotes,
                             'numComment' => $answer->replies->count(),
                             'vote_up_class' => $vote_up_class,
-                            'vote_down_class' => $vote_down_class
+                            'vote_down_class' => $vote_down_class,
+                            'canVote' => $answer->owner->canAnswerVoteBy($user)
                         ]);
                     }
                     $arr['answers'] = $answers_arr;
@@ -117,7 +118,8 @@ class SearchController extends Controller
                         'numSubscriber' => $s_user->subscribers()->count(),
                         'isSubscribe' => $user->subscribe->checkHasSubscribed($s_user->id, 'user'),
                         'url_name' => $s_user->url_name,
-                        'img' => DImage($s_user->settings->profile_pic_id, 50, 50)
+                        'img' => DImage($s_user->settings->profile_pic_id, 50, 50),
+                        'canSubscribe' => $s_user->canSubscribedBy($user)
                     ]);
                 }
 

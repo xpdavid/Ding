@@ -2,10 +2,11 @@
 
 namespace App;
 
-use App\Conversation;
-use Carbon\Carbon;
+use Auth;
 use App\Subscribe;
+use Carbon\Carbon;
 use App\Settings;
+use App\Conversation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -341,6 +342,134 @@ class User extends Authenticatable
             });
         }
         return $filter;
+    }
+
+
+    /**
+     * Check if user can send message to user
+     *
+     * @param $user
+     * @return bool
+     */
+    public function canSendMessageTo($user) {
+        if (in_array($this->id, $user->blockings->lists('id')->all())) {
+            return false;
+        } else if ($this->settings->receiving_messages == 1) {
+            // Only people I subscribe to can messages me
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * filter invitation base on user setting
+     *
+     * @param $users
+     * @return bool
+     */
+    public function canBeInvitedBy($user) {
+        if ($user->id == $this->id) return true;
+
+        if ($this->settings->receiving_invitations == 1) {
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Filter question update base on user setting
+     *
+     * @param $user
+     * @return bool
+     */
+    public function canReceiveQuestionUpdateBy($user) {
+        if ($user->id == $this->id) return true;
+
+        if ($this->settings->receiving_updates == 1) {
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * filter `can replied` base on user setting
+     *
+     * @param $user
+     * @return bool
+     */
+    public function canReplyBy($user) {
+        if ($user->id == $this->id) return true;
+
+        if ($this->settings->receiving_replies == 0) {
+            return false;
+        } else if ($this->settings->receiving_replies == 1) {
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * determine an answer can be voted by a user
+     *
+     * @param $user
+     * @return bool
+     */
+    public function canAnswerVoteBy($user) {
+        if ($user->id == $this->id) return true;
+
+        if ($this->settings->receiving_votings == 0) {
+            return false;
+        } else if ($this->settings->receiving_votings == 1) {
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * determine if user's replies can be voted
+     *
+     * @param $user
+     * @return bool
+     */
+    public function canReplyVoteBy($user) {
+        if ($user->id == $this->id) return true;
+
+        if ($this->settings->receiving_reply_votings == 0) {
+            return false;
+        } else if ($this->settings->receiving_reply_votings == 1) {
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * determine if user can subscribe to a user
+     *
+     * @param $user
+     * @return bool
+     */
+    public function canSubscribedBy($user) {
+        if ($this->settings->receiving_subscriptions == 0) {
+            return false;
+        } else if ($this->settings->receiving_subscriptions == 1) {
+            if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

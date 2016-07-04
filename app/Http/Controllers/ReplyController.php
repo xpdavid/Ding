@@ -113,7 +113,10 @@ class ReplyController extends Controller
                 'for_item_id' => $item->id,
                 'votes' => $reply->vote_up_users->count(),
                 'vote_up_class' => $vote_up_class,
+                'canReply' =>  $reply->owner->canReplyBy($user),
+                'canVote' => $reply->owner->canReplyVoteBy($user)
             ]);
+
         }
 
         return [
@@ -150,6 +153,17 @@ class ReplyController extends Controller
         // get current user
         $user = Auth::user();
 
+        // check user setting
+        if ($request->exists('reply_to_reply_id')) {
+            $to_reply = Reply::findOrFail($request->get('reply_to_reply_id'));
+            if (!$to_reply->owner->canReplyBy($user)) {
+                // you cannot reply to the user
+                return [
+                    'status' => false
+                ];
+            }
+        }
+
         // create comment
         $comment = Reply::create([
             'reply' => $request->get('text')
@@ -165,7 +179,11 @@ class ReplyController extends Controller
             $to_reply = Reply::findOrFail($request->get('reply_to_reply_id'));
             $to_reply->receive_replies()->save($comment);
             // send notification to the users (type 6 notification)
-            Notification::notification($to_reply->owner, 6, $user->id, $comment->id);
+            // you can reply to yourself, but we won't send notification
+            if ($to_reply->owner->id != $user->id) {
+                Notification::notification($to_reply->owner, 6, $user->id, $comment->id);
+            }
+
         }
 
         // response ajax request
@@ -195,6 +213,14 @@ class ReplyController extends Controller
         $user = Auth::user();
         $reply = Reply::findOrFail($reply_id);
 
+        // check user settings
+        if (!$reply->owner->canReplyBy($user)) {
+            // user don't want reply
+            return [
+                'status' => false
+            ];
+        }
+
         // detach all first
         $reply->vote_up_users()->detach($user->id);
 
@@ -205,7 +231,10 @@ class ReplyController extends Controller
 
                 // notification to owner
                 // type 9 notification
-                Notification::notification($reply->owner, 9, $user->id, $reply->id);
+                // you cannot send notification to your self
+                if ($reply->owner->id != $user->id) {
+                    Notification::notification($reply->owner, 9, $user->id, $reply->id);
+                }
                 break;
         }
 
@@ -277,6 +306,7 @@ class ReplyController extends Controller
                 'created_at' => $reply->createdAtHumanReadable,
                 'votes' => $reply->vote_up_users->count(),
                 'vote_up_class' => $vote_up_class,
+                'canVote' => $reply->owner->canReplyVoteBy($user)
             ]);
             // mark as visited
             array_push($visited, $reply->id);

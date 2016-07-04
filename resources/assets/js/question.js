@@ -758,6 +758,8 @@ function invite_user(button, user_id, question_id) {
             $button.removeClass('btn-success');
             $button.addClass('btn-default');
             $button.prop('disabled', true);
+        } else {
+            swal('Invitation Fail', data.error, 'error');
         }
     })
 }

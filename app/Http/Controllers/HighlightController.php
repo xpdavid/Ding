@@ -83,7 +83,8 @@ class HighlightController extends Controller
                     'netVotes' => $answer->netVotes,
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,
-                    'vote_down_class' => $vote_down_class
+                    'vote_down_class' => $vote_down_class,
+                    'canVote' => $answer->owner->canAnswerVoteBy($user)
                 ];
             }
 
@@ -154,7 +155,8 @@ class HighlightController extends Controller
                     'netVotes' => $answer->netVotes,
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,
-                    'vote_down_class' => $vote_down_class
+                    'vote_down_class' => $vote_down_class,
+                    'canVote' => $answer->owner->canAnswerVoteBy($user)
                 ];
             }
             array_push($results, [

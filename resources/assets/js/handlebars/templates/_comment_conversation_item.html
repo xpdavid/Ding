@@ -24,7 +24,9 @@
         <div class="float-left horizontal_item">
             <a href="#">{{created_at}}</a>
             <span class="reply_op">
-                <a href="#" class="{{vote_up_class}}" id="vote_reply_{{id}}_c_up" onclick="vote_reply(event, '{{id}}_c');vote_reply(event, '{{id}}')"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+                {{#if canVote}}
+                    <a href="#" class="{{vote_up_class}}" id="vote_reply_{{id}}_c_up" onclick="vote_reply(event, '{{id}}_c');vote_reply(event, '{{id}}')"><span class="glyphicon glyphicon-heart" aira-hidden="true"></span>Like</a>
+                {{/if}}
                 <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Report</a>
             </span>
         </div>
