@@ -506,7 +506,8 @@ function detachSpecialization(event, specialization_id) {
 function showBookmarkPage(base_id, type, item_id, page, callback) {
     $.post('/bookmark', {
         id : item_id,
-        page : page
+        page : page,
+        type : type,
     }, function(results) {
         if (results.data.length) {
             // compile template

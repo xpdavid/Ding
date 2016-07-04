@@ -42,29 +42,31 @@
         <div class="col-md-4">
             <div class="sideBar_section">
                 <ul class="sideBar_item">
-                    @if(Request::is('notification'))
-                        <li class="sideBar_item_active"><a href="/notification"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
-                    @else
-                        <li><a href="/notification"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification</a></li>
-                    @endif
+                        <li class="{{ Request::is('notification') ? 'sideBar_item_active' : '' }}">
+                            <a href="/notification">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Notification
+                            </a>
+                        </li>
 
-                    @if(Request::is('draft'))
-                        <li class="sideBar_item_active"><a href="/draft"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
-                    @else
-                        <li><a href="/draft"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> My Draft</a></li>
-                    @endif
+                        <li><a href="/mybookmark" class="{{ Request::is('bookmark') ? 'sideBar_item_active' : ''}}">
+                                <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+                                Bookmark</a>
+                        </li>
 
-                    @if(Request::is('subscribed'))
-                        <li class="sideBar_item_active"><a href="/subscribed"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Subscribed Questions</a></li>
-                    @else
-                        <li><a href="/subscribed"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Subscribed Questions</a></li>
-                    @endif
+                        <li class="{{ Request::is('draft') ? 'sideBar_item_active' : '' }}">
+                            <a href="/draft"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                                My Draft</a>
+                        </li>
 
-                    @if(Request::is('invitation'))
-                        <li class="sideBar_item_active"><a href="/invitation"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Invitaion</a></li>
-                    @else
-                        <li><a href="/invitation"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Invitaion</a></li>
-                    @endif
+                        <li class="{{ Request::is('subscribed') ? 'sideBar_item_active' : '' }}">
+                            <a href="/subscribed"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                Subscribed Questions</a>
+                        </li>
+
+                        <li class="{{ Request::is('invitation') ?  'sideBar_item_active' : ''}}">
+                            <a href="/invitation"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                Invitaion</a>
+                        </li>
                 </ul>
             </div>
 
@@ -112,6 +114,7 @@
 {{--userCenter javascript support--}}
 {!! Html::script('js/userCenter.js') !!}
 {!! Html::script('js/question.js') !!}
+{!! Html::script('js/profile.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}

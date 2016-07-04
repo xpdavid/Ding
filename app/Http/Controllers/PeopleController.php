@@ -81,9 +81,8 @@ class PeopleController extends Controller
      * Update the specified resource in storage.
      * This is logic to response AJAX request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $url_name
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return array
      */
     public function update(Request $request)
     {
@@ -168,10 +167,10 @@ class PeopleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * delete some field about the user
      *
-     * @param  string $url_name
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function destroy(Request $request)
     {
@@ -198,6 +197,7 @@ class PeopleController extends Controller
      * Answer ajax request to upload user profile pic
      *
      * @param Request $request
+     * @return array
      */
     public function upload(Request $request) {
         $this->validate($request, [

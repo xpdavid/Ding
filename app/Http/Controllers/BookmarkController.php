@@ -40,7 +40,13 @@ class BookmarkController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id) {
+        $user = Auth::user();
         $bookmark = Bookmark::findOrFail($id);
+
+        // it is not public and it is not owner
+        if (!$bookmark->is_public && $user->id != $bookmark->owner->id) {
+            abort(401);
+        }
 
         // Visit count
         Visitor::visit($bookmark);
@@ -48,10 +54,21 @@ class BookmarkController extends Controller
         return view('bookmark.show', compact('bookmark'));
     }
 
-
+    /**
+     * Answer ajax request to show bookmark
+     *
+     * @param $id
+     * @param Request $request
+     * @return array
+     */
     public function postShow($id, Request $request) {
         $bookmark = Bookmark::findOrFail($id);
         $user = Auth::user();
+
+        // check if is owner and is_public
+        if (!$bookmark->is_public && $user->id != $bookmark->owner->id) {
+            abort(401);
+        }
 
         // get page parameters
         $page = $request->exists('page') ? $request->get('page') : 1;
@@ -278,12 +295,19 @@ class BookmarkController extends Controller
      */
     public function postBookmark(Request $request) {
         $user = Auth::user();
-        $bookmarks = $user->bookmarks;
-        // get auth user first && get public bookmark
-        if ($request->exists('id') && ($request->get('id') != $user->id)) {
-            $user = User::findOrFail($request->get('id'));
-            $bookmarks = $user->bookmarks()->where('is_public', true)->get();
+        $type = $request->has('type') ? $request->get('type') : 'user';
+
+        if ($type == 'user') {
+            $bookmarks = $user->bookmarks;
+            // get auth user first && get public bookmark
+            if ($request->has('id') && ($request->get('id') != $user->id)) {
+                $user = User::findOrFail($request->get('id'));
+                $bookmarks = $user->bookmarks()->where('is_public', true)->get();
+            }
+        } else if ($type = 'subscribed') {
+            $bookmarks = $user->subscribe->bookmarks;
         }
+
 
 
         // get necessary parameters

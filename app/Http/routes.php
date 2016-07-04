@@ -95,6 +95,8 @@ Route::get('/subscribed', 'UserCenterController@subscribed');
 Route::post('/subscribed', 'UserCenterController@postSubscribed');
 Route::get('/invitation', 'UserCenterController@invitation');
 Route::post('/invitation', 'UserCenterController@postInvitation');
+Route::get('/mybookmark', 'UserCenterController@bookmark');
+Route::post('/mybookmark', 'UserCenterController@bookmark');
 
 // for notification
 Route::post('/notification/operation', 'NotificationController@operation');

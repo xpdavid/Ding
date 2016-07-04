@@ -61,6 +61,16 @@ class UserCenterController extends Controller
     }
 
     /**
+     * Show all user bookmark
+     */
+    public function bookmark() {
+        $user = Auth::user();
+        $myBookmark_count = $user->bookmarks()->count();    
+        $subscribedBookmark_count = $user->subscribe->bookmarks()->count();
+        return view('userCenter.bookmark', compact('myBookmark_count', 'subscribedBookmark_count'));
+    }
+
+    /**
      * Response ajax request to get invitation
      *
      * @return array

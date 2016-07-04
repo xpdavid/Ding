@@ -87,7 +87,7 @@ The `images` table has 5 columns `id` `reference_id` `path` `width` `height`.
 
 - To save an image.
 	- move the image to the folder `images/` (not `public` folder). Create a image instance (Image::create()) and save. Please set the `reference_id` equal to `id` so that we could distinct it as original image.
-	- 
+	- Under the images folder, we have `topic` folder and `user` folder. `topic` folder will store all the avatar images of topics and `user` folder will store all the users' uploaded images. In `user` folder, each user will have their own folder `{their_id}`.
 - To get an image.
 	- using this `url` (put it in the `src` field) : `/image/{reference_id}/{width}/{height}`, the system will automatically detect if the original image fit to this resolution. If not, it will create a new one by using `Intervention\Image`. You don't have to worry about the new one. Next time, using same `url`, the system will automatically find the one that fit the provided resolution.
 	- There are helper function in laravel help you generate this url. (Please run `composer dump-autoload`, the helper function is in file `app/Support/Dimage.php`) The function `Dimage($reference_id, $width, $height)`, which have global scope will, return the url.
