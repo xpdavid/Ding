@@ -175,10 +175,18 @@
         <div class="sideBar_sectionItem">
             <h4>You might also be interested in:</h4>
             @foreach($also_interest as $interest_question)
-                <p><a href="{{ action('QuestionController@show', $interest_question->id) }}">{{ $interest_question->title }}</a> {{ $interest_question->answers->count() }} answers</p>
+                <p><a href="{{ action('QuestionController@show', $interest_question->id) }}">{{ $interest_question->title }}</a> {{ $interest_question->answers()->count() }} answers</p>
             @endforeach
         </div>
 
+    </div>
+
+    <div class="sideBar_section">
+        <div class="sideBar_sectionItem">
+            <span class="font-greyLight">
+                This question has been viewed <strong>{{ $question->hit->total }}</strong> times.
+            </span>
+        </div>
     </div>
 @endsection
 

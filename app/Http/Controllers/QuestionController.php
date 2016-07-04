@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Auth;
+use App\Visitor;
 use App\Reply;
 use App\Topic;
 use App\Answer;
@@ -35,11 +36,11 @@ class QuestionController extends Controller
     public function show($question_id, Request $request) {
         $question = Question::findOrFail($question_id);
 
+        // Visit count
+        Visitor::visit($question);
+
         // generate also_interest questions
-        $also_interest = [];
-        foreach ($question->topics as $topic) {
-            $also_interest = array_merge($also_interest, $topic->questions->take(3)->all());
-        }
+        $also_interest = $question->alsoInterestQuestions;
 
         // determine how to sort answers
         $answers = $question->answers;

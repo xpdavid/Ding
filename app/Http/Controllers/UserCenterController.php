@@ -130,7 +130,7 @@ class UserCenterController extends Controller
                 'id' => $question->id,
                 'title' => $question->title,
                 'numAnswer' => $question->answers()->count(),
-                'visit' => 13,
+                'visit' => $question->hit->total,
                 'numSubscriber' => $question->subscribers()->count(),
             ]);
         }
@@ -161,16 +161,10 @@ class UserCenterController extends Controller
         $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->homeItemInPage;
         // calculate how many question each topic should take
         $results = [];
-        $questions = Question::orderBy('created_at', 'desc')
-            ->skip($itemInPage * ($page - 1))
-            ->take($itemInPage)->get();
-        foreach ($questions as $question) {
-            // take 10 recent answer
-            $answer = $question->answers()->orderBy('created_at', 'desc')->take(5)->get();
-            // skip the question without answer
-            if ($question->answers()->count() == 0) continue;
-            // use the answer with the highest vote
-            $answer = $answer->sortByDesc('netVotes')->first();
+        $questions = Question::news();
+
+        foreach ($questions->forPage($page, $itemInPage) as $question) {
+            $answer = $question->hotAnswer;
             // generate topics
             $topics = [];
             foreach ($question->topics as $topic) {
@@ -179,14 +173,12 @@ class UserCenterController extends Controller
                     'id' => $topic->id
                 ]);
             }
-            // check if the user has voted the answer
-            $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
-            $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
-            array_push($results, [
-                'id' => $question->id,
-                'topics' => $topics,
-                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
-                'answer' => [
+            $answer_arr = false;
+            if ($answer != null) {
+                // check if the user has voted the answer
+                $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
+                $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
+                $answer_arr = [
                     'id' => $answer->id,
                     'owner' => [
                         'name' => $answer->owner->name,
@@ -198,7 +190,14 @@ class UserCenterController extends Controller
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,
                     'vote_down_class' => $vote_down_class
-                ],
+                ];
+            }
+
+            array_push($results, [
+                'id' => $question->id,
+                'topics' => $topics,
+                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
+                'answer' => $answer_arr,
                 'title' => $question->title,
                 'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
             ]);

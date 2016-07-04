@@ -11,7 +11,13 @@ class TopicTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Topic::class, 50)->create();
+        factory(App\Topic::class, 50)->create()->each(function($t) {
+            // bookmark hit
+            App\Hit::create([
+                'owner_type' => 'App\Topic',
+                'owner_id' => $t->id
+            ]);
+        });
 
         for($i = 1; $i <= 10; $i++) {
             $topic = App\Topic::find($i);

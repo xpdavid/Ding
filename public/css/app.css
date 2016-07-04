@@ -855,7 +855,7 @@ body {
 /*for question_homepage.html*/
 .questions_questionLayout {
   padding-left: 55px;
-  min-height: 100px;
+  min-height: 70px;
   margin: 20px 0px 20px 0px; }
 
 .questions_questionContent {

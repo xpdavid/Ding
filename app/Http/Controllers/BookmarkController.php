@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Visitor;
 use Carbon\Carbon;
 use App\User;
 use App\Bookmark;
@@ -40,6 +41,9 @@ class BookmarkController extends Controller
      */
     public function show($id) {
         $bookmark = Bookmark::findOrFail($id);
+
+        // Visit count
+        Visitor::visit($bookmark);
 
         return view('bookmark.show', compact('bookmark'));
     }

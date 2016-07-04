@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Visitor;
 use Auth;
+use Carbon\Carbon;
 use IImage;
 use File;
 use App\Topic;
@@ -33,9 +35,7 @@ class TopicController extends Controller
         $subscribe_topics = $user->subscribe->topics;
 
         // generate people also like
-        $other_topics = $popular_topics = Topic::all()->sortByDesc(function($topic) {
-            return $topic->subscribers()->count();
-        })->shuffle()->take(6);
+        $other_topics = Topic::getHotTopics()->take(6);
 
         return view('topic.home', compact('subscribe_topics', 'other_topics'));
         
@@ -49,9 +49,7 @@ class TopicController extends Controller
     public function topics() {
         $top_parent_topics = Topic::topParentTopics()->get();
 
-        $popular_topics = Topic::all()->sortByDesc(function($topic) {
-            return $topic->subscribers()->count();
-        })->take(3);
+        $popular_topics = Topic::getHotTopics()->take(5);
 
         return view('topic.topics', compact('top_parent_topics', 'popular_topics'));
     }
@@ -64,6 +62,9 @@ class TopicController extends Controller
      */
     public function show($topic_id, Request $request) {
         $topic = Topic::findOrFail($topic_id);
+
+        // Visit Count
+        Visitor::visit($topic);
 
         // determine sorted method
         $sorted = $request->get('sorted') ? $request->get('sorted') : '';
@@ -140,24 +141,30 @@ class TopicController extends Controller
         $topic_id = $request->get('topic_id');
         $page = ($request->get('page') < '0') ? 1 : $request->get('page'); // page must be positive numbers
         $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+        $sorted = $request->has('sorted') ? $request->get('sorted') : 'default';
 
         $topic = Topic::findOrFail($topic_id);
 
-        // determine request type
+
         $questions = null;
-        switch ($request->get('type')) {
-            case 'recommend' :
-                $questions = $topic->questions;
-                break;
-            case 'wait_for_answer' :
-                $questions = $topic->questions->filter(function($question) {
-                    return $question->answers()->count() == 0;
-                });
-                break;
-            default:
-                $questions = $topic->questions;
-                break;
+        // determine sorted type
+        if ($sorted == 'created') {
+            $questions = $topic->questions()->orderBy('created_at', 'desc')->get();
+        } else {
+            // determine request type
+            switch ($request->get('type')) {
+                case 'recommend' :
+                    $questions = $topic->recommendQuestions;
+                    break;
+                case 'wait_for_answer' :
+                    $questions = $topic->waitAnswerQuestions;
+                    break;
+                default:
+                    $questions = $topic->highlightQuestions;
+                    break;
+            }
         }
+
 
         $current_questions = $questions->forPage($page, $itemInPage);
 

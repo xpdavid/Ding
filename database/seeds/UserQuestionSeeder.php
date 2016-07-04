@@ -19,6 +19,11 @@ class UserQuestionSeeder extends Seeder
             // use have setting model one to one
             $settings = App\Settings::create();
             $u->settings()->save($settings);
+            // user profile hit
+            App\Hit::create([
+                'owner_type' => 'App\User',
+                'owner_id' => $u->id
+            ]);
         });;
 
         // each user post several question
@@ -28,6 +33,12 @@ class UserQuestionSeeder extends Seeder
             for($i = 0; $i < $bound_i; $i++) {
                 $question = factory(App\Question::class)->make();
                 $question->save();
+
+                // question hit
+                App\Hit::create([
+                    'owner_type' => 'App\Question',
+                    'owner_id' => $question->id
+                ]);
 
                 // an question is posted by user
                 $user->questions()->save($question);
@@ -43,6 +54,13 @@ class UserQuestionSeeder extends Seeder
                 $bound_j = rand(1, 3);
                 for($j = 0; $j < $bound_j; $j++) {
                     $answer = factory(App\Answer::class)->make();
+                    $answer->save();
+
+                    // answer hit
+                    App\Hit::create([
+                        'owner_type' => 'App\Answer',
+                        'owner_id' => $answer->id
+                    ]);
 
                     // an answer belongs to a user
                     App\User::all()->random(1)->answers()->save($answer);

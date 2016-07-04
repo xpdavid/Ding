@@ -24,7 +24,25 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // empty visitor table every day
+        $schedule->call(function () {
+            DB::table('visitors')->truncate();
+        })->daily();
+
+
+        // clear day visit count
+        $schedule->call(function () {
+            DB::table('hits')->update(['day' => 0]);
+        })->daily();
+
+        // clear week visit count
+        $schedule->call(function () {
+            DB::table('hits')->update(['week' => 0]);
+        })->weekly();
+
+        // clear month visit count
+        $schedule->call(function () {
+            DB::table('hits')->update(['month' => 0]);
+        })->monthly();
     }
 }

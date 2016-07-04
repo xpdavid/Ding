@@ -1,12 +1,13 @@
-<div class="sideBar_section">
-    <div class="clearfix">
-        <div class="float-left">Hot Topics</div>
-        <div class="float-right font-grey"><a href="#">More &gt;&gt;</a></div>
-    </div>
+
+<div class="clearfix">
+    <div class="float-left">Hot Topics</div>
+    <div class="float-right font-grey"><a href="#">More &gt;&gt;</a></div>
 </div>
 
+<hr class="small_hrLight">
+
 <div class="sideBar_section">
-    @foreach(App\Topic::all()->take(4) as $topic)
+    @foreach(App\Topic::getHotTopics()->take(8) as $topic)
         <div class="clearfix sideBar_sectionItem">
             <img class="img-rounded float-left space-right avatar-img"
                  src="{{ DImage($topic->avatar_img_id, 40, 40) }}" alt="{{ $topic->name }}">

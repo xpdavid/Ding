@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Notification;
 use Auth;
+use App\Visitor;
 use App\Reply;
 use App\Answer;
 use App\Question;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Symfony\Component\Yaml\Tests\A;
 
 class AnswerController extends Controller
 {
@@ -36,16 +36,17 @@ class AnswerController extends Controller
     public function show($question_id, $answer_id, Request $request) {
         $question = Question::findOrFail($question_id);
         $answer = Answer::findOrFail($answer_id);
+
+        // an answer has been visited
+        Visitor::visit($answer);
+
         if ($answer->question->id != $question->id) {
             // the answer doesn't belong to the question
             return redirect(action('QuestionController@show', $question_id));
         }
 
         // generate also_interest questions
-        $also_interest = [];
-        foreach ($question->topics->shuffle()->take(3) as $topic) {
-            $also_interest = array_merge($also_interest, $topic->questions->take(2)->all());
-        }
+        $also_interest = $question->alsoInterestQuestions;
 
         // determine whether to highlight a reply
         $highlight = null;
@@ -88,6 +89,7 @@ class AnswerController extends Controller
 
         $results = [];
         foreach ($answers->forPage($page, $itemInPage) as $answer) {
+
             $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
             $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
             array_push($results, [

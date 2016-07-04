@@ -234,6 +234,7 @@ function navbar_serach_box_autocomplate() {
         bottomElement : {
             html : "<li class='nav_search_box_hint' onclick='navbar_ask_question_detail()'>I don't find my desired answer, keep asking</li>",
         },
+        noResultHide : false,
         items: 8,
     });
 }

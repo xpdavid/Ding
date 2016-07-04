@@ -352,7 +352,7 @@
             <div class="sideBar_sectionItem">
                 <h5>Answer Status</h5>
                 <p class="font-greyLight">Created at {{ $answer->updated_at }}</p>
-                <p class="font-greyLight">Belonging Question has being view 324 times</p>
+                <p class="font-greyLight">Belonging Question has being view <strong>{{ $answer->hit->total }}</strong> times</p>
             </div>
         </div>
     </div>

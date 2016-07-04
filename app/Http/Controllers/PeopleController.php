@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Image;
-use App\User;
-use App\EducationExp;
+use Log;
+use File;
+use Hash;
+use IImage;
+use App\Visitor;
 use App\Job;
+use App\User;
 use App\Topic;
+use App\Image;
+use App\EducationExp;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use IImage;
-use File;
-use Hash;
-use Log;
 
 class PeopleController extends Controller
 {
@@ -34,6 +35,9 @@ class PeopleController extends Controller
     public function show($url_name)
     {
         $user = User::findUrlName($url_name);
+
+        // Visitor count
+        Visitor::visit($user);
 
         return view('profile.index', compact('user'));
     }

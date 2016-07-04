@@ -29,7 +29,7 @@
 
 <div class="userHome_sideBarSection noborder">
     <div class="userHome_sideBarSectionInner">
-        This page has been viewed <span class="userHome_number"> 32 </span> times.
+        This page has been viewed <span class="userHome_number"> {{ $user->hit->total }} </span> times.
     </div>
 </div>
 

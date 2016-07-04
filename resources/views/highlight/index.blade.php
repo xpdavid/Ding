@@ -2,7 +2,7 @@
 
 @section('left')
     <div class="clearfix">
-        <a href="#" class="float-left"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>Highlights</a>
+        <a href="#" class="float-left"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>Editor Recommendation</a>
         <a href="/highlight/recommendations" class="float-right">More &gt; &gt;</a>
     </div>
     <hr class="small_hr">
@@ -49,6 +49,7 @@
     </div>
 
     <br>
+    @include('partials._show_comment_conversation')
 @endsection
 
 
