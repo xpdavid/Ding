@@ -165,6 +165,7 @@ class AnswerController extends Controller
             'user_name' => $answer->owner->name,
             'user_id' => $answer->owner->id,
             'user_bio' => $answer->owner->bio,
+            'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
             'answer' => $answer->answer,
             'created_at' => $answer->createdAtHumanReadable,
             'votes' => $answer->netVotes,

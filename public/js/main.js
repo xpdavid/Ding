@@ -239,6 +239,20 @@ function highlight(elementID, rollback) {
  * @param keyword
  */
 function highlight_keyword(text, keyword) {
+    keyword = keyword.replace('$', '\\$');
+    keyword = keyword.replace('(', '\\(');
+    keyword = keyword.replace(')', '\\)');
+    keyword = keyword.replace('*', '\\*');
+    keyword = keyword.replace('+', '\\+');
+    keyword = keyword.replace('.', '\\.');
+    keyword = keyword.replace('[', '\\[');
+    keyword = keyword.replace(']', '\\]');
+    keyword = keyword.replace('?', '\\?');
+    keyword = keyword.replace('\\', '\\');
+    keyword = keyword.replace('^', '\\^');
+    keyword = keyword.replace('{', '\\{');
+    keyword = keyword.replace('}', '\\}');
+    keyword = keyword.replace('|', '\\|');
     var reg = new RegExp(keyword, 'gi');
     return text.replace(reg, function(str) {return '<em>'+str+'</em>'});
 }
@@ -328,7 +342,7 @@ function topic_autocomplete(id) {
 /**
  * Bind the upload button with event
  */
-function cropImage(img_id) {
+function cropImage(img_id, aspectRatio, callback) {
     // Import image
     var $inputImage = $('#' + img_id + '_upload');
     var $image = $('#' + img_id);
@@ -336,7 +350,7 @@ function cropImage(img_id) {
     var blobURL;
 
     $image.cropper({
-        aspectRatio: 1 / 1,
+        aspectRatio: aspectRatio,
         crop: function(e) {
             // Output the result data for cropping image.
 
@@ -413,14 +427,18 @@ function cropImage(img_id) {
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function () {
-                    swal({
-                        title : "Upload Success",
-                        text : "The picture has changed!",
-                        type : "success"
-                    }, function() {
-                        window.location.reload();
-                    });
+                success: function (results) {
+                    if (callback && typeof callback == "function") {
+                        callback(results);
+                    } else {
+                        swal({
+                            title : "Upload Success",
+                            text : "The picture has uploaded!",
+                            type : "success"
+                        }, function() {
+                            window.location.reload();
+                        });
+                    }
                 },
                 error: function () {
                     swal("Upload Error", "Sever post a question :(", "error");
@@ -431,6 +449,15 @@ function cropImage(img_id) {
         });
 
     });
+}
+
+/**
+ * Set all <img> tag under element `id` with `img-responsive`
+ *
+ * @param id
+ */
+function imgResponsiveIn(id) {
+    $('#' + id).find('img').addClass('img-responsive');
 }
 
 

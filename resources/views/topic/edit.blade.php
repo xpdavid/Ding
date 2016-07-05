@@ -196,7 +196,10 @@
             width : '300px'
         });
 
-        cropImage('crop_img');
+        // open tooltipc option
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+
+        cropImage('crop_img', 1 / 1);
     });
 </script>
 @endsection

@@ -24,6 +24,9 @@
     {{--select2 supporting file--}}
     {!! Html::style('css/select2.css') !!}
 
+    {{--cropper supporting file--}}
+    {!! Html::style('css/cropper.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
@@ -69,6 +72,10 @@
 {{--select2 supporting file--}}
 {!! Html::script('js/select2.full.js') !!}
 
+{{--cropper supporting file--}}
+{!! Html::script('js/cropper.js') !!}
+{!! Html::script('js/canvas-to-blob.js') !!}
+
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
 {!! Html::script('js/navbar.js') !!}
@@ -79,6 +86,9 @@
 
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
+
+{{--tinymce support}}--}}
+{!! Html::script('js/tinymce/tinymce.min.js') !!}
 
 {{--question javascript support--}}
 {!! Html::script('js/question.js') !!}

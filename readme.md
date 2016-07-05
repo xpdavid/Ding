@@ -46,12 +46,13 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 7. handlebars (javascript template engine) [Index](http://handlebarsjs.com)
 8. intervention\mage (laravel image system) [Index](http://image.intervention.io) (Please run `composer update` to get this plugin)
 9. `cropper.js` (crop image jquery plugin) [Github](https://github.com/fengyuanchen/cropper/blob/master/README.md)
+10. `tinyMCE` (wysiwyg html editor) [Index](https://www.tinymce.com/)
 
 
 ### There are several helper function you can use in the main.css file
 
-- `<body>` : this element is defined `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
-- `html: width: 100%; width: 100vw;` : to prevent scrollbar from repositioning web page
+- `<body>` :  the overall color is set to '#666', the fond size is set to `15px`
+- `html: width: 100%; width: 100vw;` : to prevent scrollbar from repositioning web page, this element is defined `padding-top: 60px` because the menu bar is fixed at top.
 - `body: font` : set font to `google font api font: 'Open Sans', sans-serif`
 - `.glyphicon` : this class is from `bootstrap` css and we override it as `margin-right:5px` because we always use put a icon in front of text.
 - `.noneDisplay ` : this class is to set display to `none`, pretty useful together with jquery toggle function

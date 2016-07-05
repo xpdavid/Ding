@@ -1,13 +1,20 @@
 body {
-  padding-top: 60px;
-  color: #666; }
+  color: #666;
+  font-size: 15px; }
 
 html {
-  width: 100%;
-  width: 100vw; }
+  padding-top: 60px;
+  overflow-y: scroll !important; }
 
 body {
   font-family: 'helvetica' !important; }
+
+body.modal-open {
+  overflow-y: auto !important;
+  padding-right: 0 !important; }
+
+.modal-scrollbar-measure {
+  overflow: hidden; }
 
 .glyphicon {
   margin-right: 5px; }
@@ -102,6 +109,12 @@ body {
 
 .marginAuto {
   margin: 0 auto !important; }
+
+.modal {
+  z-index: 100000; }
+
+.sweet-alert {
+  z-index: 100001; }
 
 .navbar_backgroud {
   background: #222;
@@ -812,6 +825,9 @@ body {
   padding-left: 55px;
   border-radius: 5px;
   transition: background-color 800ms linear; }
+
+.answer_content {
+  padding-top: 7px; }
 
 .answer_voting {
   clear: left;

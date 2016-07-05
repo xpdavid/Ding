@@ -56,7 +56,7 @@ Route::get('/topic/{topic_id}/edit', 'TopicController@edit');
 Route::post('/topic/{topic_id}/update', 'TopicController@update');
 Route::get('/topic/{topic_id}/organization', 'TopicController@organization');
 Route::post('/topic/questions', 'TopicController@getQuestions');
-Route::post('/topic/upload', 'TopicController@upload');
+Route::post('/topic/upload', 'UploadController@uploadTopicImg');
 
 // for bookmark
 Route::get('/people/{url_name}/bookmark', [ 'as' => 'people.bookmark', 'uses' => 'BookmarkController@index']);
@@ -82,7 +82,10 @@ Route::post('/people/{url_name}/follow-follower', 'PeopleController@postFollowFo
 Route::post('/people/{url_name}/updates', 'PeopleController@postUpdates');
 Route::post('/people/update', 'PeopleController@update');
 Route::post('/people/delete', 'PeopleController@destroy');
-Route::post('/people/upload', 'PeopleController@upload');
+Route::post('/people/upload', 'UploadController@uploadProfileImg');
+
+// for user upload image
+Route::post('/user/upload', 'UploadController@uploadUserImage');
 
 
 // for message controller

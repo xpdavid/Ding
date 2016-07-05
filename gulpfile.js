@@ -40,6 +40,9 @@ elixir(function(mix) {
     mix.copy(cropperPath + '/cropper.js', 'public/js');
     // for cropper canvas to blob support
     mix.copy(cropperPath + '/canvas-to-blob.js', 'public/js');
+
+    // for tiny mce
+    mix.copy(jsPath + '/tinymce', 'public/js/tinymce');
     
     // for project css file
     mix.sass('app.scss');

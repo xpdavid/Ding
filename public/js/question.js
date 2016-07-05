@@ -278,8 +278,14 @@ function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_i
             var data = {
                 answers : results
             };
+
             // append more answers to the box
             $('#' + base_id).append(template(data));
+
+            // add responsive class to image
+            imgResponsiveIn(base_id);
+
+            
             if (button_id) {
                 $('#' + button_id).prop('disabled', false);
             }
@@ -310,21 +316,34 @@ function getMore(base_id, question_id, sorted, button_id, callback) {
  * @param question_id
  * @returns {boolean}
  */
+var questionDetailPageTimer = null;
 function saveAnswer(base_id, question_id) {
+    // form validation
+    if (tinyMCE.activeEditor.getContent({format : 'text'}).length < 2) {
+        clearTimeout(questionDetailPageTimer);
+        // last for 2 second
+        $('#' + base_id + '_error').show();
+        questionDetailPageTimer = setTimeout(function() {
+            $('#' + base_id + '_error').fadeOut();
+        }, 2000);
+        return ;
+    }
+    
     $.post('/question/' + question_id + '/answer', {
-        user_answer : $('#' + base_id + '_input').val()
+        user_answer : tinyMCE.activeEditor.getContent({format : 'raw'})
     }, function(results) {
         if (results.status) {
             var template = Handlebars.templates['_answer_item.html'];
             var data = {
                 answers : [results]
-            }
+            };
             $('#' + base_id).append(template(data));
-            $('#' + base_id + '_input').val("");
+            // clear content
+            tinymce.activeEditor.execCommand('mceCleanup');
         } else {
             swal("Error", "Sever post a question :(", "error");
         }
-    })
+    });
 
     return false;
 }
@@ -762,6 +781,25 @@ function invite_user(button, user_id, question_id) {
             swal('Invitation Fail', data.error, 'error');
         }
     })
+}
+
+/**
+ * Render textarea to tinymce textarea
+ * @param id
+ */
+function renderTextarea(id) {
+    // init
+    tinymce.init({
+        menubar : false,
+        selector: '#question_answers_input',
+        plugins: 'code advlist autolink link image table media codesample fullscreen',
+        toolbar: 'bold italic underline | blockquote codesample bullist, numlist | link image media | fullscreen',
+    });
+
+    // bind fullscreen event hide nav bar
+    tinymce.activeEditor.on('FullscreenStateChanged', function(e) {
+        console.log(e);
+    });
 }
 
 

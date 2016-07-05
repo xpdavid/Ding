@@ -20,7 +20,6 @@
     <script type="text/javascript">
         $(function() {
             genericGet('home');
-            userHome_vote_button_trigger();
         });
     </script>
 @endsection

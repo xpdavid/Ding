@@ -406,11 +406,9 @@
                 genericUserProfileEditToggleSetting('#user_specialization');
 
                 // open tooltipc option
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip({container: 'body'})
-                })
+                $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
-                cropImage('crop_img', 'crop_img_upload');
+                cropImage('crop_img', 1 / 1);
 
             } catch (e) {
                 console.log('hover event binding fail');

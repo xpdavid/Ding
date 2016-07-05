@@ -1,15 +1,29 @@
 body {
-  padding-top: 60px;
   color: #666;
+  font-size: 15px;
 }
 
 html {
-  width: 100%; width: 100vw;
+  padding-top: 60px;
+  overflow-y: scroll !important;
 }
 
 body {
   font-family: 'helvetica' !important;
 }
+
+// fix bootstrap modal shifting
+body.modal-open {
+  overflow-y: auto !important;
+  padding-right: 0 !important;
+}
+
+.modal-scrollbar-measure {
+  overflow: hidden;
+}
+
+
+// end of fix
 
 .glyphicon {
   margin-right: 5px;
@@ -134,6 +148,14 @@ body {
 
 .marginAuto {
   margin: 0 auto !important;
+}
+
+.modal {
+  z-index: 100000;
+}
+
+.sweet-alert {
+  z-index: 100001;
 }
 
 .navbar_backgroud {
@@ -1012,6 +1034,10 @@ body {
   -o-transition: background-color 800ms linear;
   -ms-transition: background-color 800ms linear;
   transition: background-color 800ms linear;
+}
+
+.answer_content {
+  padding-top: 7px;
 }
 
 .answer_voting {
