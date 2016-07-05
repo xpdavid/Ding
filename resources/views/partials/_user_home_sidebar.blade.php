@@ -27,6 +27,32 @@
     </div>
 </div>
 
+@if (Auth::user()->id != $user->id)
+    <div class="userHome_sideBarSection">
+        <div class="userHome_sideBarSectionInner">
+            <div>
+                @if($user->isBlockedBy(Auth::user()))
+                    <form action="/settings/update" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="cancel_block" value="{{ $user->id }}">
+                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Cancel block</button>
+                    </form>
+                @else
+                    <form action="/settings/update" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="block_users[]" value="{{ $user->id }}">
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-ban-circle"></span>Block the user</button>
+                    </form>
+                @endif
+
+            </div>
+            <div class="margin-top">
+                <button type="submit" class="btn btn-default"><span class="glyphicon  glyphicon-remove-circle"></span>Report the user</button>
+            </div>
+        </div>
+    </div>
+@endif
+
 <div class="userHome_sideBarSection noborder">
     <div class="userHome_sideBarSectionInner">
         This page has been viewed <span class="userHome_number"> {{ $user->hit->total }} </span> times.

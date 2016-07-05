@@ -118,12 +118,14 @@ class PeopleController extends Controller
      * Show all user answers
      *
      * @param $url_name
+     * @param $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function answer($url_name) {
+    public function answer($url_name, Request $request) {
         $user = User::findUrlName($url_name);
+        $topic = $request->has('topic') ? $request->get('topic') : '';
 
-        return view('profile.answer', compact('user'));
+        return view('profile.answer', compact('user', 'topic'));
     }
 
     /**
@@ -271,9 +273,14 @@ class PeopleController extends Controller
     public function postAnswer($url_name, Request $request) {
         $user = User::findUrlName($url_name);
         $answers = $user->answers;
+        // check if display answers under specific topics
+        if ($request->has('topic')) {
+            $answers = $user->answersInTopic($request->get('topic'));
+        }
+
         // get page parameters
-        $page = $request->exists('page') ? $request->get('page') : 1;
-        $itemInPage = $request->exists('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+        $page = $request->has('page') ? $request->get('page') : 1;
+        $itemInPage = $request->has('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
 
         $groupByQuestion = $answers->groupBy(function($item, $key) {
             return $item->question->id;

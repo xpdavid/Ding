@@ -4,9 +4,14 @@
     @include('partials._profile_card', ['user' => $user])
 
 
-    <div class="userHome_layoutDiv">
+    <div class="userHome_layoutDiv" id="answer" data-topic="{{ $topic }}">
         <div class="userHome_layoutDivHead">
-            <a href="/people/{{$user->url_name}}" class="float-left">{{ $user->name }}</a> 's Answers
+            @if ($topic)
+                <a href="/people/{{$user->url_name}}" class="float-left">{{ $user->name }}</a> 's Answers under topic:
+                <a href="/topic/{{ $topic }}">{{ App\Topic::findOrFail($topic)->name }}</a>
+            @else
+                <a href="/people/{{$user->url_name}}" class="float-left">{{ $user->name }}</a> 's Answers
+            @endif
             <a href="/people/{{$user->url_name}}" class="float-right">&lt;&lt; Back to the index</a>
         </div>
         <div class="userHome_layoutDivContent profile_bottom_content" id="answer_content">

@@ -94,7 +94,8 @@
 
     <div class="userHome_pointSummary clearfix">
         <div class="float-left margin-top">
-            Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="userHome_number">10</span> Vote, <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <span class="userHome_number">10</span> Thanks
+            Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>{{ $user->totalVotes }}</strong> Vote,
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <strong>{{ $user->totalLikes }}</strong> Likes
         </div>
         @if(($user->id != Auth::user()->id) && ($user->canSubscribedBy(Auth::user())))
             <div class="float-right">

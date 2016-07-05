@@ -168,7 +168,7 @@ body {
   height: 25px !important;
 }
 
-.navbar_clickable {
+.clickable {
   cursor: pointer;
 }
 
@@ -309,6 +309,7 @@ body {
   border: solid #ddd;
   border-width: 0 1px;
   background-color: #f7f7f7;
+  margin-left: -1px;
   box-shadow: 0 2px 2px #f0f0f0 inset;
 }
 
@@ -1176,6 +1177,14 @@ body {
   font-size: 18px;
 }
 
+.topic_description_line {
+  overflow: hidden;
+  max-width: 140px;
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 // topic with specific id css
 // inheriting partially from CSS for topics.html
 .topic_item {
@@ -1322,6 +1331,13 @@ body {
 
 .profile_bottom_content {
   padding-top: 20px;
+  padding-bottom: 15px;
+}
+
+.profile_right_arrow {
+  position: absolute;
+  top : 29%;
+  right : 10px;
 }
 
 // crop image

@@ -128,7 +128,7 @@ body {
   width: 25px !important;
   height: 25px !important; }
 
-.navbar_clickable {
+.clickable {
   cursor: pointer; }
 
 .navbar_active {
@@ -239,6 +239,7 @@ body {
   border: solid #ddd;
   border-width: 0 1px;
   background-color: #f7f7f7;
+  margin-left: -1px;
   box-shadow: 0 2px 2px #f0f0f0 inset; }
 
 .userHome_profileNavbar a {
@@ -939,6 +940,13 @@ body {
   width: 100%;
   font-size: 18px; }
 
+.topic_description_line {
+  overflow: hidden;
+  max-width: 140px;
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis; }
+
 .topic_item {
   margin-top: 15px !important; }
 
@@ -1049,7 +1057,13 @@ body {
   top: 38px; }
 
 .profile_bottom_content {
-  padding-top: 20px; }
+  padding-top: 20px;
+  padding-bottom: 15px; }
+
+.profile_right_arrow {
+  position: absolute;
+  top: 29%;
+  right: 10px; }
 
 .crop_img_bound {
   max-width: 100%;

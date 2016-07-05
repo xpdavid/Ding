@@ -47,6 +47,7 @@ class SettingsController extends Controller
     /**
      * get blocking user setting
      *
+     * @param $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getBlocking() {

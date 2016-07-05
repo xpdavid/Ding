@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Block User</label>
                         <div class="col-sm-5">
-                            {!! Form::select('block_users[]', [], null, ['class' => 'form-control', 'id' => 'block_users', 'multiple']) !!}
+                            {!! Form::select('block_users[]', [], [], ['class' => 'form-control', 'id' => 'block_users', 'multiple']) !!}
                         </div>
                         <div class="col-sm-5">
                             <div class="userSetting_info">

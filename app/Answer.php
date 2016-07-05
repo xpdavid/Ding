@@ -140,4 +140,18 @@ class Answer extends Model
         }
 
     }
+
+    /**
+     * Count answers(collection) votes
+     *
+     * @param $answers
+     * @return int
+     */
+    public static function countVotes($answers) {
+        $count = 0;
+        foreach ($answers as $answer) {
+            $count += $answer->netVotes;
+        }
+        return $count;
+    }
 }

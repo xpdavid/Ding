@@ -385,6 +385,34 @@ class User extends Authenticatable
     }
 
     /**
+     * Count total votes in topic
+     *
+     * @param $topic_id
+     * @return int
+     */
+    public function votesInTopic($topic_id) {
+        return Answer::countVotes($this->answersInTopic($topic_id));
+    }
+
+
+    /**
+     * Get total votes of user's answers
+     *
+     * @return int
+     */
+    public function getTotalVotesAttribute() {
+        return Answer::countVotes($this->answers);
+    }
+
+    /**
+     * Get total likes of user's replies
+     *
+     */
+    public function getTotalLikesAttribute() {
+        return Reply::countLikes($this->replies);
+    }
+
+    /**
      * Filter questions collection base on interest
      *
      * @param $questions
@@ -448,6 +476,7 @@ class User extends Authenticatable
      */
     public function canSendMessageTo($user) {
         if (in_array($this->id, $user->blockings->lists('id')->all())) {
+            // being blocked
             return false;
         } else if ($this->settings->receiving_messages == 1) {
             // Only people I subscribe to can messages me
@@ -467,8 +496,10 @@ class User extends Authenticatable
      */
     public function canBeInvitedBy($user) {
         if ($user->id == $this->id) return true;
-
-        if ($this->settings->receiving_invitations == 1) {
+        if (in_array($user->id, $this->blockings->lists('id')->all())) {
+            // being blocked
+            return false;
+        } else if ($this->settings->receiving_invitations == 1) {
             if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
                 return false;
             }
@@ -501,8 +532,10 @@ class User extends Authenticatable
      */
     public function canReplyBy($user) {
         if ($user->id == $this->id) return true;
-
-        if ($this->settings->receiving_replies == 0) {
+        if (in_array($user->id, $this->blockings->lists('id')->all())) {
+            // being blocked
+            return false;
+        } else if ($this->settings->receiving_replies == 0) {
             return false;
         } else if ($this->settings->receiving_replies == 1) {
             if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
@@ -539,8 +572,10 @@ class User extends Authenticatable
      */
     public function canReplyVoteBy($user) {
         if ($user->id == $this->id) return true;
-
-        if ($this->settings->receiving_reply_votings == 0) {
+        if (in_array($user->id, $this->blockings->lists('id')->all())) {
+            // being blocked
+            return false;
+        } else if ($this->settings->receiving_reply_votings == 0) {
             return false;
         } else if ($this->settings->receiving_reply_votings == 1) {
             if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
@@ -557,7 +592,10 @@ class User extends Authenticatable
      * @return bool
      */
     public function canSubscribedBy($user) {
-        if ($this->settings->receiving_subscriptions == 0) {
+        if (in_array($user->id, $this->blockings->lists('id')->all())) {
+            // being blocked
+            return false;
+        } else if ($this->settings->receiving_subscriptions == 0) {
             return false;
         } else if ($this->settings->receiving_subscriptions == 1) {
             if (!in_array($user->id, $this->subscribe->users->lists('id')->all())) {
@@ -565,6 +603,16 @@ class User extends Authenticatable
             }
         }
         return true;
+    }
+
+    /**
+     * Check whether user is blocked by $user
+     *
+     * @param $user
+     * @return bool
+     */
+    public function isBlockedBy($user) {
+        return in_array($this->id, $user->blockings->lists('id')->all());
     }
 
 }

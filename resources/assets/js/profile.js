@@ -630,6 +630,7 @@ function showUserAnswerPage(base_id, itemInPage, url_name, page, append, callbac
     $.post('/people/' + url_name + '/answer', {
         page : page,
         itemInPage : itemInPage,
+        topic : $('#' + base_id).data('topic')
     }, function(results) {
         if (results.data.length) {
 
@@ -816,5 +817,21 @@ function cancelHideTopic(event, topic_id) {
         }, function(data) {
             window.location.replace('/settings/blocking');
         });
+    });
+}
+
+
+/**
+ * when hover, show the arrow
+ *
+ * @param prefix
+ * @param arrow_class
+ */
+function hoverShowArrow(prefix, arrow_class) {
+    $('div[id^=' + prefix + ']').hover(function() {
+        console.log(this);
+        $(this).find('.' + arrow_class).show();
+    }, function() {
+        $(this).find('.' + arrow_class).hide();
     });
 }

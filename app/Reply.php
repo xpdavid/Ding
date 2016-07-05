@@ -61,6 +61,21 @@ class Reply extends Model
         return $this->hasMany('App\Reply', 'reply_to_reply_id');
     }
 
+
+    /**
+     * Count likes of replies (collection)
+     *
+     * @param $replies
+     * @return int
+     */
+    public static function countLikes($replies) {
+        $count = 0;
+        foreach ($replies as $reply) {
+            $count += $reply->vote_up_users()->count();
+        }
+        return $count;
+    }
+
     /**
      * Generate highlight parameters
      *
