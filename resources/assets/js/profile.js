@@ -632,7 +632,7 @@ function showUserAnswerPage(base_id, itemInPage, url_name, page, append, callbac
         itemInPage : itemInPage,
     }, function(results) {
         if (results.data.length) {
-            
+
             $.each(results.data, function(index, item) {
                 var template_question = Handlebars.templates['_topic_question_item.html'];
                 // compile question first
@@ -685,6 +685,87 @@ function profileGetMoreAnswer(url_name) {
         }
     });
     profileGetMoreAnswer_page++;
+}
+
+
+var profileUplodatesDate = null;
+function getMoreUpdates(url_name) {
+    $.post('/people/' + url_name + '/updates', {
+        startDate : profileUplodatesDate
+    }, function(results) {
+       if (results.status) {
+           profileUplodatesDate = results.end;
+           var $area = $('#updates_content');
+           $.each(results.data, function(index, item) {
+               var $outer = $('<div></div>');
+               var $head = $('<div></div>');
+               var $time = $('<div></div>');
+               $time.addClass('float-right');
+               $time.html(item.time);
+               $head.addClass('font-greyLight');
+               $head.append($time[0]);
+               // determine the updates type. (refer to people controller)
+               switch (item.type) {
+                   case 1:
+                       $head.prepend('Post a question');
+                       var template = Handlebars.templates['_highlight_question_short.html'];
+                       $outer.html(template({
+                           questions : [item]
+                       }));
+                       $outer.prepend($head[0]);
+                       break;
+                   case 2:
+                       $head.prepend('Subscribe to a question');
+                       var template = Handlebars.templates['_highlight_question_short.html'];
+                       $outer.html(template({
+                           questions : [item]
+                       }));
+                       $outer.prepend($head[0]);
+                       break;
+                   case 3:
+                       $head.prepend('Post an answer');
+                       var template = Handlebars.templates['_userCenter_home_item.html'];
+                       $outer.html(template({
+                           questions : [item]
+                       }));
+                       $outer.prepend($head[0]);
+                       break;
+                   case 4:
+                       $head.prepend('Vote up an answer');
+                       var template = Handlebars.templates['_userCenter_home_item.html'];
+                       $outer.html(template({
+                           questions : [item]
+                       }));
+                       $outer.prepend($head[0]);
+                       break;
+                   case 5:
+                       $head.prepend('Subscribe to a topic');
+                       var $img = $('<img>');
+                       var $div = $('<div></div>');
+                       var $a = $('<a></a>');
+                       $div.addClass('margin-top');
+                       $img.addClass('img-rounded');
+                       $img.addClass('space-right');
+                       $img.prop('src', item.topic_pic);
+                       $a.html(item.name);
+                       $a.prop('href', '/topic/' + item.id);
+                       $div.append($img[0]);
+                       $div.append($a[0]);
+
+                       var $hr = $('<hr>');
+                       $hr.addClass('small_hrLight');
+
+                       $outer.prepend($head[0]);
+                       $outer.append($div[0]);
+                       $outer.append($hr[0]);
+                       break;
+               }
+               $area.append($outer[0]);
+           });
+       } else {
+           $('#updates_button').remove();
+       }
+    });
 }
 
 /**

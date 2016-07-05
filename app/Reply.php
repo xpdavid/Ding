@@ -31,7 +31,7 @@ class Reply extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function vote_up_users() {
-        return $this->belongsToMany('App\User', 'user_vote_up_reply');
+        return $this->belongsToMany('App\User', 'user_vote_up_reply')->withTimestamps();
     }
 
     /**

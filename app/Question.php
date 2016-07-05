@@ -68,7 +68,7 @@ class Question extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function topics() {
-        return $this->belongsToMany('App\Topic');
+        return $this->belongsToMany('App\Topic')->withTimestamps();
     }
 
     /**
@@ -77,7 +77,7 @@ class Question extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subscribers() {
-        return $this->belongsToMany('App\Subscribe', 'subscribe_question');
+        return $this->belongsToMany('App\Subscribe', 'subscribe_question')->withTimestamps();
     }
 
     /**
@@ -86,7 +86,7 @@ class Question extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function bookmarks() {
-        return $this->belongsToMany('App\Bookmark');
+        return $this->belongsToMany('App\Bookmark')->withTimestamps();
     }
 
     /**

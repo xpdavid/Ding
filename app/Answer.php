@@ -58,7 +58,7 @@ class Answer extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function vote_up_users() {
-        return $this->belongsToMany('App\User', 'user_vote_up_answer');
+        return $this->belongsToMany('App\User', 'user_vote_up_answer')->withTimestamps();
     }
 
     /**
@@ -67,7 +67,7 @@ class Answer extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function vote_down_users() {
-        return $this->belongsToMany('App\User', 'user_vote_down_answer');
+        return $this->belongsToMany('App\User', 'user_vote_down_answer')->withTimestamps();
     }
 
     /**
@@ -85,7 +85,7 @@ class Answer extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function bookmarks() {
-        return $this->belongsToMany('App\Bookmark', 'bookmark_answer');
+        return $this->belongsToMany('App\Bookmark', 'bookmark_answer')->withTimestamps();
     }
 
     /**

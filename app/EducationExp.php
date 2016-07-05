@@ -30,7 +30,7 @@ class EducationExp extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function students() {
-        return $this->belongsToMany('App\User', 'user_educationExp', 'user_id', 'educationExp_id');
+        return $this->belongsToMany('App\User', 'user_educationExp', 'user_id', 'educationExp_id')->withTimestamps();
     }
 
 

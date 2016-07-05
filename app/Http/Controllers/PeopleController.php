@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
+use Carbon\Carbon;
 use Log;
 use File;
 use Hash;
@@ -113,6 +115,117 @@ class PeopleController extends Controller
     }
 
     /**
+     * Show all user answers
+     *
+     * @param $url_name
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function answer($url_name) {
+        $user = User::findUrlName($url_name);
+
+        return view('profile.answer', compact('user'));
+    }
+
+    /**
+     * Post method to get user updates
+     */
+    public function postUpdates($url_name, Request $request) {
+        $user = User::findUrlName($url_name);
+        $auth_user = Auth::user();
+
+        $startDate = Carbon::now();
+        if ($request->has('startDate')) {
+            $startDate = Carbon::createFromFormat('Y-m-d', $request->get('startDate'));
+        }
+
+        $updates = $user->generateUpdate($startDate);
+        if ($updates['data']->count() == 0) {
+            dd(0);
+            return [
+                'status' => false
+            ];
+        } else {
+            $results = [];
+            foreach ($updates['data'] as $item) {
+                switch ($item['type']) {
+                    case 1:
+                    case 2:
+                        $question = Question::findOrFail($item['id']);
+                        $time = Carbon::parse($item['created_at']);
+                        array_push($results, [
+                            'id' => $question->id,
+                            'title' => $question->title,
+                            'time' => $time->diffForHumans(),
+                            'type' => $item['type']
+                        ]);
+                        break;
+                    case 3:
+                    case 4:
+                        $answer = Answer::findOrFail($item['id']);
+                        $time = Carbon::parse($item['created_at']);
+
+                        // generate topics
+                        $topics = [];
+                        foreach ($answer->question->topics as $topic) {
+                            array_push($topics, [
+                                'name' => $topic->name,
+                                'id' => $topic->id
+                            ]);
+                        }
+
+                        $vote_up_class = $answer->vote_up_users->contains($auth_user->id) ? 'active' : '';
+                        $vote_down_class = $answer->vote_down_users->contains($auth_user->id) ? 'active' : '';
+                        $answer_arr = [
+                            'id' => $answer->id,
+                            'owner' => [
+                                'name' => $answer->owner->name,
+                                'bio' => $answer->owner->bio,
+                                'url_name' => $answer->owner->url_name,
+                            ],
+                            'answer' => $answer->answer,
+                            'netVotes' => $answer->netVotes,
+                            'numComment' => $answer->replies()->count(),
+                            'vote_up_class' => $vote_up_class,
+                            'vote_down_class' => $vote_down_class,
+                            'canVote' => $answer->owner->canAnswerVoteBy($auth_user)
+                        ];
+
+
+                        array_push($results, [
+                            'id' => $answer->question->id,
+                            'topics' => $topics,
+                            'topic_pic' => DImage($answer->question->topics->first()->avatar_img_id, 40, 40),
+                            'answer' => $answer_arr,
+                            'title' => $answer->question->title,
+                            'subscribed' => $auth_user->subscribe->checkHasSubscribed($answer->question->id, 'question'),
+                            'time' => $time->diffForHumans(),
+                            'type' => $item['type']
+                        ]);
+                        break;
+                    case 5:
+                        $topic = Topic::findOrFail($item['id']);
+                        $time = Carbon::parse($item['created_at']);
+
+                        array_push($results, [
+                            'id' => $topic->id,
+                            'name' => $topic->name,
+                            'topic_pic' => DImage($topic->avatar_img_id, 25, 25),
+                            'time' => $time->diffForHumans(),
+                            'type' => 5,
+                        ]);
+                        break;
+                }
+            }
+
+            return [
+                'status' => true,
+                'data' => $results,
+                'end' => $updates['end']->subDay()->toDateString()
+            ];
+        }
+    }
+
+    /**
      * Answer ajax call to get user's questions
      *
      * @param $url_name
@@ -206,18 +319,6 @@ class PeopleController extends Controller
             'data' => $results,
             'pages' => $pages
         ];
-    }
-
-    /**
-     * Show all user answers
-     *
-     * @param $url_name
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function answer($url_name) {
-        $user = User::findUrlName($url_name);
-
-        return view('profile.answer', compact('user'));
     }
 
     /**

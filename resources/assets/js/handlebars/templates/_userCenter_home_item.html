@@ -8,7 +8,7 @@
             {{#if answer.canVote}}
                 <button type="button"
                         class="btn btn-primary questions_sideButton"
-                        onclick="userHome_vote_button_trigger(this, 'vote_buttons_answer_{{answer.id}}')"
+                        onclick="vote_button_trigger(this, 'vote_buttons_answer_{{answer.id}}')"
                 >
                     {{answer.netVotes}}
                 </button>

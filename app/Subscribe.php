@@ -22,7 +22,7 @@ class Subscribe extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function questions() {
-        return $this->belongsToMany('App\Question', 'subscribe_question');
+        return $this->belongsToMany('App\Question', 'subscribe_question')->withTimestamps();
     }
 
     /**
@@ -31,7 +31,7 @@ class Subscribe extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function topics() {
-        return $this->belongsToMany('App\Topic', 'subscribe_topic');
+        return $this->belongsToMany('App\Topic', 'subscribe_topic')->withTimestamps();
     }
 
     /**
@@ -40,11 +40,11 @@ class Subscribe extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users() {
-        return $this->belongsToMany('App\User', 'subscribe_user');
+        return $this->belongsToMany('App\User', 'subscribe_user')->withTimestamps();
     }
 
     public function bookmarks() {
-        return $this->belongsToMany('App\Bookmark', 'subscribe_bookmark');
+        return $this->belongsToMany('App\Bookmark', 'subscribe_bookmark')->withTimestamps();
     }
 
     /**

@@ -79,6 +79,7 @@ Route::get('/people/{url_name}/answer', [ 'as' => 'people.answer', 'uses' => 'Pe
 Route::post('/people/{url_name}/question', 'PeopleController@postQuestion');
 Route::post('/people/{url_name}/answer', 'PeopleController@postAnswer');
 Route::post('/people/{url_name}/follow-follower', 'PeopleController@postFollowFollower');
+Route::post('/people/{url_name}/updates', 'PeopleController@postUpdates');
 Route::post('/people/update', 'PeopleController@update');
 Route::post('/people/delete', 'PeopleController@destroy');
 Route::post('/people/upload', 'PeopleController@upload');

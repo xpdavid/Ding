@@ -43,7 +43,7 @@ class Topic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function questions() {
-        return $this->belongsToMany('App\Question');
+        return $this->belongsToMany('App\Question')->withTimestamps();
     }
 
     /**
@@ -130,7 +130,7 @@ class Topic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function specialists() {
-        return $this->belongsToMany('App\User', 'user_specialization', 'topic_id', 'user_id');
+        return $this->belongsToMany('App\User', 'user_specialization', 'topic_id', 'user_id')->withTimestamps();
     }
     
 
@@ -140,7 +140,7 @@ class Topic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function parent_topics() {
-        return $this->belongsToMany('App\Topic', 'topic_subtopic', 'subtopic_id', 'parent_topic_id');
+        return $this->belongsToMany('App\Topic', 'topic_subtopic', 'subtopic_id', 'parent_topic_id')->withTimestamps();
     }
 
     /**
@@ -149,7 +149,7 @@ class Topic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subtopics() {
-        return $this->belongsToMany('App\Topic', 'topic_subtopic', 'parent_topic_id', 'subtopic_id');
+        return $this->belongsToMany('App\Topic', 'topic_subtopic', 'parent_topic_id', 'subtopic_id')->withTimestamps();
     }
 
     /**
@@ -158,7 +158,7 @@ class Topic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subscribers() {
-        return $this->belongsToMany('App\Subscribe');
+        return $this->belongsToMany('App\Subscribe')->withTimestamps();
     }
 
     /**
@@ -167,7 +167,7 @@ class Topic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function be_hidden() {
-        return $this->belongsToMany('App\Topic', 'hide_topic', 'topic_id', 'user_id');
+        return $this->belongsToMany('App\Topic', 'hide_topic', 'topic_id', 'user_id')->withTimestamps();
     }
 
     /**

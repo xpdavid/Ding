@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Auth;
 use App\Subscribe;
 use Carbon\Carbon;
@@ -67,7 +68,7 @@ class User extends Authenticatable
      * A user can have many conversations.
      */
     public function conversations() {
-        return $this->belongsToMany('App\Conversation');
+        return $this->belongsToMany('App\Conversation')->withTimestamps();
     }
 
     /**
@@ -94,7 +95,8 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function educationExps() {
-        return $this->belongsToMany('App\EducationExp', 'user_educationExp', 'user_id', 'educationExp_id');
+        return $this->belongsToMany('App\EducationExp', 'user_educationExp', 'user_id', 'educationExp_id')
+            ->withTimestamps();
     }
 
     /**
@@ -130,7 +132,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function vote_up_answers() {
-        return $this->belongsToMany('App\Answer', 'user_vote_up_answer');
+        return $this->belongsToMany('App\Answer', 'user_vote_up_answer')->withTimestamps();
     }
 
     /**
@@ -139,7 +141,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function vote_down_answers() {
-        return $this->belongsToMany('App\Answer', 'user_vote_down_answer');
+        return $this->belongsToMany('App\Answer', 'user_vote_down_answer')->withTimestamps();
     }
 
     /**
@@ -148,7 +150,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function vote_up_replies() {
-        return $this->belongsToMany('App\Reply', 'user_vote_up_reply');
+        return $this->belongsToMany('App\Reply', 'user_vote_up_reply')->withTimestamps();
     }
 
     /**
@@ -176,7 +178,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subscribers() {
-        return $this->belongsToMany('App\Subscribe');
+        return $this->belongsToMany('App\Subscribe')->withTimestamps();
     }
 
     /**
@@ -227,25 +229,14 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the answers that belong to the topic
-     *
-     * @param $topic_id
-     */
-    public function answersInTopic($topic_id) {
-        return $this->answers->filter(function($answer) use ($topic_id) {
-            return in_array($topic_id, $answer->question->topics->lists('id')->all());
-        });
-    }
-
-
-    /**
      * Defined eloquent relationship : A student could have many jobs
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function jobs() {
-        return $this->belongsToMany('App\Job', 'user_job', 'user_id', 'job_id');
-    }    
+        return $this->belongsToMany('App\Job', 'user_job', 'user_id', 'job_id')->withTimestamps();
+    }
+
 
     /**
      * Defined eloquent relationship : A student could have many specializationss
@@ -253,8 +244,8 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function specializations() {
-        return $this->belongsToMany('App\Topic', 'user_specialization', 'user_id', 'topic_id');
-    }    
+        return $this->belongsToMany('App\Topic', 'user_specialization', 'user_id', 'topic_id')->withTimestamps();
+    }
 
     /** Define eloquent relationship between User and Settings
     *   A user has one setting
@@ -268,7 +259,7 @@ class User extends Authenticatable
     *   A user may block many other users
     */
     public function blockings() {
-        return $this->belongsToMany('App\User', 'blockings', 'user_id', 'blocked_id');
+        return $this->belongsToMany('App\User', 'blockings', 'user_id', 'blocked_id')->withTimestamps();
     }
 
     /**
@@ -277,7 +268,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function be_blocked() {
-        return $this->belongsToMany('App\User', 'blockings', 'blocked_id', 'user_id');
+        return $this->belongsToMany('App\User', 'blockings', 'blocked_id', 'user_id')->withTimestamps();
     }
 
     /**
@@ -286,7 +277,111 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function hide_topics() {
-        return $this->belongsToMany('App\Topic', 'hide_topic', 'user_id', 'topic_id');
+        return $this->belongsToMany('App\Topic', 'hide_topic', 'user_id', 'topic_id')->withTimestamps();
+    }
+
+    /**
+     * Generate user update in $date.
+     * if there is not update in $date, get the early one.
+     *
+     * @param $date (Carbon)
+     * @return array(collection)
+     */
+    public function generateUpdate($date) {
+        $results = [];
+        $date = $date->copy(); // do not affect other variable scope, pass by reference
+        $end = Carbon::parse($this->created_at);
+        while($end->diffInDays($date) <= 0) {
+            // question type 1
+            $query = $this->questions()->whereDate('created_at', '=', $date->toDateString());
+            if ($query->count() > 0) {
+                foreach ($query->get() as $question) {
+                    array_push($results, [
+                        'created_at' => $question->created_at,
+                        'id' => $question->id,
+                        'type' => 1
+                    ]);
+                }
+            }
+            // question subscribe type 2
+            $query = DB::table('subscribe_question')->where('subscribe_id', $this->subscribe->id)
+                ->whereDate('created_at', '=', $date->toDateString());
+            if ($query->count() > 0) {
+                foreach ($query->get() as $item) {
+                    array_push($results, [
+                        'created_at' => $item->created_at,
+                        'id' => $item->question_id,
+                        'type' => 2
+                    ]);
+                }
+            }
+            // answer type 3
+            $query = $this->answers()->whereDate('created_at', '=', $date->toDateString());
+            if ($query->count() > 0) {
+                foreach ($query->get() as $answer) {
+                    array_push($results, [
+                        'created_at' => $answer->created_at,
+                        'id' => $answer->id,
+                        'type' => 3
+                    ]);
+                }
+            }
+            // answer vote up type 4
+            $query = DB::table('user_vote_up_answer')->where('user_id', $this->id)
+                ->whereDate('created_at', '=', $date->toDateString());
+            if ($query->count() > 0) {
+                foreach ($query->get() as $item) {
+                    array_push($results, [
+                        'created_at' => $item->created_at,
+                        'id' => $item->answer_id,
+                        'type' => 4
+                    ]);
+                }
+            }
+            // topic subscribe type 5
+            $query = DB::table('subscribe_topic')->where('subscribe_id', $this->subscribe->id)
+                ->whereDate('created_at', '=', $date->toDateString());
+            if ($query->count() > 0) {
+                foreach ($query->get() as $item) {
+                    array_push($results, [
+                        'created_at' => $item->created_at,
+                        'id' => $item->topic_id,
+                        'type' => 5
+                    ]);
+                }
+            }
+
+            // break when have data
+            if (count($results) > 0) {
+                return [
+                    'end' => $date,
+                    'data' => collect($results)->sortByDesc(function($item) {
+                        return Carbon::parse($item['created_at'])->timestamp;
+                    })
+                ];
+            }
+
+            // sub one day
+            $date = $date->subDay();
+        }
+
+        return [
+            'end' => $date,
+            'data' => collect([])
+        ];
+
+
+    }
+
+    /**
+     * Get the answers that belong to the topic
+     *
+     * @param $topic_id
+     */
+    public function answersInTopic($topic_id) {
+        return $this->answers->filter(function($answer) use ($topic_id) {
+            return in_array($topic_id, $answer->question->topics->lists('id')->all());
+        });
     }
 
     /**

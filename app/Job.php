@@ -16,7 +16,7 @@ class Job extends Model
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function students() {
-	    return $this->belongsToMany('App\User', 'user_job', 'user_id', 'job_id');
+	    return $this->belongsToMany('App\User', 'user_job', 'user_id', 'job_id')->withTimestamps();
 	}
 
 	/**

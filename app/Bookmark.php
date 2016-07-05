@@ -49,7 +49,7 @@ class Bookmark extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function questions() {
-        return $this->belongsToMany('App\Question', 'bookmark_question');
+        return $this->belongsToMany('App\Question', 'bookmark_question')->withTimestamps();
     }
 
     /**
@@ -58,7 +58,7 @@ class Bookmark extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function answers() {
-        return $this->belongsToMany('App\Answer', 'bookmark_answer');
+        return $this->belongsToMany('App\Answer', 'bookmark_answer')->withTimestamps();
     }
 
     /**
@@ -67,7 +67,7 @@ class Bookmark extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function subscribers() {
-        return $this->belongsToMany('App\Subscribe', 'subscribe_bookmark');
+        return $this->belongsToMany('App\Subscribe', 'subscribe_bookmark')->withTimestamps();
     }
 
     /**

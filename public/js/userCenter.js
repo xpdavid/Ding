@@ -96,14 +96,9 @@ function userHome_subscribe_question(event, textID, question_id, countID) {
 }
 
 /**
- * Once click of the vote button than show the vote up and vote down button
+ * Send ajax request to ignore invitation
+ * @param invitation_id
  */
-function userHome_vote_button_trigger(clickObject, show_id) {
-    $(clickObject).hide();
-    $('#' + show_id).show();
-}
-
-
 function ignoreInvitation(invitation_id) {
     swal({
         title: "Are you sure?",

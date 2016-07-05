@@ -38,6 +38,21 @@
         </div>
     </div>
 
+    {{--user updates--}}
+    <div class="userHome_layoutDiv">
+        <div class="userHome_layoutDivHead">
+            Updates
+        </div>
+        <div class="userHome_layoutDivContent">
+            <div id="updates_content" class="profile_bottom_content">
+
+            </div>
+            <button class="btn btn-default btn-sm btn-block" id="updates_button"
+                    onclick="getMoreUpdates('{{ $user->url_name }}')">More</button>
+            <br>
+        </div>
+    </div>
+
 
 
 @endsection
@@ -53,6 +68,7 @@
         $(function() {
             profileGetMoreQuestion('{{ $user->url_name }}');
             profileGetMoreAnswer('{{ $user->url_name }}');
+            getMoreUpdates('{{ $user->url_name }}');
         });
     </script>
 @endsection

@@ -35,6 +35,14 @@ function toggle(id, event) {
 }
 
 /**
+ * Once click of the vote button than show the vote up and vote down button
+ */
+function vote_button_trigger(clickObject, show_id) {
+    $(clickObject).hide();
+    $('#' + show_id).show();
+}
+
+/**
  * Send AJAX request to subscribe a topic
  *
  * @param topic_id
