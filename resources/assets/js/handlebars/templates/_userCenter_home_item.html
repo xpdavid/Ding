@@ -1,7 +1,7 @@
 <!--this is the template for usercenter home question/answer item-->
 <!--the template will rendered by javascript template engine `handlebars.js`-->
 {{#each questions}}
-<div class="questions_questionLayout">
+<div class="questions_questionLayout" id="question_{{id}}">
     <div class="answer_voting">
         <img src="{{topic_pic}}" class="img-rounded avatar-img">
         {{#if answer}}

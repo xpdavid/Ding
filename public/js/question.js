@@ -285,7 +285,9 @@ function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_i
             // add responsive class to image
             imgResponsiveIn(base_id);
 
-            
+            // rerender math symbols
+            rerenderMath(base_id);
+
             if (button_id) {
                 $('#' + button_id).prop('disabled', false);
             }
@@ -294,13 +296,13 @@ function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_i
     });
 }
 
-var curreAnswerPage = 1;
+var currentAnswerPage = 1;
 function getMore(base_id, question_id, sorted, button_id, callback) {
     if (button_id) {
         $('#' + button_id).prop('disabled', true);
     }
-    getMoreAnswers(base_id, question_id, curreAnswerPage, null, sorted, button_id);
-    curreAnswerPage++;
+    getMoreAnswers(base_id, question_id, currentAnswerPage, null, sorted, button_id);
+    currentAnswerPage++;
 
     // check callback
     if(callback && typeof callback == "function"){
@@ -330,7 +332,7 @@ function saveAnswer(base_id, question_id) {
     }
     
     $.post('/question/' + question_id + '/answer', {
-        user_answer : tinyMCE.activeEditor.getContent({format : 'raw'})
+        user_answer : changeImageToTex(tinyMCE.activeEditor.getContent({format : 'raw'}))
     }, function(results) {
         if (results.status) {
             var template = Handlebars.templates['_answer_item.html'];
@@ -339,13 +341,30 @@ function saveAnswer(base_id, question_id) {
             };
             $('#' + base_id).append(template(data));
             // clear content
-            tinymce.activeEditor.execCommand('mceCleanup');
+            tinymce.activeEditor.setContent('');
+            // render the formulat (if any)
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,"answer_" + results.id]);
         } else {
             swal("Error", "Sever post a question :(", "error");
         }
     });
 
     return false;
+}
+
+/**
+ * The formular is show as image in the editor. We change it to tex language
+ */
+function changeImageToTex(content) {
+    var $div = $('<div>' + content + '</div>');
+    $div.find('img[data-type=tex]').each(function() {
+        var $span = $('<span></span>');
+        var $tex = decodeURIComponent($(this).data('value'));
+        $span.html('\\(' + $tex + '\\)');
+        $(this).replaceWith($span);
+    });
+
+    return $div.html();
 }
 
 /**

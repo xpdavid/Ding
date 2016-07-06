@@ -27,6 +27,11 @@
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
+    {{--equation support--}}
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
 </head>
 <body>
 
@@ -112,6 +117,14 @@
 
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
+
+{{--cropper supporting file--}}
+{!! Html::script('js/cropper.js') !!}
+{!! Html::script('js/canvas-to-blob.js') !!}
+
+{{--tinymce support}}--}}
+{!! Html::script('js/tinymce/tinymce.min.js') !!}
+{!! Html::script('js/equation.js') !!}
 
 {{--userCenter javascript support--}}
 {!! Html::script('js/userCenter.js') !!}

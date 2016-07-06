@@ -291,7 +291,7 @@ class User extends Authenticatable
         $results = [];
         $date = $date->copy(); // do not affect other variable scope, pass by reference
         $end = Carbon::parse($this->created_at);
-        while($end->diffInDays($date) <= 0) {
+        while($end->diffInDays($date) >= -1) {
             // question type 1
             $query = $this->questions()->whereDate('created_at', '=', $date->toDateString());
             if ($query->count() > 0) {

@@ -55,6 +55,8 @@ function genericGet(type) {
         if (results.status) {
             $('#' + type).append(template(results));
             $('#' + type + '_more').prop('disabled', false);
+            // rerender math symblos
+            rerenderMath(type);
             // execute incremet function
             if (increment && typeof increment == "function") {
                 increment();

@@ -47,6 +47,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 8. intervention\mage (laravel image system) [Index](http://image.intervention.io) (Please run `composer update` to get this plugin)
 9. `cropper.js` (crop image jquery plugin) [Github](https://github.com/fengyuanchen/cropper/blob/master/README.md)
 10. `tinyMCE` (wysiwyg html editor) [Index](https://www.tinymce.com/)
+11. `MathJax` (Latex formula render) [Index] (https://www.mathjax.org/)
 
 
 ### There are several helper function you can use in the main.css file

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<style>
+		.math-table {
+		    display: table;
+		    border-collapse: separate;
+		    border-spacing: 2px;
+		    border-color: grey;
+		}
+
+		.math-table-tbody {
+		    display: table-row-group;
+		    vertical-align: middle;
+		    border-color: inherit;
+		}
+
+		.math-table-tr {
+		    display: table-row;
+		    vertical-align: inherit;
+		    border-color: inherit;
+		}
+
+		.math-table-cell {
+		    border: 1px solid rgba(0, 0, 0, 0);
+		    margin: 0;
+		    padding: 1px;
+		    cursor: pointer;
+		}
+
+		.math-table-cell-hover {
+			background: #E2ECF9 !important;
+			border: 1px solid #8db5e8;
+			padding: 1px;
+		}
+
+		.math-table-item {
+		    border-radius: 2px;
+		    padding: 2px 0 0;
+		    margin: 2px 0 0;
+		    border: 1px solid rgba(0,0,0,0);
+		    background-image: url(image/math-equation.png);
+		}
+
+		/* The max width is dependant on the container (more info below) */
+		.popover{
+		    max-width: 100%; /* Max Width of the popover (depending on the container!) */
+		}
+
+		#tex-preview {
+			border: 1px dashed #ccc;
+		    height: 100px;
+		    margin: 10px 0;
+		    padding: 8px;
+		    overflow: auto;
+		}
+
+
+
+		.noneDisplay {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+<div class="row">
+	<div class="col-md-4">
+
+
+		<div class="well well-sm">
+			<table class="math-table math-equation-menu" id="math-equation-menu">
+			  <tbody class="math-table-tbody">
+			    
+			  </tbody>
+			</table>
+		</div>
+		<div class="noneDisplay">
+			<table class="math-table" id="math-equation-1">
+			  <tbody class="math-table-tbody">
+			    
+			  </tbody>
+			</table>
+
+			<table class="math-table" id="math-equation-2">
+			  <tbody class="math-table-tbody">
+			    
+			  </tbody>
+			</table>
+
+			<table class="math-table" id="math-equation-3">
+			  <tbody class="math-table-tbody">
+			    
+			  </tbody>
+			</table>
+
+			<table class="math-table" id="math-equation-4">
+			  <tbody class="math-table-tbody">
+			    
+			  </tbody>
+			</table>
+
+			<table class="math-table" id="math-equation-5">
+			  <tbody class="math-table-tbody">
+			    
+			  </tbody>
+			</table>
+		</div>
+		 <div class="form-group">
+		    <label for="Tex-formular">Tex Formular Here</label>
+		    <textarea rows="3" class="form-control" id="tex-formula" placeholder="Input your Tex here"></textarea>
+		 </div>
+
+		  <div class="form-group">
+		    <label>Preview</label>
+		    <div id="tex-preview">
+		    	
+		    </div>
+		  </div>
+
+
+
+
+	</div>
+	<div class="col-md-8"></div>
+</div>
+</div>
+
+	
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script>
+	var math_count = 1;
+	var mathSymbol = ['\\alpha', '\\beta', '\\gamma', '\\delta', '\\epsilon', '\\varepsilon', '\\zeta', '\\eta', '\\theta', '\\vartheta', '\\iota', '\\kappa', '\\lambda', '\\mu', '\\nu', '\\xi', '\\pi', '\\varpi', '\\rho', '\\varrho', '\\sigma', '\\varsigma', '\\tau', '\\upsilon', '\\phi', '\\varphi', '\\chi', '\\psi', '\\omega', '\\Gamma', '\\Delta', '\\Theta', '\\Lambda', '\\Xi', '\\Pi', '\\Sigma', '\\Upsilon', '\\Phi', '\\Psi', '\\Omega', '\\times', '\\div', '\\cdot', '\\pm', '\\mp', '\\ast', '\\star', '\\circ', '\\bullet', '\\oplus', '\\ominus', '\\oslash', '\\otimes', '\\odot', '\\dagger', '\\ddagger', '\\vee', '\\wedge', '\\cap', '\\cup', '\\aleph', '\\Re', '\\Im', '\\top', '\\bot', '\\infty', '\\partial', '\\forall', '\\exists', '\\neg', '\\angle', '\\triangle', '\\diamond', '\\leq', '\\geq', '\\prec', '\\succ', '\\preceq', '\\succeq', '\\ll', '\\gg', '\\equiv', '\\sim', '\\simeq', '\\asymp', '\\approx', '\\ne', '\\subset', '\\supset', '\\subseteq', '\\supseteq', '\\in', '\\ni', '\\notin', 'x_{a}', 'x^{b}', 'x_{a}^{b}', '\\bar{x}', '\\tilde{x}', '\\frac{a}{b}', '\\sqrt{x}', '\\sqrt[n]{x}', '\\bigcap_{a}^{b}', '\\bigcup_{a}^{b}', '\\prod_{a}^{b}', '\\coprod_{a}^{b}', '\\left( x \\right)', '\\left[ x \\right]', '\\left\\{ x \\right\\}', '\\left| x \\right|', '\\int_{a}^{b}', '\\oint_{a}^{b}', '\\sum_{a}^{b}{x}', '\\lim_{a \\rightarrow b}{x}', '\\leftarrow', '\\rightarrow', '\\leftrightarrow', '\\Leftarrow', '\\Rightarrow', '\\Leftrightarrow', '\\uparrow', '\\downarrow', '\\updownarrow', '\\Uparrow', '\\Downarrow', '\\Updownarrow'];
+
+	function generateMathPanel(tableID, rows, colums, bound, width, height, increaseX, increaseY, baseX, baseY) {
+		var $tbody = $('#' + tableID).find('tbody');
+		var position_x = baseX;
+		var position_y = baseY;
+		var count = 1;
+		for(var i = 1; i <= rows; i++) {
+			var  $tr = $('<tr></tr>').addClass("math-table-tr");
+			for (var j = 1; j <= colums; j++) {
+				var $cell = $('<td></td>').addClass("math-table-cell");
+				var $div = $('<div></div>').addClass("math-table-item");
+				if (count > bound) {
+					continue;
+				}
+				
+				$div.css('background-position', position_x + 'px ' + position_y + 'px');
+				$div.css('width', width + 'px');
+				$div.css('height', height + 'px');
+
+				$div.attr('id', 'math-symbol-' + math_count);
+				$cell.attr('id', 'math-cell-' + math_count);
+				$cell.attr('data-symbol', math_count);
+
+				position_x += increaseX;
+				position_y += increaseY; 
+
+				math_count++;
+				count++;
+
+				// append div into cell
+				$cell.html($div[0]);
+				// append cell into tr
+				$tr.append($cell[0]);
+			}
+			// append tr to tbody
+			$tbody.append($tr[0]);
+		}
+	}
+	function math_menuPopover(num) {
+		for(var i = 1; i <= num; i++) {
+			$('#math-cell-' + i).popover({
+				trigger : 'click',
+				html : true,
+				container : 'body',
+				content : $('#math-equation-' + i)[0],
+				placement : 'bottom'
+			});
+
+			$('#math-equation-' + i).remove();
+
+			function generateShowEvent(id) {
+				return function() {
+					for(var k = 1; k<= 5; k++) {
+				  		if (k != id) {
+				  			$('#math-cell-' + k).popover('hide');
+				  		}
+			  		}
+			  		bind_MathCellHover(1, 135);
+			  		bind_MathCellClick('tex-formula', 6, 135);
+				}
+			}
+
+			$('#math-cell-' + i).on('shown.bs.popover', generateShowEvent(i));
+		}
+	}
+	function bind_MathCellHover(start, end) {
+		for (var i = start; i <= end; i++) {
+			$('#math-cell-' + i).unbind('hover');
+			$('#math-cell-' + i).hover(function() {
+					$(this).addClass("math-table-cell-hover");
+				}, function() {
+					$(this).removeClass("math-table-cell-hover");
+			});
+		}
+	}
+	function bind_MathCellClick(appendTo, start, end) {
+		for (var i = start; i <= end; i++) {
+			$('#math-cell-' + i).unbind('click');
+			$('#math-cell-' + i).click(appendFormula(i));
+		}
+
+		function appendFormula(k) {
+			return function() {
+				$('#' + appendTo).append(mathSymbol[k - 6] + ' ');
+				renderEquation();
+			}
+		}
+
+	}
+	function renderEquation() {
+		$('#tex-preview').html('$$' + $('#tex-formula').val() + '$$');
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tex-preview"]);
+	}
+	$(function() {
+		generateMathPanel('math-equation-menu', 1, 5, 5, 48, 20, -46, 0, 0, 0);
+		generateMathPanel('math-equation-1', 6, 7, 40, 20, 20, -18, 0, 0, -30);
+		generateMathPanel('math-equation-2', 5, 7, 33, 20, 20, -18, 0, 0, -50);
+		generateMathPanel('math-equation-3', 3, 7, 21, 20, 20, -18, 0, 0, -70);
+		generateMathPanel('math-equation-4', 2, 10, 20, 30, 56, -30, 0, 0, -90);
+		generateMathPanel('math-equation-5', 1, 12, 12, 20, 20, -18, 0, 0, -150);
+
+		math_menuPopover(5);
+		bind_MathCellHover(1, 135);
+
+		// dynamic rendering tex formular
+		var texTimer = null;
+		$('#tex-formula').on('change keyup paste', function() {
+			clearTimeout(texTimer);
+			texTimer = setTimeout(function() {
+				renderEquation();
+			}, 800);
+		});
+
+		// popover click outside auto hide
+		$('html').on('click', function (e) {
+			if (!$(e.target).parents().hasClass('math-equation-menu')
+		        && $(e.target).parents('.popover.in').length === 0) { 
+		        $('#math-equation-menu').find('td[id^=math-cell]').popover('hide');
+		    }
+		});
+
+		// bootstrap v3.3.6 #16732 bug fixed
+		$('body').on('hidden.bs.popover', function (e) {
+		    $(e.target).data("bs.popover").inState.click = false;
+		});
+	})
+
+</script>
+
+</body>
+</html>

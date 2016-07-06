@@ -16,6 +16,9 @@ body.modal-open {
 .modal-scrollbar-measure {
   overflow: hidden; }
 
+.modal.in .modal-dialog {
+  transform: none; }
+
 .glyphicon {
   margin-right: 5px; }
 
@@ -109,9 +112,6 @@ body.modal-open {
 
 .marginAuto {
   margin: 0 auto !important; }
-
-.modal {
-  z-index: 100000; }
 
 .sweet-alert {
   z-index: 100001; }
@@ -673,7 +673,7 @@ body.modal-open {
   display: none; }
 
 .noticeBarWapper {
-  width: 100%;
+  width: 300px;
   margin: 0 0 5px 0; }
 
 .noticeBar_navbar li {
@@ -1085,5 +1085,52 @@ body.modal-open {
   max-width: 100%;
   width: 500px;
   height: 320px; }
+
+.math-table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: grey; }
+
+.math-table-tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit; }
+
+.math-table-tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit; }
+
+.math-table-cell {
+  border: 1px solid transparent;
+  margin: 0;
+  padding: 1px;
+  cursor: pointer; }
+
+.math-table-cell-hover {
+  background: #E2ECF9 !important;
+  border: 1px solid #8db5e8;
+  padding: 1px; }
+
+.math-table-item {
+  border-radius: 2px;
+  padding: 2px 0 0;
+  margin: 2px 0 0;
+  border: 1px solid transparent;
+  background-image: url(/static/images/math-equation.png); }
+
+/* The max width is dependant on the container (more info below) */
+.popover {
+  max-width: 100%;
+  /* Max Width of the popover (depending on the container!) */
+  z-index: 100005; }
+
+#tex-preview {
+  border: 1px dashed #ccc;
+  height: 100px;
+  margin: 10px 0;
+  padding: 8px;
+  overflow: auto; }
 
 /*# sourceMappingURL=app.css.map */

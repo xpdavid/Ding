@@ -48,7 +48,8 @@
                     </table>
                     <div class="form-group">
                         <label for="question_detail">Question Detail (optional)</label>
-                        <textarea class="form-control" rows="3" id="question_detail" name="question_detail"></textarea>
+                        <textarea class="form-control"
+                                  rows="3" id="question_detail" name="question_detail"></textarea>
 
                     </div>
                     <div class="form-group">

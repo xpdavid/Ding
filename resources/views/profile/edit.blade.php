@@ -4,7 +4,7 @@
     @include('partials._crop_image_model', [
         'url' => '/people/upload',
         'image' => DImage($settings->profile_pic_id),
-        'id' => '',
+        'id' => 'profile',
         'type' => ''
     ])
 
@@ -408,7 +408,7 @@
                 // open tooltipc option
                 $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
-                cropImage('crop_img', 1 / 1);
+                cropImage('crop_img_profile', 1 / 1);
 
             } catch (e) {
                 console.log('hover event binding fail');

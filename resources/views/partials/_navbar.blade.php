@@ -76,3 +76,12 @@
 </nav>
 
 @include('partials._noticebar_model')
+
+@include('partials._latex_equation_model')
+
+@include('partials._crop_image_model', [
+        'url' => '/user/upload',
+        'image' => '/static/images/default.png',
+        'id' => 'question_detail',
+        'type' => '',
+    ])

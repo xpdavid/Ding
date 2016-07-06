@@ -30,6 +30,11 @@
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
+    {{--equation support--}}
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
 </head>
 <body>
 
@@ -75,6 +80,14 @@
 {{--menu js file for suppporting asynchronous searching and popover--}}
 {!! Html::script('js/bootstrap3-typeahead.js') !!}
 {!! Html::script('js/navbar.js') !!}
+
+{{--tinymce support}}--}}
+{!! Html::script('js/tinymce/tinymce.min.js') !!}
+{!! Html::script('js/equation.js') !!}
+
+{{--cropper supporting file--}}
+{!! Html::script('js/cropper.js') !!}
+{!! Html::script('js/canvas-to-blob.js') !!}
 
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}

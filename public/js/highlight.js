@@ -42,24 +42,6 @@ function getEditorRecommendations() {
 }
 
 /**
- * process the results from ajax by given detail info to first two element
- * @param results
- */
-function processRecommendShort(results) {
-    var template_short = Handlebars.templates['_highlight_question_short.html'];
-    var template_normal = Handlebars.templates['_userCenter_home_item.html'];
-
-    $('#highlight_recommend').append(template_normal({
-        questions: results.slice(0, 2)
-    }));
-
-    $('#highlight_recommend').append(template_short({
-        questions: results.slice(2, 5)
-    }));
-
-}
-
-/**
  * process the results from ajax data with normal option
  * @param results
  */
@@ -127,6 +109,8 @@ function getHotWeekQuestion() {
         $('#highlight_week').append(template({
             questions: results
         }));
+
+        rerenderMath('highlight_week');
     }, 'week');
 }
 
@@ -148,6 +132,8 @@ function getHotMonthQuestion() {
         $('#highlight_month').append(template({
             questions: results
         }));
+
+        rerenderMath('highlight_month');
     }, 'month');
 }
 
@@ -167,6 +153,8 @@ function processRecommendShort(results) {
         questions: results.slice(2, 5)
     }));
 
+    rerenderMath('highlight_recommend');
+
 }
 
 /**
@@ -178,4 +166,6 @@ function processRecommendNormal(results) {
     $('#highlight_recommend').append(template_normal({
         questions: results
     }));
+
+    rerenderMath('highlight_recommend');
 }

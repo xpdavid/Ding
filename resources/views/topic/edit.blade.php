@@ -199,7 +199,7 @@
         // open tooltipc option
         $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
-        cropImage('crop_img', 1 / 1);
+        cropImage('crop_img_{{ $topic->id }}', 1 / 1);
     });
 </script>
 @endsection

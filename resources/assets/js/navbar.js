@@ -230,7 +230,7 @@ function navbar_serach_table_autocomplete() {
                 queries: [{
                     type : 'question',
                     term : $('#ask_question_detail_input').val(), // search term
-                    max_match: 6,
+                    max_match: 3,
                     use_similar: 0,
                 }]
             }, function(results) {
@@ -254,5 +254,26 @@ function navbar_serach_table_autocomplete() {
 
 $(function() {
     navbar_serach_table_autocomplete();
+});
+
+
+// for question editor
+$(function() {
+    tinyMCEeditor('question_detail'); // navbar ask question (question detail)
+
+    // equation support
+    math_editor();
+
+    // bind switch editor
+    $('#ask_question_detail').on('show.bs.modal', function() {
+        tinyMCE.get('question_detail').focus();
+    });
+
+    $('#ask_question_detail').on('hide.bs.modal', function() {
+        if (tinyMCE.get('question_answers_input')) {
+            tinyMCE.get('question_answers_input').focus();
+        }
+    });
+
 });
 

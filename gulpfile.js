@@ -42,7 +42,8 @@ elixir(function(mix) {
     mix.copy(cropperPath + '/canvas-to-blob.js', 'public/js');
 
     // for tiny mce
-    mix.copy(jsPath + '/tinymce', 'public/js/tinymce');
+    mix.copy(jsPath + '/tinymce', 'public/js/tinymce')
+        .copy(jsPath + '/equation.js', 'public/js'); // copy equation support
     
     // for project css file
     mix.sass('app.scss');

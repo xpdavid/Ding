@@ -30,6 +30,11 @@
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
+    {{--equation support--}}
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
 </head>
 <body>
 
@@ -89,6 +94,7 @@
 
 {{--tinymce support}}--}}
 {!! Html::script('js/tinymce/tinymce.min.js') !!}
+{!! Html::script('js/equation.js') !!}
 
 {{--question javascript support--}}
 {!! Html::script('js/question.js') !!}

@@ -18,7 +18,7 @@
 
         <div class="row">
             <div class="col-md-12 font-black">
-                {{ $question->content }}
+                {!! $question->content !!}
             </div>
         </div>
 
@@ -140,7 +140,7 @@
     @include('partials._crop_image_model', [
         'url' => '/user/upload',
         'image' => '/static/images/default.png',
-        'id' => '',
+        'id' => 'question_answers_input',
         'type' => '',
     ])
 
@@ -206,53 +206,10 @@
 
             invite_search_box('{{ $question->id }}');
 
-            // init
-            tinymce.init({
-                menubar : false,
-                selector: '#question_answers_input',
-                paste_as_text: true,
-                plugins: 'code advlist autolink link image imagetools table media codesample fullscreen paste',
-                toolbar: ['undo redo | bold italic underline | blockquote codesample bullist, numlist | link image media | fullscreen',],
-                setup: function (editor) {
-                    editor.on('FullscreenStateChanged', function(e) {
-                        if (e.state) {
-                            $('.navbar').fadeOut();
-                        } else {
-                            $('.navbar').show();
-                        }
-                    });
-
-
-                    // add m
-                    editor.addButton('mybutton', {
-                        text: 'My button',
-                        icon: false,
-                        onclick: function () {
-                            editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
-                        }
-                    });
-                },
-                content_css : '/js/tinymce/content.css',
-                file_picker_callback: function(callback, value, meta) {
-
-                    // Provide image and alt text for the image dialog
-                    if (meta.filetype == 'image') {
-                        function processResults(results) {
-                            $('#crop_image').modal('hide');
-
-                            callback(results.url, {});
-                        }
-                        cropImage('crop_img', NaN, processResults);
-                        $('#crop_image').modal('show');
-                    }
-
-
-                },
-                file_picker_types: 'image'
-            });
-
             // open tooltipc option
             $('[data-toggle="tooltip"]').tooltip({container: 'body'});
-        })
+
+            tinyMCEeditor('question_answers_input');
+        });
     </script>
 @endsection

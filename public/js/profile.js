@@ -650,8 +650,11 @@ function showUserAnswerPage(base_id, itemInPage, url_name, page, append, callbac
                 // remove profile since it is the same
                 $.each(item.answers, function(index, answer) {
                     $('#answer_' + answer.id + '_profile').remove();
-                })
+                });
             });
+
+            // rerender math symbols
+            rerenderMath(base_id);
 
             // update nav bar
             $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, itemInPage, url_name, 'showUserAnswerPage'));
@@ -763,6 +766,9 @@ function getMoreUpdates(url_name) {
                }
                $area.append($outer[0]);
            });
+
+           // rerender math symbols
+           rerenderMath('updates_content');
        } else {
            $('#updates_button').remove();
        }

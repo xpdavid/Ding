@@ -22,7 +22,13 @@ body.modal-open {
   overflow: hidden;
 }
 
-
+// fix for tinyMCE fullscreen modal
+.modal.in .modal-dialog {
+  -webkit-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
 // end of fix
 
 .glyphicon {
@@ -148,10 +154,6 @@ body.modal-open {
 
 .marginAuto {
   margin: 0 auto !important;
-}
-
-.modal {
-  z-index: 100000;
 }
 
 .sweet-alert {
@@ -834,7 +836,7 @@ body.modal-open {
 }
 
 .noticeBarWapper {
-  width: 100%;
+  width: 300px;
   margin: 0 0 5px 0;
 }
 
@@ -1373,4 +1375,59 @@ body.modal-open {
   height: 320px;
 }
 
+
+// tinymce equation editor
+.math-table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: grey;
+}
+
+.math-table-tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.math-table-tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+.math-table-cell {
+  border: 1px solid rgba(0, 0, 0, 0);
+  margin: 0;
+  padding: 1px;
+  cursor: pointer;
+}
+
+.math-table-cell-hover {
+  background: #E2ECF9 !important;
+  border: 1px solid #8db5e8;
+  padding: 1px;
+}
+
+.math-table-item {
+  border-radius: 2px;
+  padding: 2px 0 0;
+  margin: 2px 0 0;
+  border: 1px solid rgba(0,0,0,0);
+  background-image: url(/static/images/math-equation.png);
+}
+
+/* The max width is dependant on the container (more info below) */
+.popover{
+  max-width: 100%; /* Max Width of the popover (depending on the container!) */
+  z-index: 100005;
+}
+
+#tex-preview {
+  border: 1px dashed #ccc;
+  height: 100px;
+  margin: 10px 0;
+  padding: 8px;
+  overflow: auto;
+}
 

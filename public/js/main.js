@@ -405,6 +405,13 @@ function cropImage(img_id, aspectRatio, callback) {
     });
 
 
+    // bring the upload modal to the front
+    $('#' + img_id + '_modal').on('show.bs.modal', function (e) {
+        console.log(1);
+        $(this).css('z-index', 100002);
+    });
+
+
     var $uploadClick = $('#' + img_id + '_upload_click');
     $uploadClick.click(function() {
         $uploadClick.prop('disabled', true);
@@ -460,5 +467,61 @@ function imgResponsiveIn(id) {
     $('#' + id).find('img').addClass('img-responsive');
 }
 
+/**
+ * TinyMCE editor
+ * @param textareaID
+ */
+function tinyMCEeditor(textareaID) {
+    // init
+    var upload_callback_helper = null;
+    var upload_callback = function(result) {
+        upload_callback_helper(result.url);
+        $('#crop_img_' + textareaID + '_modal').modal('hide');
+    };
+    cropImage('crop_img_' + textareaID , NaN, upload_callback);
+    tinymce.init({
+        menubar : false,
+        selector: '#' + textareaID,
+        paste_as_text: true,
+        plugins: 'code advlist autolink link image imagetools table media codesample fullscreen paste',
+        toolbar: ['code | undo redo | bold italic underline | blockquote codesample bullist numlist math | link image media | fullscreen',],
+        setup: function (editor) {
+            editor.on('FullscreenStateChanged', function(e) {
+                if (e.state) {
+                    // hide nav bar when have fullscreen mode
+                    $('.navbar').fadeOut();
+                } else {
+                    $('.navbar').show();
+                }
+            });
+
+            // add Formular editor
+            editor.addButton('math', {
+                text: 'Equation',
+                icon: false,
+                onclick: function () {
+                    callTexEditor('');
+                }
+            });
+
+            editor.on('dblclick', function(ed) {
+                if ($(ed.target).data('type') == "tex") {
+                    callTexEditor(decodeURIComponent($(ed.target).data('value')));
+                }
+            });
+        },
+        // increase the font-size
+        content_css : '/js/tinymce/content.css',
+        // for upload image
+        file_picker_callback: function(callback, value, meta) {
+            // Provide image and alt text for the image dialog
+            if (meta.filetype == 'image') {
+                upload_callback_helper = callback;
+                $('#crop_img_' + textareaID + '_modal').modal('show');
+            }
+        },
+        file_picker_types: 'image'
+    });
+}
 
 //# sourceMappingURL=main.js.map
