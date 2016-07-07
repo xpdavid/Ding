@@ -820,6 +820,14 @@ function bindExpendAll() {
                 $('#answer_full_' + $object.data('id')).show();
                 imgResponsiveIn('answer_full_' + $object.data('id'));
             })
+        } else if ($object.data('type') == "question") {
+            $.post('/question/' + $object.data('id'), {}, function(results) {
+                $('#question_summary_' + $object.data('id')).hide();
+                $('#question_full_' + $object.data('id')).html(results.content);
+                rerenderMath('question_full_' + $object.data('id'));
+                $('#question_full_' + $object.data('id')).show();
+                imgResponsiveIn('question_full_' + $object.data('id'));
+            })
         }
     })
 }

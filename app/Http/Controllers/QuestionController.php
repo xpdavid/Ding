@@ -62,6 +62,21 @@ class QuestionController extends Controller
 
         return view('question.show', compact('question', 'answers', 'sorted', 'also_interest', 'highlight'));
     }
+
+    /**
+     * Answer ajax call to get questions detail
+     *
+     * @param $question_id
+     * @return array
+     */
+    public function postQuestion($question_id) {
+        $question = Question::findOrFail($question_id);
+
+        return [
+            'title' => $question->title,
+            'content' => $question->content
+        ];
+    }
     
 
     /**

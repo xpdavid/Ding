@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use DB;
+use Htmldom;
 use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
@@ -239,7 +240,7 @@ class Question extends Model
      * define query scope. similar match $name
      *
      * @param $query
-     * @param $name
+     * @param $title
      * @return mixed
      */
     public function scopeSimilarMatch($query, $title) {
@@ -250,7 +251,7 @@ class Question extends Model
      * define query scope. `like` match $name
      *
      * @param $query
-     * @param $name
+     * @param $title
      * @return mixed
      */
     public function scopeNoneSimilarMatch($query, $title) {
@@ -278,5 +279,33 @@ class Question extends Model
                 ->orWhere('content', 'LIKE' , '%' . $key . '%');
         }
 
+    }
+
+
+    /**
+     * The question detail may store in rich html tag.
+     * we change it to summary block
+     */
+    public function getSummaryAttribute() {
+        $html = new Htmldom;
+        $html->load($this->content);
+
+        $output = $html->plaintext;
+
+
+        $output_image = "";
+        // for <img> tag
+        if (count($html->find('img')) > 0) {
+            $image_html = $html->find('img', 0);
+            $image = Image::isFromThisSite($image_html->src);
+            if ($image) {
+                $image_html->src = DImage($image->id, 200, 112);
+                $image_html->height = null;
+                $image_html->width = null;
+                $output_image = $output_image . $image_html->outertext;
+            }
+        }
+
+        return $output_image . truncateText($output, 450);
     }
 }

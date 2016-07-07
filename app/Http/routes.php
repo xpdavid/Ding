@@ -38,6 +38,7 @@ Route::post('/question/answers', 'AnswerController@postAnswers');
 Route::post('/question/{question_id}/invite_panel', 'QuestionController@invite_panel');
 Route::post('/question/{question_id}/invite', 'QuestionController@invite');
 Route::get('/question/{question_id}', 'QuestionController@show');
+Route::post('/question/{question_id}', 'QuestionController@postQuestion');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::post('/question/ask', 'QuestionController@ask');
 Route::post('/question/update', 'QuestionController@update');
