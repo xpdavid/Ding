@@ -37,6 +37,17 @@ class AnswerController extends Controller
     }
 
     /**
+     * Easy way to show answer
+     *
+     * @param $answer_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getAnswer($answer_id) {
+        $answer = Answer::findOrFail($answer_id);
+        return redirect()->action('AnswerController@show', [$answer->question->id, $answer->id]);
+    }
+
+    /**
      * Show specific answer for question
      *
      * @param $question_id

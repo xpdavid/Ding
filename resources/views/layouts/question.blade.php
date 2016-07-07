@@ -61,7 +61,7 @@
 
 </div> <!--For contianer-->
 
-@include('partials._ask_question_model')
+@include('partials._question_model')
 
 @include('partials._bookmark_model')
 

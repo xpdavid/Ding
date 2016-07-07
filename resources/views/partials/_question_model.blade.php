@@ -22,27 +22,31 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-{{--// ask qeustion model--}}
-<div class="modal fade" id="ask_question_detail" tabindex="-1" role="dialog" aria-labelledby="ask_question_detail">
+{{--// qeustion model--}}
+<div class="modal fade" id="_question_detail" tabindex="-1" role="dialog" aria-labelledby="_question_detail">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Please Provide Question Detail</h4>
+                <h4 class="modal-title" data-parent="_question_detail" data-ask="Please Provide Question Detail" data-edit="Edit Question"></h4>
             </div>
-            {{ Form::open(['url'=> url('/question/ask'), 'method' => 'POST', 'data-toggle' => "validator"]) }}
+            {{ Form::open(['url'=> '', 'method' => 'POST',
+            'data-toggle' => "validator", 'data-parent' => '_question_detail',
+            'data-ask' => url('/question/ask'),
+            'data-edit' => url('/question/update'), 'data-change' => 'action']) }}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="search_question"><strong>Your Question may already have answers.</strong></label>
+                        <label for="search_question"><strong>Title</strong></label>
                         <input type="text" class="form-control"
-                               id="ask_question_detail_input"
+                               id="_question_detail_input"
                                name="question_title"
                                data-error="You must provide question title"
                                required
                                placeholder="Type your keywords">
                         <div class="help-block with-errors"></div>
                     </div>
-                    <table class="table" id="ask_question_detail_search_table">
+                    <table class="table" id="_question_detail_search_table"
+                           data-parent="_question_detail">
                         <tbody>
                         </tbody>
                     </table>
@@ -68,8 +72,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Ask</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span data-parent="_question_detail" data-ask="Ask" data-edit="Edit"></span>
+                    </button>
+                    <span data-parent="_question_detail" data-ask=""
+                          data-edit="Please note that your edit will be recorded">
+                    </span>
                 </div>
+                <input type="hidden" name="question_id" value="" id="_question_detail_question_id" >
             {{ Form::close() }}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

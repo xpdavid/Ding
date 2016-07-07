@@ -40,7 +40,7 @@
 
 @include('partials._navbar')
 
-@include('partials._ask_question_model')
+@include('partials._question_model')
 
 <div class="container">
     <div class="row">

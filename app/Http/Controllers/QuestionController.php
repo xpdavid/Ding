@@ -102,6 +102,33 @@ class QuestionController extends Controller
     }
 
     /**
+     * Update question
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request) {
+        $this->validate($request, [
+            'question_id' => 'required|integer',
+            'question_title' => 'required',
+            'question_topics' => 'required',
+        ]);
+
+        $question = Question::findOrFail($request->get('question_id'));
+        
+        $question->topics()->sync($request->get('question_topics'));
+        
+        $question->update([
+            'title' => $request->get('question_title'),
+            'content' => $request->get('question_detail')
+        ]);
+
+        return redirect()->action('QuestionController@show', $question->id);
+    }
+
+
+
+    /**
      * Generate user who would possible answer the question
      *
      * @param $question_id

@@ -48,7 +48,7 @@
     </div>
 </div>
 
-@include('partials._ask_question_model')
+@include('partials._question_model')
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}

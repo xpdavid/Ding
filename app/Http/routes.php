@@ -40,6 +40,8 @@ Route::post('/question/{question_id}/invite', 'QuestionController@invite');
 Route::get('/question/{question_id}', 'QuestionController@show');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::post('/question/ask', 'QuestionController@ask');
+Route::post('/question/update', 'QuestionController@update');
+Route::get('/answer/{id}', 'AnswerController@getAnswer');
 Route::post('/answer/{id}', 'AnswerController@postAnswer');
 
 // for answer

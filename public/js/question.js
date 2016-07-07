@@ -825,5 +825,38 @@ function bindExpendAll() {
 }
 
 
+/**
+ * Trigger edit question
+ */
+function editQuestion() {
+    // hide search table
+    _qeustion_modal_UISwitch('edit');
+    // copy question title
+    $('#_question_detail_input').val($('[data-type="question_title"]').html());
+    // copy question content
+    tinyMCE.get('question_detail').focus();
+    tinyMCE.activeEditor.setContent($('[data-type="question_content"]').html());
+    // set question id
+    $('#_question_detail_question_id').val($('[data-type="question_content"]').data('id'));
+    // set topics
+    var topics = $('[data-type="question_topics"]').data('content');
+    var ids = [];
+
+    var $topics = $('#question_topics');
+    $topics.empty(); // empty select
+
+    $.each(topics, function(id, name) {
+        $topics.append($("<option/>") //add option tag in select
+                .val(id) //set value for option to post it
+                .text(name)); //set a text for show in select
+        ids.push(id);
+    });
+    $topics.val(ids).trigger("change"); //apply to select2
+
+    // show modal
+    $('#_question_detail').modal('show');
+}
+
+
 
 

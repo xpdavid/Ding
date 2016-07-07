@@ -3,73 +3,7 @@
 
 
 @section('left')
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                @foreach($question->topics as $topic)
-                    <a class="btn btn-primary question_topic_tag" href="/topic/{{ $topic->id }}" role="button">{{ $topic->name }}</a>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h3> {{ $question->title }} </h3>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12 font-black">
-                {{ $question->content }}
-            </div>
-        </div>
-
-        <div class="horizontal_item">
-            <a href="#" onclick="scroll_to(event, 'question_answer_form')"><span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>Answer</a>
-            <a href="#"
-               id="question_comment_{{ $question->id }}_trigger"
-               onclick="showComment(event, 'question', '{{ $question->id }}', 'question_comment_{{ $question->id }}');">
-                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                Comment (<span id="question_comment_{{ $question->id }}_replies_count">{{ $question->replies->count() }}</span>)
-            </a>
-            <a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
-            <a href="#"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>Invite Friends</a>
-        </div>
-
-        <div class="comment_box" id="question_comment_{{ $question->id }}">
-            <div class="comment_spike">
-                <div class="comment_spike_arrow"></div>
-            </div>
-            <div class="comment_list">
-                <div class="comment_content" id="question_comment_{{ $question->id }}_content">
-
-                </div>
-
-                <div class="text-center" id="question_comment_{{ $question->id }}_nav">
-
-                </div>
-
-                <div class="comment_form clearfix">
-                    <div class="form-group">
-                        <input type="text"
-                               class="form-control"
-                               id="question_comment_{{ $question->id }}_input"
-                               placeholder="Write Your Comment Here"
-                               onfocus="show_form(event, 'question_comment_{{ $question->id }}_buttons')"
-                        >
-                    </div>
-                    <div class="float-right form-group noneDisplay" id="question_comment_{{ $question->id }}_buttons">
-                        <a href="#" role="button" class="space-right-big" onclick="cancel_from(event, 'question_comment_{{ $question->id }}_buttons')">Cancel</a>
-                        <button class="btn btn-primary" type="submit"
-                                onclick="saveComment('question_comment_{{ $question->id }}', '{{ $question->id }}', 'question')">Submit</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <hr>
-    </div>
+    @include('partials._question_show_head', ['question' => $question, 'answerOption' => false])
 
 
     <div class="col-md-12">
@@ -115,8 +49,8 @@
                     <span class="answer_vote "><span class="vote_answer_{{ $answer->id }}_count">{{ $answer->netVotes }}</span> Vote(s)</span>
                 </div>
 
-                <div class="answer_content font-black">
-                    {{ $answer->answer }}
+                <div class="answer_content font-black clearfix">
+                    {!! $answer->answer !!}
                 </div>
 
                 <div class="horizontal_item">
@@ -204,8 +138,13 @@
                             <span class="answer_vote "><span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->netVotes }}</span> Vote(s)</span>
                         </div>
 
-                        <div class="answer_content font-black">
-                            {{ $other_answer->answer }}
+                        <div class="answer_content font-black clearfix">
+                            <div id="answer_summary_{{ $other_answer->id }}" class="answer_summary">
+                                {!! $other_answer->summary !!} <a href="#" class="answer_show_all" data-toggle="expand_all" data-type="answer" data-id="{{ $other_answer->id}}">Show all</a>
+                            </div>
+                            <div id="answer_full_{{ $other_answer->id }}">
+
+                            </div>
                         </div>
 
                         <div class="horizontal_item">
@@ -378,6 +317,7 @@
             highlight('answer_{{ $answer->id }}', true);
         @endif
 
+        imgResponsiveIn('answer_{{ $answer->id }}');
     })
 </script>
 @endsection
