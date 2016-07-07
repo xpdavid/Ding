@@ -79,7 +79,7 @@
                           data-edit="Please note that your edit will be recorded">
                     </span>
                 </div>
-                <input type="hidden" name="question_id" value="" id="_question_detail_question_id" >
+                <input type="hidden" name="edit_question_id" value="" id="_question_detail_question_id" >
             {{ Form::close() }}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

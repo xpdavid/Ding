@@ -11,22 +11,17 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3> <div data-type="question_title" data-id="{{ $question->id }}">
-                    {{ $question->title }}
-                </div>
-                <a href="#" class="userSetting_EditA" onclick="editQuestion()"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
+            <h3> {{ $question->title }}
+                <a href="#" class="userSetting_EditA" onclick="editQuestion(event, '{{ $question->id }}')"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
             </h3>
         </div>
         <div class="col-md-12 font-black">
-            <div data-type="question_content" data-id="{{ $question->id }}">
                 <div id="question_summary_{{ $question->id }}" class="_summary">
                     {!! $question->summary !!} <a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{ $question->id }}">Show all</a>
                 </div>
                 <div id="question_full_{{ $question->id }}">
 
                 </div>
-            </div>
-            <a href="#" class="userSetting_EditA" onclick="editQuestion()"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
         </div>
     </div>
 

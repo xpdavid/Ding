@@ -813,21 +813,29 @@ function bindExpendAll() {
         }
         $object = $(this);
         if ($object.data('type') == "answer") {
-            $.post('/answer/' + $object.data('id'), {}, function(results) {
-                $('#answer_summary_' + $object.data('id')).hide();
-                $('#answer_full_' + $object.data('id')).html(results);
-                rerenderMath('answer_full_' + $object.data('id'));
-                $('#answer_full_' + $object.data('id')).show();
-                imgResponsiveIn('answer_full_' + $object.data('id'));
-            })
+            if (!$('#answer_full_' + $object.data('id')).data('expand')) {
+                $.post('/answer/' + $object.data('id'), {}, function(results) {
+                    $('#answer_summary_' + $object.data('id')).hide();
+                    $('#answer_full_' + $object.data('id')).html(results);
+                    rerenderMath('answer_full_' + $object.data('id'));
+                    $('#answer_full_' + $object.data('id')).show();
+                    imgResponsiveIn('answer_full_' + $object.data('id'));
+                    // set has expanded
+                    $('#answer_full_' + $object.data('id')).data('expand', true);
+                })
+            }
         } else if ($object.data('type') == "question") {
-            $.post('/question/' + $object.data('id'), {}, function(results) {
-                $('#question_summary_' + $object.data('id')).hide();
-                $('#question_full_' + $object.data('id')).html(results.content);
-                rerenderMath('question_full_' + $object.data('id'));
-                $('#question_full_' + $object.data('id')).show();
-                imgResponsiveIn('question_full_' + $object.data('id'));
-            })
+            if (!$('#question_full_' + $object.data('id')).data('expand')) {
+                $.post('/question/' + $object.data('id'), {}, function(results) {
+                    $('#question_summary_' + $object.data('id')).hide();
+                    $('#question_full_' + $object.data('id')).html(results.content);
+                    rerenderMath('question_full_' + $object.data('id'));
+                    $('#question_full_' + $object.data('id')).show();
+                    imgResponsiveIn('question_full_' + $object.data('id'));
+                    // set has expanded
+                    $('#question_full_' + $object.data('id')).data('expand', true);
+                })
+            }
         }
     })
 }
@@ -836,16 +844,26 @@ function bindExpendAll() {
 /**
  * Trigger edit question
  */
-function editQuestion() {
+function editQuestion(event, question_id) {
+    if (event) {
+        event.preventDefault();
+    }
+
     // hide search table
     _qeustion_modal_UISwitch('edit');
-    // copy question title
-    $('#_question_detail_input').val($('[data-type="question_title"]').html());
-    // copy question content
-    tinyMCE.get('question_detail').focus();
-    tinyMCE.activeEditor.setContent($('[data-type="question_content"]').html());
+
+    // send ajax call to get question content
+    $.post('/question/' + question_id, {}, function(results) {
+        // copy question title
+        $('#_question_detail_input').val(results.title);
+        // copy question content
+        tinyMCE.get('question_detail').focus();
+        tinyMCE.activeEditor.setContent(results.content);
+    });
+
     // set question id
-    $('#_question_detail_question_id').val($('[data-type="question_content"]').data('id'));
+    $('#_question_detail_question_id').val(question_id);
+
     // set topics
     var topics = $('[data-type="question_topics"]').data('content');
     var ids = [];

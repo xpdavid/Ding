@@ -230,8 +230,7 @@ function navbar_ask_question_detail() {
  * @private
  */
 function _qeustion_modal_UISwitch(type) {
-    $('[data-parent="_question_detail"]').each(function() {
-
+    $('[data-parent="_question_detail"]').each(function () {
         var $t = $(this);
         if ($t.data('ask') && $t.data('edit')) {
             if ($t.data('change')) {
@@ -247,14 +246,18 @@ function _qeustion_modal_UISwitch(type) {
             $t.show();
         }
     });
+    // disable table
+    navbar_search_table_disabled = (type == 'edit');
 }
 
 /**
  * Question detail page serach autocomplete
  */
 var navbar_search_table_timer = null;
+var navbar_search_table_disabled = false;
 function navbar_serach_table_autocomplete() {
     $('#_question_detail_input').bind('change keyup paste', function() {
+        if (navbar_search_table_disabled) return ;
         clearTimeout(navbar_search_table_timer);
         navbar_search_table_timer = setTimeout(function() {
             $.post('/api/autocomplete', {

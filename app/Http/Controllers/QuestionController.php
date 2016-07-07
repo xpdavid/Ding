@@ -124,12 +124,12 @@ class QuestionController extends Controller
      */
     public function update(Request $request) {
         $this->validate($request, [
-            'question_id' => 'required|integer',
+            'edit_question_id' => 'required|integer',
             'question_title' => 'required',
             'question_topics' => 'required',
         ]);
 
-        $question = Question::findOrFail($request->get('question_id'));
+        $question = Question::findOrFail($request->get('edit_question_id'));
         
         $question->topics()->sync($request->get('question_topics'));
         
