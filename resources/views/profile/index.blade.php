@@ -96,7 +96,7 @@
     </div>
 
 
-
+    @include('partials._bookmark_model')
 @endsection
 
 

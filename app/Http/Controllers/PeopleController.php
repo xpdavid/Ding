@@ -182,7 +182,7 @@ class PeopleController extends Controller
                                 'bio' => $answer->owner->bio,
                                 'url_name' => $answer->owner->url_name,
                             ],
-                            'answer' => $answer->answer,
+                            'answer' => $answer->summary,
                             'netVotes' => $answer->netVotes,
                             'numComment' => $answer->replies()->count(),
                             'vote_up_class' => $vote_up_class,
@@ -236,7 +236,7 @@ class PeopleController extends Controller
     public function postQuestion($url_name, Request $request) {
         $user = User::findUrlName($url_name);
 
-        $questions = $user->questions;
+        $questions = $user->questions()->orderBy('updated_at', 'decs')->get();
 
         // get page parameters
         $page = $request->exists('page') ? $request->get('page') : 1;
@@ -270,7 +270,7 @@ class PeopleController extends Controller
      */
     public function postAnswer($url_name, Request $request) {
         $user = User::findUrlName($url_name);
-        $answers = $user->answers;
+        $answers = $user->answers()->orderBy('updated_at', 'decs')->get();
         // check if display answers under specific topics
         if ($request->has('topic')) {
             $answers = $user->answersInTopic($request->get('topic'));
@@ -306,7 +306,7 @@ class PeopleController extends Controller
                     'user_id' => $answer->owner->id,
                     'user_bio' => $answer->owner->bio,
                     'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
-                    'answer' => $answer->answer,
+                    'answer' => $answer->summary,
                     'created_at' => $answer->createdAtHumanReadable,
                     'votes' => $answer->netVotes,
                     'numComment' => $answer->replies->count(),

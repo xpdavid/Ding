@@ -158,6 +158,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Intervention\Image\ImageServiceProvider::class,
+        Yangqi\Htmldom\HtmldomServiceProvider::class,
 
     ],
 
@@ -208,6 +209,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         'IImage' => Intervention\Image\Facades\Image::class,
+        'Htmldom' => Yangqi\Htmldom\Htmldom::class,
 
     ],
 

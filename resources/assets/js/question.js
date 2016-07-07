@@ -804,22 +804,24 @@ function invite_user(button, user_id, question_id) {
 }
 
 /**
- * Render textarea to tinymce textarea
- * @param id
+ * Bind expend all button
  */
-function renderTextarea(id) {
-    // init
-    tinymce.init({
-        menubar : false,
-        selector: '#question_answers_input',
-        plugins: 'code advlist autolink link image table media codesample fullscreen',
-        toolbar: 'bold italic underline | blockquote codesample bullist, numlist | link image media | fullscreen',
-    });
-
-    // bind fullscreen event hide nav bar
-    tinymce.activeEditor.on('FullscreenStateChanged', function(e) {
-        console.log(e);
-    });
+function bindExpendAll() {
+    $('body').on('click', '[data-toggle="expand_all"]', function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        $object = $(this);
+        if ($object.data('type') == "answer") {
+            $.post('/answer/' + $object.data('id'), {}, function(results) {
+                $('#answer_summary_' + $object.data('id')).hide();
+                $('#answer_full_' + $object.data('id')).html(results);
+                rerenderMath('answer_full_' + $object.data('id'));
+                $('#answer_full_' + $object.data('id')).show();
+                imgResponsiveIn('answer_full_' + $object.data('id'));
+            })
+        }
+    })
 }
 
 

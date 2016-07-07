@@ -532,4 +532,9 @@ function tinyMCEeditor(textareaID) {
     });
 }
 
+// bind expend buttong
+$(function() {
+    bindExpendAll();
+});
+
 //# sourceMappingURL=main.js.map

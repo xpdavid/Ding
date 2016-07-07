@@ -26,6 +26,17 @@ class AnswerController extends Controller
     }
 
     /**
+     * Answer ajax call to get answer
+     *
+     * @param $answer_id
+     * @return mixed
+     */
+    public function postAnswer($answer_id) {
+        $answer = Answer::findOrFail($answer_id);
+        return $answer->answer;
+    }
+
+    /**
      * Show specific answer for question
      *
      * @param $question_id
@@ -89,7 +100,6 @@ class AnswerController extends Controller
 
         $results = [];
         foreach ($answers->forPage($page, $itemInPage) as $answer) {
-
             $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
             $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
             array_push($results, [
@@ -99,7 +109,7 @@ class AnswerController extends Controller
                 'user_bio' => $answer->owner->bio,
                 'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
                 'user_url' => action('PeopleController@show', $answer->owner->url_name),
-                'answer' => $answer->answer,
+                'answer' => $answer->summary,
                 'created_at' => $answer->createdAtHumanReadable,
                 'votes' => $answer->netVotes,
                 'numComment' => $answer->replies->count(),
@@ -166,7 +176,7 @@ class AnswerController extends Controller
             'user_id' => $answer->owner->id,
             'user_bio' => $answer->owner->bio,
             'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
-            'answer' => $answer->answer,
+            'answer' => $answer->summary,
             'created_at' => $answer->createdAtHumanReadable,
             'votes' => $answer->netVotes,
             'numComment' => $answer->replies->count(),

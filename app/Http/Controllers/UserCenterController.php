@@ -198,7 +198,7 @@ class UserCenterController extends Controller
                         'bio' => $answer->owner->bio,
                         'url_name' => $answer->owner->url_name,
                     ],
-                    'answer' => $answer->answer,
+                    'answer' => $answer->summary,
                     'netVotes' => $answer->netVotes,
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,

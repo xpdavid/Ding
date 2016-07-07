@@ -55,8 +55,13 @@
             <a href="/people/{{answer.owner.url_name}}"><strong class="font-black">{{answer.owner.name}}</strong></a>, {{answer.owner.bio}}.
         </div>
 
-        <div class="questions_questionContent answer_summary">
-            {{{answer.answer}}}
+        <div class="questions_questionContent clearfix">
+            <div id="answer_summary_{{answer.id}}" class="answer_summary">
+                {{{answer.answer}}} <a href="#" class="answer_show_all" data-toggle="expand_all" data-type="answer" data-id="{{answer.id}}">Show all</a>
+            </div>
+            <div id="answer_full_{{answer.id}}">
+
+            </div>
         </div>
 
         <div class="horizontal_item">

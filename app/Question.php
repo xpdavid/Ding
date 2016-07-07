@@ -95,12 +95,7 @@ class Question extends Model
      * @return string
      */
     public function getExcerptAttribute() {
-        $text = $this->content;
-        $length = 200;
-        if(strlen($text) > $length) {
-            $text = preg_replace("/^(.{1,$length})(\s.*|$)/s", '\\1...', $text);
-        }
-        return $text;
+        return truncateText($this->content, 200);
     }
 
     /**

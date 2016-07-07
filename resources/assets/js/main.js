@@ -531,3 +531,8 @@ function tinyMCEeditor(textareaID) {
         file_picker_types: 'image'
     });
 }
+
+// bind expend buttong
+$(function() {
+    bindExpendAll();
+});

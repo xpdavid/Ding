@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "5.2.*",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "yangqi/htmldom": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -25,7 +26,8 @@
             "App\\": "app/"
         },
         "files": [
-          "app/Support/DImage.php"
+          "app/Support/DImage.php",
+          "app/Support/Helpers.php"
         ]
     },
     "autoload-dev": {

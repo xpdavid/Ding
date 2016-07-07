@@ -160,14 +160,18 @@ class UploadController extends Controller
         // resize the image
         $img_resize = IImage::make($img->getRealPath());
         // resize the image to a width of 1024 and constrain aspect ratio (auto height)
-        $img_resize->resize(1024, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        // small than 1024, than cancel resize
+        if ($img_resize->width() < 1024) {
+            $img_resize->resize(1024, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+
 
         // create new image instance
         $img_database = Image::create([
             'path' => $relative_fullpath,
-            'width' => 1024,
+            'width' => $img_resize->width(),
             'height' => $img_resize->height()
         ]);
         $img_database->save();
@@ -180,7 +184,7 @@ class UploadController extends Controller
         $img_resize->save(base_path($relative_fullpath), 60); // medium quality
 
         // calculate ratio
-        $width = 600;
+        $width = ($img_resize->width()) < 600 ? $img_resize->width() : 600;
         $height = ceil($width * ($img_resize->height() / $img_resize->width()));
 
         return [

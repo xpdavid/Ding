@@ -10,6 +10,11 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+Route::get('/test', function(Request $request) {
+
+});
+
 Route::get('/forcelogin/{id}', function($id) {
     Auth::loginUsingId($id);
     return redirect('/highlight');
@@ -35,6 +40,7 @@ Route::post('/question/{question_id}/invite', 'QuestionController@invite');
 Route::get('/question/{question_id}', 'QuestionController@show');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::post('/question/ask', 'QuestionController@ask');
+Route::post('/answer/{id}', 'AnswerController@postAnswer');
 
 // for answer
 Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
