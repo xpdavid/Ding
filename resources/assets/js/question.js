@@ -344,6 +344,7 @@ function saveAnswer(base_id, question_id) {
             tinymce.activeEditor.setContent('');
             // render the formulat (if any)
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,"answer_" + results.id]);
+            imgResponsiveIn('question_answers');
         } else {
             swal("Error", "Sever post a question :(", "error");
         }

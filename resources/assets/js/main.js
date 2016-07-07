@@ -464,7 +464,12 @@ function cropImage(img_id, aspectRatio, callback) {
  * @param id
  */
 function imgResponsiveIn(id) {
-    $('#' + id).find('img').addClass('img-responsive');
+    $('#' + id).find('img').each(function() {
+        if (!$(this).hasClass('img-responsive')) {
+            $(this).addClass('img-responsive');
+        }
+    });
+
 }
 
 /**
@@ -485,6 +490,9 @@ function tinyMCEeditor(textareaID) {
         paste_as_text: true,
         plugins: 'code advlist autolink link image imagetools table media codesample fullscreen paste',
         toolbar: ['code | undo redo | bold italic underline | blockquote codesample bullist numlist math | link image media | fullscreen',],
+        relative_urls : false,
+        remove_script_host : false,
+        convert_urls : true,
         setup: function (editor) {
             editor.on('FullscreenStateChanged', function(e) {
                 if (e.state) {

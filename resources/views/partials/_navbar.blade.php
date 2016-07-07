@@ -52,7 +52,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle navbar_portraitBox" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <img class="navbar_portrait"
+                        <img class="_portrait"
                              src="{{ DImage(Auth::user()->settings->profile_pic_id, 25,25) }}"
                              alt="{{ Auth::user()->name }}">
                         <span class="caret"></span>

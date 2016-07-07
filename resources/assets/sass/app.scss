@@ -187,9 +187,10 @@ body.modal-open {
   padding-bottom: 12px !important;
 }
 
-.navbar_portrait {
+._portrait {
   width: 25px !important;
   height: 25px !important;
+  margin: 1px;
 }
 
 .clickable {
@@ -1134,6 +1135,15 @@ body.modal-open {
   text-decoration: none;
   color: #698ebf;
 }
+
+.answer_summary img {
+  float: left;
+  height: 112px;
+  width: 200px;
+  border-radius: 4px;
+  margin: 1px 10px 5px 0;
+}
+
 /*end of question_homepage.html*/
 
 /*begin of topic.html*/

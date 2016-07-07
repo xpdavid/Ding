@@ -167,7 +167,7 @@
             </div>
             <div class="margin-top">
                 @foreach($question->subscribers as $subscriber)
-                    <img src="{{ DImage($subscriber->owner->settings->profile_pic_id, 25, 25) }}" alt="{{$subscriber->owner->name}}" class="img-rounded">
+                    <img src="{{ DImage($subscriber->owner->settings->profile_pic_id, 25, 25) }}" alt="{{$subscriber->owner->name}}" class="img-rounded _portrait">
                 @endforeach
             </div>
         </div>
