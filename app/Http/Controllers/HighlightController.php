@@ -90,6 +90,7 @@ class HighlightController extends Controller
                     'vote_up_class' => $vote_up_class,
                     'vote_down_class' => $vote_down_class,
                     'canVote' => $answer->owner->canAnswerVoteBy($user),
+                    'canEdit' => $answer->owner->id == $user->id
                 ];
             }
 

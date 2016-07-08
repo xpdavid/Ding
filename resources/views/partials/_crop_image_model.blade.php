@@ -1,5 +1,5 @@
 {{--// crop image model--}}
-<div class="modal fade" id="crop_img_{{ $id }}_modal" tabindex="-1" role="dialog" aria-labelledby="crop_image">
+<div class="modal fade" id="crop_img_{{ $id }}_modal" tabindex="-1" role="dialog" aria-labelledby="crop_img_{{ $id }}_modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

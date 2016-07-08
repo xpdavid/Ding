@@ -40,7 +40,7 @@
                         <img src="{{ DImage($settings->profile_pic_id, 100, 100) }}" alt="{{ $user->name }}" class="img-rounded" />
                         <!-- Button trigger crop modal -->
                         <div class="margin-top">
-                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#crop_image">
+                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#crop_img_profile_modal">
                                 Upload New Image
                             </button>
                         </div>

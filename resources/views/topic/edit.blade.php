@@ -165,7 +165,7 @@
         <div class="topic_manage_content">
             <div id="img_topics_trigger" class="margin-top">
                 <img class="media-object topic_avatar img-rounded" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
-                <button type="button" class="btn btn-default btn-xs margin-top" data-toggle="modal" data-target="#crop_image">
+                <button type="button" class="btn btn-default btn-xs margin-top" data-toggle="modal" data-target="#crop_img_{{ $topic->id }}_modal">
                     Upload New Image
                 </button>
             </div>
