@@ -17,86 +17,8 @@
         <hr>
 
         {{--current answer here--}}
-        <div>
-            <div class="answer_overall" id="answer_{{ $answer->id }}">
-                <div class="answer_voting">
-                    <button type="button" id="vote_answer_{{ $answer->id }}_up" class="btn btn-primary
-                        @if($answer->vote_up_users->contains(Auth::user()->id))
-                            active
-                        @endif
-                            " onclick="vote_answer('{{ $answer->id }}', 'up')">
-                        <div>
-                            <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
-                        </div>
-                        <span class="vote_answer_{{ $answer->id }}_count">{{ $answer->netVotes }}</span>
-                    </button>
-                    <button type="button" id="vote_answer_{{ $answer->id }}_down" class="btn btn-primary
-                        @if($answer->vote_down_users->contains(Auth::user()->id))
-                            active
-                        @endif
-                            " onclick="vote_answer('{{ $answer->id }}', 'down')">
-                        <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
-                    </button>
-                </div>
+        <div id="answer">
 
-
-                <div class="clearfix">
-                    <div class="float-left"><strong>{{ $answer->owner->name }}</strong>, <span class="font-black">{{ $answer->owner->bio }}</span> </div>
-                    <img class="float-right" src="{{ DImage($answer->owner->settings->profile_pic_id, 25, 25) }}" alt="{{ $answer->owner->name }}">
-                </div>
-
-                <div>
-                    <span class="answer_vote "><span class="vote_answer_{{ $answer->id }}_count">{{ $answer->netVotes }}</span> Vote(s)</span>
-                </div>
-
-                <div class="answer_content font-black clearfix">
-                    {!! $answer->answer !!}
-                </div>
-
-                <div class="horizontal_item">
-                    <a href="#">Posted on {{ $answer->createdAtHumanReadable }}</a>
-                    <a href="#"
-                       id="answer_comment_{{ $question->id }}_trigger"
-                       onclick="showComment(event, 'answer', '{{ $answer->id }}', 'answer_comment_{{ $answer->id }}');">
-                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                        Comment (<span id="answer_comment_{{ $answer->id }}_replies_count">{{ $answer->replies()->count() }}</span>)
-                    </a>
-                    <a href="#" onclick="bookmark('answer', '{{$answer->id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
-                    <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
-                    <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
-                </div>
-
-
-                <div class="comment_box" id="answer_comment_{{ $answer->id }}">
-                    <div class="comment_spike"></div>
-                    <div class="comment_list">
-                        <div class="comment_content" id="answer_comment_{{ $answer->id }}_content">
-
-                        </div>
-
-                        <div class="text-center" id="answer_comment_{{ $answer->id }}_nav">
-
-                        </div>
-
-                        <div class="comment_form clearfix">
-                            <div class="form-group">
-                                <input type="email"
-                                       class="form-control" id="answer_comment_{{ $answer->id }}_input"
-                                       placeholder="Write Your Comment Here",
-                                       id="answer_comment_{{ $answer->id }}_input",
-                                       onfocus="show_form(event, 'answer_comment_{{ $answer->id }}_buttons')">
-                            </div>
-                            <div class="float-right form-group noneDisplay" id="answer_comment_{{ $answer->id }}_buttons">
-                                <a href="#" role="button" class="space-right-big"
-                                   onclick="cancel_from(event, 'answer_comment_{{ $answer->id }}_buttons')">Cancel</a>
-                                <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{ $answer->id }}', '{{ $answer->id }}', 'answer')">Submit</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
         </div>
 
         <div class="answer_moreAnswer">
@@ -104,94 +26,8 @@
         </div>
 
         {{--more answer here--}}
-        <div>
-            @foreach($question->answers()->take(3)->get()->shuffle() as $other_answer)
-                @if($other_answer->id != $answer->id)
-                    <div class="answer_overall">
-                        <div class="answer_voting">
-                            <button type="button" id="vote_answer_{{ $other_answer->id }}_up" class="btn btn-primary
-                                @if($other_answer->vote_up_users->contains(Auth::user()->id))
-                                    active
-                                @endif
-                            " onclick="vote_answer('{{ $other_answer->id }}', 'up')">
-                                <div>
-                                    <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
-                                </div>
-                                <span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->netVotes }}</span>
-                            </button>
-                            <button type="button" id="vote_answer_{{ $other_answer->id }}_down" class="btn btn-primary
-                                @if($other_answer->vote_down_users->contains(Auth::user()->id))
-                                    active
-                                @endif
-                                    " onclick="vote_answer('{{ $other_answer->id }}', 'down')">
-                                <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
-                            </button>
-                        </div>
+        <div id="answer_more">
 
-
-                        <div class="clearfix">
-                            <div class="float-left"><strong>{{ $other_answer->owner->name }}</strong>, <span class="font-black">{{ $other_answer->owner->bio }}</span> </div>
-                            <img class="float-right" src="{{ DImage($other_answer->owner->settings->profile_pic_id, 25, 25) }}" alt="{{ $other_answer->owner->name }}">
-                        </div>
-
-                        <div>
-                            <span class="answer_vote "><span class="vote_answer_{{ $other_answer->id }}_count">{{ $other_answer->netVotes }}</span> Vote(s)</span>
-                        </div>
-
-                        <div class="answer_content font-black clearfix">
-                            <div id="answer_summary_{{ $other_answer->id }}" class="answer_summary">
-                                {!! $other_answer->summary !!} <a href="#" class="answer_show_all" data-toggle="expand_all" data-type="answer" data-id="{{ $other_answer->id}}">Show all</a>
-                            </div>
-                            <div id="answer_full_{{ $other_answer->id }}">
-
-                            </div>
-                        </div>
-
-                        <div class="horizontal_item">
-                            <a href="#">Posted on {{ $other_answer->createdAtHumanReadable }}</a>
-                            <a href="#" onclick="showComment(event, this, 'answer', '{{ $other_answer->id }}', 'answer_comment_{{ $other_answer->id }}');">
-                                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                                Comment (<span id="answer_comment_{{ $other_answer->id }}_replies_count">{{ $other_answer->replies()->count() }}</span>)
-                            </a>
-                            <a href="#" onclick="bookmark('answer', '{{$other_answer->id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
-                            <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
-                            <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
-                        </div>
-
-
-                        <div class="comment_box" id="answer_comment_{{ $other_answer->id }}">
-                            <div class="comment_spike"></div>
-                            <div class="comment_list">
-                                <div class="comment_content" id="answer_comment_{{ $other_answer->id }}_content">
-
-                                </div>
-
-                                <div class="text-center" id="answer_comment_{{ $other_answer->id }}_nav">
-
-                                </div>
-
-                                <div class="comment_form clearfix">
-                                    <div class="form-group">
-                                        <input type="email"
-                                               class="form-control" id="answer_comment_{{ $other_answer->id }}_input"
-                                               placeholder="Write Your Comment Here",
-                                               id="answer_comment_{{ $other_answer->id }}_input",
-                                               onfocus="show_form(event, 'answer_comment_{{ $other_answer->id }}_buttons')">
-                                    </div>
-                                    <div class="float-right form-group noneDisplay" id="answer_comment_{{ $other_answer->id }}_buttons">
-                                        <a href="#" role="button" class="space-right-big"
-                                           onclick="cancel_from(event, 'answer_comment_{{ $other_answer->id }}_buttons')">Cancel</a>
-                                        <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{ $other_answer->id }}', '{{ $other_answer->id }}', 'answer')">Submit</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <hr>
-                @endif
-            @endforeach
         </div>
 
         <div class="text-center"><a href="/question/{{ $question->id }}">Show all {{ $question->answers->count() }} answer(s)</a></div>
@@ -318,6 +154,18 @@
         @endif
 
         imgResponsiveIn('answer_{{ $answer->id }}');
+
+        showAnswers([{{ $answer->id }}], 'answer', false, function() {
+            // expand all
+            $('[data-toggle="expand_all"][data-type="answer"][data-id="{{ $answer->id }}"]').click();
+        });
+
+        @foreach($question->answers()->take(3)->get()->shuffle() as $other_answer)
+            @if($other_answer->id != $answer->id)
+                showAnswers([{{ $other_answer->id }}], 'answer_more', true);
+            @endif
+        @endforeach
+
     })
 </script>
 @endsection

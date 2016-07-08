@@ -297,17 +297,5 @@ $(function() {
 
     // equation support
     math_editor();
-
-    // bind switch editor
-    $('#_question_detail').on('show.bs.modal', function() {
-        tinymce.EditorManager.setActive(tinyMCE.get('question_detail'))
-    });
-
-    $('#_question_detail').on('hide.bs.modal', function() {
-        if (tinyMCE.get('question_answers_input')) {
-            tinymce.EditorManager.setActive(tinyMCE.get('question_answers_input'))
-        }
-    });
-
 });
 

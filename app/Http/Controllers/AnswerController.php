@@ -37,7 +37,7 @@ class AnswerController extends Controller
     }
 
     /**
-     * Easy way to show answer
+     * get answer full content
      *
      * @param $answer_id
      * @return \Illuminate\Http\RedirectResponse
@@ -46,6 +46,7 @@ class AnswerController extends Controller
         $answer = Answer::findOrFail($answer_id);
         return redirect()->action('AnswerController@show', [$answer->question->id, $answer->id]);
     }
+
 
     /**
      * Show specific answer for question
@@ -123,20 +124,30 @@ class AnswerController extends Controller
      * @return array
      */
     public function postAnswers(Request $request) {
-        $this->validate($request, [
-            'question_id' => 'required|integer',
-            'page' => 'required|integer',
-        ]);
+        if ($request->has('ids')) {
+            // get specific answer
+            $answers = collect();
+            foreach ($request->get('ids') as $answer_id) {
+                $answers->push(Answer::findOrFail($answer_id));
+            }
+
+        } else {
+            // get all answer
+            $this->validate($request, [
+                'question_id' => 'required|integer',
+                'page' => 'required|integer',
+            ]);
+            $question_id = $request->get('question_id');
+            $question = Question::findOrFail($question_id);
+            $answers = $question->answers;
+        }
 
         // get necessary param
         $page = $request->get('page');
-        $question_id = $request->get('question_id');
         $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
-        $question = Question::findOrFail($question_id);
         $user = Auth::user();
 
         // determine sorting method
-        $answers = $question->answers;
         if ($request->exists('sorted') && $request->get('sorted') == 'created') {
             $answers = $answers->sortByDesc('created_at');
         } else {

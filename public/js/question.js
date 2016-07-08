@@ -310,6 +310,46 @@ function getMore(base_id, question_id, sorted, button_id, callback) {
     }
 }
 
+/**
+ * Send ajax call to get specific answer
+ *
+ * @param ids
+ * @param appendID
+ * @param isAppend
+ * @param callback
+ */
+function showAnswers(ids, appendID, isAppend, callback) {
+    $.post('/question/answers', {
+        ids : ids,
+        page : 1,
+        itemInPage : 10000
+    }, function(results) {
+        // compile template
+        var template = Handlebars.templates['_answer_item.html'];
+        var data = {
+            answers : results
+        };
+
+        if (isAppend) {
+            // append more answers to the box
+            $('#' + appendID).append(template(data));
+        } else {
+            // override content
+            $('#' + appendID).html(template(data));
+        }
+        // math
+        rerenderMath(appendID);
+        // responsive img
+        imgResponsiveIn(appendID);
+
+        // check callback
+        if(callback && typeof callback == "function"){
+            callback(results);
+        }
+
+    });
+}
+
 
 /**
  * Send ajax request to sever to save answer

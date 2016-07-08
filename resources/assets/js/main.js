@@ -477,6 +477,8 @@ function imgResponsiveIn(id) {
  * @param textareaID
  */
 function tinyMCEeditor(textareaID) {
+    // cannot find the element.
+    if ($('#' + textareaID).length == 0) return;
     // init
     var upload_callback_helper = null;
     var upload_callback = function(result) {
@@ -508,6 +510,9 @@ function tinyMCEeditor(textareaID) {
                 text: 'Equation',
                 icon: false,
                 onclick: function () {
+                    // set active
+                    tinyMCE.setActive(editor);
+                    // call tex editor with empty formula
                     callTexEditor('');
                 }
             });
