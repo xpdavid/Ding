@@ -203,7 +203,8 @@ class UserCenterController extends Controller
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,
                     'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user)
+                    'canVote' => $answer->owner->canAnswerVoteBy($user),
+                    'canEdit' => $answer->owner->id == $user->id,
                 ];
             }
 

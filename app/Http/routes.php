@@ -42,10 +42,11 @@ Route::post('/question/update', 'QuestionController@update');
 Route::post('/question/{question_id}', 'QuestionController@postQuestion');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
 Route::post('/question/ask', 'QuestionController@ask');
-Route::get('/answer/{id}', 'AnswerController@getAnswer');
-Route::post('/answer/{id}', 'AnswerController@postAnswer');
 
 // for answer
+Route::get('/answer/{id}', 'AnswerController@getAnswer');
+Route::post('/answer/{id}', 'AnswerController@postAnswer');
+Route::post('/answer/{id}/update', 'AnswerController@update');
 Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
 Route::get('/question/{question_id}/answer/{answer_id}', 'AnswerController@show');
 

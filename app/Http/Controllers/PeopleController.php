@@ -187,7 +187,8 @@ class PeopleController extends Controller
                             'numComment' => $answer->replies()->count(),
                             'vote_up_class' => $vote_up_class,
                             'vote_down_class' => $vote_down_class,
-                            'canVote' => $answer->owner->canAnswerVoteBy($auth_user)
+                            'canVote' => $answer->owner->canAnswerVoteBy($auth_user),
+                            'canEdit' => $answer->owner->id == $auth_user->id,
                         ];
 
 
@@ -312,7 +313,8 @@ class PeopleController extends Controller
                     'numComment' => $answer->replies->count(),
                     'vote_up_class' => $vote_up_class,
                     'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user)
+                    'canVote' => $answer->owner->canAnswerVoteBy($user),
+                    'canEdit' => $answer->owner->id == Auth::user()->id,
                 ]);
             }
             $arr['answers'] = $answers_arr;

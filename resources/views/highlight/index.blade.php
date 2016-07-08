@@ -64,6 +64,7 @@
             getRecommendQuestion(null, null, processRecommendShort); // ajax get recommend question
             getHotWeekQuestion(); // ajax get hot week questions
             getHotMonthQuestion(); // ajax get hot month questions
+            backupContent();
         })
     </script>
 @endsection

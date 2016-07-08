@@ -58,6 +58,15 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
+                        <li class="clearfix">
+                            <a href="#" class="clearfix">
+                                <div class="float-left">
+                                    <span class="label label-default float-left nav_user_tag space-right">Default</span>
+                                    {{ Auth::user()->name }}
+                                </div>
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
                         <li><a href="/people/{{ Auth::user()->url_name }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
                         <li><a href="/inbox"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
                         <li><a href="/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
@@ -67,9 +76,9 @@
                 </li>
             </ul>
 
-            <div class="nav navbar-nav navbar-right">
-                <button type="button" class="btn btn-primary navbar_ask_button" data-toggle="modal" data-target="#ask_question">Ask</button>
-            </div>
+            <form class="navbar-form navbar-right" role="ask">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ask_question">Ask</button>
+            </form>
 
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

@@ -27,10 +27,15 @@ class HighlightController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-
         return view('highlight.index');
     }
-    
+
+
+    /**
+     * Show recommendations page
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getRecommendations() {
         return view('highlight.recommendations');
     }
@@ -84,7 +89,7 @@ class HighlightController extends Controller
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,
                     'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user)
+                    'canVote' => $answer->owner->canAnswerVoteBy($user),
                 ];
             }
 
@@ -156,7 +161,7 @@ class HighlightController extends Controller
                     'numComment' => $answer->replies()->count(),
                     'vote_up_class' => $vote_up_class,
                     'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user)
+                    'canVote' => $answer->owner->canAnswerVoteBy($user),
                 ];
             }
             array_push($results, [

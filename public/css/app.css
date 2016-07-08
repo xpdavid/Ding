@@ -698,6 +698,9 @@ body.modal-open {
   background: linear-gradient(to right, #fff 0, rgba(255, 255, 255, 0.5) 1%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0) 94%, rgba(255, 255, 255, 0.5) 99%, #fff 100%);
   padding: 8px 2px 8px 2px; }
 
+.nav_user_tag {
+  margin-top: 3px; }
+
 .sideBar_section {
   border-bottom: 1px solid #eee; }
 
@@ -828,7 +831,8 @@ body.modal-open {
   transition: background-color 800ms linear; }
 
 .answer_content {
-  padding-top: 3px; }
+  padding-top: 3px;
+  overflow-x: hidden; }
 
 .answer_voting {
   clear: left;
@@ -889,7 +893,16 @@ body.modal-open {
   margin-left: 10px; }
 
 .highlight_title_short {
-  max-width: 600px; }
+  max-width: 80%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+
+.highlight_topic_short {
+  max-width: 20%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
 
 .horizontal_item {
   margin-top: 5px; }

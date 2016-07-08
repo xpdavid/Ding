@@ -137,13 +137,37 @@ function getHotMonthQuestion() {
     }, 'month');
 }
 
+var hotWeekContent = null;
+var hotMonthContent = null;
+function backupContent() {
+    $('a[href="#hotInWeek"]').on('show.bs.tab', function() {
+        // backup content
+        hotMonthContent = $('#highlight_month').html();
+        // remove to prevent duplicate id
+        $('#highlight_month').html('');
+
+        // append previous backup
+        $('#highlight_week').append(hotWeekContent);
+    });
+
+    $('a[href="#hotInMonth"]').on('show.bs.tab', function() {
+        // backup content
+        hotWeekContent = $('#highlight_week').html();
+        // remove to prevent duplicate id
+        $('#highlight_week').html('');
+
+        // append previous backup
+        $('#highlight_month').append(hotMonthContent);
+    });
+}
+
 /**
  * process the results from ajax by given detail info to first two element
  * @param results
  */
 function processRecommendShort(results) {
     var template_short = Handlebars.templates['_highlight_question_short.html'];
-    var template_normal = Handlebars.templates['_userCenter_home_item.html'];
+    var template_normal = Handlebars.templates['_answer_summary.html'];
 
     $('#highlight_recommend').append(template_normal({
         questions: results.slice(0, 2)

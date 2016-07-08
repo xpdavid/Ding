@@ -83,6 +83,40 @@ class AnswerController extends Controller
     }
 
     /**
+     * Update answer with specific id
+     *
+     * @param $answer_id
+     * @param Request $request
+     * @return array(json)
+     */
+    public function update($answer_id, Request $request) {
+        $this->validate($request, [
+            'answer' => 'required'
+        ]);
+
+        $user = Auth::user();
+        $answer = Answer::findOrFail($answer_id);
+
+        // check if the answer blongs to the current user
+        if ($user->id != $answer->owner->id) {
+            return [
+                'status' => false
+            ];
+        }
+
+        // update answer
+        $answer->update([
+            'answer' => $request->get('answer')
+        ]);
+
+        return [
+            'status' => true,
+            'answer' => $answer->summary,
+            'o'
+        ];
+    }
+
+    /**
      * response ajax request to get all answers
      *
      * @param Request $request
@@ -126,7 +160,8 @@ class AnswerController extends Controller
                 'numComment' => $answer->replies->count(),
                 'vote_up_class' => $vote_up_class,
                 'vote_down_class' => $vote_down_class,
-                'canVote' => $answer->owner->canAnswerVoteBy($user)
+                'canVote' => $answer->owner->canAnswerVoteBy($user),
+                'canEdit' => $answer->owner->id == $user->id,
             ]);
         }
 
@@ -192,6 +227,7 @@ class AnswerController extends Controller
             'votes' => $answer->netVotes,
             'numComment' => $answer->replies->count(),
             'canVote' => true,
+            'canEdit' => true,
             'status' => true
         ];
     }

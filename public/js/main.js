@@ -532,9 +532,28 @@ function tinyMCEeditor(textareaID) {
     });
 }
 
+/**
+ * Bind data-toggle hide/show event
+ */
+function bindHideShow() {
+    $('body').on('click', '[data-toggle="hide"]', function(e) {
+        e.preventDefault();
+
+        if ($(this).data('hide')) {
+            $('#' + $(this).data('hide')).hide();
+        }
+
+        if ($(this).data('show')) {
+            $('#' + $(this).data('show')).show();
+        }
+
+    });
+}
+
 // bind expend buttong
 $(function() {
     bindExpendAll();
+    bindHideShow();
 });
 
 //# sourceMappingURL=main.js.map

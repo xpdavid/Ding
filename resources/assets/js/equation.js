@@ -220,5 +220,10 @@ $(function() {
  * @param id
  */
 function rerenderMath(id) {
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);
+    if (MathJax) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);
+    } else {
+        console.log('MaxJax loading... Please wait...');
+    }
+
 }

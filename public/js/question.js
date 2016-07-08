@@ -354,7 +354,7 @@ function saveAnswer(base_id, question_id) {
 }
 
 /**
- * The formular is show as image in the editor. We change it to tex language
+ * The formula is show as image in the editor. We change it to tex language
  */
 function changeImageToTex(content) {
     var $div = $('<div>' + content + '</div>');
@@ -366,6 +366,21 @@ function changeImageToTex(content) {
     });
 
     return $div.html();
+}
+
+/**
+ * The formula is show as latex language in html, we change it to image
+ */
+function changeTexToImage(content) {
+    var regex = /\\\((.*?)\\\)/g;
+    if (content.match(regex)) {
+        content = content.replace(regex, function() {
+            return '<img src="https://latex.codecogs.com/gif.latex?' +
+                encodeURIComponent(arguments[1])
+                + '" data-type="tex" data-value="' + encodeURIComponent(arguments[1]) + '">';
+        });
+    }
+    return content;
 }
 
 /**
@@ -813,29 +828,25 @@ function bindExpendAll() {
         }
         $object = $(this);
         if ($object.data('type') == "answer") {
-            if (!$('#answer_full_' + $object.data('id')).data('expand')) {
-                $.post('/answer/' + $object.data('id'), {}, function(results) {
-                    $('#answer_summary_' + $object.data('id')).hide();
-                    $('#answer_full_' + $object.data('id')).html(results);
-                    rerenderMath('answer_full_' + $object.data('id'));
-                    $('#answer_full_' + $object.data('id')).show();
-                    imgResponsiveIn('answer_full_' + $object.data('id'));
-                    // set has expanded
-                    $('#answer_full_' + $object.data('id')).data('expand', true);
-                })
-            }
+            $.post('/answer/' + $object.data('id'), {}, function(results) {
+                $('#answer_summary_' + $object.data('id')).hide();
+                $('#answer_full_content_' + $object.data('id')).html(results);
+                rerenderMath('answer_full_' + $object.data('id'));
+                $('#answer_full_' + $object.data('id')).show();
+                imgResponsiveIn('answer_full_' + $object.data('id'));
+                // set has expanded
+                $('#answer_full_' + $object.data('id')).data('expand', true);
+            });
         } else if ($object.data('type') == "question") {
-            if (!$('#question_full_' + $object.data('id')).data('expand')) {
-                $.post('/question/' + $object.data('id'), {}, function(results) {
-                    $('#question_summary_' + $object.data('id')).hide();
-                    $('#question_full_' + $object.data('id')).html(results.content);
-                    rerenderMath('question_full_' + $object.data('id'));
-                    $('#question_full_' + $object.data('id')).show();
-                    imgResponsiveIn('question_full_' + $object.data('id'));
-                    // set has expanded
-                    $('#question_full_' + $object.data('id')).data('expand', true);
-                })
-            }
+            $.post('/question/' + $object.data('id'), {}, function(results) {
+                $('#question_summary_' + $object.data('id')).hide();
+                $('#question_full_' + $object.data('id')).html(results.content);
+                rerenderMath('question_full_' + $object.data('id'));
+                $('#question_full_' + $object.data('id')).show();
+                imgResponsiveIn('question_full_' + $object.data('id'));
+                // set has expanded
+                $('#question_full_' + $object.data('id')).data('expand', true);
+            });
         }
     })
 }
@@ -881,6 +892,70 @@ function editQuestion(event, question_id) {
 
     // show modal
     $('#_question_detail').modal('show');
+}
+
+/**
+ * Edit answer
+ *
+ * @param event
+ * @param answer_id
+ */
+function editAnswer(event, answer_id) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    // add crop image modal for editor
+    var crop_image_modal = Handlebars.templates['_crop_image.html'];
+    $('body').append(
+        crop_image_modal({
+            id : 'answer_editor_' + answer_id,
+            url : '/user/upload',
+            image : '/static/images/default.png'
+        })
+    );
+
+    // inital editor
+    if (!tinyMCE.get('answer_editor_' + answer_id)) {
+        tinyMCEeditor('answer_editor_' + answer_id);
+    }
+
+    // get answer content
+    $.post('/answer/' + answer_id, {} , function (results) {
+        tinyMCE.get('answer_editor_' + answer_id).setContent(
+            changeTexToImage(results)
+        );
+
+        $('#answer_summary_' + answer_id).hide();
+        $('#answer_full_' + answer_id).hide();
+        $('#answer_editor_' + answer_id + '_wrapper').show();
+
+        // scroll to the editor
+        scroll_to('answer_editor_' + answer_id + '_wrapper');
+    });
+}
+
+/**
+ * Send ajax call to update answer
+ *
+ * @param answer_id
+ */
+function updateAnswer(answer_id) {
+    $('#answer_editor_' + answer_id + '_wrapper').hide();
+    $.post('/answer/' + answer_id + '/update', {
+        answer : changeImageToTex(tinyMCE.get('answer_editor_' + answer_id).getContent())
+    }, function(results) {
+        var $summary = $('#answer_summary_content_' + answer_id);
+        if (results.status) {
+            $summary.html(results.answer);
+            $summary.show();
+        } else {
+
+        }
+
+        $('#answer_summary_' + answer_id).show();
+        rerenderMath('answer_summary_' + answer_id);
+    });
 }
 
 

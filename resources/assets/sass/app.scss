@@ -869,6 +869,10 @@ body.modal-open {
   padding: 8px 2px 8px 2px;
 }
 
+.nav_user_tag {
+  margin-top: 3px;
+}
+
 .sideBar_section {
   border-bottom: 1px solid #eee;
 }
@@ -1041,6 +1045,7 @@ body.modal-open {
 
 .answer_content {
   padding-top: 3px;
+  overflow-x : hidden;
 }
 
 .answer_voting {
@@ -1115,7 +1120,17 @@ body.modal-open {
 }
 
 .highlight_title_short {
-  max-width: 600px;
+  max-width: 80%;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.highlight_topic_short {
+  max-width: 20%;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .horizontal_item {
