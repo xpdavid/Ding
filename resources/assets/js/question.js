@@ -385,6 +385,13 @@ function saveAnswer(base_id, question_id) {
             // render the formulat (if any)
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,"answer_" + results.id]);
             imgResponsiveIn('question_answers');
+            
+            // disasbled the from
+            // you can only answer an question once
+            $('#question_answer_form').hide();
+            $('#question_answer_forbidden_current').attr('href', '/answer/' + results.id);
+            $('#question_answer_forbidden').show();
+
         } else {
             swal("Error", "Sever post a question :(", "error");
         }
@@ -906,20 +913,20 @@ function editQuestion(event, question_id) {
     // send ajax call to get question content
     $.post('/question/' + question_id, {}, function(results) {
         // copy question title
-        $('#_question_detail_input').val(results.title);
+        $('#_question_title').val(results.title);
         // copy question content
-        tinyMCE.get('question_detail').focus();
-        tinyMCE.activeEditor.setContent(results.content);
+        tinyMCE.get('_question_detail').focus();
+        tinyMCE.activeEditor.setContent(changeTexToImage(results.content));
     });
 
     // set question id
-    $('#_question_detail_question_id').val(question_id);
+    $('#_question_id').val(question_id);
 
     // set topics
     var topics = $('[data-type="question_topics"]').data('content');
     var ids = [];
 
-    var $topics = $('#question_topics');
+    var $topics = $('#_question_topics');
     $topics.empty(); // empty select
 
     $.each(topics, function(id, name) {
@@ -931,7 +938,7 @@ function editQuestion(event, question_id) {
     $topics.val(ids).trigger("change"); //apply to select2
 
     // show modal
-    $('#_question_detail').modal('show');
+    $('#_question').modal('show');
 }
 
 /**

@@ -91,6 +91,6 @@
 @include('partials._crop_image_model', [
         'url' => '/user/upload',
         'image' => '/static/images/default.png',
-        'id' => 'question_detail',
+        'id' => '_question_detail',
         'type' => '',
     ])

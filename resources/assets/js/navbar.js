@@ -157,14 +157,14 @@ function navbar_searching_click() {
  */
 function navbar_question_detail() {
     $('#ask_question').modal('hide');
-    $('#ask_question_detail').modal('show');
+    $('#_question').modal('show');
 }
 
 /**
  * description: autocomplete help select topic when ask question
  */
 $(function () {
-    topic_autocomplete('question_topics');
+    topic_autocomplete('_question_topics');
 });
 
 /**
@@ -205,11 +205,13 @@ $(function() {
     navbar_serach_box_autocomplate();
 });
 
-
+/**
+ * Show question detail modal
+ */
 function navbar_ask_question_detail() {
     $('#ask_question').modal('hide');
     var old_input = $('#ask_question_input');
-    var new_input = $('#_question_detail_input');
+    var new_input = $('#_question_title');
     // copy same query
     new_input.val(old_input.val());
     old_input.val('');
@@ -218,7 +220,42 @@ function navbar_ask_question_detail() {
     // fire search event
     new_input.trigger('change');
     // show ask question detail page
-    $('#_question_detail').modal('show');
+    $('#_question').modal('show');
+}
+
+function navbar_question_form_process() {
+    var timer1 = null;
+    var timer2 = null;
+    $('#_question_form').submit(function() {
+        // question title empty
+        if ($('#_question_title').val().length <= 5) {
+            clearTimeout(timer1);
+            $('#_question_title_error').fadeIn();
+            timer1 = setInterval(function() {
+                $('#_question_title_error').fadeOut();
+            }, 2000);
+            return false;
+        }
+
+        // question topics empty
+        if (!$('#_question_topics').val()) {
+            clearTimeout(timer2);
+            $('#_question_topics_error').fadeIn();
+            timer2 = setInterval(function() {
+                $('#_question_topics_error').fadeOut();
+            }, 2000);
+            return false;
+        }
+
+        // change tinymce content (tex image to formula)
+        if (tinyMCE.get('_question_detail')) {
+            tinyMCE.get('_question_detail').setContent(
+                changeImageToTex(tinyMCE.get('_question_detail').getContent())
+            );
+        }
+
+        return true;
+    });
 }
 
 /**
@@ -230,7 +267,7 @@ function navbar_ask_question_detail() {
  * @private
  */
 function _qeustion_modal_UISwitch(type) {
-    $('[data-parent="_question_detail"]').each(function () {
+    $('[data-parent="_question"]').each(function () {
         var $t = $(this);
         if ($t.data('ask') && $t.data('edit')) {
             if ($t.data('change')) {
@@ -256,19 +293,19 @@ function _qeustion_modal_UISwitch(type) {
 var navbar_search_table_timer = null;
 var navbar_search_table_disabled = false;
 function navbar_serach_table_autocomplete() {
-    $('#_question_detail_input').bind('change keyup paste', function() {
+    $('#_question_title').bind('change keyup paste', function() {
         if (navbar_search_table_disabled) return ;
         clearTimeout(navbar_search_table_timer);
         navbar_search_table_timer = setTimeout(function() {
             $.post('/api/autocomplete', {
                 queries: [{
                     type : 'question',
-                    term : $('#_question_detail_input').val(), // search term
+                    term : $('#_question_title').val(), // search term
                     max_match: 3,
                     use_similar: 0,
                 }]
             }, function(results) {
-                var search_table = $('#_question_detail_search_table');
+                var search_table = $('#_question_title_search_table');
                 if (results.length) {
                     // clear the table first
                     search_table.html("");
@@ -293,7 +330,9 @@ $(function() {
 
 // for question editor
 $(function() {
-    tinyMCEeditor('question_detail'); // navbar ask question (question detail)
+    tinyMCEeditor('_question_detail'); // navbar ask question (question detail)
+
+    navbar_question_form_process(); // form validation
 
     // equation support
     math_editor();

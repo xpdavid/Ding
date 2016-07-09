@@ -41,6 +41,9 @@ elixir(function(mix) {
     // for cropper canvas to blob support
     mix.copy(cropperPath + '/canvas-to-blob.js', 'public/js');
 
+    // for jsdiff
+    mix.copy(jsPath + '/jsdiff', 'public/js/jsdiff');
+
     // for tiny mce
     mix.copy(jsPath + '/tinymce', 'public/js/tinymce')
         .copy(jsPath + '/equation.js', 'public/js'); // copy equation support
@@ -66,5 +69,6 @@ elixir(function(mix) {
         .copy(jsPath + '/userCenter.js', 'public/js')
         .copy(jsPath + '/highlight.js', 'public/js')
         .copy(jsPath + '/search.js', 'public/js')
-        .copy(jsPath + '/bookmark.js', 'public/js');
+        .copy(jsPath + '/bookmark.js', 'public/js')
+        .copy(jsPath + '/history.js', 'public/js');
 });

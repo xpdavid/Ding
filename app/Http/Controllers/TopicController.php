@@ -228,12 +228,20 @@ class TopicController extends Controller
      */
     public function update($topic_id, Request $request) {
         $topic = Topic::findOrFail($topic_id);
+        $old_subtopics_list = $topic->subtopics()->lists('subtopic_id')->all();
+        $old_parent_topics_list = $topic->parent_topics()->lists('parent_topic_id')->all();
+
         if($request->exists('add_parent_topics')) {
             foreach ($request->get('add_parent_topics') as $key=>$parent_topic_id) {
                 if ($parent_topic_id == $topic_id) {
                     // cannot be self assigned
                     continue;
                 }
+                if (!Topic::whereId($parent_topic_id)->exists()) {
+                    // topic id doesn't exist
+                    continue;
+                }
+
                 // detach relationship first
                 $topic->subtopics()->detach($parent_topic_id);
                 $topic->parent_topics()->detach($parent_topic_id);
@@ -247,7 +255,6 @@ class TopicController extends Controller
                     $topic->parent_topics()->detach($parent_topic_id);
                 }
             }
-
         }
 
         if($request->exists('add_subtopics')) {
@@ -256,6 +263,12 @@ class TopicController extends Controller
                     // cannot be self assigned
                     continue;
                 }
+                if (!Topic::whereId($subtopic_id)->exists()) {
+                    // topic id doesn't exist
+                    continue;
+                }
+                
+
                 // detach relationship first
                 $topic->parent_topics()->detach($subtopic_id);
                 $topic->subtopics()->detach($subtopic_id);
@@ -273,15 +286,33 @@ class TopicController extends Controller
 
         if($request->exists('delete_parent_topics')) {
             foreach ($request->get('delete_parent_topics') as $key=>$delete_parent_topic_id) {
+                if (!Topic::whereId($delete_parent_topic_id)->exists()) {
+                    // topic id doesn't exist
+                    continue;
+                }
+                
+
                 $topic->parent_topics()->detach($delete_parent_topic_id);
             }
         }
 
         if($request->exists('delete_subtopics')) {
             foreach ($request->get('delete_subtopics') as $key=>$delete_subtopic_id) {
+                if (!Topic::whereId($delete_subtopic_id)->exists()) {
+                    // topic id doesn't exist
+                    continue;
+                }
+                
+
                 $topic->subtopics()->detach($delete_subtopic_id);
             }
         }
+
+        // record it in history
+        $topic->recordSubTopicsHistory($topic->subtopics()->lists('subtopic_id')->all()
+            , $old_subtopics_list);
+        $topic->recordParentTopicsHistory($topic->parent_topics()->lists('parent_topic_id')->all()
+            , $old_parent_topics_list);
 
         return redirect(action('TopicController@edit', $topic_id));
     }

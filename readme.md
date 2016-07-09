@@ -49,6 +49,7 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 10. `tinyMCE` (wysiwyg html editor) [Index](https://www.tinymce.com/)
 11. `MathJax` (Latex formula render) [Index] (https://www.mathjax.org/)
 12. `PHP Html Parser` (PHP HTML Dom parse) [Github] (https://github.com/paquettg/php-html-parser)
+13. `jsdiff` (JS text difference comparator) [Github] (https://github.com/kpdecker/jsdiff)
 
 
 ### There are several helper function you can use in the main.css file

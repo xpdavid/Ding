@@ -23,6 +23,17 @@
             <button type="button" id='get_more_answers' class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers')">More</button>
         </div>
 
+        {{--user has answer the question--}}
+        <div class="text-center noneDisplay" id="question_answer_forbidden">
+            <hr>
+            <h5 class="font-greyLight">
+                You can only answer a question once, but you can edit
+                <a href="/answer/" id="question_answer_forbidden_current">
+                    current answer
+                </a>
+            </h5>
+        </div>
+
         @if ($question->answers()->where('user_id', Auth::user()->id)->exists())
             {{--user has answer the question--}}
             <div class="text-center">

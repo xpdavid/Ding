@@ -832,7 +832,7 @@ body.modal-open {
 
 .answer_content {
   padding-top: 3px;
-  overflow-x: hidden; }
+  overflow-y: hidden; }
 
 .answer_voting {
   clear: left;
@@ -1039,6 +1039,22 @@ body.modal-open {
   top: 11px;
   background-color: #fff;
   padding: 0 20px; }
+
+.log blockquote {
+  margin-bottom: 8px !important;
+  margin-top: 8px !important; }
+
+.log_add {
+  color: green; }
+
+.log_add img {
+  border: 3px dashed green; }
+
+.log_remove {
+  color: red; }
+
+.log_remove img {
+  border: 3px dashed red; }
 
 .userCenter_subscribed_visit {
   float: left;

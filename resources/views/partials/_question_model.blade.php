@@ -23,63 +23,59 @@
 </div><!-- /.modal -->
 
 {{--// qeustion model--}}
-<div class="modal fade" id="_question_detail" tabindex="-1" role="dialog" aria-labelledby="_question_detail">
+<div class="modal fade" id="_question" tabindex="-1" role="dialog" aria-labelledby="_question">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" data-parent="_question_detail" data-ask="Please Provide Question Detail" data-edit="Edit Question"></h4>
+                <h4 class="modal-title" data-parent="_question" data-ask="Please Provide Question Detail" data-edit="Edit Question"></h4>
             </div>
-            {{ Form::open(['url'=> '', 'method' => 'POST',
-            'data-toggle' => "validator", 'data-parent' => '_question_detail',
+            {{ Form::open(['url'=> '', 'method' => 'POST', 'data-parent' => '_question',
             'data-ask' => url('/question/ask'),
-            'data-edit' => url('/question/update'), 'data-change' => 'action']) }}
+            'data-edit' => url('/question/update'), 'data-change' => 'action', 'id' => '_question_form']) }}
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="search_question"><strong>Title</strong></label>
                         <input type="text" class="form-control"
-                               id="_question_detail_input"
+                               id="_question_title"
                                name="question_title"
-                               data-error="You must provide question title"
-                               required
                                placeholder="Type your keywords">
-                        <div class="help-block with-errors"></div>
+                        <p class="text-danger float-left noneDisplay" id="_question_title_error">Bruh, You must provide question title (5 more characters).</p>
                     </div>
-                    <table class="table" id="_question_detail_search_table"
-                           data-parent="_question_detail">
+                    <table class="table" id="_question_title_search_table"
+                           data-parent="_question">
                         <tbody>
                         </tbody>
                     </table>
                     <div class="form-group">
-                        <label for="question_detail">Question Detail (optional)</label>
+                        <label for="_question_detail">Question Detail (optional)</label>
                         <textarea class="form-control"
-                                  rows="3" id="question_detail" name="question_detail"></textarea>
+                                  rows="3" id="_question_detail" name="question_detail"></textarea>
 
                     </div>
                     <div class="form-group">
-                        <label for="question_topic">Topics</label>
-                        <div class="help-block with-errors"></div>
+                        <label for="_question_topic">Topics</label>
                         <select class="form-control"
                                 multiple="multiple"
                                 tabindex="-1"
                                 aria-hidden="true"
                                 name="question_topics[]"
-                                id="question_topics"
-                                required
+                                id="_question_topics"
                         >
                         </select>
+                        <p class="text-danger float-left noneDisplay" id="_question_topics_error">Please select some topics for your question</p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">
-                        <span data-parent="_question_detail" data-ask="Ask" data-edit="Edit"></span>
+                        <span data-parent="_question" data-ask="Ask" data-edit="Edit"></span>
                     </button>
-                    <span data-parent="_question_detail" data-ask=""
+                    <span data-parent="_question" data-ask=""
                           data-edit="Please note that your edit will be recorded">
                     </span>
                 </div>
-                <input type="hidden" name="edit_question_id" value="" id="_question_detail_question_id" >
+                <input type="hidden" name="question_id" value="" id="_question_id" >
             {{ Form::close() }}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

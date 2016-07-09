@@ -46,7 +46,7 @@ class AnswerController extends Controller
         $answer = Answer::findOrFail($answer_id);
         return redirect()->action('AnswerController@show', [$answer->question->id, $answer->id]);
     }
-
+    
 
     /**
      * Show specific answer for question
@@ -68,9 +68,6 @@ class AnswerController extends Controller
             return redirect(action('QuestionController@show', $question_id));
         }
 
-        // generate also_interest questions
-        $also_interest = $question->alsoInterestQuestions;
-
         // determine whether to highlight a reply
         $highlight = null;
         if($request->exists('highlight_reply')) {
@@ -79,7 +76,7 @@ class AnswerController extends Controller
             $highlight = $target_reply->highlightParameters;
         }
         
-        return view('question.answer', compact('question', 'answer', 'also_interest', 'highlight'));
+        return view('question.answer', compact('question', 'answer', 'highlight'));
         
     }
 

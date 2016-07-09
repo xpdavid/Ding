@@ -1,0 +1,21 @@
+<div class="log">
+    <div class="font-greyLight">
+        <a href="{{user.url}}">{{user.name}}</a> {{opertion}}
+    </div>
+
+    <blockquote>
+        {{{compare}}}
+    </blockquote>
+
+    <div class="horizontal_item">
+        <a href="#">{{time}}</a>
+        {{#if canRollback}}
+            <a href="#" onclick="historyRollback({{id}}, event)"><span class="glyphicon glyphicon-floppy-remove"></span>Rollback</a>
+        {{/if}}
+
+        {{#if canReport}}
+            <a href="#"><span class="glyphicon glyphicon-remove-circle"></span>Report</a>
+        {{/if}}
+    </div>
+    <hr class="small_hrLight">
+</div>

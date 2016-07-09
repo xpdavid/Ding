@@ -555,10 +555,22 @@ function bindHideShow() {
     });
 }
 
-// bind expend buttong
+// bind expend button
 $(function() {
     bindExpendAll();
     bindHideShow();
 });
+
+/**
+ * Fix for boostrap modal using tinymce
+ */
+$(function() {
+    // Prevent Bootstrap dialog from blocking focusin
+    $(document).on('focusin', function(e) {
+        if ($(e.target).closest(".mce-window").length) {
+            e.stopImmediatePropagation();
+        }
+    });
+})
 
 //# sourceMappingURL=main.js.map

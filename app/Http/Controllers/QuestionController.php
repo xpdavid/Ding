@@ -88,7 +88,7 @@ class QuestionController extends Controller
     public function ask(Request $request) {
         $this->validate($request, [
             'question_title' => 'required',
-            'question_topics' => 'required'
+            'question_topics' => 'required|array'
         ]);
 
         // get necessary param
@@ -101,11 +101,10 @@ class QuestionController extends Controller
         // the user post the question
         $user->questions()->save($question);
 
+        // record topic change
+        $question->recordTopicsHistory($request->get('question_topics'));
         // the question belongs to many topics
-        foreach ($request->get('question_topics') as $topic_id) {
-            $topic = Topic::findOrFail($topic_id);
-            $topic->questions()->save($question);
-        }
+        $question->topics()->sync($request->get('question_topics'));
         
         // notification to user subscribers
         foreach ($user->subscribers as $subscriber) {
@@ -124,13 +123,15 @@ class QuestionController extends Controller
      */
     public function update(Request $request) {
         $this->validate($request, [
-            'edit_question_id' => 'required|integer',
+            'question_id' => 'required|integer',
             'question_title' => 'required',
-            'question_topics' => 'required',
+            'question_topics' => 'required|array',
         ]);
 
-        $question = Question::findOrFail($request->get('edit_question_id'));
-        
+        $question = Question::findOrFail($request->get('question_id'));
+
+        // record topic change
+        $question->recordTopicsHistory($request->get('question_topics'));
         $question->topics()->sync($request->get('question_topics'));
         
         $question->update([

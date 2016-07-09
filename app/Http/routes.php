@@ -35,13 +35,13 @@ Route::controller('/highlight', 'HighlightController');
 Route::post('/question/answers', 'AnswerController@postAnswers');
 
 // for question & answer
+Route::post('/question/ask', 'QuestionController@ask');
+Route::post('/question/update', 'QuestionController@update');
+Route::get('/question/{question_id}', 'QuestionController@show');
+Route::post('/question/{question_id}', 'QuestionController@postQuestion');
 Route::post('/question/{question_id}/invite_panel', 'QuestionController@invite_panel');
 Route::post('/question/{question_id}/invite', 'QuestionController@invite');
-Route::get('/question/{question_id}', 'QuestionController@show');
-Route::post('/question/update', 'QuestionController@update');
-Route::post('/question/{question_id}', 'QuestionController@postQuestion');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
-Route::post('/question/ask', 'QuestionController@ask');
 
 // for answer
 Route::get('/answer/{id}', 'AnswerController@getAnswer');
@@ -131,6 +131,11 @@ Route::controller('/settings', 'SettingsController');
 // for search
 Route::get('/search', ['as' => 'search', 'uses' => 'SearchController@index']);
 Route::post('/search', 'SearchController@postSearch');
+
+// for history
+Route::get('/answer/{id}/log', 'HistoryController@getAnswerLog');
+Route::post('/answer/{id}/log', 'HistoryController@postAnswerLog');
+Route::post('/history/{id}/rollback', 'HistoryController@postRollback');
 
 
 // for dynamic image system
