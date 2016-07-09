@@ -1050,11 +1050,17 @@ body.modal-open {
 .log_add img {
   border: 3px dashed green; }
 
+.log_add a {
+  color: green; }
+
 .log_remove {
   color: red; }
 
 .log_remove img {
   border: 3px dashed red; }
+
+.log_remove a {
+  color: red; }
 
 .userCenter_subscribed_visit {
   float: left;

@@ -135,6 +135,9 @@ Route::post('/search', 'SearchController@postSearch');
 // for history
 Route::get('/answer/{id}/log', 'HistoryController@getAnswerLog');
 Route::post('/answer/{id}/log', 'HistoryController@postAnswerLog');
+Route::get('/question/{id}/log', 'HistoryController@getQuestionLog');
+Route::post('/question/{id}/log', 'HistoryController@postQuestionLog');
+
 Route::post('/history/{id}/rollback', 'HistoryController@postRollback');
 
 

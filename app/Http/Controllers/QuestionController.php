@@ -39,9 +39,6 @@ class QuestionController extends Controller
         // Visit count
         Visitor::visit($question);
 
-        // generate also_interest questions
-        $also_interest = $question->alsoInterestQuestions;
-
         // determine how to sort answers
         $answers = $question->answers;
         $sorted = 'rate';
@@ -60,7 +57,7 @@ class QuestionController extends Controller
             $highlight = $target_reply->highlightParameters;
         }
 
-        return view('question.show', compact('question', 'answers', 'sorted', 'also_interest', 'highlight'));
+        return view('question.show', compact('question', 'answers', 'sorted', 'highlight'));
     }
 
     /**
