@@ -231,6 +231,18 @@ class TopicController extends Controller
         $old_subtopics_list = $topic->subtopics()->lists('subtopic_id')->all();
         $old_parent_topics_list = $topic->parent_topics()->lists('parent_topic_id')->all();
 
+        if($request->has('topic_name')) {
+            $topic->update([
+                'name' => $request->get('topic_name')
+            ]);
+        }
+
+        if($request->has('topic_description')) {
+            $topic->update([
+                'description' => $request->get('topic_description')
+            ]);
+        }
+
         if($request->exists('add_parent_topics')) {
             foreach ($request->get('add_parent_topics') as $key=>$parent_topic_id) {
                 if ($parent_topic_id == $topic_id) {

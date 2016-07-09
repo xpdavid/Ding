@@ -137,6 +137,8 @@ Route::get('/answer/{id}/log', 'HistoryController@getAnswerLog');
 Route::post('/answer/{id}/log', 'HistoryController@postAnswerLog');
 Route::get('/question/{id}/log', 'HistoryController@getQuestionLog');
 Route::post('/question/{id}/log', 'HistoryController@postQuestionLog');
+Route::get('/topic/{id}/log', 'HistoryController@getTopicLog');
+Route::post('/topic/{id}/log', 'HistoryController@postTopicLog');
 
 Route::post('/history/{id}/rollback', 'HistoryController@postRollback');
 

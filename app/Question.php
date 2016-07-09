@@ -76,10 +76,13 @@ class Question extends Model
      *
      * @param $new_topic_list
      */
-    public function recordTopicsHistory($new_topic_list) {
+    public function recordTopicsHistory($new_topic_list, $old_topic_list = null) {
         $user = Auth::user();
         // get difference
-        $old_topic_list = $this->topics()->lists('topic_id')->all();
+        if ($old_topic_list == null) {
+            $old_topic_list = $this->topics()->lists('topic_id')->all();
+        }
+
         $new = array_diff($new_topic_list, $old_topic_list);
         $delete = array_diff($old_topic_list, $new_topic_list);
         // set remove topics history

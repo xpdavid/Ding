@@ -28,6 +28,79 @@
 
     <div class="topic_manage_item clearfix">
         <div class="topic_manage_title">
+            <h5>Topic Name</h5>
+        </div>
+        <div class="topic_manage_content">
+            <div id="topic_name">
+                <div class="font-black margin-top">{{ $topic->name }}
+                    <a href="#" class="userSetting_EditA"
+                       data-toggle="hide" data-hide="topic_name" data-show="topic_name_edit">
+                        <span class="glyphicon glyphicon-pencil"></span>Edit
+                    </a>
+                </div>
+            </div>
+
+            <div id="topic_name_edit" class="noneDisplay">
+                <form action="/topic/{{ $topic->id }}/update" method="POST"
+                      data-toggle="validator" role="form">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control" name="topic_name"
+                               placeholder="Topic Name Here" value="{{ $topic->name }}" required autocomplete="off">
+                    </div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-link"
+                                data-toggle="hide" data-hide="topic_name_edit" data-show="topic_name">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <hr class="small_hrLight">
+
+    <div class="topic_manage_item clearfix">
+        <div class="topic_manage_title">
+            <h5>Topic Description</h5>
+        </div>
+        <div class="topic_manage_content">
+
+            <div id="topic_description">
+                <div class="font-black margin-top">{!! nl2br($topic->description) !!}
+                    <a href="#" class="userSetting_EditA"
+                       data-toggle="hide" data-hide="topic_description" data-show="topic_description_edit">
+                        <span class="glyphicon glyphicon-pencil"></span>Edit
+                    </a>
+                </div>
+            </div>
+
+            <div id="topic_description_edit" class="noneDisplay">
+                <form action="/topic/{{ $topic->id }}/update" method="POST"
+                      data-toggle="validator" role="form">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <textarea rows="4"
+                               class="form-control" name="topic_description"
+                               placeholder="Topic Description Here" required>{{ $topic->description }}</textarea>
+                    </div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-link"
+                                data-toggle="hide" data-hide="topic_description_edit" data-show="topic_description">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <hr class="small_hrLight">
+
+    <div class="topic_manage_item clearfix">
+        <div class="topic_manage_title">
             <h5>Parent Topics</h5>
         </div>
         <div class="topic_manage_content">

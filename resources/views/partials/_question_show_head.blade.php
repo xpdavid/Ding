@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3> {{ $question->title }}
+            <h3> <a href="/question/{{ $question->id }}">{{ $question->title }}</a>
                 <a href="#" class="userSetting_EditA" onclick="editQuestion(event, '{{ $question->id }}')"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
             </h3>
         </div>

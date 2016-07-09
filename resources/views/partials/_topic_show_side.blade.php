@@ -17,6 +17,8 @@
             <a href="/topic/{{ $topic->id }}/organization">Topic Organization Tree</a>
             <span>•</span>
             <a href="/topic/{{ $topic->id }}/edit">Edit Topic</a>
+            <span>•</span>
+            <a href="/topic/{{ $topic->id }}/log" class="font-greyLight">Show topic histories</a>
         </div>
     </div>
 </div>
@@ -25,7 +27,7 @@
     <div class="sideBar_sectionItem">
         <div class="sideBar_sectionItem">
             <h4>Description</h4>
-            <p>{{ $topic->description }}</p>
+            <p>{!! nl2br($topic->description) !!}</p>
         </div>
     </div>
 </div>
