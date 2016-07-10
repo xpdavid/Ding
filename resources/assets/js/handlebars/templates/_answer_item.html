@@ -1,0 +1,114 @@
+<!--this is the template for answer item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each answers}}
+<div class="answer_overall" id="answer_{{id}}">
+    <div class="answer_voting">
+        {{#if canVote}}
+            <button type="button" id="vote_answer_{{id}}_up" class="btn btn-primary {{vote_up_class}}" onclick="vote_answer('{{id}}', 'up')">
+                <div>
+                    <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
+                </div>
+                <span class="vote_answer_{{id}}_count">{{votes}}</span>
+            </button>
+            <button type="button" id="vote_answer_{{id}}_down" class="btn btn-primary {{vote_down_class}}" onclick="vote_answer('{{id}}', 'down')">
+                <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
+            </button>
+        {{^}}
+            <button type="button"  class="btn btn-primary" disabled>
+                <span>{{votes}}</span>
+            </button>
+        {{/if}}
+    </div>
+
+
+    <div class="clearfix" id="answer_{{id}}_profile">
+        <div class="float-right">
+            <img class="float-right" src="{{user_pic}}" alt="{{user_name}}">
+        </div>
+        <a href="{{user_url}}" class="font-black"><strong>{{user_name}}</strong></a> ,
+        <span class="font-black">{{user_bio}}</span>
+    </div>
+
+    <div class="answer_vote">
+        <span class="font-greyLight"><span class="vote_answer_{{id}}_count">{{votes}}</span> Vote(s)</span>
+    </div>
+
+    <div class="answer_content font-black clearfix">
+        <div id="answer_summary_{{id}}" class="_summary">
+            <span id="answer_summary_content_{{id}}">
+                {{{answer}}}
+            </span>
+            <a href="#" class="_show_all" data-toggle="expand_all" data-type="answer" data-id="{{id}}">Show all</a>
+
+            {{#if canEdit}}
+                <a href="#" class="_show_all" onclick="editAnswer(event, {{id}})">Edit</a>
+            {{/if}}
+        </div>
+        <div id="answer_full_{{id}}" class="noneDisplay">
+            <span id="answer_full_content_{{id}}">
+                {{{answer}}}
+            </span>
+            {{#if canEdit}}
+                <a href="#" class="_show_all" onclick="editAnswer(event, {{id}})">Edit</a>
+            {{/if}}
+        </div>
+        {{#if canEdit}}
+            <div id="answer_editor_{{id}}_wrapper" class="noneDisplay">
+                <textarea row="4" id="answer_editor_{{id}}"></textarea>
+                <div class="margin-top clearfix">
+                    <button type="button" class="btn btn-link float-right"
+                            data-toggle="hide" data-hide="answer_editor_{{id}}_wrapper"
+                            data-show="answer_summary_{{id}}">Cancel</button>
+                    <button type="button" class="btn btn-warning float-right"
+                            onclick="updateAnswer({{id}})">Update</button>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+
+    <div class="horizontal_item">
+        <a href="/answer/{{id}}">Posted on {{created_at}}</a>
+        <a href="#"
+           id="answer_comment_{{id}}_trigger"
+           onclick="showComment(event, 'answer', '{{id}}', 'answer_comment_{{id}}');">
+            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+            Comment (<span id="answer_comment_{{id}}_replies_count">{{numComment}}</span>)
+        </a>
+        <a href="#" onclick="bookmark('answer', '{{id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+        <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
+        <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
+    </div>
+
+
+    <div class="comment_box" id="answer_comment_{{id}}">
+        <div class="comment_spike"></div>
+        <div class="comment_list">
+            <div class="comment_content" id="answer_comment_{{id}}_content">
+
+            </div>
+
+            <div class="text-center" id="answer_comment_{{id}}_nav">
+
+            </div>
+
+            <div class="comment_form clearfix">
+                <div class="form-group">
+                    <input type="email"
+                           class="form-control" id="answer_comment_{{id}}_input"
+                           placeholder="Write Your Comment Here",
+                           id="answer_comment_{{id}}_input",
+                           onfocus="show_form(event, 'answer_comment_{{id}}_buttons')">
+                </div>
+                <div class="float-right form-group noneDisplay" id="answer_comment_{{id}}_buttons">
+                    <a href="#" role="button" class="space-right-big"
+                       onclick="cancel_from(event, 'answer_comment_{{id}}_buttons')">Cancel</a>
+                    <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{id}}', '{{id}}', 'answer')">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<hr>
+{{/each}}

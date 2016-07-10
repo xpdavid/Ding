@@ -1,5 +1,7 @@
 /**
- * Created by XP on 24/5/16.
+ * Send ajax request to hide the conversation
+ * 
+ * @param $id
  */
 function hideConversation($id) {
     swal({
@@ -34,3 +36,4 @@ function hideConversation($id) {
             });
         });
 }
+

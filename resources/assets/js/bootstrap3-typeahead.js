@@ -57,6 +57,13 @@
     this.render = this.options.render || this.render;
     this.updater = this.options.updater || this.updater;
     this.displayText = this.options.displayText || this.displayText;
+
+    this.bottomElement = this.options.bottomElement || this.bottomElement;
+    this.addItemBefore = this.options.addItemBefore || this.addItemBefore;
+      this.noResultHide = this.options.noResultHide || this.noResultHide;
+    this.beforeShownKeyup = this.options.beforeShownKeyup || this.beforeShownKeyup;
+
+    this.width = this.options.width || this.width;
     this.source = this.options.source;
     this.delay = this.options.delay;
     this.$menu = $(this.options.menu);
@@ -164,7 +171,7 @@
 
       items = this.sorter(items);
 
-      if (!items.length && !this.options.addItem) {
+      if (this.options.noResultHide && !items.length && !this.options.addItem) {
         return this.shown ? this.hide() : this;
       }
 
@@ -176,8 +183,20 @@
 
       // Add item
       if (this.options.addItem){
-        items.push(this.options.addItem);
+          if (typeof this.options.addItem == "function") {
+              items.push(this.options.addItem());
+          } else {
+              items.push(this.options.addItem);
+          }
       }
+        // add item before
+        if (this.options.addItemBefore){
+            if (typeof this.options.addItemBefore == "function") {
+                items.unshift(this.options.addItemBefore());
+            } else {
+                items.unshift(this.options.addItemBefore);
+            }
+        }
 
       if (this.options.items == 'all') {
         return this.render(items).show();
@@ -280,7 +299,15 @@
         items.filter(':not(.dropdown-header)').first().addClass('active');
         this.$element.data('active', items.first().data('value'));
       }
+      this.$menu.css('width', this.width);
       this.$menu.html(items);
+
+
+      // append bottom element
+        if (this.bottomElement) {
+            this.$menu.append(this.bottomElement.html);
+        }
+
       return this;
     },
 
@@ -400,6 +427,10 @@
     },
 
     keyup: function (e) {
+        // beforeShownKeyup
+        if (!this.shown && this.options.beforeShownKeyup && typeof this.options.beforeShownKeyup == "function") {
+            this.options.beforeShownKeyup(e);
+        }
       switch(e.keyCode) {
         case 40: // down arrow
         case 38: // up arrow
@@ -486,17 +517,24 @@
   $.fn.typeahead.defaults = {
         source: [],
         items: 8,
-        menu: '<ul class="typeahead dropdown-menu navbar_searchBoxDropDown" role="listbox"></ul>',
+        menu: '<ul class="typeahead dropdown-menu" role="listbox"></ul>',
         item: '<li><a class="dropdown-item" href="#" role="option"></a></li>',
         minLength: 1,
         scrollHeight: 0,
         autoSelect: true,
         afterSelect: $.noop,
+
         addItem: false,
+        addItemBefore: false,
+      beforeShownKeyup : false,
+      noResultHide : true,
+
         delay: 0,
         separator: 'category',
         headerHtml: '<li class="dropdown-header"></li>',
-        headerDivider: '<li class="divider" role="separator"></li>'
+        headerDivider: '<li class="divider" role="separator"></li>',
+        bottomElement: false,
+        width: '100%'
   };
 
   $.fn.typeahead.Constructor = Typeahead;

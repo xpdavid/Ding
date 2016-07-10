@@ -1,0 +1,50 @@
+<!--this is the template for search engine user item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each users}}
+<div class="clearfix">
+    <div class="float-left">
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object avatar-img" src="{{img}}"
+                         alt="{{name}}">
+                </a>
+            </div>
+            <div class="media-body profile_card">
+                <h4 class="media-heading">
+                    <a href="/people/{{url_name}}" class="space-right">{{{name}}}</a>
+                </h4>
+                <p class="font-greyLight">{{bio}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="float-right">
+        <div class="profile_card_col">
+            <div class="col">
+                <a href="#">
+                    <strong>{{numAnswer}}</strong>
+                    <div>Answers</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#">
+                    <strong id="user{{id}}_numSubscriber">{{numSubscriber}}</strong>
+                    <div>Subscribers</div>
+                </a>
+            </div>
+            {{#if canSubscribe}}
+                <div class="col margin-top noborder">
+                    {{#if isSubscribe}}
+                    <button class="btn btn-default btn-sm" onclick="user_button_subscribe(this, '{{id}}', 'user{{id}}_numSubscriber')">Unsubscribe</button>
+                    {{^}}
+                    <button class="btn btn-success btn-sm" onclick="user_button_subscribe(this, '{{id}}', 'user{{id}}_numSubscriber')">Subscribe</button>
+                    {{/if}}
+                </div>
+            {{/if}}
+
+        </div>
+    </div>
+</div>
+<hr>
+{{/each}}

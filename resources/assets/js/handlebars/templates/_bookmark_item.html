@@ -1,0 +1,13 @@
+<!--this is the template for bookmark item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each bookmarks}}
+<div class="userHome_layoutItem">
+    <div><strong><a href="/bookmark/{{id}}">{{name}}</a></strong></div>
+    <div class="font-grey">{{numQuestion}} Questions • {{numAnswer}} Answers • {{numSubscriber}} Subscribers </div>
+    {{#each representatives}}
+        <div><span class="font-greyLight">{{type}}:</span><a href="{{url}}">{{name}}</a></div>
+    {{/each}}
+    <div><a href="/bookmark/{{id}}" class="font-greyLight">More&gt;&gt;</a></div>
+</div>
+<hr class="small_hrLight">
+{{/each}}

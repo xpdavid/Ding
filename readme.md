@@ -1,6 +1,5 @@
 ## Porject Ding
 #### NUS Orbital 2016
----
 
 ### Project Development Instruction
 
@@ -42,14 +41,24 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 2. Bootstrap (Grid-system) [Index](http://getbootstrap.com)
 3. Boostrap3-typeahead (UI for select tag in form) [Github](https://github.com/bassjobsen/Bootstrap-3-Typeahead)
 4. sweetalert (Alternative for javascript 'alert()') [Github](http://t4t5.github.io/sweetalert/)
-5. Form validator [Github](https://github.com/1000hz/bootstrap-validator)
+5. form validator [Github](https://github.com/1000hz/bootstrap-validator)
+6. select2 (tag selector) [Github](https://github.com/select2/select2/releases)
+7. handlebars (javascript template engine) [Index](http://handlebarsjs.com)
+8. intervention\mage (laravel image system) [Index](http://image.intervention.io) (Please run `composer update` to get this plugin)
+9. `cropper.js` (crop image jquery plugin) [Github](https://github.com/fengyuanchen/cropper/blob/master/README.md)
+10. `tinyMCE` (wysiwyg html editor) [Index](https://www.tinymce.com/)
+11. `MathJax` (Latex formula render) [Index] (https://www.mathjax.org/)
+12. `PHP Html Parser` (PHP HTML Dom parse) [Github] (https://github.com/paquettg/php-html-parser)
+13. `jsdiff` (JS text difference comparator) [Github] (https://github.com/kpdecker/jsdiff)
 
 
 ### There are several helper function you can use in the main.css file
 
-- `<body>` : this element is defined `padding-top: 60px` because the menu bar is fixed at top. In addition the overall color is set to '#666'
+- `<body>` :  the overall color is set to '#666', the fond size is set to `15px`
+- `html: width: 100%; width: 100vw;` : to prevent scrollbar from repositioning web page, this element is defined `padding-top: 60px` because the menu bar is fixed at top.
+- `body: font` : set font to `google font api font: 'Open Sans', sans-serif`
 - `.glyphicon` : this class is from `bootstrap` css and we override it as `margin-right:5px` because we always use put a icon in front of text.
-- `hide` : this class is to set display to `none`, pretty useful together with jquery toggle function
+- `.noneDisplay ` : this class is to set display to `none`, pretty useful together with jquery toggle function
 - `.clearfix` : this class is to expend parent element when you have floating `div`
 - `.clear_margin` : clear all margin of an element using `!important`
 - `.font-bold` : to bold a element content
@@ -68,14 +77,28 @@ Please follow the asset management style. Basically, using the gulpfile to contr
 - `.sideBar_sectionItem` : side bar item implementation (refer to the sample in `highligths.html`) 
 - `.questions_questionLayout` : show question div (refer to the sample in `question_homepage.html`)
 - `.horizontal_item` : show a horizontal_item (refer to the sample in `question_homepage.html`)
+- `.userProfile_card` : show user profile card (small) (refer to the sample in `question.answer.blade.php`)
 - `.space-right` : set the right margin of an element to `4px`, for example you may want to use it to replace `&nbsp;`
 - `.space-right-big` : same as above with `margin-right:10px` 
+- `.link_normal` : all `<a>` under this class will display as grey colour. When hover, it will turn to blue.
+- `.margin-top` : set `margin-top` to `8px`;
 
 ##### Please update this when you have other helper css class added
 
 
+## Dynamics Image System Manual
+The `images` table has 5 columns `id` `reference_id` `path` `width` `height`.
+
+- To save an image.
+	- move the image to the folder `images/` (not `public` folder). Create a image instance (Image::create()) and save. Please set the `reference_id` equal to `id` so that we could distinct it as original image.
+	- Under the images folder, we have `topic` folder and `user` folder. `topic` folder will store all the avatar images of topics and `user` folder will store all the users' uploaded images. In `user` folder, each user will have their own folder `{their_id}`.
+- To get an image.
+	- using this `url` (put it in the `src` field) : `/image/{reference_id}/{width}/{height}`, the system will automatically detect if the original image fit to this resolution. If not, it will create a new one by using `Intervention\Image`. You don't have to worry about the new one. Next time, using same `url`, the system will automatically find the one that fit the provided resolution.
+	- There are helper function in laravel help you generate this url. (Please run `composer dump-autoload`, the helper function is in file `app/Support/Dimage.php`) The function `Dimage($reference_id, $width, $height)`, which have global scope will, return the url.
+
+
 ## Milestone 1
----
+
 ### Project Name: Ding
 
 
@@ -114,11 +137,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included:
 
-⋅⋅1. Categorization of users based on their majors.
+ * Categorization of users based on their majors.
 
-⋅⋅2. Searching of modules and questions based on keywords.
+ * Searching of modules and questions based on keywords.
 
-⋅⋅3. Viewing of questions, answers and comments by other users.
+ * Viewing of questions, answers and comments by other users.
 
  
 
@@ -126,11 +149,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Posting of answers and comments
+ * Posting of answers and comments
 
-⋅⋅2. Subscribing of modules and questions and receiving notification when there are new updates.
+ * Subscribing of modules and questions and receiving notification when there are new updates.
 
-⋅⋅3. Suggesting of relevant questions based on what questions the user is currently viewing
+ * Suggesting of relevant questions based on what questions the user is currently viewing
 
  
 
@@ -138,11 +161,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Invitation to friends who are able to answer certain questions and receiving of invitations.
+ * Invitation to friends who are able to answer certain questions and receiving of invitations.
 
-⋅⋅2. Giving positive / negative votes to answers posted by others to reflect quality of answers.
+ * Giving positive / negative votes to answers posted by others to reflect quality of answers.
 
-⋅⋅3. Sharing of questions / answers on social media
+ * Sharing of questions / answers on social media
 
  
 
@@ -150,11 +173,11 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Personalized user panels where user information, new status to modules and questions subscribed, new comments to answers posted are consolidated.
+ * Personalized user panels where user information, new status to modules and questions subscribed, new comments to answers posted are consolidated.
 
-⋅⋅2. Consolidation and highlighting of questions based on popularity.
+ * Consolidation and highlighting of questions based on popularity.
 
-⋅⋅3. Private messaging between users.
+ * Private messaging between users.
 
  
 
@@ -162,23 +185,17 @@ With proper permission, it is even possible to open the portal to the public. Th
 
     Features to be included (in addition to features mentioned above):
 
-⋅⋅1. Reporting of invalid / indecent answers by normal users and deletion of such answers by moderators
+ * Reporting of invalid / indecent answers by normal users and deletion of such answers by moderators
 
-⋅⋅2. A level system of users' viewing permission based on users' contributions:
+ * A level system of users' viewing permission based on users' contributions:
+ 		* Enable users to set viewing permission to answers posted by themselves (no higher than their own permissions).
+		* Post valid answers to questions to receive credits.
+		* Give more credits to the first answer to any questions to encourage user activity.
+		* Give more credits to high quality answers (answers with more positive votes).
+		* Severe deduction of credits to any invalid / indecent answers by moderators.
+		* (above mentioned are inexhaustive)
 
-⋅⋅⋅⋅1. Enable users to set viewing permission to answers posted by themselves (no higher than their own permissions).
-
-⋅⋅⋅⋅2. Post valid answers to questions to receive credits.
-
-⋅⋅⋅⋅3. Give more credits to the first answer to any questions to encourage user activity.
-
-⋅⋅⋅⋅4. Give more credits to high quality answers (answers with more positive votes).
-
-⋅⋅⋅⋅5. Severe deduction of credits to any invalid / indecent answers by moderators.
-
-(above mentioned are inexhaustive)
-
-⋅⋅3. Security features including encryption of data in transmission and storage, strict checking of user permission before running any functions.
+ * Security features including encryption of data in transmission and storage, strict checking of user permission before running any functions.
 
  
 We will try to implement Feature 1, 2, 3 and 4 in June and Feature 5 as well as other features suggested by other teams in July.
@@ -190,3 +207,4 @@ We will try to implement Feature 1, 2, 3 and 4 in June and Feature 5 as well as 
 ### Level of Achievement
 
 As development of such a platform involving complicated relationships between models requires extensive testing and careful project management, our aimed level of achievement is `Apollo 11`.
+

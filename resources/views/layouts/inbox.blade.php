@@ -21,8 +21,16 @@
     {{--sweetalert supporting file--}}
     {!! Html::style('css/sweetalert.css') !!}
 
+    {{--select2 supporting file--}}
+    {!! Html::style('css/select2.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
+
+    {{--equation support--}}
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
 
 </head>
 <body>
@@ -31,7 +39,15 @@
 
 @yield('content')
 
-@include('partials._copyright_bottom')
+@include('partials._question_model')
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @include('partials._site_copyright')
+        </div>
+    </div>
+</div>
 
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
@@ -40,7 +56,18 @@
 {!! Html::script('js/bootstrap.min.js') !!}
 
 {{--sweetalert supporting file--}}
-{!! Html::script('js/sweetalert.min.js') !!}}
+{!! Html::script('js/sweetalert.min.js') !!}
+
+{{--select2 supporting file--}}
+{!! Html::script('js/select2.full.js') !!}
+
+{{--tinymce support}}--}}
+{!! Html::script('js/tinymce/tinymce.min.js') !!}
+{!! Html::script('js/equation.js') !!}
+
+{{--cropper supporting file--}}
+{!! Html::script('js/cropper.js') !!}
+{!! Html::script('js/canvas-to-blob.js') !!}
 
 {{--app supporting js file--}}
 {!! Html::script('js/main.js') !!}
@@ -51,5 +78,7 @@
 
 {{--inbox javascript support--}}
 {!! Html::script('js/inbox.js') !!}
+
+@yield('javascript')
 </body>
 </html>

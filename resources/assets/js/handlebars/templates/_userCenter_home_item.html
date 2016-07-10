@@ -1,0 +1,152 @@
+<!--this is the template for usercenter home question/answer item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each questions}}
+<div class="questions_questionLayout" id="question_{{id}}">
+    <div class="answer_voting">
+        <img src="{{topic_pic}}" class="img-rounded avatar-img">
+        {{#if answer}}
+            {{#if answer.canVote}}
+                <button type="button"
+                        class="btn btn-primary questions_sideButton",
+                        onclick="vote_button_trigger(this, 'vote_buttons_answer_{{answer.id}}')"
+                >
+                    {{answer.netVotes}}
+                </button>
+            {{^}}
+                <button type="button"
+                        class="btn btn-primary questions_sideButton" disabled
+                >
+                    {{answer.netVotes}}
+                </button>
+            {{/if}}
+
+        {{/if}}
+    </div>
+
+    {{#if answer}}
+        {{#if answer.canVote}}
+            <div class="answer_voting noneDisplay" id="vote_buttons_answer_{{answer.id}}">
+                <button type="button" id="vote_answer_{{answer.id}}_up" class="btn btn-primary {{answer.vote_up_class}}" onclick="vote_answer('{{answer.id}}', 'up')">
+                    <div>
+                        <span class="glyphicon glyphicon-triangle-top clear_margin"></span>
+                    </div>
+                    <span class="vote_answer_{{answer.id}}_count">{{answer.netVotes}}</span>
+                </button>
+                <button type="button" id="vote_answer_{{answer.id}}_down" class="btn btn-primary {{answer.vote_down_class}}" onclick="vote_answer('{{answer.id}}', 'down')">
+                    <span class="glyphicon glyphicon-triangle-bottom clear_margin"></span>
+                </button>
+            </div>
+        {{/if}}
+    {{/if}}
+
+    <div class="questions_questionTopic">
+        From Topic:
+        {{#each topics}}
+            <a href="/topic/{{id}}">{{name}}</a>
+        {{/each}}
+    </div>
+
+    {{#if answer}}
+        <div class="font-bold">
+            <a href="/answer/{{answer.id}}"> {{title}} </a>
+        </div>
+    {{^}}
+        <div class="font-bold">
+            <a href="/question/{{id}}"> {{title}} </a>
+        </div>
+    {{/if}}
+
+    {{#if answer}}
+        <div>
+            <a href="/people/{{answer.owner.url_name}}"><strong class="font-black">{{answer.owner.name}}</strong></a>, {{answer.owner.bio}}.
+        </div>
+
+        <div class="questions_questionContent clearfix">
+            <div id="answer_summary_{{answer.id}}" class="_summary">
+                <span id="answer_summary_content_{{answer.id}}">
+                    {{{answer.answer}}}
+                </span>
+                <a href="#" class="_show_all" data-toggle="expand_all" data-type="answer" data-id="{{answer.id}}">Show all</a>
+
+                {{#if answer.canEdit}}
+                    <a href="#" class="_show_all" onclick="editAnswer(event, {{answer.id}})">Edit</a>
+                {{/if}}
+            </div>
+            <div id="answer_full_{{answer.id}}" class="noneDisplay">
+                <span id="answer_full_content_{{answer.id}}">
+                    {{{answer}}}
+                </span>
+                {{#if answer.canEdit}}
+                    <a href="#" class="_show_all" onclick="editAnswer(event, {{answer.id}})">Edit</a>
+                {{/if}}
+            </div>
+            {{#if answer.canEdit}}
+                <div id="answer_editor_{{answer.id}}_wrapper" class="noneDisplay">
+                    <textarea row="4" id="answer_editor_{{answer.id}}"></textarea>
+                    <div class="margin-top clearfix">
+                        <button type="button" class="btn btn-link float-right"
+                                data-toggle="hide" data-hide="answer_editor_{{answer.id}}_wrapper"
+                                data-show="answer_summary_{{answer.id}}">Cancel</button>
+                        <button type="button" class="btn btn-warning float-right"
+                                onclick="updateAnswer({{answer.id}})">Update</button>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+
+        <div class="horizontal_item">
+            <a href="#" onclick="userHome_subscribe_question(event, 'q_{{id}}_subscribe', '{{id}}')">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                {{#if subscribed}}
+                <span id="q_{{id}}_subscribe" class="subscribed">Unsubscribe</span>
+                {{^}}
+                <span id="q_{{id}}_subscribe">Subscribe Question</span>
+                {{/if}}
+            </a>
+            <a href="#"
+               id="answer_comment_{{answer.id}}_trigger"
+               onclick="showComment(event, 'answer', '{{answer.id}}', 'answer_comment_{{answer.id}}');">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                Comment (<span id="answer_comment_{{answer.id}}_replies_count">{{answer.numComment}}</span>)
+            </a>
+            <a href="#"
+               onclick="bookmark('answer', '{{answer.id}}', event)">
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark
+            </a>
+            <a href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Not helpful</a>
+            <a href="#"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Report</a>
+        </div>
+
+        <div class="comment_box" id="answer_comment_{{answer.id}}">
+            <div class="comment_spike"></div>
+            <div class="comment_list">
+                <div class="comment_content" id="answer_comment_{{answer.id}}_content">
+
+                </div>
+
+                <div class="text-center" id="answer_comment_{{answer.id}}_nav">
+
+                </div>
+
+                <div class="comment_form clearfix">
+                    <div class="form-group">
+                        <input type="email"
+                               class="form-control" id="answer_comment_{{answer.id}}_input"
+                               placeholder="Write Your Comment Here",
+                               id="answer_comment_{{answer.id}}_input",
+                               onfocus="show_form(event, 'answer_comment_{{answer.id}}_buttons')">
+                    </div>
+                    <div class="float-right form-group noneDisplay" id="answer_comment_{{answer.id}}_buttons">
+                        <a href="#" role="button" class="space-right-big"
+                           onclick="cancel_from(event, 'answer_comment_{{answer.id}}_buttons')">Cancel</a>
+                        <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{answer.id}}', '{{answer.id}}', 'answer')">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {{/if}}
+
+</div>
+<hr>
+{{/each}}

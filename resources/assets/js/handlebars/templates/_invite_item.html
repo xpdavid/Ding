@@ -1,0 +1,41 @@
+<!--this is the template for invite item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each users}}
+<div class="clearfix invite_list_item profile_card_left">
+    <div class="float-left">
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object avatar-img" src="{{img}}"
+                         alt="{{name}}">
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="media-heading">
+                    <strong>
+                        <a href="/people/{{url_name}}">{{{name}}}</a>
+                    </strong>
+                    <span class="font-greyLight">, {{bio}}</span>
+                </div>
+                {{#each topics}}
+                   <div>{{numAnswerInTopic}} answers under topic <a href="/topic/{{id}}">{{name}}</a></div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <div class="float-right profile_card_button">
+        <div class="profile_card_col">
+            <div class="col margin-top noborder">
+                {{#if invited}}
+                    <button class="btn btn-default btn-sm" disabled>Invited</button>
+                {{^}}
+                    <button class="btn btn-success btn-sm"
+                        onclick="invite_user(this, '{{id}}', '{{question_id}}')" >Invite</button>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="small_hrLight">
+{{/each}}

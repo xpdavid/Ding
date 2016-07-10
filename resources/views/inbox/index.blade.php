@@ -56,7 +56,17 @@
 
         </div>
         <div class="col-md-4">
-            <div class="alert alert-success" role="alert">If you are worry about span, maybe <a href="#" class="alert-link">Setting</a> is a good place to prevent it.</div>
+            <div class="alert alert-success" role="alert">If you worry about span, maybe <a href="/settings/notification" class="alert-link">Setting</a> is a good place to prevent it.</div>
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    Message sending fail:
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
     </div> <!-- for row -->
 </div>
@@ -73,7 +83,7 @@
                 <!-- User Form Input-->
                 <div class="form-group">
                     {!! Form::label('users', 'User:') !!}
-                    {!! Form::select('users[]', \App\User::all()->lists('name', 'id'), null, ['class' => 'form-control', 'id' => 'organizations', 'multiple']) !!}
+                    {!! Form::select('users[]', [], null, ['class' => 'form-control', 'id' => 'receive_message_users', 'multiple']) !!}
                 </div>
                 
                 <!-- Content Form Input-->
@@ -92,4 +102,12 @@
     {!! Form::close() !!}
 </div><!-- /.modal -->
 
+@endsection
+
+@section('javascript')
+    <script type="text/javascript">
+        $(function() {
+            user_name_autocomplete('receive_message_users');
+        });
+    </script>
 @endsection

@@ -63,14 +63,14 @@
                     </div>
                     <div>
                         @foreach($conversation->users as $user)
-                            <img src="/upload/user/sample_icon.png" alt="..." class="img-rounded">
+                            <img src="/upload/user/sample_icon.png" alt="..." class="img-rounded avatar-img">
                         @endforeach
                     </div>
                 </div>
             </div>
             <hr>
             <div>
-                <div class="alert alert-success" role="alert">If you are worry about span, maybe <a href="#" class="alert-link">Setting</a> is a good place to prevent it.</div>
+                <div class="alert alert-success" role="alert">If you worry about span, maybe <a href="/settings/notification" class="alert-link">Setting</a> is a good place to prevent it.</div>
             </div>
 
             <div>

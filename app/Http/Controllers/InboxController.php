@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notification;
 use Auth;
 use App\User;
 use App\Message;
@@ -19,9 +20,7 @@ use Illuminate\Http\Request;
 class InboxController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * InboxController constructor.
      */
     public function __construct()
     {
@@ -50,6 +49,18 @@ class InboxController extends Controller
     public function store(Request $request)
     {
         $current_user = Auth::user();
+        $users_id = $request->get('users');
+        // check blocking
+        foreach ($users_id as $user_id) {
+            $to_user = User::findOrFail($user_id);
+            if (!$current_user->canSendMessageTo($to_user)) {
+                return redirect()
+                    ->back()
+                    ->withErrors(['There are some users who block you or some users set they only can receive message from users who they subscribe to.']);
+            }
+        }
+
+
         // Every store will create a new conversation
         $conversation = Conversation::create(['can_reply' => true]);
 
@@ -61,15 +72,15 @@ class InboxController extends Controller
         $conversation->users()->save($current_user);
         // current user send the message
         $current_user->sentMessages()->save($message);
-
-        // participators have many unread message
+        
         // participators have many conversation
-        $users_id = $request->get('users');
         foreach ($users_id as $user_id) {
             if ($user_id == $current_user->id) continue;
             $user = User::findOrFail($user_id);
-            $message->unreadUsers()->save($user);
             $conversation->users()->save($user);
+
+            // send notification to participators with type 11 notification
+            Notification::notification($user, 11, $current_user->id, $message->id);
         }
 
 
@@ -85,8 +96,14 @@ class InboxController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
         $conversation = Conversation::findOrFail($id);
-        return view('inbox.show', compact('conversation'));
+        if ($user->isInConversation($conversation)) {
+            return view('inbox.show', compact('conversation'));
+        } else {
+            abort(401); // 401 forbidden
+        }
+
     }
 
 
@@ -100,6 +117,10 @@ class InboxController extends Controller
     public function update(Request $request, $id)
     {
         $current_user = Auth::user();
+        $conversation = Conversation::findOrFail($id);
+        if (!$current_user->isInConversation($conversation)) {
+            abort(401); // 401 forbidden
+        }
 
         // because there is only one field, we can validate here
         $this->validate($request, [
@@ -112,8 +133,14 @@ class InboxController extends Controller
         $current_user->sentMessages()->save($message);
 
         // set relationship to current conversation
-        $conversation = Conversation::findOrFail($id);
         $conversation->messages()->save($message);
+
+        // notification to participators
+        foreach ($conversation->users as $user) {
+            if ($current_user->id == $user->id) continue;
+            // notify participators (type 11 notification)
+            Notification::notification($user, 11, $current_user->id, $message->id);
+        }
 
         return redirect(route('inbox.show', $id));
     }
@@ -133,11 +160,6 @@ class InboxController extends Controller
         if ($current_user->isInConversation($conversation)) {
             // detach the user from the conversation
             $conversation->users()->detach($current_user->id);
-            
-            // detach the user from all the unread message of the current conversation
-            foreach ($conversation->messages as $message) {
-                $message->unreadUsers()->detach($current_user->id);
-            }
 
             // return sucess message
             return [
