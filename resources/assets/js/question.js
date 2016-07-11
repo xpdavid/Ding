@@ -350,6 +350,21 @@ function showAnswers(ids, appendID, isAppend, callback) {
     });
 }
 
+/**
+ * Ajax method to get full draft for user
+ */
+function getAnswerDraft(draft_id, editor) {
+    var $message = $('#autosave_' + editor);
+    $.post('/answer/' + draft_id + '/fulldraft', {
+        id : draft_id,
+    }, function(results) {
+        if (results.status) {
+            tinymce.get(editor).setContent(changeTexToImage(results.draft));
+            $message.html('Draft created ' + results.time);
+        }
+    });
+}
+
 
 /**
  * Send ajax request to sever to save answer
@@ -358,22 +373,27 @@ function showAnswers(ids, appendID, isAppend, callback) {
  * @param question_id
  * @returns {boolean}
  */
-var questionDetailPageTimer = null;
 function saveAnswer(base_id, question_id) {
+    var $editor = tinyMCE.activeEditor;
     // form validation
-    if (tinyMCE.activeEditor.getContent({format : 'text'}).length < 2) {
-        clearTimeout(questionDetailPageTimer);
-        // last for 2 second
-        $('#' + base_id + '_error').show();
-        questionDetailPageTimer = setTimeout(function() {
-            $('#' + base_id + '_error').fadeOut();
-        }, 2000);
+    var $div = $('<div>' + $editor.getContent() + '</div>');
+    if ($div.text().replace(" ", "").length <= 5 && $div.find('img').length == 0) {
+        showError(base_id, true);
         return ;
     }
-    
-    $.post('/question/' + question_id + '/answer', {
-        user_answer : changeImageToTex(tinyMCE.activeEditor.getContent({format : 'raw'}))
-    }, function(results) {
+
+    // stop autosaving
+    $('#' + base_id + '_input').data('autosave', false);
+
+    // form post request
+    var request = {};
+    $('[data-type="' + base_id + '_input_draft"]').each(function() {
+        request[$(this).data('key')] = $(this).data('value');
+    });
+    request['user_answer'] = changeImageToTex($editor.getContent({format : 'raw'}));
+
+    // post to server
+    $.post('/question/' + question_id + '/answer', request, function(results) {
         if (results.status) {
             var template = Handlebars.templates['_answer_item.html'];
             var data = {
@@ -394,6 +414,8 @@ function saveAnswer(base_id, question_id) {
 
         } else {
             swal("Error", "Sever post a question :(", "error");
+            // keep on saving
+            $('#' + base_id + '_input').data('autosave', true);
         }
     });
 
@@ -920,7 +942,7 @@ function editQuestion(event, question_id) {
     });
 
     // set question id
-    $('#_question_id').val(question_id);
+    $('#_question_edit_id').val(question_id);
 
     // set topics
     var topics = $('[data-type="question_topics"]').data('content');

@@ -53,6 +53,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Send notification to subscribers
+     *
+     * @param $type
+     * @param $item
+     */
+    public function notifySubscriber($type, $item) {
+        // notify all user subscribers
+        foreach ($this->subscribers as $subscriber) {
+            $owner = $subscriber->owner;
+            // it is ok to notify twice as the sanme notification will mark as updated
+            // rather than create a new one
+            Notification::notification($owner, $type, $this->id, $item->id);
+        }
+    }
+
+    /**
      * Defined new query scope so that we can find user by their self-defined url_name
      *
      * @param $query

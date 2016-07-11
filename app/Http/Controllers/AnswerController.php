@@ -9,6 +9,7 @@ use App\Reply;
 use App\Answer;
 use App\Question;
 use App\Http\Requests;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AnswerController extends Controller
@@ -102,10 +103,10 @@ class AnswerController extends Controller
             ];
         }
 
-        // update answer
+        // update answer with set history
         $answer->update([
             'answer' => $request->get('answer')
-        ]);
+        ], ['history' => true]);
 
         return [
             'status' => true,
@@ -177,6 +178,93 @@ class AnswerController extends Controller
 
     }
 
+    /**
+     * Post request to get draft by user
+     *
+     * @param $answer_id
+     * @return array
+     */
+    public function postFullDraft($answer_id) {
+        $user = Auth::user();
+        // validation, the answer must be created by the user
+        $answer = Answer::findOrFail($answer_id);
+        if ($answer->owner->id != $user->id) {
+            // the answer is not owned by the auth user
+            return [
+                'status' => false
+            ];
+        }
+        return [
+            'draft' => $answer->answer,
+            'status' => true,
+            'time' => Carbon::parse($answer->updated_at)->diffForHumans()
+        ];
+    }
+
+    /**
+     * Answer ajax request to store answer draft
+     *
+     * @param $question_id
+     * @param Request $request
+     * @return array
+     */
+    public function storeDraft($question_id, Request $request) {
+        $this->validate($request, [
+            'text' => 'required|min:5'
+        ]);
+
+        // get necessary param
+        $user = Auth::user();
+        $question = Question::findOrFail($question_id);
+        $draft = $question->answerDraftBy($user->id);
+
+        if ($draft) {
+            // already saved answer
+            $answer = $draft;
+            $answer->saveDraft([
+                'answer' => $request->get('text')
+            ]);
+
+        } else {
+            // no answer under the question
+            // check has answer before
+            if ($question->hasPublishedAnswerBy($user->id)) {
+                // user already post the answer in the question
+                return [
+                    'status' => false
+                ];
+            }
+
+            // create answers
+            $answer = Answer::create([
+                'answer' => $request->get('text'),
+                'status' => 2 // draft status
+            ]);
+            $answer->save();
+
+            // save relationship
+            $user->answers()->save($answer);
+            $question->answers()->save($answer);
+        }
+
+        return [
+            'id' => $answer->id
+        ];
+    }
+
+    /**
+     * set an answer as published
+     *
+     * @param $answer_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function publishAnswer($answer_id) {
+        $answer = Answer::findOrFail($answer_id);
+
+        $answer->published();
+        
+        return redirect()->action('AnswerController@getAnswer', $answer->id);
+    }
 
     /**
      * Response AJAX request to store answer for the question
@@ -187,57 +275,48 @@ class AnswerController extends Controller
      */
     public function storeAnswer($question_id, Request $request) {
         $this->validate($request, [
-            'user_answer' => 'required|min:10'
+            'user_answer' => 'required|min:5'
         ]);
 
         // get necessary param
         $user = Auth::user();
         $question = Question::findOrFail($question_id);
 
-        // create answers
-        $answer = Answer::create([
-            'answer' => $request->get('user_answer')
-        ]);
-        $answer->save();
+        if ($request->has('id')) {
+            $answer = Answer::findOrFail($request->get('id'));
+            // the post answer is an draft
+            // save the draft immediately
+            $answer->saveDraft([
+                'answer' => $request->get('user_answer')
+            ]);
+            $answer->publish(); // the auth process is contained in the publish method
+        } else {
+            // user has already answer the question
+            if ($question->hasPublishedAnswerBy($user->id)) {
+                return [
+                    'status' => false
+                ];
+            }
 
-        // save relationship
-        $user->answers()->save($answer);
-        $question->answers()->save($answer);
+            // create answers
+            $answer = Answer::create([
+                'answer' => $request->get('user_answer')
+            ]);
+            $answer->save();
 
-        // notify all the question subscribe user
-        foreach ($question->subscribers as $subscriber) {
-            $owner = $subscriber->owner;
-            // cannot be self-notified
-            if ($owner->id == $user->id) continue;
-            // check user settings
-            if (!$subscriber->owner->canReceiveQuestionUpdateBy($user)) continue;
-            // type 2 notification, user answer question
-            Notification::notification($owner, 2, $user->id, $answer->id);
-        }
+            // save relationship
+            $user->answers()->save($answer);
+            $question->answers()->save($answer);
 
-        // notify all user subscribers
-        foreach ($user->subscribers as $subscriber) {
-            $owner = $subscriber->owner;
-            // it is ok to notify twice as the sanme notification will mark as updated
-            // rather than create a new one
-            Notification::notification($owner, 2, $user->id, $answer->id);
+            // notification
+            $question->notifySubscriber($answer);
+            $user->notifySubscriber(2, $answer);
         }
 
         // return success data
-        return [
-            'id' => $answer->id,
-            'user_name' => $answer->owner->name,
-            'user_id' => $answer->owner->id,
-            'user_bio' => $answer->owner->bio,
-            'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
-            'answer' => $answer->summary,
-            'created_at' => $answer->createdAtHumanReadable,
-            'votes' => $answer->netVotes,
-            'numComment' => $answer->replies->count(),
-            'canVote' => true,
-            'canEdit' => true,
-            'status' => true
-        ];
+        $data = $answer->jsonAnswerDetail();
+        $data['status'] = true;
+        return $data;
     }
 
 

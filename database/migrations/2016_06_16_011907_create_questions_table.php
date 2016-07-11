@@ -18,6 +18,8 @@ class CreateQuestionsTable extends Migration
             $table->string('title');
             $table->text('content');
 
+            $table->integer('status')->default(1); // 1 is published
+
             $table->integer('user_id'); // a question is posted by a user
 
             $table->timestamps();

@@ -36,6 +36,8 @@ Route::post('/question/answers', 'AnswerController@postAnswers');
 
 // for question & answer
 Route::post('/question/ask', 'QuestionController@ask');
+Route::post('/question/draft', 'QuestionController@storeDraft');
+Route::post('/question/latestDraft', 'QuestionController@latestDraft');
 Route::post('/question/update', 'QuestionController@update');
 Route::get('/question/{question_id}', 'QuestionController@show');
 Route::post('/question/{question_id}', 'QuestionController@postQuestion');
@@ -49,6 +51,8 @@ Route::post('/answer/{id}', 'AnswerController@postAnswer');
 Route::post('/answer/{id}/update', 'AnswerController@update');
 Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
 Route::get('/question/{question_id}/answer/{answer_id}', 'AnswerController@show');
+Route::post('/question/{question_id}/draft', 'AnswerController@storeDraft');
+Route::post('/answer/{id}/fulldraft', 'AnswerController@postFullDraft');
 
 // for reply
 Route::post('/reply/reply-list', 'ReplyController@replyList');

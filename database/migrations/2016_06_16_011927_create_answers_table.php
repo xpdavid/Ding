@@ -17,6 +17,8 @@ class CreateAnswersTable extends Migration
 
             $table->text('answer');
 
+            $table->integer('status')->default(1); // 1 represent published
+
             $table->integer('user_id')->unsigned();
             $table->integer('question_id')->unsigned();
 

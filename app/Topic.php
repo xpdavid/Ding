@@ -294,6 +294,19 @@ class Topic extends Model
     }
 
     /**
+     * Return json format
+     *
+     * @return array
+     */
+    public function getJsonAttribute() {
+        return [
+            'name' => $this->name,
+            'description' => $this->description,
+            'id' => $this->id,
+        ];
+    }
+
+    /**
      * get top parent(topic without parent topic, root topic)
      *
      * @param $query

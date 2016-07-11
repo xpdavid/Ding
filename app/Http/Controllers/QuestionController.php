@@ -74,7 +74,91 @@ class QuestionController extends Controller
             'content' => $question->content
         ];
     }
-    
+
+
+    /**
+     * Answer ajax call to store draft
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeDraft(Request $request) {
+        $this->validate($request, [
+            'question_title' => 'required',
+            'question_topics' => 'required|array',
+            'text' => 'required|min:5'
+        ]);
+
+        // get necessary param
+        $user = Auth::user();
+
+        $draft = false;
+        if ($request->has('id')) {
+            $draft = Question::findOrFail($request->get('id'));
+            if ($draft->owner->id != $user->id) {
+                dd(1);
+                // the user does not have the question
+                return [
+                    'status' => false
+                ];
+            }
+        }
+
+        if ($draft) {
+            // already saved answer
+            $question = $draft;
+            if ($question->saveDraft([
+                'title' => $request->get('question_title'),
+                'content' => $request->get('text')
+            ])) {
+                // save topics relationship
+                $question->topics()->sync($request->get('question_topics'));
+            } else {
+                return [
+                    'status' => false
+                ];
+            }
+
+        } else {
+            // create question
+            $question = Question::create([
+                'title' => $request->get('question_title'),
+                'content' => $request->get('text'),
+                'status' => 2 // draft status
+            ]);
+            $question->save();
+
+            // save relationship
+            $user->questions()->save($question);
+            $question->topics()->sync($request->get('question_topics'));
+        }
+
+        return [
+            'id' => $question->id
+        ];
+    }
+
+
+    /**
+     * Answer ajax call to get the latest draft
+     * if there is no latest draft, return status false
+     *
+     * @return array
+     */
+    public function latestDraft() {
+        $user = Auth::user();
+        $draft_query = $user->questions()->whereStatus(2)->orderBy('updated_at', 'desc');
+        if ($draft_query->exists()) {
+            $latestDraft = $draft_query->first();
+            $results =  $latestDraft->toJsonFull();
+            $results['status'] = true;
+            return $results;
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+    }
 
     /**
      * response form request to store question
@@ -90,18 +174,37 @@ class QuestionController extends Controller
 
         // get necessary param
         $user = Auth::user();
-        $question = Question::create([
-            'title' => $request->get('question_title'),
-            'content' => $request->get('question_detail'),
-        ]);
 
-        // the user post the question
-        $user->questions()->save($question);
+        if ($request->has('question_draft_id')) {
+            $question = Question::findOrFail($request->get('question_draft_id'));
+            if($question->owner->id != $user->id) {
+                // the question is not owned by user
+                abort(401);
+            }
 
-        // record topic change
-        $question->recordTopicsHistory($request->get('question_topics'));
-        // the question belongs to many topics
-        $question->topics()->sync($request->get('question_topics'));
+            // save draft last time
+            $question->saveDraft([
+                'title' => $request->get('question_title'),
+                'content' => $request->get('question_detail')
+            ]);
+
+            // save topics relationship
+            $question->topics()->sync($request->get('question_topics'));
+
+            $question->publish();
+
+        } else {
+            $question = Question::create([
+                'title' => $request->get('question_title'),
+                'content' => $request->get('question_detail'),
+            ]);
+
+            // the user post the question
+            $user->questions()->save($question);
+
+            // the question belongs to many topics
+            $question->topics()->sync($request->get('question_topics'));
+        }
         
         // notification to user subscribers
         foreach ($user->subscribers as $subscriber) {
@@ -120,12 +223,12 @@ class QuestionController extends Controller
      */
     public function update(Request $request) {
         $this->validate($request, [
-            'question_id' => 'required|integer',
+            'question_edit_id' => 'required|integer',
             'question_title' => 'required',
             'question_topics' => 'required|array',
         ]);
 
-        $question = Question::findOrFail($request->get('question_id'));
+        $question = Question::findOrFail($request->get('question_edit_id'));
 
         // record topic change
         $question->recordTopicsHistory($request->get('question_topics'));
@@ -134,7 +237,7 @@ class QuestionController extends Controller
         $question->update([
             'title' => $request->get('question_title'),
             'content' => $request->get('question_detail')
-        ]);
+        ], ['history' => true]);
 
         return redirect()->action('QuestionController@show', $question->id);
     }

@@ -77,7 +77,7 @@
             </ul>
 
             <form class="navbar-form navbar-right" role="ask">
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ask_question">Ask</button>
+                <button type="button" class="btn btn-primary btn-block" onclick="navbar_ask_button()">Ask</button>
             </form>
 
         </div><!-- /.navbar-collapse -->

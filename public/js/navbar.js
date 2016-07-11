@@ -152,12 +152,110 @@ function navbar_searching_click() {
 }
 
 /**
- * function: navbar_question_detail
- * description: trigger question detail model, fade ask question model
+ * function: navbar_ask_button
+ * description: navbar ask button click
  */
-function navbar_question_detail() {
-    $('#ask_question').modal('hide');
-    $('#_question').modal('show');
+function navbar_ask_button() {
+    // if has input before, show the input directly.
+    if ($('#_question_title').val().length != 0
+        || tinymce.get('_question_detail').setContent({ format : 'text'}).length != 0
+        || $('#_question_topics').val()) {
+        navbar_show_ask_new_question_option();
+        $('#_question_detail').data('autosave', true);
+        $('#_question').modal('show');
+        $('#ask_question').modal('hide');
+    } else {
+        // else show search box and them get recent draft
+        $.post('/question/latestDraft', {} ,function(results) {
+            if (results.status) {
+                $a_tag_restore = $('<a></a>');
+                $a_tag_restore.html('You have question draft (Click to show)');
+                $a_tag_restore.addClass('text-success');
+                $a_tag_restore.addClass('space-right');
+                $a_tag_show_all = $('<a></a>');
+                $a_tag_show_all.html('Show all drafts');
+                $a_tag_show_all.attr('href', '/draft');
+                $a_tag_show_all.addClass('font-greyLight');
+                // click action
+                $a_tag_restore.click(function() {
+                    $('#ask_question').modal('hide');
+
+                    // switch to ask mode
+                    _qeustion_modal_UISwitch('ask');
+
+                    // set title
+                    $('#_question_title').val(results.title);
+                    // clear content
+                    tinymce.get('_question_detail').setContent(
+                        changeTexToImage(results.content)
+                    );
+                    // clear topics
+                    var ids = [];
+                    var $topics = $('#_question_topics');
+                    $topics.empty();
+                    $.each(results.topics, function(index, topic) {
+                        $topics.append($("<option/>") //add option tag in select
+                            .val(topic.id) //set value for option to post it
+                            .text(topic.name)); //set a text for show in select
+                        ids.push(topic.id);
+                    });
+                    $topics.val(ids).trigger("change"); //apply to select2
+                    // clear id
+                    $('#_question_detail_draft_id').val(results.id);
+                    $('#_question_detail_draft_id').data('id', results.id);
+
+                    // fire search event
+                    $('#_question_title').trigger('change');
+
+                    // show modal
+                    $('#_question').modal('show');
+                });
+
+                var $wrapper = $('<p></p>');
+                $wrapper.addClass('margin-top');
+                $wrapper.append($a_tag_restore);
+                $wrapper.append(' Or ');
+                $wrapper.append($a_tag_show_all);
+                $('#_question_draft_status').html($wrapper);
+                // show asking new question option
+                navbar_show_ask_new_question_option();
+                // show search box
+                $('#ask_question').modal('show');
+            }
+        });
+    }
+}
+
+
+/**
+ * Show ask new question option in _question modal
+ */
+function navbar_show_ask_new_question_option() {
+    $a_tag = $('<a></a>');
+    $a_tag.html('Ask New Question');
+    $a_tag.addClass('text-success');
+    $a_tag.click(function() {
+        navbar_ask_clear_input();
+    });
+    $wrapper = $('<p></p>').addClass('margin-top').html($a_tag);
+    $wrapper.addClass('pull-left');
+
+    $('#_question_new_question').html($wrapper);
+}
+
+/**
+ * Clear all inputs in _question model
+ */
+function navbar_ask_clear_input() {
+    // clear title
+    $('#_question_title').val('');
+    // clear content
+    tinymce.get('_question_detail').setContent('');
+    // clear topics
+    $('#_question_topics').empty();
+    // clear id
+    $('#_question_detail_draft_id').val('');
+    $('#_question_detail_draft_id').data('id', '');
 }
 
 /**
@@ -212,38 +310,31 @@ function navbar_ask_question_detail() {
     $('#ask_question').modal('hide');
     var old_input = $('#ask_question_input');
     var new_input = $('#_question_title');
+    // switch to ask mode
+    _qeustion_modal_UISwitch('ask');
     // copy same query
     new_input.val(old_input.val());
     old_input.val('');
-    // switch to ask mode
-    _qeustion_modal_UISwitch('ask');
     // fire search event
     new_input.trigger('change');
     // show ask question detail page
     $('#_question').modal('show');
 }
 
+/**
+ * Validation for navbar ask question form
+ */
 function navbar_question_form_process() {
-    var timer1 = null;
-    var timer2 = null;
     $('#_question_form').submit(function() {
         // question title empty
         if ($('#_question_title').val().length <= 5) {
-            clearTimeout(timer1);
-            $('#_question_title_error').fadeIn();
-            timer1 = setInterval(function() {
-                $('#_question_title_error').fadeOut();
-            }, 2000);
+            showError('_question_title', true);
             return false;
         }
 
         // question topics empty
         if (!$('#_question_topics').val()) {
-            clearTimeout(timer2);
-            $('#_question_topics_error').fadeIn();
-            timer2 = setInterval(function() {
-                $('#_question_topics_error').fadeOut();
-            }, 2000);
+            showError('_question_topics', true);
             return false;
         }
 
@@ -269,20 +360,29 @@ function navbar_question_form_process() {
 function _qeustion_modal_UISwitch(type) {
     $('[data-parent="_question"]').each(function () {
         var $t = $(this);
-        if ($t.data('ask') && $t.data('edit')) {
+        if ($t.data('ask') != undefined && $t.data('edit') != undefined) {
             if ($t.data('change')) {
                 $t.attr($t.data('change'), $t.data(type));
+            } else if ($t.data('data_change')) {
+                $t.data($t.data('data_change'), $t.data(type));
             } else {
                 $t.html($t.data(type));
             }
 
-        }
-        if ($t.is(':visible')) {
-            $t.hide();
         } else {
-            $t.show();
+            if ($t.is(':visible')) {
+                $t.hide();
+            } else {
+                $t.show();
+            }
         }
     });
+
+    if (type == "ask") {
+        // clear content
+        navbar_ask_clear_input();
+    }
+
     // disable table
     navbar_search_table_disabled = (type == 'edit');
 }
@@ -330,6 +430,13 @@ $(function() {
 
 // for question editor
 $(function() {
+    /**
+     * disable auto save function when window close
+     */
+    $('#_question').on('hide.bs.modal', function() {
+        $('#_question_detail').data('autosave', false);
+    });
+
     tinyMCEeditor('_question_detail'); // navbar ask question (question detail)
 
     navbar_question_form_process(); // form validation

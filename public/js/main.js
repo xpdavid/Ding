@@ -474,9 +474,11 @@ function imgResponsiveIn(id) {
 
 /**
  * TinyMCE editor
+ *
  * @param textareaID
+ * @param initcallback
  */
-function tinyMCEeditor(textareaID) {
+function tinyMCEeditor(textareaID, initcallback) {
     // cannot find the element.
     if ($('#' + textareaID).length == 0) return;
     // init
@@ -490,11 +492,13 @@ function tinyMCEeditor(textareaID) {
         menubar : false,
         selector: '#' + textareaID,
         paste_as_text: true,
+        browser_spellcheck: true,
         plugins: 'code advlist autolink link image imagetools table media codesample fullscreen paste',
         toolbar: ['code | undo redo | bold italic underline | blockquote codesample bullist numlist math | link image media | fullscreen',],
         relative_urls : false,
         remove_script_host : false,
         convert_urls : true,
+        elementpath : false,
         setup: function (editor) {
             editor.on('FullscreenStateChanged', function(e) {
                 if (e.state) {
@@ -522,6 +526,15 @@ function tinyMCEeditor(textareaID) {
                     callTexEditor(decodeURIComponent($(ed.target).data('value')));
                 }
             });
+
+            editor.on('init', function(ed) {
+                tinyMCEAutoSave(textareaID);
+
+                if (initcallback && typeof initcallback == "function") {
+                    initcallback(editor);
+                }
+            });
+
         },
         // increase the font-size
         content_css : '/js/tinymce/content.css',
@@ -536,6 +549,119 @@ function tinyMCEeditor(textareaID) {
         file_picker_types: 'image'
     });
 }
+
+/**
+ * Auto save process for tinyMCE
+ * @param editor
+ */
+function tinyMCEAutoSave(editor) {
+    $(tinymce.get(editor).editorContainer)
+        .find('.mce-statusbar')
+        .find('.mce-container-body')
+        .prepend('<div class="mce-flow-layout-item mce-path"><div class="mce-path-item" id="autosave_' + editor + '"></div></div>');
+    var $message = $('#autosave_' + editor);
+    var $editor = tinymce.get(editor);
+    var offset = 10;
+    var count = offset;
+    var preContent = "";
+
+    var autosaveInterval = setInterval(function() {
+        console.log(count);
+        if (!$('#' + editor).data('autosave')) {
+            count = offset;
+            return ;
+        }
+
+        var $div = $('<div>' + $editor.getContent() + '</div>');
+
+        if (count == 0) {
+            if ($div.text().replace(" ", "").length > 5 || $div.find('img').length > 0) {
+                autosave();
+            }
+            count = offset;
+        } else if (count < 5) {
+            if ($div.text().replace(" ", "").length > 5 || $div.find('img').length > 0) {
+
+                // generate button
+                var $a_tag = $('<a></a>');
+                $a_tag.click(function(e) {
+                    e.preventDefault();
+                    autosave();
+                });
+                $a_tag.css('margin-right', '8px');
+                // add cancel button
+                var $a_cancel = $('<a></a>');
+                $a_cancel.addClass('text-danger margin-top');
+                $a_cancel.html('Cancel');
+                $a_cancel.click(function(e) {
+                    e.preventDefault();
+                    count = offset;
+                });
+                
+                $a_tag.html('Autosave to draft in ' + count + ' seconds. (Click to save it now)');
+                $message.html($a_tag);
+                $message.append($a_cancel);
+            }
+        } else {
+            // clear
+            $message.html('');
+        }
+        count--;
+    }, 1000);
+
+    function autosave() {
+        var $postData = $('[data-type="' + editor + '_draft"]');
+
+        // determine if the data changed
+        var flag = false;
+        $postData.each(function(index, item) {
+            var value = $(this).data('value') ? $(this).data('value') : $(this).val();
+            if (!equal(preContent[index], value)) {
+                flag = true || flag;
+            }
+        });
+
+        // the editor content changed
+        flag = flag || ($editor.getContent() != preContent[preContent.length - 1]);
+
+        if (flag) {
+            // only change then post draft
+            var request = {};
+            $postData.each(function() {
+                if ($(this).data('value')) {
+                    request[$(this).data('key')] = $(this).data('value');
+                } else {
+                    request[$(this).data('key')] = $(this).val();
+                }
+            });
+
+            request['text'] = changeImageToTex($editor.getContent());
+
+            $.post($('#' + editor).data('draft_url'), request, function(results) {
+                $('#' + editor + '_draft_id').data('value', results.id);
+                $('#' + editor + '_draft_id').val(results.id);
+            })
+                .fail(function(error) {
+                    $.each(error.responseJSON, function(index, value) {
+                        showError('_' + index, true);
+                    });
+                });
+        }
+
+        count = offset;
+        $message.html('');
+
+        // backup previous content
+        preContent = [];
+        $postData.each(function(index, item) {
+            var value = $(this).data('value') ? $(this).data('value') : $(this).val();
+            preContent[index] = value;
+        });
+        preContent.push($editor.getContent());
+    }
+}
+
+
 
 /**
  * Bind data-toggle hide/show event
@@ -555,11 +681,47 @@ function bindHideShow() {
     });
 }
 
+/**
+ * Show error div. (lasted for 2 seconds)
+ * @param base_id
+ */
+function showError(base_id, autoHide) {
+    if (autoHide) {
+        // last for 2 second
+        $('#' + base_id + '_error').show();
+        setTimeout(function() {
+            $('#' + base_id + '_error').fadeOut();
+        }, 2000);
+    } else {
+        // show
+        $('#' + base_id + '_error').show();
+    }
+
+}
+
 // bind expend button
 $(function() {
     bindExpendAll();
     bindHideShow();
 });
+
+/**
+ * Check if two things are equal
+ *
+ * @param a
+ * @param b
+ * @returns {boolean}
+ */
+function equal(a1, a2) {
+    return a1 === a2 || (
+            a1 !== null && a2 !== null &&
+            $.isArray(a1) && $.isArray(a2) &&
+            a1.length === a2.length &&
+            a1
+                .map(function (val, idx) { return val === a2[idx]; })
+                .reduce(function (prev, cur) { return prev && cur; }, true)
+        );
+}
 
 /**
  * Fix for boostrap modal using tinymce
@@ -571,6 +733,7 @@ $(function() {
             e.stopImmediatePropagation();
         }
     });
-})
+});
+
 
 //# sourceMappingURL=main.js.map

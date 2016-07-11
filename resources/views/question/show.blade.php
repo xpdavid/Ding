@@ -34,7 +34,7 @@
             </h5>
         </div>
 
-        @if ($question->answers()->where('user_id', Auth::user()->id)->exists())
+        @if ($question->hasPublishedAnswerBy(Auth::user()->id))
             {{--user has answer the question--}}
             <div class="text-center">
                 <hr>
@@ -58,7 +58,9 @@
                         class="form-control"
                         id="question_answers_input"
                         placeholder="Write your answer here."
-                        rows="5"
+                        rows="5",
+                        data-autosave="true"
+                        data-draft_url="/question/{{ $question->id }}/draft"
                 ></textarea>
                     <div class="margin-top clearfix">
                         <p class="text-danger float-left noneDisplay" id="question_answers_error">Bruh, I think answers must be more than 1 characters.</p>
@@ -106,7 +108,14 @@
             // open tooltipc option
             $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
-            tinyMCEeditor('question_answers_input');
+            tinyMCEeditor('question_answers_input', function(editor) {
+                // check has draft before
+                @if($question->answerDraftBy(Auth::user()->id))
+                        getAnswerDraft('{{ $question->answerDraftBy(Auth::user()->id)->id }}' ,'question_answers_input');
+                @endif
+            });
+
+
         });
     </script>
 @endsection
