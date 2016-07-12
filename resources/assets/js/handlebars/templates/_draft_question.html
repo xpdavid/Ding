@@ -1,0 +1,32 @@
+<!--this is the template for draft question item-->
+<!--the template will rendered by javascript template engine `handlebars.js`-->
+{{#each questions}}
+<div id="draft_question_{{id}}">
+    <h4>
+        <a href="#" class="space-right-big">{{{title}}}</a>
+        <a href="#" class="text-danger font-normal"
+         data-action="delete_draft" data-type="question"
+         data-id="{{id}}">
+            <span class="glyphicon glyphicon-remove"></span>Delete Draft</a>
+    </h4>
+    {{#if summary}}
+        <p>
+        <div id="question_summary_{{id}}" class="_summary">
+            {{{content}}}<a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{id}}">Show all</a>
+        </div>
+        <div id="question_full_{{id}}">
+
+        </div>
+        </p>
+    {{^}}
+        <p>{{{content}}}</p>
+    {{/if}}
+    <div class="horizontal_item">
+        <a href="#" data-action="publish_draft" data-type="question"
+           data-id="{{id}}">
+            <span class="glyphicon glyphicon-circle-arrow-up"></span>Publish
+        </a>
+    </div>
+    <hr class="small_hrLight">
+</div>
+{{/each}}

@@ -309,7 +309,7 @@ class User extends Authenticatable
         $end = Carbon::parse($this->created_at);
         while($end->diffInDays($date) >= -1) {
             // question type 1
-            $query = $this->questions()->whereDate('created_at', '=', $date->toDateString());
+            $query = $this->questions()->whereStatus(1)->whereDate('created_at', '=', $date->toDateString());
             if ($query->count() > 0) {
                 foreach ($query->get() as $question) {
                     array_push($results, [
@@ -332,7 +332,7 @@ class User extends Authenticatable
                 }
             }
             // answer type 3
-            $query = $this->answers()->whereDate('created_at', '=', $date->toDateString());
+            $query = $this->answers()->whereStatus(1)->whereDate('created_at', '=', $date->toDateString());
             if ($query->count() > 0) {
                 foreach ($query->get() as $answer) {
                     array_push($results, [
@@ -630,5 +630,6 @@ class User extends Authenticatable
     public function isBlockedBy($user) {
         return in_array($this->id, $user->blockings->lists('id')->all());
     }
+    
 
 }

@@ -36,6 +36,11 @@ class QuestionController extends Controller
     public function show($question_id, Request $request) {
         $question = Question::findOrFail($question_id);
 
+        if($question->status != 1) {
+            // you cannot view unpulished question
+            abort(404);
+        }
+
         // Visit count
         Visitor::visit($question);
 
@@ -67,12 +72,19 @@ class QuestionController extends Controller
      * @return array
      */
     public function postQuestion($question_id) {
+        $user = Auth::user();
         $question = Question::findOrFail($question_id);
 
-        return [
-            'title' => $question->title,
-            'content' => $question->content
-        ];
+        if($question->status != 2 || $question->owner->id == $user->id) {
+            // only if you are the owner, then you can visit it
+            return [
+                'title' => $question->title,
+                'content' => $question->content
+            ];
+        } else {
+            // you cannot view unpulished question
+            abort(404);
+        }
     }
 
 
@@ -205,12 +217,9 @@ class QuestionController extends Controller
             // the question belongs to many topics
             $question->topics()->sync($request->get('question_topics'));
         }
-        
+
+        $user->notifySubscriber(12, $question);
         // notification to user subscribers
-        foreach ($user->subscribers as $subscriber) {
-            $owner = $subscriber->owner;
-            Notification::notification($owner, 12, $user->id, $question->id);
-        }
 
         return redirect(action('QuestionController@show', $question->id));
     }
@@ -229,6 +238,12 @@ class QuestionController extends Controller
         ]);
 
         $question = Question::findOrFail($request->get('question_edit_id'));
+        // update only for published question
+        if($question->status != 1) {
+            // you cannot update unpulished question
+            abort(404);
+        }
+
 
         // record topic change
         $question->recordTopicsHistory($request->get('question_topics'));
@@ -272,10 +287,12 @@ class QuestionController extends Controller
                         }
                     }
                 } else {
-                    $tmp_users = $topic->specialists->random($each_take);
-                    foreach ($tmp_users as $tmp_user) {
-                        if (!in_array($tmp_user->id, $users)) {
-                            array_push($users, $tmp_user->id);
+                    if ($topic->specialists()->count() > 0) {
+                        $tmp_users = $topic->specialists->random($each_take);
+                        foreach ($tmp_users as $tmp_user) {
+                            if (!in_array($tmp_user->id, $users)) {
+                                array_push($users, $tmp_user->id);
+                            }
                         }
                     }
                 }
@@ -284,12 +301,15 @@ class QuestionController extends Controller
             // second to answered user (magic algorithm)
             if (count($users) < $max_users) {
                 foreach ($topics as $topic) {
-                    $take_item = $topic->questions()->count() > $max_users ? $max_users : $topic->questions()->count();
-                    foreach ($topic->questions->random($take_item) as $question) {
-                        if ($question->answers()->count() > 0) {
-                            $user = $question->answers->random()->owner;
-                            if (!in_array($user->id, $users)) {
-                                array_push($users, $user->id);
+                    $publishedQuestions = $topic->publishedQuestions;
+                    $take_item = $publishedQuestions->count() > $max_users ? $max_users : $topic->questions()->count();
+                    if ($take_item > 1) {
+                        foreach ($topic->publishedQuestions->random($take_item) as $question) {
+                            if ($question->answers()->count() > 0) {
+                                $user = $question->answers->random()->owner;
+                                if (!in_array($user->id, $users)) {
+                                    array_push($users, $user->id);
+                                }
                             }
                         }
                     }

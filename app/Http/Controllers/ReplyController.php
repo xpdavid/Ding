@@ -72,9 +72,17 @@ class ReplyController extends Controller
         switch ($request->get('type')) {
             case 'question' :
                 $item = Question::findOrFail($item_id);
+                if($item->status != 1) {
+                    // you cannot view unpulished item
+                    abort(404);
+                }
                 break;
             case 'answer':
                 $item = Answer::findOrFail($item_id);
+                if($item->status != 1) {
+                    // you cannot view unpulished item
+                    abort(404);
+                }
                 break;
             case 'bookmark':
                 $item = Bookmark::findOrFail($item_id);
@@ -142,9 +150,17 @@ class ReplyController extends Controller
         switch ($request->get('type')) {
             case 'question':
                 $item = Question::findOrFail($item_id);
+                if ($item->status != 1) {
+                    // you can only reply to pulished status item
+                    abort(401);
+                }
                 break;
             case 'answer':
                 $item = Answer::findOrFail($item_id);
+                if ($item->status != 1) {
+                    // you can only reply to pulished status item
+                    abort(401);
+                }
                 break;
             case 'bookmark':
                 $item = Bookmark::findOrFail($item_id);

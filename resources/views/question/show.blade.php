@@ -53,7 +53,8 @@
                     <img class="float-right" src="{{ DImage(Auth::user()->settings->profile_pic_id, 25, 25) }}" alt="{{ Auth::user()->name }}">
                 </div>
                 <div class="form-group margin-top">
-                <textarea
+                    <a name="answer"></a>
+                    <textarea
                         name="user_answer"
                         class="form-control"
                         id="question_answers_input"
@@ -61,7 +62,7 @@
                         rows="5",
                         data-autosave="true"
                         data-draft_url="/question/{{ $question->id }}/draft"
-                ></textarea>
+                    ></textarea>
                     <div class="margin-top clearfix">
                         <p class="text-danger float-left noneDisplay" id="question_answers_error">Bruh, I think answers must be more than 1 characters.</p>
                         <button type="submit" class="btn btn-warning float-right"

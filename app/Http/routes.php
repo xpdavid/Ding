@@ -121,7 +121,11 @@ Route::post('/subscribed', 'UserCenterController@postSubscribed');
 Route::get('/invitation', 'UserCenterController@invitation');
 Route::post('/invitation', 'UserCenterController@postInvitation');
 Route::get('/mybookmark', 'UserCenterController@bookmark');
-Route::post('/mybookmark', 'UserCenterController@bookmark');
+Route::get('/draft', 'UserCenterController@draft');
+Route::post('/draft_question', 'UserCenterController@postDraftQuestion');
+Route::post('/draft_answer', 'UserCenterController@postDraftAnswer');
+Route::post('/draft/{id}/delete', 'UserCenterController@deleteDraft');
+Route::post('/draft/{id}/publish', 'UserCenterController@publishDraft');
 
 // for notification
 Route::post('/notification/operation', 'NotificationController@operation');

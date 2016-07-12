@@ -220,10 +220,14 @@ $(function() {
  * @param id
  */
 function rerenderMath(id) {
-    if (MathJax) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);
-    } else {
-        console.log('MaxJax loading... Please wait...');
+    try {
+        if (MathJax) {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, id]);
+        } else {
+            console.log('MaxJax loading... Please wait...');
+        }
+    } catch(e) {
+        console.log('MaxJax cdn fail.. contact admin for more information')
     }
 
 }

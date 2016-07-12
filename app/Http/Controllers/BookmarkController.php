@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use Auth;
 use App\Visitor;
 use Carbon\Carbon;
@@ -260,11 +261,19 @@ class BookmarkController extends Controller
                 // detach first, we cannot afford bookmark twice
                 case 'question':
                     $bookmark->questions()->detach($request->get('item_id'));
-                    $bookmark->questions()->attach($request->get('item_id'));
+                    $question = Question::findOrFail($request->get('item_id'));
+                    if ($question->status == 1) {
+                        // bookmark only published question
+                        $bookmark->questions()->attach($request->get('item_id'));
+                    }
                     break;
                 case 'answer':
                     $bookmark->answers()->detach($request->get('item_id'));
-                    $bookmark->answers()->attach($request->get('item_id'));
+                    $answer = Answer::findOrFail($request->get('item_id'));
+                    if ($answer->status == 1) {
+                        // bookmark only published answer
+                        $bookmark->answers()->attach($request->get('item_id'));
+                    }
                     break;
             }
         } else if ($request->get('op') == 'remove') {

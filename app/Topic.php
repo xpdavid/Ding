@@ -46,6 +46,10 @@ class Topic extends Model
         return $this->belongsToMany('App\Question')->withTimestamps();
     }
 
+    public function getPublishedQuestionsAttribute() {
+        return $this->questions()->whereStatus(1)->get();
+    }
+
     /**
      * A topic page has a hit
      */
@@ -171,7 +175,7 @@ class Topic extends Model
      * @return mixed
      */
     public function getRecommendQuestionsAttribute() {
-        $questions = $this->questions->sortByDesc(function($question) {
+        $questions = $this->questions()->whereStatus(1)->get()->sortByDesc(function($question) {
             $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
             $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
             $numSubscriber = $question->subscribers()->count();
@@ -188,7 +192,7 @@ class Topic extends Model
      * @return mixed
      */
     public function getWaitAnswerQuestionsAttribute() {
-        $questions = $this->questions->filter(function($question) {
+        $questions = $this->questions()->whereStatus(1)->get()->filter(function($question) {
             return $question->answers()->count() == 0;
         });
         $questions = $questions->sortBy(function($question) {
@@ -202,7 +206,7 @@ class Topic extends Model
     }
 
     public function getHighlightQuestionsAttribute() {
-        $questions = $this->questions->sortByDesc(function($question) {
+        $questions = $this->questions()->whereStatus(1)->get()->sortByDesc(function($question) {
             $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
             $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
             $numSubscriber = $question->subscribers()->count();

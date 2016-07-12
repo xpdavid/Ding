@@ -39,6 +39,11 @@ class SubscribeController extends Controller
             // unsubscribe a question
             $user->subscribe->questions()->detach($question_id);
         } else {
+            $question = Question::findOrFail($question_id);
+
+            if ($question->status != 1) {
+                abort(401); // youcannot subscribe to an unpublished qeustion
+            }
 
             // you cannot subscribe a question twice
             if (!$user->subscribe->checkHasSubscribed($question_id, 'question')) {

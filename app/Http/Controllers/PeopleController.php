@@ -237,7 +237,8 @@ class PeopleController extends Controller
     public function postQuestion($url_name, Request $request) {
         $user = User::findUrlName($url_name);
 
-        $questions = $user->questions()->orderBy('updated_at', 'decs')->get();
+        $questions = $user->questions()->orderBy('updated_at', 'decs')
+            ->whereStatus(1)->get(); // published question
 
         // get page parameters
         $page = $request->exists('page') ? $request->get('page') : 1;
@@ -271,7 +272,8 @@ class PeopleController extends Controller
      */
     public function postAnswer($url_name, Request $request) {
         $user = User::findUrlName($url_name);
-        $answers = $user->answers()->orderBy('updated_at', 'decs')->get();
+        $answers = $user->answers()->orderBy('updated_at', 'decs')
+            ->whereStatus(1)->get();
         // check if display answers under specific topics
         if ($request->has('topic')) {
             $answers = $user->answersInTopic($request->get('topic'));

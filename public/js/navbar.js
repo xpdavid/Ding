@@ -158,7 +158,7 @@ function navbar_searching_click() {
 function navbar_ask_button() {
     // if has input before, show the input directly.
     if ($('#_question_title').val().length != 0
-        || tinymce.get('_question_detail').setContent({ format : 'text'}).length != 0
+        || tinymce.get('_question_detail').getContent().length != 0
         || $('#_question_topics').val()) {
         navbar_show_ask_new_question_option();
         $('#_question_detail').data('autosave', true);
@@ -167,6 +167,8 @@ function navbar_ask_button() {
     } else {
         // else show search box and them get recent draft
         $.post('/question/latestDraft', {} ,function(results) {
+            // switch to ask mode
+            _qeustion_modal_UISwitch('ask');
             if (results.status) {
                 $a_tag_restore = $('<a></a>');
                 $a_tag_restore.html('You have question draft (Click to show)');
@@ -179,9 +181,6 @@ function navbar_ask_button() {
                 // click action
                 $a_tag_restore.click(function() {
                     $('#ask_question').modal('hide');
-
-                    // switch to ask mode
-                    _qeustion_modal_UISwitch('ask');
 
                     // set title
                     $('#_question_title').val(results.title);
@@ -217,11 +216,11 @@ function navbar_ask_button() {
                 $wrapper.append(' Or ');
                 $wrapper.append($a_tag_show_all);
                 $('#_question_draft_status').html($wrapper);
-                // show asking new question option
-                navbar_show_ask_new_question_option();
-                // show search box
-                $('#ask_question').modal('show');
             }
+            // show asking new question option
+            navbar_show_ask_new_question_option();
+            // show search box
+            $('#ask_question').modal('show');
         });
     }
 }

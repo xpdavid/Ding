@@ -212,10 +212,12 @@ class Answer extends Model
     public function scopeNoneSimilarMatch($query, $key, $range = null) {
         if ($range != null) {
             return $query->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString())
-                ->where('answer', 'LIKE', '%' . $key . '%');
+                ->where('answer', 'LIKE', '%' . $key . '%')
+                ->whereStatus(1); // published
 
         } else {
-            return $query->where('answer', 'LIKE' , '%' . $key . '%');
+            return $query->where('answer', 'LIKE' , '%' . $key . '%')
+                ->whereStatus(1); // published
         }
 
     }
@@ -268,6 +270,8 @@ class Answer extends Model
      */
     public function jsonAnswerDetail() {
         $user = Auth::user();
+        $vote_up_class = $this->vote_up_users->contains($user->id) ? 'active' : '';
+        $vote_down_class = $this->vote_down_users->contains($user->id) ? 'active' : '';
         return [
             'id' => $this->id,
             'user_name' => $this->owner->name,
@@ -280,7 +284,47 @@ class Answer extends Model
             'numComment' => $this->replies->count(),
             'canVote' => $this->owner->canAnswerVoteBy($user),
             'canEdit' => $this->owner->id == $user->id,
-            'status' => true
+            'status' => true,
+            'user_url' => action('PeopleController@show', $this->owner->url_name),
+            'vote_up_class' => $vote_up_class,
+            'vote_down_class' => $vote_down_class,
+        ];
+    }
+
+    /**
+     * To json format for answer display
+     *
+     * @return array
+     */
+    public function jsonAnswerSummary() {
+        $user = Auth::user();
+        $vote_up_class = $this->vote_up_users->contains($user->id) ? 'active' : '';
+        $vote_down_class = $this->vote_down_users->contains($user->id) ? 'active' : '';
+        $topics = [];
+        foreach ($this->question->topics as $topic) {
+            array_push($topics, $topic->json);
+        }
+        return [
+            'answer' => [
+                'id' => $this->id,
+                'owner' => [
+                    'name' => $this->owner->name,
+                    'bio' => $this->owner->bio,
+                    'url_name' => $this->owner->url_name,
+                ],
+                'answer' => $this->summary,
+                'netVotes' => $this->netVotes,
+                'numComment' => $this->replies()->count(),
+                'vote_up_class' => $vote_up_class,
+                'vote_down_class' => $vote_down_class,
+                'canVote' => $this->owner->canAnswerVoteBy($user),
+                'canEdit' => $this->owner->id == $user->id,
+            ],
+            'id' => $this->question->id,
+            'topics' => $topics,
+            'topic_pic' => DImage($this->question->topics->first()->avatar_img_id, 40, 40),
+            'title' => $this->question->title,
+            'subscribed' => $user->subscribe->checkHasSubscribed($this->question->id, 'question')
         ];
     }
 }

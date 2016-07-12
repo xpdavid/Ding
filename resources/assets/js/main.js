@@ -572,40 +572,40 @@ function tinyMCEAutoSave(editor) {
             return ;
         }
 
-        var $div = $('<div>' + $editor.getContent() + '</div>');
+        // generate button
+        var $a_tag = $('<a></a>');
+        $a_tag.click(function(e) {
+            e.preventDefault();
+            autosave();
+        });
+        $a_tag.css('margin-right', '8px');
+        // add cancel button
+
+        $a_tag.html('Save Draft');
+        $message.html($a_tag);
 
         if (count == 0) {
+            var $div = $('<div>' + $editor.getContent() + '</div>');
             if ($div.text().replace(" ", "").length > 5 || $div.find('img').length > 0) {
+                // autosave 5 character above
                 autosave();
             }
             count = offset;
         } else if (count < 5) {
-            if ($div.text().replace(" ", "").length > 5 || $div.find('img').length > 0) {
+            $a_tag.html('Save Draft(' + count + ')');
 
-                // generate button
-                var $a_tag = $('<a></a>');
-                $a_tag.click(function(e) {
-                    e.preventDefault();
-                    autosave();
-                });
-                $a_tag.css('margin-right', '8px');
-                // add cancel button
-                var $a_cancel = $('<a></a>');
-                $a_cancel.addClass('text-danger margin-top');
-                $a_cancel.html('Cancel');
-                $a_cancel.click(function(e) {
-                    e.preventDefault();
-                    count = offset;
-                });
 
-                $a_tag.html('Autosave to draft in ' + count + ' seconds. (Click to save it now)');
-                $message.html($a_tag);
-                $message.append($a_cancel);
-            }
-        } else {
-            // clear
-            $message.html('');
+            // count down generate cancel button
+            var $a_cancel = $('<a></a>');
+            $a_cancel.addClass('text-danger margin-top');
+            $a_cancel.html('Cancel');
+            $a_cancel.click(function(e) {
+                e.preventDefault();
+                count = offset;
+            });
+            $message.append($a_cancel);
         }
+
         count--;
     }, 1000);
 
@@ -640,6 +640,7 @@ function tinyMCEAutoSave(editor) {
             $.post($('#' + editor).data('draft_url'), request, function(results) {
                 $('#' + editor + '_draft_id').data('value', results.id);
                 $('#' + editor + '_draft_id').val(results.id);
+                $message.html('Saved');
             })
                 .fail(function(error) {
                     $.each(error.responseJSON, function(index, value) {
@@ -649,7 +650,6 @@ function tinyMCEAutoSave(editor) {
         }
 
         count = offset;
-        $message.html('');
 
         // backup previous content
         preContent = [];

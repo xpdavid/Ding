@@ -149,7 +149,8 @@ class TopicController extends Controller
         $questions = null;
         // determine sorted type
         if ($sorted == 'created') {
-            $questions = $topic->questions()->orderBy('created_at', 'desc')->get();
+            $questions = $topic->questions()->orderBy('created_at', 'desc')
+                ->whereStatus(1)->get(); // published question
         } else {
             // determine request type
             switch ($request->get('type')) {

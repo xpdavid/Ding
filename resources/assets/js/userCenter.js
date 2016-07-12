@@ -5,6 +5,10 @@ var subscribedQuestionPage = 1;
 var subscribedQuestionItemInPage = 15;
 var invitationQuestionPage = 1;
 var invitationQuestionItemInPage = 15;
+var draftQuestionPage = 1;
+var draftQuestionItemInPage = 10;
+var draftAnswerPage = 1;
+var draftAnswerItemInPage = 10;
 /**
  * Send ajax request to get items
  * @param type
@@ -47,6 +51,24 @@ function genericGet(type) {
             increment = function() { invitationQuestionPage++ };
             template = Handlebars.templates['_invitation_question.html'];
             break;
+        case 'draft_question' :
+            request = {
+                page : draftQuestionPage,
+                itemInPage : draftQuestionItemInPage,
+                type : 'question'
+            };
+            increment = function() { draftQuestionPage++ };
+            template = Handlebars.templates['_draft_question.html'];
+            break;
+        case 'draft_answer' :
+            request = {
+                page : draftAnswerPage,
+                itemInPage : draftAnswerItemInPage,
+                type : 'answer'
+            };
+            increment = function() { draftQuestionPage++ };
+            template = Handlebars.templates['_draft_answer.html'];
+            break;
         default :
             return ;
     }
@@ -55,7 +77,7 @@ function genericGet(type) {
         if (results.status) {
             $('#' + type).append(template(results));
             $('#' + type + '_more').prop('disabled', false);
-            // rerender math symblos
+            // rerender math symbols
             rerenderMath(type);
             // execute incremet function
             if (increment && typeof increment == "function") {
@@ -114,6 +136,67 @@ function ignoreInvitation(invitation_id) {
     }, function(){
         notificationOperation(invitation_id, 'read', null);
         return true;
+    });
+}
+
+/**
+ * Bind delete draft button
+ */
+function deleteDraft_process() {
+    $('body').on('click', '[data-action="delete_draft"]', function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        var $object = $(this);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this draft! Please note that history function are only for published answer/question",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function(){
+            $.post('/draft/' + $object.data('id') + '/delete', {
+                type : $object.data('type')
+            }, function() {
+                // refresh page
+                swal({
+                    title : "Deleted!",
+                    text : "Your draft has been deleted.",
+                    type : "success"
+                }, function() {
+                    window.location.reload();
+                });
+            });
+        });
+    })
+}
+
+/**
+ * bind publish button to ajax
+ */
+function publishDraft_process() {
+    $('body').on('click', '[data-action="publish_draft"]', function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        var $object = $(this);
+
+        $.post('/draft/' + $object.data('id') + '/publish', {
+            type: $object.data('type')
+        }, function (results) {
+            // refresh page
+            swal({
+                title: "Published!",
+                text: "Click to view.",
+                type: "success"
+            }, function () {
+                if (results.status) {
+                    window.location.replace(results.location);
+                }
+            });
+        });
     });
 }
 

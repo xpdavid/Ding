@@ -33,8 +33,13 @@ class AnswerController extends Controller
      * @return mixed
      */
     public function postAnswer($answer_id) {
+        $user = Auth::user();
         $answer = Answer::findOrFail($answer_id);
-        return $answer->answer;
+        if ($answer->status != 2 || $answer->owner->id == $user->id) {
+            return $answer->answer;
+        } else {
+            abort(401); // you cannot get an unpublished answer
+        }
     }
 
     /**
@@ -63,6 +68,11 @@ class AnswerController extends Controller
 
         // an answer has been visited
         Visitor::visit($answer);
+
+        if ($question->status != 1 || $answer->status != 1) {
+            // you cannot view unpublished answer/ question
+            abort(401);
+        }
 
         if ($answer->question->id != $question->id) {
             // the answer doesn't belong to the question
@@ -96,7 +106,7 @@ class AnswerController extends Controller
         $user = Auth::user();
         $answer = Answer::findOrFail($answer_id);
 
-        // check if the answer blongs to the current user
+        // check if the answer belongs to the current user
         if ($user->id != $answer->owner->id) {
             return [
                 'status' => false
@@ -111,7 +121,6 @@ class AnswerController extends Controller
         return [
             'status' => true,
             'answer' => $answer->summary,
-            'o'
         ];
     }
 
@@ -126,7 +135,11 @@ class AnswerController extends Controller
             // get specific answer
             $answers = collect();
             foreach ($request->get('ids') as $answer_id) {
-                $answers->push(Answer::findOrFail($answer_id));
+                $answer = Answer::findOrFail($answer_id);
+                // only get published answer
+                if ($answer->status == 1) {
+                    $answers->push($answer);
+                }
             }
 
         } else {
@@ -137,7 +150,10 @@ class AnswerController extends Controller
             ]);
             $question_id = $request->get('question_id');
             $question = Question::findOrFail($question_id);
-            $answers = $question->answers;
+            // cannot view unpublished question
+            if ($question->status != 1) abort(401);
+            // get published answer
+            $answers = $question->answers()->whereStatus(1)->get();
         }
 
         // get necessary param
@@ -154,24 +170,7 @@ class AnswerController extends Controller
 
         $results = [];
         foreach ($answers->forPage($page, $itemInPage) as $answer) {
-            $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
-            $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
-            array_push($results, [
-                'id' => $answer->id,
-                'user_name' => $answer->owner->name,
-                'user_id' => $answer->owner->id,
-                'user_bio' => $answer->owner->bio,
-                'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
-                'user_url' => action('PeopleController@show', $answer->owner->url_name),
-                'answer' => $answer->summary,
-                'created_at' => $answer->createdAtHumanReadable,
-                'votes' => $answer->netVotes,
-                'numComment' => $answer->replies->count(),
-                'vote_up_class' => $vote_up_class,
-                'vote_down_class' => $vote_down_class,
-                'canVote' => $answer->owner->canAnswerVoteBy($user),
-                'canEdit' => $answer->owner->id == $user->id,
-            ]);
+            array_push($results, $answer->jsonAnswerDetail());
         }
 
         return $results;
@@ -194,6 +193,11 @@ class AnswerController extends Controller
                 'status' => false
             ];
         }
+
+        if ($answer->status != 2) {
+            abort(404); // this answer is not in draft status
+        }
+
         return [
             'draft' => $answer->answer,
             'status' => true,
@@ -217,6 +221,10 @@ class AnswerController extends Controller
         $user = Auth::user();
         $question = Question::findOrFail($question_id);
         $draft = $question->answerDraftBy($user->id);
+
+        if ($question->status != 1) {
+            abort(401); // the answer is not in published status.
+        }
 
         if ($draft) {
             // already saved answer
@@ -251,20 +259,7 @@ class AnswerController extends Controller
             'id' => $answer->id
         ];
     }
-
-    /**
-     * set an answer as published
-     *
-     * @param $answer_id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function publishAnswer($answer_id) {
-        $answer = Answer::findOrFail($answer_id);
-
-        $answer->published();
-        
-        return redirect()->action('AnswerController@getAnswer', $answer->id);
-    }
+    
 
     /**
      * Response AJAX request to store answer for the question
@@ -281,6 +276,11 @@ class AnswerController extends Controller
         // get necessary param
         $user = Auth::user();
         $question = Question::findOrFail($question_id);
+
+        if ($question->status != 1) {
+            // you can only answer an published status question item
+            abort(401);
+        }
 
         if ($request->has('id')) {
             $answer = Answer::findOrFail($request->get('id'));
@@ -335,6 +335,11 @@ class AnswerController extends Controller
         // get necessary param
         $user = Auth::user();
         $answer = Answer::findOrFail($answer_id);
+
+        if ($answer->status != 1) {
+            // the answer is in draft status
+            abort(401);
+        }
 
         // check user settings
         if (!$answer->owner->canAnswerVoteBy($user)) {

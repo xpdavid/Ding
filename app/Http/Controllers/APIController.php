@@ -168,31 +168,4 @@ class APIController extends Controller
 
         return $results;
     }
-
-    /**
-     * Get all the organizations
-     *
-     * this is api function
-     */
-    public function getOrganizationList() {
-        return Job::getOrganizationList();
-    }
-
-    /**
-     * Get all the majors
-     *
-     * this is api function
-     */
-    public function getDesignationList() {
-        return Job::getDesignationList();
-    }
-
-    /**
-     * Get all the majors
-     *
-     * this is api function
-     */
-    public function getSpecializationList() {
-        return Topic::getTopicList();
-    }
 }

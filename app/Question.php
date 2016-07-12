@@ -283,7 +283,7 @@ class Question extends Model
      * @return mixed
      */
     public static function news() {
-        $questions = Question::all();
+        $questions = Question::published()->get();
         // order by some magic algorithm
         $questions = $questions->sortByDesc(function($question) {
             $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
@@ -303,7 +303,7 @@ class Question extends Model
      * @return static
      */
     public static function recommendQuestions() {
-        return Question::all()->sortByDesc(function($question) {
+        return Question::published()->get()->sortByDesc(function($question) {
             $numVote = $question->highestVote;
             $numSubscriber = $question->subscribers()->count();
             $numHit = $question->hit->month;
@@ -319,7 +319,7 @@ class Question extends Model
      * @return static
      */
     public static function weekQuestions() {
-        return Question::all()->sortByDesc(function($question) {
+        return Question::published()->get()->sortByDesc(function($question) {
             $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
             $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
             $numVote = $question->highestVote;
@@ -336,7 +336,7 @@ class Question extends Model
      * @return static
      */
     public static function monthQuestions() {
-        return Question::all()->sortByDesc(function($question) {
+        return Question::published()->get()->sortByDesc(function($question) {
             $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
             $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
             $numVote = $question->highestVote;
@@ -353,7 +353,7 @@ class Question extends Model
     public function getHotAnswerAttribute() {
         if ($this->answers()->count() > 0) {
             // use the answer with the highest vote
-            $answer = $this->answers->sortByDesc(function($answer) {
+            $answer = $this->publishedAnswers->sortByDesc(function($answer) {
                 $timeDiff = Carbon::parse($answer->created_at)->diffInDays(Carbon::now());
                 $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
                 $numVote = $answer->netVotes;
@@ -389,10 +389,19 @@ class Question extends Model
      */
     public function getHighestVoteAttribute() {
         if($this->answers->count() > 0) {
-            return $this->answers->max('netVotes');
+            return $this->publishedAnswers->max('netVotes');
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Get published answer
+     *
+     * @return mixed
+     */
+    public function getPublishedAnswersAttribute() {
+        return $this->answers()->whereStatus(1)->get();
     }
 
     /**
@@ -410,7 +419,8 @@ class Question extends Model
      * @return mixed
      */
     public function scopeSimilarMatch($query, $title) {
-        return $query->where('title', 'REGEXP', '[' . $title . ']');
+        return $query->where('title', 'REGEXP', '[' . $title . ']')
+            ->whereStatus(1); // published
     }
 
     /**
@@ -421,7 +431,8 @@ class Question extends Model
      * @return mixed
      */
     public function scopeNoneSimilarMatch($query, $title) {
-        return $query->where('title', 'LIKE', '%' . $title . '%');
+        return $query->where('title', 'LIKE', '%' . $title . '%')
+            ->whereStatus(1); // published
     }
 
 
@@ -437,14 +448,27 @@ class Question extends Model
         if ($range != null) {
             return $query->where(function($query) use ($key) {
                 return $query->orWhere('title', 'LIKE' , '%' . $key . '%')
-                    ->orWhere('content', 'LIKE' , '%' . $key . '%');
+                    ->orWhere('content', 'LIKE' , '%' . $key . '%')
+                    ->whereStatus(1); // published;
             })->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString());
 
         } else {
             return $query->orWhere('title', 'LIKE' , '%' . $key . '%')
-                ->orWhere('content', 'LIKE' , '%' . $key . '%');
+                ->orWhere('content', 'LIKE' , '%' . $key . '%')
+                ->whereStatus(1); // published;
         }
 
+    }
+
+
+    /**
+     * Query to get all published question
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopePublished($query) {
+        return $query->whereStatus(1);
     }
 
 
@@ -489,7 +513,25 @@ class Question extends Model
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
-            'topics' => $topics
+            'topics' => $topics,
+            'summary' => false,
+        ];
+    }
+
+    /**
+     * To json summay format
+     */
+    public function toJsonSummary() {
+        $topics = [];
+        foreach ($this->topics as $topic) {
+            array_push($topics, $topic->json);
+        }
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'content' => $this->summary,
+            'topics' => $topics,
+            'summary' => true,
         ];
     }
 }
