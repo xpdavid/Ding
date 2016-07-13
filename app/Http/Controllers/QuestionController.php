@@ -77,10 +77,7 @@ class QuestionController extends Controller
 
         if($question->status != 2 || $question->owner->id == $user->id) {
             // only if you are the owner, then you can visit it
-            return [
-                'title' => $question->title,
-                'content' => $question->content
-            ];
+            return $question->toJsonFull();
         } else {
             // you cannot view unpulished question
             abort(404);

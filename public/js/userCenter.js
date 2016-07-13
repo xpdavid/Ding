@@ -200,3 +200,31 @@ function publishDraft_process() {
     });
 }
 
+/**
+ * Bind edit button to edit draft question
+ */
+function editDraft_process() {
+    $('body').on('click', '[data-action="edit_draft"]', function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        var $object = $(this);
+
+        if ($object.data('type') == "question") {
+            $.post('/question/' + $object.data('id'), {
+            }, function (results) {
+                // clear content
+                navbar_ask_clear_input();
+                // switch to ask mode
+                _question_modal_UISwitch('ask');
+                // set results to the input
+                navbar_question_json_set(results);
+                // show asking new question option
+                navbar_show_ask_new_question_option();
+                // show search box
+                $('#_question').modal('show');
+            });
+        }
+    });
+}
+

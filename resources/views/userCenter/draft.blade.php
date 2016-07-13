@@ -50,6 +50,7 @@
             genericGet('draft_answer');
             deleteDraft_process();
             publishDraft_process();
+            editDraft_process();
         });
     </script>
 @endsection

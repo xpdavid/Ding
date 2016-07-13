@@ -168,7 +168,7 @@ function navbar_ask_button() {
         // else show search box and them get recent draft
         $.post('/question/latestDraft', {} ,function(results) {
             // switch to ask mode
-            _qeustion_modal_UISwitch('ask');
+            _question_modal_UISwitch('ask');
             if (results.status) {
                 $a_tag_restore = $('<a></a>');
                 $a_tag_restore.html('You have question draft (Click to show)');
@@ -182,29 +182,8 @@ function navbar_ask_button() {
                 $a_tag_restore.click(function() {
                     $('#ask_question').modal('hide');
 
-                    // set title
-                    $('#_question_title').val(results.title);
-                    // clear content
-                    tinymce.get('_question_detail').setContent(
-                        changeTexToImage(results.content)
-                    );
-                    // clear topics
-                    var ids = [];
-                    var $topics = $('#_question_topics');
-                    $topics.empty();
-                    $.each(results.topics, function(index, topic) {
-                        $topics.append($("<option/>") //add option tag in select
-                            .val(topic.id) //set value for option to post it
-                            .text(topic.name)); //set a text for show in select
-                        ids.push(topic.id);
-                    });
-                    $topics.val(ids).trigger("change"); //apply to select2
-                    // clear id
-                    $('#_question_detail_draft_id').val(results.id);
-                    $('#_question_detail_draft_id').data('id', results.id);
-
-                    // fire search event
-                    $('#_question_title').trigger('change');
+                    // set results to the input
+                    navbar_question_json_set(results);
 
                     // show modal
                     $('#_question').modal('show');
@@ -223,6 +202,37 @@ function navbar_ask_button() {
             $('#ask_question').modal('show');
         });
     }
+}
+
+/**
+ * Set json data to the input
+ *
+ * @param results
+ */
+function navbar_question_json_set(results) {
+    // set title
+    $('#_question_title').val(results.title);
+    // clear content
+    tinymce.get('_question_detail').setContent(
+        changeTexToImage(results.content)
+    );
+    // clear topics
+    var ids = [];
+    var $topics = $('#_question_topics');
+    $topics.empty();
+    $.each(results.topics, function(index, topic) {
+        $topics.append($("<option/>") //add option tag in select
+            .val(topic.id) //set value for option to post it
+            .text(topic.name)); //set a text for show in select
+        ids.push(topic.id);
+    });
+    $topics.val(ids).trigger("change"); //apply to select2
+    // clear id
+    $('#_question_detail_draft_id').val(results.id);
+    $('#_question_detail_draft_id').data('id', results.id);
+
+    // fire search event
+    $('#_question_title').trigger('change');
 }
 
 
@@ -310,7 +320,7 @@ function navbar_ask_question_detail() {
     var old_input = $('#ask_question_input');
     var new_input = $('#_question_title');
     // switch to ask mode
-    _qeustion_modal_UISwitch('ask');
+    _question_modal_UISwitch('ask');
     // copy same query
     new_input.val(old_input.val());
     old_input.val('');
@@ -356,7 +366,7 @@ function navbar_question_form_process() {
  * @param type
  * @private
  */
-function _qeustion_modal_UISwitch(type) {
+function _question_modal_UISwitch(type) {
     $('[data-parent="_question"]').each(function () {
         var $t = $(this);
         if ($t.data('ask') != undefined && $t.data('edit') != undefined) {
