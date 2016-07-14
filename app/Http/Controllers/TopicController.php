@@ -155,19 +155,19 @@ class TopicController extends Controller
             // determine request type
             switch ($request->get('type')) {
                 case 'recommend' :
-                    $questions = $topic->recommendQuestions;
+                    $questions = $topic->recommendQuestions($page, $itemInPage);
                     break;
                 case 'wait_for_answer' :
-                    $questions = $topic->waitAnswerQuestions;
+                    $questions = $topic->waitAnswerQuestions($page, $itemInPage);
                     break;
                 default:
-                    $questions = $topic->highlightQuestions;
+                    $questions = $topic->highlightQuestions($page, $itemInPage);
                     break;
             }
         }
 
 
-        $current_questions = $questions->forPage($page, $itemInPage);
+        $current_questions = $questions;
 
         // format results
         $results = [];

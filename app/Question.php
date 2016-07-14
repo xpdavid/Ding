@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Cache;
 use DB;
 use Auth;
 use Htmldom;
@@ -282,19 +283,28 @@ class Question extends Model
      *
      * @return mixed
      */
-    public static function news() {
-        $questions = Question::published()->get();
-        // order by some magic algorithm
-        $questions = $questions->sortByDesc(function($question) {
-            $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-            $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-            $numSubscriber = $question->subscribers()->count();
-            $numHit = $question->hit->day;
-            $numVote = $question->highestVote;
-            return $numHit * 3 + $numVote + $numSubscriber + $timeDiff * 5;
+    public static function news($page, $itemInPage) {
+        // cache function to remember for 10 minutes
+        $questions = Cache::remember('question_news', 10, function() {
+            $questions = Question::published()->get();
+            // order by some magic algorithm
+            $questions = $questions->sortByDesc(function($question) {
+                $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                $numSubscriber = $question->subscribers()->count();
+                $numHit = $question->hit->day;
+                $numVote = $question->highestVote;
+                return $numHit * 3 + $numVote + $numSubscriber + $timeDiff * 5;
+            });
+            return $questions;
+        });
+        // pagination with cache
+        $news = Cache::remember('question_news_' . $page . '_' . $itemInPage,
+            10, function() use ($page, $itemInPage, $questions) {
+            return $questions->forPage($page, $itemInPage);
         });
 
-        return $questions;
+        return $news;
     }
 
     /**

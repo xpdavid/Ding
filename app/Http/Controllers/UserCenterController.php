@@ -185,7 +185,7 @@ class UserCenterController extends Controller
         // calculate how many question each topic should take
         $results = [];
 
-        $questions = Question::news()->forPage($page, $itemInPage);
+        $questions = Question::news($page, $itemInPage);
         // filter base on user hide topics attribute
         $questions = $user->filterQuestions($questions);
 

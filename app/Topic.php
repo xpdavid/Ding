@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Auth;
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -174,16 +175,26 @@ class Topic extends Model
      *
      * @return mixed
      */
-    public function getRecommendQuestionsAttribute() {
-        $questions = $this->questions()->whereStatus(1)->get()->sortByDesc(function($question) {
-            $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-            $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-            $numSubscriber = $question->subscribers()->count();
-            $numHit = $question->hit->month;
-            return $numHit * 7 + $numSubscriber * 5 + $timeDiff;
+    public function recommendQuestions($page, $itemInPage) {
+        $all_questions = Cache::remember(
+            'topic_' . $this->id . '_questions', 10, function() {
+            return $this->questions()->published()->get();
         });
 
-        return $questions;
+        $recommend = Cache::remember(
+            'topic_' . $this->id . '_recommend_questions_' . $page . '_'. $itemInPage,
+            10,
+            function() use ($all_questions){
+                return $all_questions->sortByDesc(function ($question) {
+                    $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                    $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                    $numSubscriber = $question->subscribers()->count();
+                    $numHit = $question->hit->month;
+                    return $numHit * 7 + $numSubscriber * 5 + $timeDiff;
+                });
+            });
+
+        return $recommend;
     }
 
     /**
@@ -191,41 +202,79 @@ class Topic extends Model
      *
      * @return mixed
      */
-    public function getWaitAnswerQuestionsAttribute() {
-        $questions = $this->questions()->whereStatus(1)->get()->filter(function($question) {
-            return $question->answers()->count() == 0;
+    public function waitAnswerQuestions($page, $itemInPage) {
+        // get all topic questions
+        $all_questions = Cache::remember(
+            'topic_' . $this->id . '_questions', 10, function() {
+            return $this->questions()->published()->get();
         });
-        $questions = $questions->sortBy(function($question) {
-            $numHit = $question->hit->month;
-            $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-            $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-            $numSubscriber = $question->subscribers()->count();
-            return $numHit * 5 + $timeDiff * 2 + $numSubscriber * 4;
+
+        // cache with pagination
+        $wait = Cache::remember(
+            'topic_' . $this->id . '_wait_questions_' . $page . '_'. $itemInPage,
+            10,
+            function() use ($all_questions, $page, $itemInPage) {
+            $questions = $all_questions->filter(function($question) {
+                return $question->answers()->count() == 0;
+            });
+            $questions = $questions->sortBy(function($question) {
+                $numHit = $question->hit->month;
+                $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                $numSubscriber = $question->subscribers()->count();
+                return $numHit * 5 + $timeDiff * 2 + $numSubscriber * 4;
+            });
+            return $questions->forPage($page, $itemInPage);
         });
-        return $questions;
+
+        return $wait;
     }
 
-    public function getHighlightQuestionsAttribute() {
-        $questions = $this->questions()->whereStatus(1)->get()->sortByDesc(function($question) {
-            $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-            $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-            $numSubscriber = $question->subscribers()->count();
-            $numHit = $question->hit->month;
-            return $numHit * 7 + $numSubscriber * 5 + $timeDiff * 3;
+    /**
+     * Get highlight questions
+     *
+     * @param $page
+     * @param $itemInPage
+     * @return mixed
+     */
+    public function highlightQuestions($page, $itemInPage) {
+
+        // get all topic questions
+        $all_questions = Cache::remember(
+            'topic_' . $this->id . '_questions', 10, function() {
+            return $this->questions()->published()->get();
         });
-        return $questions;
+
+        // cache with pagination
+        $highlight = Cache::remember(
+            'topic_' . $this->id . '_highlight_questions_' . $page . '_'. $itemInPage,
+            10,
+            function() use ($all_questions, $page, $itemInPage) {
+                $questions = $all_questions->sortBy(function($question) {
+                    $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                    $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                    $numSubscriber = $question->subscribers()->count();
+                    $numHit = $question->hit->month;
+                    return $numHit * 7 + $numSubscriber * 5 + $timeDiff * 3;
+                });
+                return $questions->forPage($page, $itemInPage);
+            });
+
+        return $highlight;
     }
 
     /**
      * Get hot topics
      */
     public static function getHotTopics() {
-        $topics =  Topic::all()->sortByDesc(function($topic) {
-            $numSubscriber = $topic->subscribers()->count();
-            $numHit = $topic->hit->total;
-            return $numSubscriber * 2 + $numHit * 3;
+        $hotTopics = Cache::remember('hot_topics', 10, function() {
+            return Topic::all()->sortByDesc(function($topic) {
+                $numSubscriber = $topic->subscribers()->count();
+                $numHit = $topic->hit->total;
+                return $numSubscriber * 2 + $numHit * 3;
+            });
         });
-        return Auth::user()->filterTopics($topics);
+        return Auth::user()->filterTopics($hotTopics);
     }
 
 
