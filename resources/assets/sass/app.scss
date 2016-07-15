@@ -273,7 +273,7 @@ body.modal-open {
 .userHome_profileHeaderLeft {
   margin-top: 5px;
   float: left;
-  width: 17%;
+  width: 120px;
   margin-left: 15px;
 }
 
@@ -285,8 +285,6 @@ body.modal-open {
 .userHome_profileHeaderRight {
   margin-top: 5px;
   margin-left: 10px;
-  float: left;
-  width: 78%;
 }
 
 
@@ -302,7 +300,8 @@ body.modal-open {
 
 .userHome_selfIntro {
   border-top: 1px dotted #eee;
-  padding-top: 10px;
+  margin-top: 22px;
+  padding-top: 5px;
   padding-right: 10px;
 }
 

@@ -90,6 +90,7 @@ Route::get('/people/{url_name}/follow', 'PeopleController@follow');
 Route::get('/people/{url_name}/follower', 'PeopleController@follower');
 Route::get('/people/{url_name}/question', [ 'as' => 'people.question', 'uses' => 'PeopleController@question']);
 Route::get('/people/{url_name}/answer', [ 'as' => 'people.answer', 'uses' => 'PeopleController@answer']);
+Route::get('/people/{url_name}/more', 'PeopleController@moreInfo');
 Route::post('/people/{url_name}/question', 'PeopleController@postQuestion');
 Route::post('/people/{url_name}/answer', 'PeopleController@postAnswer');
 Route::post('/people/{url_name}/follow-follower', 'PeopleController@postFollowFollower');

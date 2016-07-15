@@ -115,6 +115,19 @@ class PeopleController extends Controller
     }
 
     /**
+     * Show more information about user
+     *
+     * @param $url_name
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function moreInfo($url_name) {
+        $user = User::findUrlName($url_name);
+
+        return view('profile.more', compact('user'));
+
+    }
+
+    /**
      * Show all user answers
      *
      * @param $url_name

@@ -20,7 +20,7 @@
                                         onclick="window.location.replace('{{ route('people.answer', [$user->url_name, 'topic' => $topic->id])}}')"
                                     >
                                         <div class="media-left">
-                                            <img class="media-object img-circle" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
+                                            <img class="media-object img-circle avatar-img" src="{{ DImage($topic->avatar_img_id, 50, 50) }}" alt="{{ $topic->name }}">
                                         </div>
                                         <div class="media-body">
                                             <h4 class="media-heading">{{ $topic->name }}</h4>

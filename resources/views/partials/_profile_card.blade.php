@@ -27,7 +27,7 @@
                         @endif
                     </a>
                   </span>
-                  <span class="userHome_profileMoreItem">
+                  <span class="userHome_profileItem">
                     <a href="#">
                       @if (count($user->educationExps) > 0)
                             {{$user->educationExps->first()->major}}
@@ -79,7 +79,7 @@
                 <p>
                     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
                   <span class="userHome_profileItem">
-                    <a href="#">
+                    <a href="/people/{{ $user->url_name }}/more">
                       More Info..
                     </a>
                   </span>
