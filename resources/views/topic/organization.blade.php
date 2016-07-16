@@ -12,7 +12,9 @@
             <ul class="topic_category clearfix">
                 <li><a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a></li>
                 <li>Organization Tree</li>
-                <li><a href="/topic/{{ $topic->id }}/edit">Edit</a></li>
+                @if(Auth::user()->operation(12))
+                    <li><a href="/topic/{{ $topic->id }}/edit">Edit</a></li>
+                @endif
             </ul>
         </div>
     </div>

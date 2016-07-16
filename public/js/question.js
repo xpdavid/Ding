@@ -930,7 +930,8 @@ function editQuestion(event, question_id) {
     }
 
     // hide search table
-    _qeustion_modal_UISwitch('edit');
+
+    _question_modal_UISwitch('edit');
 
     // send ajax call to get question content
     $.post('/question/' + question_id, {}, function(results) {
@@ -1027,6 +1028,121 @@ function updateAnswer(answer_id) {
     });
 }
 
+/**
+ * Bind close button with event
+ */
+function bindCloseEvent() {
+    $('body').on('click', '[data-action="close"]', function() {
+        $object = $(this);
+
+        var alert_param = {
+            title: "Warning, Close Item",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputPlaceholder: "Reason",
+            confirmButtonColor: "#DD6B55",
+        };
+        switch ($object.data('type')) {
+            case 'question' :
+                alert_param.text = "User cannot subscribe, answer the question anymore";
+                break;
+            case 'answer':
+                alert_param.text = "Other user will not see these answer first";
+                break;
+            case 'topic':
+                alert_param.text = "User cannot subscribe the topic, post question under this topic";
+                break;
+        }
+        swal(alert_param, function(inputValue) {
+            if (inputValue === false) return false;
+
+            $.post('/'
+                + $object.data('type') + '/'
+                + $object.data('id') + '/close',
+                {
+                    reason : inputValue
+                }, function(results) {
+                    if (results.status) {
+                        swal({
+                            title : 'Success',
+                            text : 'We have closed the ' + $object.data('type'),
+                            type : 'success'
+                        }, function() {
+                            window.location.reload();
+                        });
+                    } else {
+                        swal('Error', 'Server post a question', 'error');
+                    }
+                });
+        });
+    });
+}
+
+
+/**
+ * Bind close button with event
+ */
+function bindOpenEvent() {
+    $('body').on('click', '[data-action="open"]', function() {
+        $object = $(this);
+
+        var alert_param = {
+            title: "Warning, Open Item",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputPlaceholder: "Reason",
+            confirmButtonColor: "#DD6B55",
+        };
+        switch ($object.data('type')) {
+            case 'question' :
+                alert_param.text = "User can continue to subscribe, answer the question";
+                break;
+            case 'answer':
+                alert_param.text = "Other user will see these answer by default";
+                break;
+            case 'topic':
+                alert_param.text = "User can continue to subscribe the topic, post question under this topic";
+                break;
+        }
+        swal(alert_param, function(inputValue) {
+            if (inputValue === false) return false;
+
+            $.post('/'
+                + $object.data('type') + '/'
+                + $object.data('id') + '/open',
+                {
+                    reason : inputValue
+                }, function(results) {
+                    if (results.status) {
+                        swal({
+                            title : 'Success',
+                            text : 'We have opened the ' + $object.data('type'),
+                            type : 'success'
+                        }, function() {
+                            window.location.reload();
+                        });
+                    } else {
+                        swal('Error', 'Server post a question', 'error');
+                    }
+                });
+        });
+    });
+}
+
+/**
+ * Bind event
+ */
+$(function() {
+    bindExpendAll();
+
+    // bind close event
+    bindCloseEvent();
+
+    // bind open event
+    bindOpenEvent();
+});
 
 
 

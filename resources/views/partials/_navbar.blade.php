@@ -61,7 +61,7 @@
                         <li class="clearfix">
                             <a href="#" class="clearfix">
                                 <div class="float-left">
-                                    <span class="label label-default float-left nav_user_tag space-right">Default</span>
+                                    <span class="label label-default float-left nav_user_tag space-right">{{ Auth::user()->authGroup->name }}</span>
                                     {{ Auth::user()->name }}
                                 </div>
                             </a>

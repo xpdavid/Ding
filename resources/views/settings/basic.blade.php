@@ -12,7 +12,7 @@
                         <label class="col-sm-10 control-label userSetting_contentLabelLeft">{{ $user->name }}
                             <a href="#" id="user_name_edit_button" class="glyphicon glyphicon-pencil userSetting_EditA">Edit</a></label>
                     </div>
-                    <div class="form-group noneDisplay" id="user_name_edit">
+                    <div class="form-group noneDisplay m" id="user_name_edit">
                         <label class="col-sm-2 control-label">Name:</label>
                         <div class=" col-sm-9 userSetting_EditText">
                             <input type="text" class="form-control"
@@ -30,12 +30,10 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Your domain:</label>
                         <div class="col-sm-6">
-                            <div class="input-group">
+                            <div class="input-group margin-top">
                                 <div class="input-group-addon">http://nusding.com/</div>
                                 <input type="text" class="form-control" name="personal_domain" placeholder="{{ $user->url_name }}"
-                                       @if($settings->personal_domain_modified)
-                                       disabled
-                                        @endif
+                                       {{ $settings->personal_domain_modified || !Auth::user()->operation(10) ? 'disabled' : '' }}
                                 >
 
                             </div>

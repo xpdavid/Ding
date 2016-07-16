@@ -100,14 +100,14 @@ function topic_show_subscribe(clickObject, topic_id) {
     var $button = $(clickObject);
     if ($button.hasClass('btn-success')) {
         // has not subscribed yet
-        subscribeQuestion(topic_id, null, function() {
+        subscribeTopic(topic_id, null, function() {
             $button.html('Unsubscribe');
             $button.removeClass('btn-success');
             $button.addClass('btn-warning');
         });
     } else {
         // has subscribed
-        subscribeQuestion(topic_id, 'unsubscribe', function() {
+        subscribeTopic(topic_id, 'unsubscribe', function() {
             $button.html('Subscribe');
             $button.removeClass('btn-warning');
             $button.addClass('btn-success');
@@ -701,7 +701,6 @@ function showError(base_id, autoHide) {
 
 // bind expend button
 $(function() {
-    bindExpendAll();
     bindHideShow();
 });
 

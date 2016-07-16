@@ -44,6 +44,9 @@ class User extends Authenticatable
         // use have setting model one to one
         $settings = Settings::create();
         $user->settings()->save($settings);
+        // assign user with v1 group
+        $user->authGroup_id = 1;
+
         // user profile hit
         Hit::create([
             'owner_type' => 'App\User',
@@ -204,6 +207,10 @@ class User extends Authenticatable
      */
     public function notifications() {
         return $this->hasMany('App\Notification');
+    }
+
+    public function authGroup() {
+        return $this->belongsTo('App\AuthGroup', 'authGroup_id');
     }
 
 
@@ -630,6 +637,17 @@ class User extends Authenticatable
     public function isBlockedBy($user) {
         return in_array($this->id, $user->blockings->lists('id')->all());
     }
-    
+
+
+    /**
+     * Check the user whether have the authority to do operation
+     *
+     * @param $id
+     * @return bool
+     */
+    public function operation($id) {
+        return in_array($id,
+            $this->authGroup->authorities->lists('id')->all());
+    }
 
 }

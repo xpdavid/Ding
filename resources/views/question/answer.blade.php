@@ -10,7 +10,11 @@
         <div class="clearfix">
             <div class="float-left"><a href="/question/{{ $question->id }}">Show all {{ $question->answers->count() }} answer(s)</a></div>
             <div class="float-right">
-
+                @if ($answer->isClosed())
+                    <h5 class="clear_margin">
+                        <span class="label label-warning">Closed Question</span>
+                    </h5>
+                @endif
             </div>
         </div>
 
@@ -20,6 +24,13 @@
         <div id="answer">
 
         </div>
+
+        @if ($answer->isClosed())
+            <div class="well margin-top">
+                The question is closed for some reason:<br>
+                <strong>{{ $answer->closeReason() }}</strong>
+            </div>
+        @endif
 
         <div class="answer_moreAnswer">
             <div><span>More Answers</span></div>

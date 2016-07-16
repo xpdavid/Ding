@@ -8,6 +8,7 @@ use App\Visitor;
 use App\Reply;
 use App\Topic;
 use App\Answer;
+use App\History;
 use App\Question;
 use App\Notification;
 use Illuminate\Http\Request;
@@ -36,8 +37,8 @@ class QuestionController extends Controller
     public function show($question_id, Request $request) {
         $question = Question::findOrFail($question_id);
 
-        if($question->status != 1) {
-            // you cannot view unpulished question
+        if($question->status == 2) {
+            // you cannot view draft question
             abort(404);
         }
 
@@ -228,18 +229,24 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request) {
+        $question = Question::findOrFail($request->get('question_edit_id'));
+
+        // you must have enough authority to edit it
+        if(!Auth::user()->operation(9) && $question->owner->id != Auth::user()->id) {
+            abort(401);
+        }
+        // cannot update for draft question
+        if($question->status == 2) {
+            // you cannot update unpulished question
+            abort(404);
+        }
+
         $this->validate($request, [
             'question_edit_id' => 'required|integer',
             'question_title' => 'required',
             'question_topics' => 'required|array',
         ]);
 
-        $question = Question::findOrFail($request->get('question_edit_id'));
-        // update only for published question
-        if($question->status != 1) {
-            // you cannot update unpulished question
-            abort(404);
-        }
 
 
         // record topic change
@@ -252,6 +259,62 @@ class QuestionController extends Controller
         ], ['history' => true]);
 
         return redirect()->action('QuestionController@show', $question->id);
+    }
+
+    /**
+     * Answer ajax request to close a question
+     *
+     * @param $question_id
+     * @param Request $request
+     * @return array
+     */
+    public function close($question_id, Request $request) {
+        $question = Question::findOrFail($question_id);
+
+        if ($question->close()) {
+            $question->histories()->save(History::create([
+                'user_id' => Auth::user()->id,
+                'type' => 5,
+                'text' => $request->get('reason')
+            ]));
+
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+
+    }
+
+    /**
+     * Answer ajax request to close a question
+     *
+     * @param $question_id
+     * @param Request $request
+     * @return array
+     */
+    public function open($question_id, Request $request) {
+        $question = Question::findOrFail($question_id);
+
+        if ($question->open()) {
+            $question->histories()->save(History::create([
+                'user_id' => Auth::user()->id,
+                'type' => 6,
+                'text' => $request->get('reason')
+            ]));
+
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+
     }
 
 

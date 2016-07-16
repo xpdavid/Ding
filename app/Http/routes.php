@@ -44,11 +44,15 @@ Route::post('/question/{question_id}', 'QuestionController@postQuestion');
 Route::post('/question/{question_id}/invite_panel', 'QuestionController@invite_panel');
 Route::post('/question/{question_id}/invite', 'QuestionController@invite');
 Route::post('/question/{question_id}/answer', 'AnswerController@storeAnswer');
+Route::post('/question/{question_id}/close', 'QuestionController@close');
+Route::post('/question/{question_id}/open', 'QuestionController@open');
 
 // for answer
 Route::get('/answer/{id}', 'AnswerController@getAnswer');
 Route::post('/answer/{id}', 'AnswerController@postAnswer');
 Route::post('/answer/{id}/update', 'AnswerController@update');
+Route::post('/answer/{id}/close', 'AnswerController@close');
+Route::post('/answer/{id}/open', 'AnswerController@open');
 Route::post('/answer/{answer_id}/vote', 'AnswerController@vote');
 Route::get('/question/{question_id}/answer/{answer_id}', 'AnswerController@show');
 Route::post('/question/{question_id}/draft', 'AnswerController@storeDraft');
@@ -68,8 +72,11 @@ Route::post('/topic/{topic_id}/sub_topics', 'TopicController@subTopics');
 Route::get('/topic/{topic_id}', 'TopicController@show');
 Route::get('/topic/{topic_id}/edit', 'TopicController@edit');
 Route::post('/topic/{topic_id}/update', 'TopicController@update');
+Route::post('/topic/{topic_id}/close', 'TopicController@close');
+Route::post('/topic/{topic_id}/open', 'TopicController@open');
 Route::get('/topic/{topic_id}/organization', 'TopicController@organization');
 Route::post('/topic/questions', 'TopicController@getQuestions');
+Route::post('/topic/create', 'TopicController@create');
 Route::post('/topic/upload', 'UploadController@uploadTopicImg');
 
 // for bookmark

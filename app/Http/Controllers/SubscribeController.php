@@ -33,7 +33,6 @@ class SubscribeController extends Controller
      */
     public function postQuestion($question_id, Request $request) {
         $user = Auth::user();
-        $question = Question::findOrFail($question_id);
 
         if ($request->exists('op') && $request->get('op') == 'unsubscribe') {
             // unsubscribe a question
@@ -42,7 +41,7 @@ class SubscribeController extends Controller
             $question = Question::findOrFail($question_id);
 
             if ($question->status != 1) {
-                abort(401); // youcannot subscribe to an unpublished qeustion
+                abort(401); // you cannot subscribe to an unpublished qeustion
             }
 
             // you cannot subscribe a question twice
@@ -52,10 +51,7 @@ class SubscribeController extends Controller
         }
 
         // notification to user subscribers
-        foreach ($user->subscribers as $subscriber) {
-            $owner = $subscriber->owner;
-            Notification::notification($owner, 13, $user->id, $question->id);
-        }
+        $user->notifySubscriber(13, $question);
 
         return [
             'status' => true,
@@ -78,9 +74,12 @@ class SubscribeController extends Controller
             // unsubscribe a topic
             $user->subscribe->topics()->detach($topic_id);
         } else {
-            // check duplicate subscribe
-            if (!$user->subscribe->checkHasSubscribed($topic_id, 'topic')) {
-                $user->subscribe->topics()->save($topic);
+            // only can subscribe to open topic
+            if ($topic->status == 1) {
+                // check duplicate subscribe
+                if (!$user->subscribe->checkHasSubscribed($topic_id, 'topic')) {
+                    $user->subscribe->topics()->save($topic);
+                }
             }
         }
 

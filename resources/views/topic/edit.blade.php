@@ -169,7 +169,7 @@
                 <form action="/topic/{{ $topic->id }}/update" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <select class="form-control topic_manage_merge_input" multiple="multiple" id="add_subtopics" name="add_subtopics[]">
+                        <select class="form-control" multiple="multiple" id="add_subtopics" name="add_subtopics[]">
                         </select>
                     </div>
 
@@ -184,7 +184,7 @@
                 <form action="/topic/{{ $topic->id }}/update" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <select class="form-control topic_manage_merge_input" multiple="multiple" id="delete_subtopics" name="delete_subtopics[]">
+                        <select class="form-control" multiple="multiple" id="delete_subtopics" name="delete_subtopics[]">
                             @if(count($subtopics) > 0)
                                 @foreach($subtopics as $subtopic)
                                     <option value="{{ $subtopic->id }}">{{ $subtopic->name }}</option>
@@ -210,15 +210,15 @@
             <div id="merge_topics_trigger" class="margin-top">
                 <a href="#" onclick="show_form(event, 'merge_topics'); cancel_from(event, 'merge_topics_trigger')"><span class="glyphicon glyphicon-pencil space-right"></span>Merge Topics</a>
             </div>
-            <div id="merge_topics" class="noneDisplay margin-top">
-                <form action="/topic/{{ $topic->id }}/update" method="POST">
+            <div id="merge_topics" class="noneDisplay margin-top clearfix">
+                <form action="/topic/{{ $topic->id }}/update" method="POST" id="_merge_topic">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <div><span class="glyphicon glyphicon-arrow-down"></span>Merge current topic : {{ $topic->name }} with</div>
-                        <select class="form-control topic_manage_merge_input" multiple="multiple" id="main_topic" name="main_topic[]">
+                        <div><span class="glyphicon glyphicon-arrow-down"></span>Merge current topic : {{ $topic->name }} with (Move all the questions in this topic to)</div>
+                        <select class="form-control" multiple="multiple" id="to_topics" name="to_topics[]">
                         </select>
                         <div class="margin-top">
-                            <button type="submit" class="btn btn-warning float-left space-right-big">Merge</button>
+                            <button type="button" class="btn btn-warning float-left space-right-big" id="_merge_topic_button">Merge</button>
                             <div class="margin-top float-left">
                                 <a href="#" onclick="cancel_from(event, 'merge_topics'); show_form(event, 'merge_topics_trigger');">Cancel</a>
                             </div>
@@ -226,6 +226,16 @@
                     </div>
                 </form>
             </div>
+            @if (count($errors) > 0)
+                <div class="panel panel-danger">
+                    <div class="panel-heading">There is error in this form</div>
+                    <div class="panel-body">
+                        @foreach($errors->all() as $error)
+                            <p class="text-danger">{{ $error }}</p>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -251,6 +261,31 @@
 
 @section('right')
     @include('partials._topic_show_side', ['topic' => $topic, 'parent_topics' => $parent_topics, 'subtopics' => $subtopics])
+
+    @if(Auth::user()->operation(16))
+        @if ($topic->isClosed())
+            <div class="sideBar_section">
+                <div class="sideBar_sectionItem">
+                    <button class="btn btn-warning"
+                            data-action="open"
+                            data-type="topic"
+                            data-id="{{ $topic->id }}"
+                    >Reopen Topic</button>
+                </div>
+            </div>
+        @else
+            <div class="sideBar_section">
+                <div class="sideBar_sectionItem">
+                    <button class="btn btn-danger"
+                            data-action="close"
+                            data-type="topic"
+                            data-id="{{ $topic->id }}"
+                    >Close Topic</button>
+                </div>
+            </div>
+        @endif
+    @endif
+
 @endsection
 
 
@@ -259,8 +294,10 @@
     $(function() {
         topicAutocomplete('add_parent_topics', Infinity);
         topicAutocomplete('add_subtopics', Infinity);
-        topicAutocomplete('main_topic', 1);
-        topicAutocomplete('second_topic', 1);
+        topicAutocomplete('to_topics', 1);
+
+        // bind merge topic form submit event
+        _mergeTopic_form();
 
         $("#delete_parent_topics").select2({
             width : '300px'
@@ -273,6 +310,9 @@
         $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
         cropImage('crop_img_{{ $topic->id }}', 1 / 1);
+
+        // bind close event
+        bindCloseEvent();
     });
 </script>
 @endsection

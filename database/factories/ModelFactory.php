@@ -61,3 +61,4 @@ $factory->define(App\Message::class, function (Faker\Generator $faker) {
         'content' => nl2br($faker->text()),
     ];
 });
+

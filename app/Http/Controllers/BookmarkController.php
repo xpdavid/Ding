@@ -262,16 +262,16 @@ class BookmarkController extends Controller
                 case 'question':
                     $bookmark->questions()->detach($request->get('item_id'));
                     $question = Question::findOrFail($request->get('item_id'));
-                    if ($question->status == 1) {
-                        // bookmark only published question
+                    if ($question->status == 1 || $question->status == 3) {
+                        // bookmark only published/closed question
                         $bookmark->questions()->attach($request->get('item_id'));
                     }
                     break;
                 case 'answer':
                     $bookmark->answers()->detach($request->get('item_id'));
                     $answer = Answer::findOrFail($request->get('item_id'));
-                    if ($answer->status == 1) {
-                        // bookmark only published answer
+                    if ($answer->status == 1 || $answer->status == 3) {
+                        // bookmark only published/closed answer
                         $bookmark->answers()->attach($request->get('item_id'));
                     }
                     break;

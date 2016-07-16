@@ -26,6 +26,9 @@ class CreateUsersTable extends Migration
             $table->enum('sex', ['Male', 'Female', 'Secret'])->nullable();
             $table->string('url_name');
 
+            // auth user group
+            $table->integer('authGroup_id')->default(1); // default v1 group
+
             $table->rememberToken();
             $table->timestamps();
         });

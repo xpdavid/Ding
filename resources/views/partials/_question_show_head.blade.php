@@ -12,16 +12,25 @@
     <div class="row">
         <div class="col-md-12">
             <h3> <a href="/question/{{ $question->id }}">{{ $question->title }}</a>
-                <a href="#" class="userSetting_EditA" onclick="editQuestion(event, '{{ $question->id }}')"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
+                @if($question->isClosed()) <span class="label label-warning">Closed</span> @endif
+                @if (Auth::user()->operation(9) || $question->owner->id == Auth::user()->id)
+                    <a href="#" class="userSetting_EditA" onclick="editQuestion(event, '{{ $question->id }}')"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
+                @endif
             </h3>
         </div>
         <div class="col-md-12 font-black">
-                <div id="question_summary_{{ $question->id }}" class="_summary">
-                    {!! $question->summary !!} <a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{ $question->id }}">Show all</a>
-                </div>
-                <div id="question_full_{{ $question->id }}">
+            <div id="question_summary_{{ $question->id }}" class="_summary">
+                {!! $question->summary !!} <a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{ $question->id }}">Show all</a>
+            </div>
+            <div id="question_full_{{ $question->id }}">
 
+            </div>
+            @if ($question->isClosed())
+                <div class="well margin-top">
+                    The question is closed for some reason:<br>
+                    <strong>{{ $question->closeReason() }}</strong>
                 </div>
+            @endif
         </div>
     </div>
 

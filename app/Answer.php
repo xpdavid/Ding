@@ -63,6 +63,66 @@ class Answer extends Model
     }
 
     /**
+     * Close an answer
+     *
+     * @return bool
+     */
+    public function close() {
+        $user = Auth::user();
+        // check authority
+        if (!$user->operation(15)) {
+            return false;
+        }
+
+        // change question status
+        $this->status = 3;
+        $this->save();
+
+        return true;
+    }
+
+    /**
+     * open an answer
+     *
+     * @return bool
+     */
+    public function open() {
+        $user = Auth::user();
+        // check authority
+        if (!$user->operation(15)) {
+            return false;
+        }
+
+        // change question status
+        $this->status = 1;
+        $this->save();
+
+        return true;
+    }
+
+    /**
+     * Determine if the answer is closed
+     *
+     * @return bool
+     */
+    public function isClosed() {
+        return $this->status == 3;
+    }
+
+    /**
+     * Return the latest close reason for the answer
+     */
+    public function closeReason() {
+        if ($this->histories()->whereType(2)->exists()) {
+            return $this->histories()
+                ->whereType(2)->orderBy('created_at', 'desc')
+                ->first()->text;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * A Answer belong to a question
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

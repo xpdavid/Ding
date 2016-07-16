@@ -33,6 +33,16 @@
 
 
 @section('right')
+        @if (Auth::user()->operation(11))
+            @include('partials._add_topic_model')
+            <div class="sideBar_section ">
+                <div class="sideBar_item">
+                    <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#_add_topic">
+                        Add Topic
+                    </button>
+                </div>
+            </div>
+        @endif
         <div class="sideBar_section noborder">
             <div class="sideBar_item">
                 <div class="">
@@ -87,8 +97,9 @@
 <script type="text/javascript">
     @if(count($top_parent_topics) > 0)
         $(function() {
-            getFirstLevelChildTopic({{ $top_parent_topics[0]->id }}, 1);
-        })
+            getFirstLevelChildTopic('{{ $top_parent_topics[0]->id }}', 1);
+            _addTopic_form();
+        });
     @endif
 </script>
 @endsection

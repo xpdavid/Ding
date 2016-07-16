@@ -8,6 +8,7 @@ use App\Visitor;
 use App\Reply;
 use App\Answer;
 use App\Question;
+use App\History;
 use App\Http\Requests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -69,8 +70,8 @@ class AnswerController extends Controller
         // an answer has been visited
         Visitor::visit($answer);
 
-        if ($question->status != 1 || $answer->status != 1) {
-            // you cannot view unpublished answer/ question
+        if ($answer->status == 2) {
+            // you cannot view unpublished answer
             abort(401);
         }
 
@@ -125,6 +126,62 @@ class AnswerController extends Controller
     }
 
     /**
+     * Answer ajax request to close a answer
+     *
+     * @param $answer_id
+     * @param Request $request
+     * @return array
+     */
+    public function close($answer_id, Request $request) {
+        $answer = Answer::findOrFail($answer_id);
+
+        if ($answer->close()) {
+            $answer->histories()->save(History::create([
+                'user_id' => Auth::user()->id,
+                'type' => 2,
+                'text' => $request->get('reason')
+            ]));
+
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+
+    }
+
+    /**
+     * Answer ajax request to reopen an answer
+     *
+     * @param $answer_id
+     * @param Request $request
+     * @return array
+     */
+    public function open($answer_id, Request $request) {
+        $answer = Answer::findOrFail($answer_id);
+
+        if ($answer->open()) {
+            $answer->histories()->save(History::create([
+                'user_id' => Auth::user()->id,
+                'type' => 3,
+                'text' => $request->get('reason')
+            ]));
+
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+
+    }
+
+    /**
      * response ajax request to get all answers
      *
      * @param Request $request
@@ -137,7 +194,7 @@ class AnswerController extends Controller
             foreach ($request->get('ids') as $answer_id) {
                 $answer = Answer::findOrFail($answer_id);
                 // only get published answer
-                if ($answer->status == 1) {
+                if ($answer->status != 2) {
                     $answers->push($answer);
                 }
             }
@@ -151,7 +208,7 @@ class AnswerController extends Controller
             $question_id = $request->get('question_id');
             $question = Question::findOrFail($question_id);
             // cannot view unpublished question
-            if ($question->status != 1) abort(401);
+            if ($question->status == 2) abort(401);
             // get published answer
             $answers = $question->answers()->whereStatus(1)->get();
         }
@@ -259,7 +316,7 @@ class AnswerController extends Controller
             'id' => $answer->id
         ];
     }
-    
+
 
     /**
      * Response AJAX request to store answer for the question

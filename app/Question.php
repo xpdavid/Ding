@@ -112,11 +112,72 @@ class Question extends Model
             return false;
         }
 
-        // change answer status
+        // change question status
         $this->status = 1;
         $this->save();
 
         return true;
+    }
+
+    /**
+     * Close an question
+     *
+     * @return bool
+     */
+    public function close() {
+        $user = Auth::user();
+        // check authority
+        if (!$user->operation(14) || $user->id == $this->owner->id) {
+            return false;
+        }
+
+        // change question status
+        $this->status = 3;
+        $this->save();
+
+        return true;
+    }
+
+    /**
+     * Reopen the question with reason
+     *
+     * @return bool
+     */
+    public function open() {
+        $user = Auth::user();
+        // check authority
+        if (!$user->operation(14) || $user->id == $this->owner->id) {
+            return false;
+        }
+
+        // change question status
+        $this->status = 1;
+        $this->save();
+
+        return true;
+    }
+
+
+    /**
+     * Determine if the question is closed
+     *
+     * @return bool
+     */
+    public function isClosed() {
+        return $this->status == 3;
+    }
+
+    /**
+     * Return the latest close reason for the question
+     */
+    public function closeReason() {
+        if ($this->histories()->whereType(5)->exists()) {
+            return $this->histories()
+                ->whereType(5)->orderBy('created_at', 'desc')
+                ->first()->text;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -270,12 +331,15 @@ class Question extends Model
      * Get also interest questions
      */
     public function getAlsoInterestQuestionsAttribute() {
-        $also_interest = collect();
-        foreach ($this->topics()->orderBy(DB::raw('RAND()'))->get() as $topic) {
-            $also_interest = $also_interest->merge($topic->waitAnswerQuestions->take(3));
-            $also_interest = $also_interest->merge($topic->highlightQuestions->take(3));
-        }
-        return $also_interest;
+        $also = Cache::remember('also_interest_question' . $this->id, 10, function() {
+            $also_interest = collect();
+            foreach ($this->topics()->orderBy(DB::raw('RAND()'))->get() as $topic) {
+                $also_interest = $also_interest->merge($topic->waitAnswerQuestions(1, 10)->take(3));
+                $also_interest = $also_interest->merge($topic->highlightQuestions(1, 10)->take(3));
+            }
+            return $also_interest;
+        });
+        return $also;
     }
 
     /**

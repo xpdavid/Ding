@@ -35,9 +35,35 @@ function showTopicLogPage(base_id, type, answer_id, page, callback) {
 
             all = $.merge(all, results.data.topics);
 
+            // process avatar img
+            $.each(results.data.images, function(index, item) {
+                item.operation = 'edit avatar image';
+                item.compare = 'N/A';
+            });
+
+            all = $.merge(all, results.data.images);
+
+            // process merge
+            $.each(results.data.merges, function(index, item) {
+                var $a_tag = $('<a></a>');
+                $a_tag.html(item.topic.name);
+                $a_tag.attr('href', item.topic.url);
+                if (item.type == 8) {
+                    $a_tag.addClass('log_remove');
+                    item.operation = 'merge this topic to';
+                } else if (item.type == 9) {
+                    $a_tag.addClass('log_add');
+                    item.operation = 'merge this topic with';
+                }
+                item.compare = $a_tag[0]['outerHTML'];
+            });
+
+            all = $.merge(all, results.data.merges);
+
             all = $.merge(all, textCompare(results.data.names, 'edit name'));
 
             all = $.merge(all, textCompare(results.data.descriptions, 'edit description'));
+
 
             all.sort(function(a, b) {
                 return b.timestamp - a.timestamp;
@@ -71,19 +97,42 @@ function showAnswerLogPage(base_id, type, answer_id, page, callback) {
         page : page,
     }, function(results) {
         // only the current answer itself
-        if (results.data.length > 1) {
-            // clear content
-            $('#' + base_id + '_content').html('');
+        if (results.data.answers || results.data.operations) {
+            var all = [];
 
-            // append caparison
+            // process operations
+            $.each(results.data.operations, function(index, item) {
+                var $div_tag = $('<div></div>');
+                if (item.type == 2) {
+                    $div_tag.addClass('log_remove');
+                    item.operation = 'closes the answer';
+                } else if (item.type == 3) {
+                    $div_tag.addClass('log_add');
+                    item.operation = 'opens the answer';
+                }
+                $div_tag.html('Reason : ' + item.text);
+                item.compare = $div_tag[0]['outerHTML'];;
+
+            });
+            all = $.merge(all, results.data.operations);
+
+            // answer compare
+            all = $.merge(all, textCompare(results.data.answers, 'edits answer'));
+
+            all.sort(function(a, b) {
+                return b.timestamp - a.timestamp;
+            });
+
             var template = Handlebars.templates['_log_compare.html'];
-            var data = {
-                logs : textCompare(results.data, 'edit answer')
-            };
-            $('#' + base_id + '_content').html(template(data));
+            $('#' + base_id + '_content').html(template({
+                logs : all
+            }));
+
+            // rerender math equation
+            rerenderMath(base_id + '_content');
 
             // update nav bar
-            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showAnswerLogPage'));
+            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showQuestionLogPage'));
 
             // check callback
             if(callback && typeof callback == "function"){
@@ -123,6 +172,22 @@ function showQuestionLogPage(base_id, type, answer_id, page, callback) {
                 }
             });
             all = $.merge(all, results.data.topics);
+
+            // process operations
+            $.each(results.data.operations, function(index, item) {
+                var $div_tag = $('<div></div>');
+                if (item.type == 5) {
+                    $div_tag.addClass('log_remove');
+                    item.operation = 'closes the question';
+                } else if (item.type == 6) {
+                    $div_tag.addClass('log_add');
+                    item.operation = 'opens the question';
+                }
+                $div_tag.html('Reason : ' + item.text);
+                item.compare = $div_tag[0]['outerHTML'];;
+
+            });
+            all = $.merge(all, results.data.operations);
 
             all = $.merge(all, textCompare(results.data.titles, 'edit title'));
 

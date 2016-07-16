@@ -68,7 +68,7 @@ class HistoryController extends Controller
                 'text' => $history->text,
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
                 'timestamp' => Carbon::parse($history->created_at)->timestamp,
-                'canRollback' => true,
+                'canRollback' => Auth::user()->operation(12),
                 'canReport' => true,
             ]);
         }
@@ -94,7 +94,7 @@ class HistoryController extends Controller
                 'text' => $history->text,
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
                 'timestamp' => Carbon::parse($history->created_at)->timestamp,
-                'canRollback' => true,
+                'canRollback' => Auth::user()->operation(12),
                 'canReport' => true,
             ]);
         }
@@ -105,7 +105,7 @@ class HistoryController extends Controller
         // for topics
         $topics = [];
         foreach ($histories->filter(function ($value, $key) {
-            return $value->type > 2;
+            return 3 <= $value->type && $value->type <= 6;
         }) as $history) {
             $user = User::findOrFail($history->user_id);
             $user_arr = [
@@ -124,7 +124,60 @@ class HistoryController extends Controller
                 ],
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
                 'timestamp' => Carbon::parse($history->created_at)->timestamp,
-                'canRollback' => true,
+                'canRollback' => Auth::user()->operation(12),
+                'canReport' => true,
+            ]);
+        }
+
+
+        // fore image
+        $images = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 7;
+        }) as $history) {
+            $user = User::findOrFail($history->user_id);
+            $user_arr = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'url' => action('PeopleController@show', $user->url_name)
+            ];
+            array_push($images, [
+                'id' => $history->id,
+                'type' => $history->type,
+                'topic' => [
+                    'name' => $topic->name,
+                    'url' => '/topic/' . $topic->id
+                ],
+                'user' => $user_arr,
+                'time' => Carbon::parse($history->created_at)->diffForHumans(),
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
+                'canRollback' => false,
+                'canReport' => true,
+            ]);
+        }
+
+        $merges = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 8 ||  $value->type == 9;
+        }) as $history) {
+            $user = User::findOrFail($history->user_id);
+            $user_arr = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'url' => action('PeopleController@show', $user->url_name)
+            ];
+            $topic = Topic::findOrFail($history->text);
+            array_push($merges, [
+                'id' => $history->id,
+                'type' => $history->type,
+                'topic' => [
+                    'name' => $topic->name,
+                    'url' => '/topic/' . $topic->id
+                ],
+                'user' => $user_arr,
+                'time' => Carbon::parse($history->created_at)->diffForHumans(),
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
+                'canRollback' => false,
                 'canReport' => true,
             ]);
         }
@@ -134,7 +187,9 @@ class HistoryController extends Controller
             'data' => [
                 'names' => $names,
                 'descriptions' => $descriptions,
-                'topics' => $topics
+                'topics' => $topics,
+                'images' => $images,
+                'merges' => $merges
             ]
         ];
 
@@ -192,7 +247,7 @@ class HistoryController extends Controller
                 ],
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
                 'timestamp' => Carbon::parse($history->created_at)->timestamp,
-                'canRollback' => true,
+                'canRollback' => Auth::user()->operation(9),
                 'canReport' => true,
             ]);
         }
@@ -215,7 +270,7 @@ class HistoryController extends Controller
                 'text' => $history->text,
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
                 'timestamp' => Carbon::parse($history->created_at)->timestamp,
-                'canRollback' => true,
+                'canRollback' => Auth::user()->operation(9),
                 'canReport' => true,
             ]);
         }
@@ -241,7 +296,7 @@ class HistoryController extends Controller
                 'text' => $history->text,
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
                 'timestamp' => Carbon::parse($history->created_at)->timestamp,
-                'canRollback' => true,
+                'canRollback' => Auth::user()->operation(9),
                 'canReport' => true,
             ]);
         }
@@ -249,12 +304,36 @@ class HistoryController extends Controller
             'text' => $question->content
         ]);
 
+        // operations
+        $operations = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 5 || $value->type == 6;
+        }) as $history) {
+            $user = User::findOrFail($history->user_id);
+            $user_arr = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'url' => action('PeopleController@show', $user->url_name)
+            ];
+            array_push($operations, [
+                'id' => $history->id,
+                'type' => $history->type,
+                'user' => $user_arr,
+                'text' => $history->text,
+                'time' => Carbon::parse($history->created_at)->diffForHumans(),
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
+                'canRollback' => Auth::user()->operation(9),
+                'canReport' => true,
+            ]);
+        }
+
         return [
             'pages' => $pages,
             'data' => [
                 'titles' => $titles,
                 'contents' => $contents,
                 'topics' => $topics,
+                'operations' => $operations
             ]
         ];
 
@@ -286,8 +365,10 @@ class HistoryController extends Controller
         $pages = ceil($answer->histories()->count() / $itemInPage);
         $histories = $answer->histories()->orderBy('created_at', 'desc')->get();
 
-        $results = [];
-        foreach ($histories->forPage($page, $itemInPage) as $history) {
+        $answers = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 1;
+        }) as $history) {
             $user = User::findOrFail($history->user_id);
             $user_arr = [
                 'id' => $user->id,
@@ -299,21 +380,49 @@ class HistoryController extends Controller
                 'type' => $history->type,
                 'text' => $history->text,
                 'time' => Carbon::parse($history->created_at)->diffForHumans(),
-                'canRollback' => $answer->owner->id == $user->id,
+                'canRollback' => $user->operation(15),
                 'canReport' => $answer->owner->id != $user->id,
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
                 'user' => $user_arr,
             ];
 
-            array_push($results, $history_arr);
+            array_push($answers, $history_arr);
         }
 
         // push current answer
-        array_unshift($results, [
+        array_unshift($answers, [
             'text' => $answer->answer,
         ]);
 
+        // operations
+        $operations = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 2 || $value->type == 3;
+        }) as $history) {
+            $user = User::findOrFail($history->user_id);
+            $user_arr = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'url' => action('PeopleController@show', $user->url_name)
+            ];
+            array_push($operations, [
+                'id' => $history->id,
+                'type' => $history->type,
+                'text' => $history->text,
+                'time' => Carbon::parse($history->created_at)->diffForHumans(),
+                'canRollback' => $user->operation(15),
+                'canReport' => $answer->owner->id != $user->id,
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
+                'user' => $user_arr,
+            ]);
+        }
+
+
         return [
-            'data' => $results,
+            'data' => [
+                'answers' => $answers,
+                'operations' => $operations
+            ],
             'pages' => $pages
         ];
     }

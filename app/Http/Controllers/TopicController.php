@@ -7,6 +7,7 @@ use Auth;
 use Carbon\Carbon;
 use IImage;
 use File;
+use App\History;
 use App\Topic;
 use App\Image;
 use App\Http\Requests;
@@ -115,6 +116,10 @@ class TopicController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($topic_id) {
+        // user does not have access to edit page
+        if (!Auth::user()->operation(11)) {
+            abort(401);
+        }
         $topic = Topic::findOrFail($topic_id);
 
         $parent_topics = $topic->parent_topics;
@@ -122,6 +127,95 @@ class TopicController extends Controller
         $subtopics = $topic->subtopics;
 
         return view('topic.edit', compact('topic', 'parent_topics', 'subtopics'));
+    }
+
+    /**
+     * post request to create topic
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function create(Request $request) {
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+        if (Topic::whereName($request->get('name'))->exists()) {
+            return [
+                'status' => false,
+                'reason' => 'Same topic name exists in the database'
+            ];
+        }
+
+        $user = Auth::user();
+        if ($user->operation(11)) {
+            $topic = Topic::create([
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+            ]);
+
+            return [
+                'status' => true,
+                'location' => '/topic/' . $topic->id . '/edit'
+            ];
+        }
+
+    }
+
+
+    /**
+     * Answer ajax request to close a topic
+     *
+     * @param $topic_id
+     * @param Request $request
+     * @return array
+     */
+    public function close($topic_id, Request $request) {
+        $topic = Topic::findOrFail($topic_id);
+
+        if ($topic->close()) {
+            $topic->histories()->save(History::create([
+                'user_id' => Auth::user()->id,
+                'type' => 10,
+                'text' => $request->get('reason')
+            ]));
+
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+
+    }
+
+    /**
+     * Answer ajax request to reopen a topic
+     *
+     * @param $topic_id
+     * @param Request $request
+     * @return array
+     */
+    public function open($topic_id, Request $request) {
+        $topic = Topic::findOrFail($topic_id);
+
+        if ($topic->open()) {
+            $topic->histories()->save(History::create([
+                'user_id' => Auth::user()->id,
+                'type' => 11,
+                'text' => $request->get('reason')
+            ]));
+
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
+
     }
 
     /**
@@ -228,7 +322,12 @@ class TopicController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update($topic_id, Request $request) {
+        if (!Auth::user()->operation(11)) {
+            abort(401);
+        }
+
         $topic = Topic::findOrFail($topic_id);
+        $user = Auth::user();
         $old_subtopics_list = $topic->subtopics()->lists('subtopic_id')->all();
         $old_parent_topics_list = $topic->parent_topics()->lists('parent_topic_id')->all();
 
@@ -321,11 +420,36 @@ class TopicController extends Controller
             }
         }
 
+
         // record it in history
         $topic->recordSubTopicsHistory($topic->subtopics()->lists('subtopic_id')->all()
             , $old_subtopics_list);
         $topic->recordParentTopicsHistory($topic->parent_topics()->lists('parent_topic_id')->all()
             , $old_parent_topics_list);
+
+        if ($request->exists('to_topics')) {
+            $topic_id = $request->get('to_topics')[0];
+            $to_topic = Topic::findOrFail($topic_id);
+            // attach every question with new topics
+            foreach ($topic->publishedQuestions as $question) {
+                $question->topics()->sync([$topic_id], false);
+            }
+            // remove all question with current topics
+            foreach ($topic->publishedQuestions as $question) {
+                $question->topics()->detach($topic->id);
+            }
+            // record the operation
+            $topic->histories()->save(History::create([
+                'user_id' => $user->id,
+                'type' => 8,
+                'text' => $topic_id
+            ]));
+            $to_topic->histories()->save(History::create([
+                'user_id' => $user->id,
+                'type' => 9,
+                'text' => $topic->id
+            ]));
+        }
 
         return redirect(action('TopicController@edit', $topic_id));
     }

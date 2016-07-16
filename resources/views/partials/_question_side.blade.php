@@ -1,15 +1,24 @@
 <div class="sideBar_section">
     <div class="sideBar_sectionItem">
         <div>
-            @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
-                <button type="button" class="btn btn-warning"
-                        onclick="show_question_subscribe(this, '{{ $question->id }}')">
-                    Unsubscribe</button>
+            @if($question->isClosed())
+                @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
+                    <button type="button" class="btn btn-warning"
+                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
+                        Unsubscribe</button>
+                @endif
             @else
-                <button type="button" class="btn btn-success"
-                        onclick="show_question_subscribe(this, '{{ $question->id }}')">
-                    Subscribe</button>
+                @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
+                    <button type="button" class="btn btn-warning"
+                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
+                        Unsubscribe</button>
+                @else
+                    <button type="button" class="btn btn-success"
+                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
+                        Subscribe</button>
+                @endif
             @endif
+
         </div>
         <div class="margin-top">
             <span id="question_subscriber">{{ $question->subscribers()->count() }}</span> people have subscribed to this question.
@@ -42,3 +51,27 @@
             </div>
     </div>
 </div>
+
+@if(Auth::user()->operation(14))
+    @if ($question->isClosed())
+        <div class="sideBar_section">
+            <div class="sideBar_sectionItem">
+                <button class="btn btn-warning"
+                        data-action="open"
+                        data-type="question"
+                        data-id="{{ $question->id }}"
+                >Reopen Question</button>
+            </div>
+        </div>
+    @else
+        <div class="sideBar_section">
+            <div class="sideBar_sectionItem">
+                <button class="btn btn-danger"
+                        data-action="close"
+                        data-type="question"
+                        data-id="{{ $question->id }}"
+                >Close Question</button>
+            </div>
+        </div>
+    @endif
+@endif

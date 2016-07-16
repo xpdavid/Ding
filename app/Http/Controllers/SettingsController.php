@@ -74,9 +74,12 @@ class SettingsController extends Controller
             $user->update(['name' => $request->get('name')]);
         }
 
-        if ($request->has('personal_domain')){
-            $settings->update(['personal_domain_modified' => true]);
-            $user->update(['url_name' => $request->get('personal_domain')]);
+        if ($request->has('personal_domain')) {
+            // you need be authoried to do this
+            if ($user->operation(10) && !$user->settings->personal_domain_modified) {
+                $settings->update(['personal_domain_modified' => true]);
+                $user->update(['url_name' => $request->get('personal_domain')]);
+            }
         }
 
         if ($request->has('new_password') && $request->has('old_password') && $request->has('confirm_password')){

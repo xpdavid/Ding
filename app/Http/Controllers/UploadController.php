@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use File;
 use IImage;
+use App\History;
 use App\Image;
 use App\Topic;
 use App\Http\Requests;
@@ -68,6 +69,17 @@ class UploadController extends Controller
 
         // save new image
         $img_resize->save(base_path('images/topic/' . $filename), 50); // medium quality
+
+        // change by who?
+        $user = Auth::user();
+
+        // image change
+        $history = History::create([
+            'user_id' => $user->id,
+            'type' => 7,
+            'text' => 'N/A'
+        ]);
+        $topic->histories()->save($history);
 
         return [
             'status' => 'true'

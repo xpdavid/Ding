@@ -1,14 +1,32 @@
+@if($topic->isClosed())
+    <div class="sideBar_section">
+        <div class="sideBar_sectionItem">
+            <div class="well">
+                The topic is closed for some reason:<br>
+                <strong>{{ $topic->closeReason() }}</strong>
+            </div>
+        </div>
+    </div>
+@endif
 <div class="sideBar_section">
     <div class="sideBar_sectionItem">
         <div class="clearfix">
-            @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
-                <button type="button" class="btn btn-warning"
-                        onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
-                    Unsubscribe</button>
+            @if($topic->isClosed())
+                @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
+                    <button type="button" class="btn btn-warning"
+                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
+                        Unsubscribe</button>
+                @endif
             @else
-                <button type="button" class="btn btn-success"
-                        onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
-                    Subscribe</button>
+                @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
+                    <button type="button" class="btn btn-warning"
+                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
+                        Unsubscribe</button>
+                @else
+                    <button type="button" class="btn btn-success"
+                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
+                        Subscribe</button>
+                @endif
             @endif
             <div class="float-right margin-top">{{ $topic->subscribers()->count() }} <span class="font-black">People Subscribe</span> </div>
         </div>
@@ -16,8 +34,10 @@
         <div class="margin-top">
             <a href="/topic/{{ $topic->id }}/organization">Topic Organization Tree</a>
             <span>•</span>
-            <a href="/topic/{{ $topic->id }}/edit">Edit Topic</a>
-            <span>•</span>
+            @if(Auth::user()->operation(12))
+                <a href="/topic/{{ $topic->id }}/edit">Edit Topic</a>
+                <span>•</span>
+            @endif
             <a href="/topic/{{ $topic->id }}/log" class="font-greyLight">Show topic histories</a>
         </div>
     </div>
@@ -62,3 +82,4 @@
         </div>
     </div>
 @endif
+

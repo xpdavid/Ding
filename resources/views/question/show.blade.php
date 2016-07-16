@@ -34,47 +34,60 @@
             </h5>
         </div>
 
-        @if ($question->hasPublishedAnswerBy(Auth::user()->id))
-            {{--user has answer the question--}}
+        @if ($question->isClosed())
+            {{--The question is closed--}}
             <div class="text-center">
                 <hr>
                 <h5 class="font-greyLight">
-                    You can only answer a question once, but you can edit
-                    <a href="/answer/{{ $question->answers()->where('user_id', Auth::user()->id)->first()->id }}">
-                        current answer
+                    The question is closed, you may send ticket to reopen the question
+                    <a href="#">
+                        Ticket
                     </a>
                 </h5>
             </div>
+            <br>
         @else
-            <div class="clearfix question_answer" id="question_answer_form">
-                <hr>
-                <div class="write_answer_userInfo clearfix">
-                    <div class="float-left"><strong>{{ Auth::user()->name }}</strong>, {{ Auth::user()->bio }}</div>
-                    <img class="float-right" src="{{ DImage(Auth::user()->settings->profile_pic_id, 25, 25) }}" alt="{{ Auth::user()->name }}">
+
+            @if ($question->hasPublishedAnswerBy(Auth::user()->id))
+                {{--user has answer the question--}}
+                <div class="text-center">
+                    <hr>
+                    <h5 class="font-greyLight">
+                        You can only answer a question once, but you can edit
+                        <a href="/answer/{{ $question->answers()->where('user_id', Auth::user()->id)->first()->id }}">
+                            current answer
+                        </a>
+                    </h5>
                 </div>
-                <div class="form-group margin-top">
-                    <a name="answer"></a>
-                    <textarea
-                        name="user_answer"
-                        class="form-control"
-                        id="question_answers_input"
-                        placeholder="Write your answer here."
-                        rows="5",
-                        data-autosave="true"
-                        data-draft_url="/question/{{ $question->id }}/draft"
-                    ></textarea>
-                    <div class="margin-top clearfix">
-                        <p class="text-danger float-left noneDisplay" id="question_answers_error">Bruh, I think answers must be more than 1 characters.</p>
-                        <button type="submit" class="btn btn-warning float-right"
-                                onclick="saveAnswer('question_answers', '{{ $question->id }}')">Submit</button>
+            @else
+                <div class="clearfix question_answer" id="question_answer_form">
+                    <hr>
+                    <div class="write_answer_userInfo clearfix">
+                        <div class="float-left"><strong>{{ Auth::user()->name }}</strong>, {{ Auth::user()->bio }}</div>
+                        <img class="float-right" src="{{ DImage(Auth::user()->settings->profile_pic_id, 25, 25) }}" alt="{{ Auth::user()->name }}">
                     </div>
+                    <div class="form-group margin-top">
+                        <a name="answer"></a>
+                    <textarea
+                            name="user_answer"
+                            class="form-control"
+                            id="question_answers_input"
+                            placeholder="Write your answer here."
+                            rows="5",
+                            data-autosave="true"
+                            data-draft_url="/question/{{ $question->id }}/draft"
+                    ></textarea>
+                        <div class="margin-top clearfix">
+                            <p class="text-danger float-left noneDisplay" id="question_answers_error">Bruh, I think answers must be more than 1 characters.</p>
+                            <button type="submit" class="btn btn-warning float-right"
+                                    onclick="saveAnswer('question_answers', '{{ $question->id }}')">Submit</button>
+                        </div>
 
+                    </div>
                 </div>
-            </div>
+            @endif
+
         @endif
-
-
-
     </div>
 
     @include('partials._crop_image_model', [
@@ -115,6 +128,7 @@
                         getAnswerDraft('{{ $question->answerDraftBy(Auth::user()->id)->id }}' ,'question_answers_input');
                 @endif
             });
+
 
 
         });

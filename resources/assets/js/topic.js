@@ -209,3 +209,52 @@ function topic_show_get_questions(clickObject, topic_id, sorted) {
     getTopicQuestions(topic_id, null, 1, 10, sorted);
 
 }
+
+/**
+ * Bind form submit event to do validation
+ * @private
+ */
+function _addTopic_form() {
+    $('#_add_topic_form').on('submit', function() {
+        if ($('#_topic_name').val() == "") {
+            $('#_topic_name').focus();
+            return false;
+        }
+        $.post('/topic/create', {
+            name : $('#_topic_name').val(),
+            description : $('#_topic_description').val()
+        }, function(results) {
+            if (results.status) {
+                window.location.replace(results.location);
+            } else {
+                $('#_topic_name_error').html(results.reason);
+                showError('_topic_name', true);
+            }
+        });
+        return false;
+    });
+}
+
+/**
+ * Bind merge topic form submit event
+ * @private
+ */
+function _mergeTopic_form() {
+    $('#_merge_topic_button').click(function() {
+        var $form = $('#_merge_topic');
+        if ($('#to_topics').val()) {
+            swal({
+                title : "WARNING",
+                text : "The merge process is irreversible and will be recorded, unreasonable request will be given server penalty",
+                type : "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, Do it.",
+                closeOnConfirm: false
+            }, function(){
+                $form.submit();
+            });
+        }
+        return false;
+    });
+}
