@@ -12,9 +12,14 @@
     <div class="row">
         <div class="col-md-12">
             <h3> <a href="/question/{{ $question->id }}">{{ $question->title }}</a>
+                {{--question reward--}}
+                <span class="badge">{{ $question->reward }}</span>
                 @if($question->isClosed()) <span class="label label-warning">Closed</span> @endif
                 @if (Auth::user()->operation(9) || $question->owner->id == Auth::user()->id)
-                    <a href="#" class="userSetting_EditA" onclick="editQuestion(event, '{{ $question->id }}')"><span class="glyphicon glyphicon-pencil"></span>Edit</a>
+                    <a href="#" class="userSetting_EditA"
+                       onclick="editQuestion(event, '{{ $question->id }}',
+                               '{{ $question->owner->id == Auth::user()->id ? 'true' : 'false'}}')">
+                        <span class="glyphicon glyphicon-pencil"></span>Edit</a>
                 @endif
             </h3>
         </div>

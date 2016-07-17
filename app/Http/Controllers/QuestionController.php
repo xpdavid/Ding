@@ -106,7 +106,6 @@ class QuestionController extends Controller
         if ($request->has('id')) {
             $draft = Question::findOrFail($request->get('id'));
             if ($draft->owner->id != $user->id) {
-                dd(1);
                 // the user does not have the question
                 return [
                     'status' => false
@@ -114,12 +113,17 @@ class QuestionController extends Controller
             }
         }
 
+        // get question reward
+        $reward = intval($request->get('question_reward'));
+
         if ($draft) {
             // already saved answer
             $question = $draft;
+
             if ($question->saveDraft([
                 'title' => $request->get('question_title'),
-                'content' => $request->get('text')
+                'content' => $request->get('text'),
+                'reward' => $reward
             ])) {
                 // save topics relationship
                 $question->topics()->sync($request->get('question_topics'));
@@ -134,6 +138,7 @@ class QuestionController extends Controller
             $question = Question::create([
                 'title' => $request->get('question_title'),
                 'content' => $request->get('text'),
+                'reward' => $reward,
                 'status' => 2 // draft status
             ]);
             $question->save();
@@ -185,6 +190,9 @@ class QuestionController extends Controller
         // get necessary param
         $user = Auth::user();
 
+        // get question reward
+        $reward = intval($request->get('question_reward'));
+
         if ($request->has('question_draft_id')) {
             $question = Question::findOrFail($request->get('question_draft_id'));
             if($question->owner->id != $user->id) {
@@ -195,7 +203,8 @@ class QuestionController extends Controller
             // save draft last time
             $question->saveDraft([
                 'title' => $request->get('question_title'),
-                'content' => $request->get('question_detail')
+                'content' => $request->get('question_detail'),
+                'reward' => $reward,
             ]);
 
             // save topics relationship
@@ -207,6 +216,7 @@ class QuestionController extends Controller
             $question = Question::create([
                 'title' => $request->get('question_title'),
                 'content' => $request->get('question_detail'),
+                'reward' => $reward,
             ]);
 
             // the user post the question
@@ -255,8 +265,16 @@ class QuestionController extends Controller
         
         $question->update([
             'title' => $request->get('question_title'),
-            'content' => $request->get('question_detail')
+            'content' => $request->get('question_detail'),
         ], ['history' => true]);
+
+        // only owner can change the reward
+        if($question->owner->id == Auth::user()->id) {
+            // get question reward
+            $question->update([
+                'reward' => intval($request->get('question_reward'))
+            ], ['history' => true]);
+        }
 
         return redirect()->action('QuestionController@show', $question->id);
     }

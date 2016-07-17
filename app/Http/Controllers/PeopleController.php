@@ -251,7 +251,7 @@ class PeopleController extends Controller
         $user = User::findUrlName($url_name);
 
         $questions = $user->questions()->orderBy('updated_at', 'decs')
-            ->whereStatus(1)->get(); // published question
+            ->whereIn('status', [1, 3])->get(); // published/closed question
 
         // get page parameters
         $page = $request->exists('page') ? $request->get('page') : 1;
@@ -266,6 +266,8 @@ class PeopleController extends Controller
                 'numAnswer' => $question->answers()->count(),
                 'visit' => $question->hit->total,
                 'numSubscriber' => $question->subscribers()->count(),
+                'isClosed' => $question->isClosed(),
+                'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
             ]);
         }
 
@@ -286,7 +288,7 @@ class PeopleController extends Controller
     public function postAnswer($url_name, Request $request) {
         $user = User::findUrlName($url_name);
         $answers = $user->answers()->orderBy('updated_at', 'decs')
-            ->whereStatus(1)->get();
+            ->whereIn('status', [1, 3])->get(); // published closed answer
         // check if display answers under specific topics
         if ($request->has('topic')) {
             $answers = $user->answersInTopic($request->get('topic'));
@@ -314,23 +316,9 @@ class PeopleController extends Controller
             ];
             $answers_arr = [];
             foreach ($answers as $answer) {
-                $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
-                $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
-                array_push($answers_arr, [
-                    'id' => $answer->id,
-                    'user_name' => $answer->owner->name,
-                    'user_id' => $answer->owner->id,
-                    'user_bio' => $answer->owner->bio,
-                    'user_pic' => DImage($answer->owner->settings->profile_pic_id, 25, 25),
-                    'answer' => $answer->summary,
-                    'created_at' => $answer->createdAtHumanReadable,
-                    'votes' => $answer->netVotes,
-                    'numComment' => $answer->replies->count(),
-                    'vote_up_class' => $vote_up_class,
-                    'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user),
-                    'canEdit' => $answer->owner->id == Auth::user()->id,
-                ]);
+                $answer_arr = $answer->jsonAnswerDetail();
+                $answer_arr['isClosed'] = $answer->isClosed();
+                array_push($answers_arr, $answer_arr);
             }
             $arr['answers'] = $answers_arr;
 

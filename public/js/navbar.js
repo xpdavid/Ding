@@ -157,9 +157,10 @@ function navbar_searching_click() {
  */
 function navbar_ask_button() {
     // if has input before, show the input directly.
-    if ($('#_question_title').val().length != 0
+    if (($('#_question_title').val().length != 0
         || tinymce.get('_question_detail').getContent().length != 0
-        || $('#_question_topics').val()) {
+        || $('#_question_topics').val())
+        && $('#_question').data('mode') == 'ask') {
         navbar_show_ask_new_question_option();
         $('#_question_detail').data('autosave', true);
         $('#_question').modal('show');
@@ -230,6 +231,12 @@ function navbar_question_json_set(results) {
     // clear id
     $('#_question_detail_draft_id').val(results.id);
     $('#_question_detail_draft_id').data('id', results.id);
+    // clear id
+    $('#_question_edit_id').val(results.id);
+    $('#_question_edit_id').data('id', results.id);
+
+    // set reward
+    $('#_question_reward').val(results.reward);
 
     // fire search event
     $('#_question_title').trigger('change');
@@ -265,6 +272,11 @@ function navbar_ask_clear_input() {
     // clear id
     $('#_question_detail_draft_id').val('');
     $('#_question_detail_draft_id').data('id', '');
+    // clear id
+    $('#_question_edit_id').val('');
+    $('#_question_edit_id').data('id', '');
+    // clear reward
+    $('#_question_reward').val('');
 }
 
 /**
@@ -367,6 +379,9 @@ function navbar_question_form_process() {
  * @private
  */
 function _question_modal_UISwitch(type) {
+    // record state
+    $('#_question').data('mode', type);
+    // change content
     $('[data-parent="_question"]').each(function () {
         var $t = $(this);
         if ($t.data('ask') != undefined && $t.data('edit') != undefined) {

@@ -968,7 +968,7 @@ function bindExpendAll() {
 /**
  * Trigger edit question
  */
-function editQuestion(event, question_id) {
+function editQuestion(event, question_id, owner) {
     if (event) {
         event.preventDefault();
     }
@@ -979,30 +979,15 @@ function editQuestion(event, question_id) {
 
     // send ajax call to get question content
     $.post('/question/' + question_id, {}, function(results) {
-        // copy question title
-        $('#_question_title').val(results.title);
-        // copy question content
-        tinyMCE.get('_question_detail').focus();
-        tinyMCE.activeEditor.setContent(changeTexToImage(results.content));
+        navbar_question_json_set(results)
     });
 
-    // set question id
-    $('#_question_edit_id').val(question_id);
-
-    // set topics
-    var topics = $('[data-type="question_topics"]').data('content');
-    var ids = [];
-
-    var $topics = $('#_question_topics');
-    $topics.empty(); // empty select
-
-    $.each(topics, function(id, name) {
-        $topics.append($("<option/>") //add option tag in select
-                .val(id) //set value for option to post it
-                .text(name)); //set a text for show in select
-        ids.push(id);
-    });
-    $topics.val(ids).trigger("change"); //apply to select2
+    // only onwer can set quesiton reward
+    if (owner == 'true') {
+        $('#_question_reward_wrapper').show();
+    } else {
+        $('#_question_reward_wrapper').hide();
+    }
 
     // show modal
     $('#_question').modal('show');
@@ -1076,7 +1061,7 @@ function updateAnswer(answer_id) {
  * Bind close button with event
  */
 function bindCloseEvent() {
-    $('body').on('click', '[data-toggle="closed_answers"]', function(e) {
+    $('body').on('click', '[data-action="close"]', function(e) {
         if (e) {
             e.preventDefault();
         }

@@ -331,6 +331,32 @@ class HistoryController extends Controller
             'text' => $question->content
         ]);
 
+        // rewards
+        $rewards = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 7;
+        }) as $history) {
+            $user = User::findOrFail($history->user_id);
+            $user_arr = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'url' => action('PeopleController@show', $user->url_name)
+            ];
+            array_push($rewards, [
+                'id' => $history->id,
+                'type' => $history->type,
+                'user' => $user_arr,
+                'text' => $history->text,
+                'time' => Carbon::parse($history->created_at)->diffForHumans(),
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
+                'canRollback' => Auth::user()->operation(9),
+                'canReport' => true,
+            ]);
+        }
+        array_unshift($rewards, [
+            'text' => (string)$question->reward
+        ]);
+
         // operations
         $operations = [];
         foreach ($histories->filter(function ($value, $key) {
@@ -360,6 +386,7 @@ class HistoryController extends Controller
                 'titles' => $titles,
                 'contents' => $contents,
                 'topics' => $topics,
+                'rewards' => $rewards,
                 'operations' => $operations
             ]
         ];

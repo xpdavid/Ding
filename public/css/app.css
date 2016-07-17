@@ -16,6 +16,9 @@ body.modal-open {
 .modal-scrollbar-measure {
   overflow: hidden; }
 
+.modal {
+  overflow-y: scroll; }
+
 .modal.in .modal-dialog {
   transform: none; }
 

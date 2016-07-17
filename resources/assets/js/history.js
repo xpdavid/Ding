@@ -208,7 +208,9 @@ function showQuestionLogPage(base_id, type, answer_id, page, callback) {
 
             all = $.merge(all, textCompare(results.data.titles, 'edit title'));
 
-            all = $.merge(all, textCompare(results.data.contents, 'edit quesiton detail'));
+            all = $.merge(all, textCompare(results.data.contents, 'edit question detail'));
+
+            all = $.merge(all, textCompare(results.data.rewards, 'change question reward'));
 
             all.sort(function(a, b) {
                 return b.timestamp - a.timestamp;

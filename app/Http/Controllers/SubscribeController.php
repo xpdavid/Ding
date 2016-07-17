@@ -33,12 +33,12 @@ class SubscribeController extends Controller
      */
     public function postQuestion($question_id, Request $request) {
         $user = Auth::user();
+        $question = Question::findOrFail($question_id);
 
         if ($request->exists('op') && $request->get('op') == 'unsubscribe') {
             // unsubscribe a question
             $user->subscribe->questions()->detach($question_id);
         } else {
-            $question = Question::findOrFail($question_id);
 
             if ($question->status != 1) {
                 abort(401); // you cannot subscribe to an unpublished qeustion
@@ -48,10 +48,10 @@ class SubscribeController extends Controller
             if (!$user->subscribe->checkHasSubscribed($question_id, 'question')) {
                 $user->subscribe->questions()->save($question);
             }
-        }
 
-        // notification to user subscribers
-        $user->notifySubscriber(13, $question);
+            // notification to user subscribers
+            $user->notifySubscriber(13, $question);
+        }
 
         return [
             'status' => true,

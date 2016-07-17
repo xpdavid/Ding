@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             // auth user group
             $table->integer('authGroup_id')->default(1); // default v1 group
 
+
             $table->rememberToken();
             $table->timestamps();
         });

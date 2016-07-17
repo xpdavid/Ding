@@ -342,7 +342,7 @@ class Answer extends Model
             'created_at' => $this->createdAtHumanReadable,
             'votes' => $this->netVotes,
             'numComment' => $this->replies->count(),
-            'canVote' => $this->owner->canAnswerVoteBy($user),
+            'canVote' => $this->owner->canAnswerVoteBy($user) && !$this->isClosed(),
             'canEdit' => $this->owner->id == $user->id,
             'status' => true,
             'user_url' => action('PeopleController@show', $this->owner->url_name),
@@ -384,7 +384,7 @@ class Answer extends Model
             'topics' => $topics,
             'topic_pic' => DImage($this->question->topics->first()->avatar_img_id, 40, 40),
             'title' => $this->question->title,
-            'subscribed' => $user->subscribe->checkHasSubscribed($this->question->id, 'question')
+            'subscribed' => $user->subscribe->checkHasSubscribed($this->question->id, 'question'),
         ];
     }
 }

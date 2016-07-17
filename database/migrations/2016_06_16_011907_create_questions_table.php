@@ -22,6 +22,8 @@ class CreateQuestionsTable extends Migration
 
             $table->integer('user_id'); // a question is posted by a user
 
+            $table->integer('reward')->default(0);
+
             $table->timestamps();
         });
     }

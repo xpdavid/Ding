@@ -38,6 +38,7 @@ $factory->define(App\Question::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->sentence($nbWords = 9, $variableNbWords = true),
         'content' => nl2br($faker->text()),
+        'reward' => $faker->randomDigit
     ];
 });
 

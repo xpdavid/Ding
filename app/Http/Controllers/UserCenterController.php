@@ -155,6 +155,8 @@ class UserCenterController extends Controller
                 'numAnswer' => $question->answers()->count(),
                 'visit' => $question->hit->total,
                 'numSubscriber' => $question->subscribers()->count(),
+                'isClosed' => $question->isClosed(),
+                'subscribed' => true
             ]);
         }
 
@@ -209,7 +211,7 @@ class UserCenterController extends Controller
                     'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
                     'answer' => $answer_arr,
                     'title' => $question->title,
-                    'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
+                    'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question'),
                 ]);
             }
         }

@@ -19,7 +19,8 @@ class Question extends Model
     protected $fillable = [
         'title',
         'content',
-        'status'
+        'status',
+        'reward'
     ];
 
 
@@ -68,6 +69,16 @@ class Question extends Model
                     'user_id' => $user->id,
                     'type' => 2,
                     'text' => $this->content
+                ]);
+                $this->histories()->save($history);
+            }
+
+            // set reward history
+            if (isset($attributes['reward']) && $attributes['reward'] != $this->reward) {
+                $history = History::create([
+                    'user_id' => $user->id,
+                    'type' => 7,
+                    'text' => $this->reward
                 ]);
                 $this->histories()->save($history);
             }
@@ -127,7 +138,7 @@ class Question extends Model
     public function close() {
         $user = Auth::user();
         // check authority
-        if (!$user->operation(14) || $user->id == $this->owner->id) {
+        if (!$user->operation(14) && $user->id != $this->owner->id) {
             return false;
         }
 
@@ -371,7 +382,9 @@ class Question extends Model
                 $numSubscriber = $question->subscribers()->count();
                 $numHit = $question->hit->day;
                 $numVote = $question->highestVote;
-                return $numHit * 3 + $numVote + $numSubscriber + $timeDiff * 5;
+                $reward = $question->reward;
+                return $numHit * 3 + $numVote
+                + $numSubscriber + $timeDiff * 5 + $reward * 5;
             });
             return $questions;
         });
@@ -394,8 +407,9 @@ class Question extends Model
             $numVote = $question->highestVote;
             $numSubscriber = $question->subscribers()->count();
             $numHit = $question->hit->month;
-
-            return $numVote * 2 + $numSubscriber * 3 + $numHit * 2;
+            $reward = $question->reward;
+            return $numVote * 2 + $numSubscriber * 3 + $numHit * 2
+                + $reward;
         });
     }
 
@@ -412,8 +426,9 @@ class Question extends Model
             $numVote = $question->highestVote;
             $numSubscriber = $question->subscribers()->count();
             $numHit_week = $question->hit->week;
-
-            return $numVote + $numSubscriber * 2 + $numHit_week * 5 + $timeDiff * 2;
+            $reward = $question->reward;
+            return $numVote + $numSubscriber * 2 +
+            $numHit_week * 5 + $timeDiff * 2 + $reward;
         });
     }
 
@@ -429,8 +444,9 @@ class Question extends Model
             $numVote = $question->highestVote;
             $numSubscriber = $question->subscribers()->count();
             $numHit_month = $question->hit->month;
-
-            return $numVote + $numSubscriber * 2 + $numHit_month * 5 + $timeDiff * 2;
+            $reward = $question->reward;
+            return $numVote + $numSubscriber * 2 +
+            $numHit_month * 5 + $timeDiff * 2 + $reward;
         });
     }
 
@@ -601,6 +617,7 @@ class Question extends Model
             'title' => $this->title,
             'content' => $this->content,
             'topics' => $topics,
+            'reward' => $this->reward,
             'summary' => false,
         ];
     }
@@ -618,6 +635,7 @@ class Question extends Model
             'title' => $this->title,
             'content' => $this->summary,
             'topics' => $topics,
+            'reward' => $this->reward,
             'summary' => true,
         ];
     }

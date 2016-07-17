@@ -22,6 +22,11 @@ body.modal-open {
   overflow: hidden;
 }
 
+// fix bootstarp modal scrolling
+.modal {
+  overflow-y: scroll;
+}
+
 // fix for tinyMCE fullscreen modal
 .modal.in .modal-dialog {
   -webkit-transform: none;

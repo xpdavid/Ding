@@ -30,7 +30,13 @@
     </div>
 
     <div class="answer_vote">
-        <span class="font-greyLight"><span class="vote_answer_{{id}}_count">{{votes}}</span> Vote(s)</span>
+        <span class="font-greyLight">
+            <span class="vote_answer_{{id}}_count">{{votes}}</span> Vote(s)
+            {{#if isClosed}}
+                <span class="label label-warning">Closed</span>
+            {{/if}}
+        </span>
+
     </div>
 
     <div class="answer_content font-black clearfix">

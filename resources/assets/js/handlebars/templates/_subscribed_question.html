@@ -9,7 +9,14 @@
         </div>
     </div>
     <div class="media-body">
-        <h4 class="media-heading"><a href="/question/{{id}}">{{title}}</a></h4>
+        <h4 class="media-heading">
+            {{#if isClosed}}
+            <a href="/question/{{id}}" class="text-warning">{{title}}</a>
+            <span class="label label-warning">Closed</span>
+            {{^}}
+            <a href="/question/{{id}}">{{title}}</a>
+            {{/if}}
+        </h4>
         <span class="font-greyLight">
             <a href="#"
                class="font-greyLight"

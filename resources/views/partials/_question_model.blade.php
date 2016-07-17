@@ -83,6 +83,22 @@
                         </select>
                         <p class="text-danger float-left noneDisplay" id="_question_topics_error">Please select some topics for your question</p>
                     </div>
+
+                    <div class="form-group" id="_question_reward_wrapper">
+                        <label for="_question_reward"><strong>Reward (Optional)</strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                   id="_question_reward"
+                                   name="question_reward"
+                                   placeholder="Reward (Integer Only)"
+                                   data-type="_question_detail_draft"
+                                   data-key="question_reward"
+                                   autocomplete="off"
+                            >
+                            <span class="input-group-addon">Exp</span>
+                        </div>
+                        <p class="help-block">Higher reward question may get quick response</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div id="_question_new_question">

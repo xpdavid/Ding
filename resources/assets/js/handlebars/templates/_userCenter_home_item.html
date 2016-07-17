@@ -48,11 +48,19 @@
 
     {{#if answer}}
         <div class="font-bold">
-            <a href="/answer/{{answer.id}}"> {{title}} </a>
+            <a href="/answer/{{answer.id}}"> {{title}}
+                {{#if reward}}
+                    <span class="badge">{{reward}}</span>
+                {{/if}}
+            </a>
         </div>
     {{^}}
         <div class="font-bold">
-            <a href="/question/{{id}}"> {{title}} </a>
+            <a href="/question/{{id}}"> {{title}}
+                {{#if reward}}
+                    <span class="badge">{{reward}}</span>
+                {{/if}}
+            </a>
         </div>
     {{/if}}
 
