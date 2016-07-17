@@ -209,13 +209,17 @@ class AnswerController extends Controller
             $question = Question::findOrFail($question_id);
             // cannot view unpublished question
             if ($question->status == 2) abort(401);
-            // get published answer
-            $answers = $question->answers()->whereStatus(1)->get();
+            // detect status parameter
+            $status = $request->get('status') ? $request->get('status') : 1;
+            if ($status == 2) abort(401);
+            // get `status` answer
+            $answers = $question->answers()->whereStatus($status)->get();
         }
 
         // get necessary param
         $page = $request->get('page');
         $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
+        $pages = ceil($answers->count() / $itemInPage);
         $user = Auth::user();
 
         // determine sorting method
@@ -230,7 +234,10 @@ class AnswerController extends Controller
             array_push($results, $answer->jsonAnswerDetail());
         }
 
-        return $results;
+        return [
+            'data' => $results,
+            'pages' => $pages
+        ];
 
     }
 

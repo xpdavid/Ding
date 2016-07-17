@@ -8,7 +8,11 @@
             </a>
         </div>
         <div class="media-body">
-            <h4 class="media-heading">{{ $topic->name }}</h4>
+            <h4 class="media-heading">{{ $topic->name }}
+                @if($topic->isClosed())
+                    <span class="label label-warning">Closed</span>
+                @endif
+            </h4>
             <ul class="topic_category clearfix">
                 <li><a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a></li>
                 <li>Organization Tree</li>

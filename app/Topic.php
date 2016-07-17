@@ -135,7 +135,7 @@ class Topic extends Model
         }
 
         // change question status
-        $this->status = 3;
+        $this->status = 2;
         $this->save();
 
         return true;
@@ -149,7 +149,7 @@ class Topic extends Model
     public function open() {
         $user = Auth::user();
         // check authority
-        if (!$user->operation(16) || $user->id == $this->owner->id) {
+        if (!$user->operation(16)) {
             return false;
         }
 
@@ -166,7 +166,7 @@ class Topic extends Model
      * @return bool
      */
     public function isClosed() {
-        return $this->status == 3;
+        return $this->status == 2;
     }
 
     /**
@@ -447,7 +447,7 @@ class Topic extends Model
      * @return mixed
      */
     public function scopeTopParentTopics($query) {
-        return $query->whereNotExists(function ($query) {
+        return $query->opened()->whereNotExists(function ($query) {
             $query->select(DB::raw(1))
                 ->from('topic_subtopic')
                 ->whereRaw('topic_subtopic.subtopic_id = topics.id');

@@ -1,22 +1,16 @@
 <div class="sideBar_section">
     <div class="sideBar_sectionItem">
         <div>
-            @if($question->isClosed())
-                @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
-                    <button type="button" class="btn btn-warning"
-                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
-                        Unsubscribe</button>
-                @endif
+            @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
+                <button type="button" class="btn btn-warning"
+                        onclick="show_question_subscribe(this, '{{ $question->id }}')">
+                    Unsubscribe</button>
             @else
-                @if(Auth::user()->subscribe->checkHasSubscribed($question->id, 'question'))
-                    <button type="button" class="btn btn-warning"
-                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
-                        Unsubscribe</button>
-                @else
-                    <button type="button" class="btn btn-success"
-                            onclick="show_question_subscribe(this, '{{ $question->id }}')">
-                        Subscribe</button>
-                @endif
+                <button type="button" class="btn btn-success"
+                        onclick="show_question_subscribe(this, '{{ $question->id }}')"
+                    {{ $question->isClosed() ? 'disabled' : '' }}
+                >
+                    Subscribe</button>
             @endif
 
         </div>

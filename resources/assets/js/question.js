@@ -260,23 +260,22 @@ function cancel_from(event, element_id) {
  * @param button_id
  * @param callback
  */
-function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_id) {
+function getMoreAnswers(base_id, question_id, page, itemInPage, sorted) {
     $.post('/question/answers', {
         question_id : question_id,
         page : page,
         itemInPage : itemInPage,
+        status : 1,
         sorted : sorted,
     }, function(results) {
-        if (results.length == 0) {
-            if (button_id) {
-                $('#' + button_id).html("No More Already");
-                $('#' + button_id).prop('disabled', true);
-            }
+        if (results.data.length == 0) {
+            $('#' + base_id + '_button').html("No More Already");
+            $('#' + base_id + '_button').prop('disabled', true);
         } else {
             // compile template
             var template = Handlebars.templates['_answer_item.html'];
             var data = {
-                answers : results
+                answers : results.data
             };
 
             // append more answers to the box
@@ -288,26 +287,71 @@ function getMoreAnswers(base_id, question_id, page, itemInPage, sorted, button_i
             // rerender math symbols
             rerenderMath(base_id);
 
-            if (button_id) {
-                $('#' + button_id).prop('disabled', false);
-            }
+            $('#' + base_id + '_button').prop('disabled', false);
         }
 
     });
 }
 
 var currentAnswerPage = 1;
-function getMore(base_id, question_id, sorted, button_id, callback) {
-    if (button_id) {
-        $('#' + button_id).prop('disabled', true);
-    }
-    getMoreAnswers(base_id, question_id, currentAnswerPage, null, sorted, button_id);
+function getMore(base_id, question_id, sorted, callback) {
+    $('#' + base_id + '_button').prop('disabled', true);
+    getMoreAnswers(base_id, question_id, currentAnswerPage, null, sorted);
     currentAnswerPage++;
 
     // check callback
     if(callback && typeof callback == "function"){
         callback();
     }
+}
+
+/**
+ * AJAX request to get closed answers
+ *
+ * @param base_id
+ * @param question_id
+ * @param page
+ * @param itemInPage
+ */
+function getClosedAnswers(base_id, question_id, itemInPage, page) {
+    $.post('/question/answers', {
+        question_id : question_id,
+        page : page,
+        itemInPage : itemInPage,
+        status : 3,
+    }, function(results) {
+        // compile template
+        var template = Handlebars.templates['_answer_item.html'];
+        var data = {
+            answers : results.data
+        };
+
+        // append more answers to the box
+        $('#' + base_id).html(template(data));
+
+        // add responsive class to image
+        imgResponsiveIn(base_id);
+
+        // rerender math symbols
+        rerenderMath(base_id);
+
+        // nav
+        $('#' + base_id + '_nav').html(
+            compilePageNav(page, results.pages, base_id, question_id, itemInPage, 'getClosedAnswers')
+        );
+
+    });
+}
+
+function bindGetClosedAnswers() {
+    $('body').on('click', '[data-action="closed_answers"]', function(event) {
+        event.preventDefault();
+        if(!$(this).data('click')) {
+            getClosedAnswers('closed_answers', $(this).data('id'), 4, 1);
+            $(this).data('click', true);
+        }
+        $('#closed_answers_box').toggle();
+    })
 }
 
 /**
@@ -327,7 +371,7 @@ function showAnswers(ids, appendID, isAppend, callback) {
         // compile template
         var template = Handlebars.templates['_answer_item.html'];
         var data = {
-            answers : results
+            answers : results.data
         };
 
         if (isAppend) {
@@ -405,7 +449,7 @@ function saveAnswer(base_id, question_id) {
             // render the formulat (if any)
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,"answer_" + results.id]);
             imgResponsiveIn('question_answers');
-            
+
             // disasbled the from
             // you can only answer an question once
             $('#question_answer_form').hide();
@@ -895,7 +939,7 @@ function bindExpendAll() {
         if (e) {
             e.preventDefault();
         }
-        $object = $(this);
+        var $object = $(this);
         if ($object.data('type') == "answer") {
             $.post('/answer/' + $object.data('id'), {}, function(results) {
                 $('#answer_summary_' + $object.data('id')).hide();
@@ -1032,7 +1076,10 @@ function updateAnswer(answer_id) {
  * Bind close button with event
  */
 function bindCloseEvent() {
-    $('body').on('click', '[data-action="close"]', function() {
+    $('body').on('click', '[data-toggle="closed_answers"]', function(e) {
+        if (e) {
+            e.preventDefault();
+        }
         $object = $(this);
 
         var alert_param = {

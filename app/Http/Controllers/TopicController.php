@@ -290,7 +290,8 @@ class TopicController extends Controller
 
         // format results
         $results = [];
-        foreach ($topic->subtopics->forPage($page, $this->itemInPage) as $subtopic) {
+        foreach ($topic->subtopics()->opened()->get()
+                     ->forPage($page, $this->itemInPage) as $subtopic) {
             array_push($results, [
                 'id' => $subtopic->id,
                 'name' => $subtopic->name,

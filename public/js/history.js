@@ -60,6 +60,23 @@ function showTopicLogPage(base_id, type, answer_id, page, callback) {
 
             all = $.merge(all, results.data.merges);
 
+            // process operations
+            $.each(results.data.operations, function(index, item) {
+                var $div_tag = $('<div></div>');
+                if (item.type == 10) {
+                    $div_tag.addClass('log_remove');
+                    item.operation = 'closes the topic';
+                } else if (item.type == 11) {
+                    $div_tag.addClass('log_add');
+                    item.operation = 'opens the topic';
+                }
+                $div_tag.html('Reason : ' + item.text);
+                item.compare = $div_tag[0]['outerHTML'];
+
+            });
+            all = $.merge(all, results.data.operations);
+
+
             all = $.merge(all, textCompare(results.data.names, 'edit name'));
 
             all = $.merge(all, textCompare(results.data.descriptions, 'edit description'));
@@ -111,7 +128,7 @@ function showAnswerLogPage(base_id, type, answer_id, page, callback) {
                     item.operation = 'opens the answer';
                 }
                 $div_tag.html('Reason : ' + item.text);
-                item.compare = $div_tag[0]['outerHTML'];;
+                item.compare = $div_tag[0]['outerHTML'];
 
             });
             all = $.merge(all, results.data.operations);

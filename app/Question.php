@@ -181,6 +181,19 @@ class Question extends Model
     }
 
     /**
+     * Get closed answers of the question
+     *
+     * @return bool
+     */
+    public function closedAnswers() {
+        if ($this->answers()->whereStatus(3)->exists()) {
+            return $this->answers()->whereStatus(3)->get();
+        } else {
+            return collect();
+        }
+    }
+
+    /**
      * record topic change
      *
      * @param $new_topic_list
@@ -333,7 +346,7 @@ class Question extends Model
     public function getAlsoInterestQuestionsAttribute() {
         $also = Cache::remember('also_interest_question' . $this->id, 10, function() {
             $also_interest = collect();
-            foreach ($this->topics()->orderBy(DB::raw('RAND()'))->get() as $topic) {
+            foreach ($this->topics()->opened()->orderBy(DB::raw('RAND()'))->get() as $topic) {
                 $also_interest = $also_interest->merge($topic->waitAnswerQuestions(1, 10)->take(3));
                 $also_interest = $also_interest->merge($topic->highlightQuestions(1, 10)->take(3));
             }

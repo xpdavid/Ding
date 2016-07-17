@@ -11,23 +11,16 @@
 <div class="sideBar_section">
     <div class="sideBar_sectionItem">
         <div class="clearfix">
-            @if($topic->isClosed())
-                @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
-                    <button type="button" class="btn btn-warning"
-                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
-                        Unsubscribe</button>
-                @endif
-            @else
                 @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
                     <button type="button" class="btn btn-warning"
                             onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
                         Unsubscribe</button>
                 @else
                     <button type="button" class="btn btn-success"
-                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
+                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')"
+                    {{ $topic->isClosed() ? 'disabled' : ''}}>
                         Subscribe</button>
                 @endif
-            @endif
             <div class="float-right margin-top">{{ $topic->subscribers()->count() }} <span class="font-black">People Subscribe</span> </div>
         </div>
 
@@ -53,7 +46,7 @@
 </div>
 
 @if(count($parent_topics) > 0)
-    <div class="sideBar_section noborder">
+    <div class="sideBar_section">
         <div class="sideBar_sectionItem">
             <div class="sideBar_sectionItem">
                 <h4>Parent Topic</h4>
@@ -69,7 +62,7 @@
 
 
 @if(count($subtopics) > 0)
-    <div class="sideBar_section noborder">
+    <div class="sideBar_section">
         <div class="sideBar_sectionItem">
             <div class="sideBar_sectionItem">
                 <h4>SubTopic</h4>

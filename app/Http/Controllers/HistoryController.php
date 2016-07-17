@@ -156,6 +156,7 @@ class HistoryController extends Controller
             ]);
         }
 
+        // for merges
         $merges = [];
         foreach ($histories->filter(function ($value, $key) {
             return $value->type == 8 ||  $value->type == 9;
@@ -182,6 +183,31 @@ class HistoryController extends Controller
             ]);
         }
 
+        // for operations
+        $operations = [];
+        foreach ($histories->filter(function ($value, $key) {
+            return $value->type == 10 || $value->type == 11;
+        }) as $history) {
+            $user = User::findOrFail($history->user_id);
+            $user_arr = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'url' => action('PeopleController@show', $user->url_name)
+            ];
+            array_push($operations, [
+                'id' => $history->id,
+                'type' => $history->type,
+                'user' => $user_arr,
+                'text' => $history->text,
+                'time' => Carbon::parse($history->created_at)->diffForHumans(),
+                'timestamp' => Carbon::parse($history->created_at)->timestamp,
+                'canRollback' => Auth::user()->operation(9),
+                'canReport' => true,
+            ]);
+        }
+
+
+
         return [
             'pages' => $pages,
             'data' => [
@@ -189,7 +215,8 @@ class HistoryController extends Controller
                 'descriptions' => $descriptions,
                 'topics' => $topics,
                 'images' => $images,
-                'merges' => $merges
+                'merges' => $merges,
+                'operations' => $operations
             ]
         ];
 

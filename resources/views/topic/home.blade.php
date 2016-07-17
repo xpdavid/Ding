@@ -10,11 +10,14 @@
     <hr class="small_hr">
     <div class="topics_topicTag" id="subscribe_topics">
         @foreach($subscribe_topics as $key => $subscribe_topic)
-            @if($key == 0)
-                <button class="btn btn-primary active" onclick="topic_show_get_questions(this, '{{ $subscribe_topic->id }}', 'created')">{{ $subscribe_topic->name }}</button>
-            @else
-                <button class="btn btn-primary" onclick="topic_show_get_questions(this, '{{ $subscribe_topic->id }}', 'created')">{{ $subscribe_topic->name }}</button>
-            @endif
+                <button class="btn
+                 {{ $key == 0 ? 'active' : '' }}
+                {{ $subscribe_topic->isClosed() ? 'btn-warning topics_topicTag_closed' : 'btn-primary' }}"
+                        onclick="topic_show_get_questions(this, '{{ $subscribe_topic->id }}', 'created')"
+                @if($subscribe_topic->isClosed())
+                        data-toggle="tooltip" data-placement="top" title="Closed Topic"
+                @endif
+                >{{ $subscribe_topic->name }}</button>
         @endforeach
     </div>
 
@@ -95,8 +98,10 @@
 <script type="text/javascript">
     @if(count($subscribe_topics) > 0)
         $(function() {
-        getTopicQuestions('{{ $subscribe_topics[0]->id }}','highlight', 1, 10, 'created')
-    })
+            getTopicQuestions('{{ $subscribe_topics[0]->id }}','highlight', 1, 10, 'created')
+            // open tooltip option
+            $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+        });
     @endif
 </script>
 @endsection

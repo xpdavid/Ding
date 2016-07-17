@@ -12,7 +12,7 @@
             <div class="float-right">
                 @if ($answer->isClosed())
                     <h5 class="clear_margin">
-                        <span class="label label-warning">Closed Question</span>
+                        <span class="label label-warning">Closed Answer</span>
                     </h5>
                 @endif
             </div>

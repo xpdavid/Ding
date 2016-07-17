@@ -405,7 +405,7 @@
                 genericUserProfileEditToggleSetting('#user_job');
                 genericUserProfileEditToggleSetting('#user_specialization');
 
-                // open tooltipc option
+                // open tooltip option
                 $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
                 cropImage('crop_img_profile', 1 / 1);

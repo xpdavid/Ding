@@ -8,7 +8,11 @@
             </a>
         </div>
         <div class="media-body">
-            <h4 class="media-heading">{{ $topic->name }}</h4>
+            <h4 class="media-heading">{{ $topic->name }}
+                @if($topic->isClosed())
+                    <span class="label label-warning">Closed</span>
+                @endif
+            </h4>
             <ul class="topic_category clearfix">
                 @if($type == 'recommend')
                     <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>

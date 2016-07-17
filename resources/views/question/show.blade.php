@@ -20,19 +20,28 @@
         <div id="question_answers"></div>
 
         <div class="answer_more">
-            <button type="button" id='get_more_answers' class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers')">More</button>
+            <button type="button" id='question_answers_button' class="btn btn-default" onclick="getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers')">More</button>
         </div>
 
-        {{--user has answer the question--}}
-        <div class="text-center noneDisplay" id="question_answer_forbidden">
+        @if($question->closedAnswers()->count() > 0)
             <hr>
-            <h5 class="font-greyLight">
-                You can only answer a question once, but you can edit
-                <a href="/answer/" id="question_answer_forbidden_current">
-                    current answer
-                </a>
-            </h5>
-        </div>
+            {{--question has closed answer--}}
+            <div>
+                <div class="font-greyLight">
+                    <a href="#" data-action="closed_answers" data-id="{{ $question->id }}">
+                        Click
+                    </a> to show {{ $question->closedAnswers()->count() }} closed answers.
+                </div>
+            </div>
+            <div id="closed_answers_box" class="noneDisplay margin-top">
+                <div id="closed_answers">
+
+                </div>
+                <div class="text-center" id="closed_answers_nav">
+
+                </div>
+            </div>
+        @endif
 
         @if ($question->isClosed())
             {{--The question is closed--}}
@@ -109,7 +118,7 @@
     <script type="text/javascript">
         // onload event then load answers
         $(function() {
-            getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', 'get_more_answers', function() {
+            getMore('question_answers', '{{ $question->id }}', '{{ $sorted }}', function() {
                 highlight_reply('{{ $highlight['reply_id'] }}',
                         '{{ $highlight['base_id'] }}',
                         '{{ $highlight['type'] }}',
@@ -119,7 +128,7 @@
 
             invite_search_box('{{ $question->id }}');
 
-            // open tooltipc option
+            // open tooltip option
             $('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
             tinyMCEeditor('question_answers_input', function(editor) {
@@ -129,7 +138,7 @@
                 @endif
             });
 
-
+            bindGetClosedAnswers();
 
         });
     </script>

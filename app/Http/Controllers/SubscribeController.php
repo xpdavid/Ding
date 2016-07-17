@@ -75,11 +75,12 @@ class SubscribeController extends Controller
             $user->subscribe->topics()->detach($topic_id);
         } else {
             // only can subscribe to open topic
-            if ($topic->status == 1) {
-                // check duplicate subscribe
-                if (!$user->subscribe->checkHasSubscribed($topic_id, 'topic')) {
-                    $user->subscribe->topics()->save($topic);
-                }
+            if ($topic->status != 1) {
+                abort(401);
+            }
+            // check duplicate subscribe
+            if (!$user->subscribe->checkHasSubscribed($topic_id, 'topic')) {
+                $user->subscribe->topics()->save($topic);
             }
         }
 
