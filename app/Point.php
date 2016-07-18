@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Auth;
+use View;
 use Illuminate\Database\Eloquent\Model;
 
 class Point extends Model
@@ -29,7 +30,14 @@ class Point extends Model
         $query = $user->points()->whereType($attributes['type']);
         $created_point = false;
 
-        if (!in_array($attributes['type'], [10, 11, 12, 13, 14, 15, 17, 18])) {
+        if (in_array($attributes['type'], [10, 11, 12, 13, 14, 15, 16, 17])) {
+            // can be created many times
+            $point = static::create($attributes);
+            $user->points()->save($point);
+
+            $created_point = $point;
+        } else {
+            // cannot gain many times
             if(isset($attributes['param1'])) {
                 $query = $query->whereParam1($attributes['param1']);
             }
@@ -50,12 +58,6 @@ class Point extends Model
                 $point->updated_at = Carbon::now();
                 $point->save();
             }
-        } else {
-            // can be created many times
-            $point = static::create($attributes);
-            $user->points()->save($point);
-
-            $created_point = $point;
         }
 
         // add flash message
@@ -149,15 +151,6 @@ class Point extends Model
                 ]);
                 return $created_point;
                 break;
-            case 7:
-                $answer = Answer::findOrFail($additional[0]);
-                $created_point = Point::add($user, [
-                    'type' => $type,
-                    'point' => 2,
-                    'param1' => $answer->id,
-                ]);
-                return $created_point;
-                break;
             case 8:
                 $topic = Topic::findOrFail($additional[0]);
                 $created_point = Point::add($user, [
@@ -220,6 +213,7 @@ class Point extends Model
                 break;
             case 15:
                 $topic = Topic::findOrFail($additional[0]);
+                $by_user = User::findOrFail($additional[1]);
                 $created_point = Point::add($user, [
                     'type' => $type,
                     'point' => -20,
@@ -231,8 +225,8 @@ class Point extends Model
                 $by_user = User::findOrFail($additional[0]);
                 $created_point = Point::add($user, [
                     'type' => $type,
-                    'point' => -($user->point * 2 / 3),
-                    'param1' => $by_user->id
+                    'point' => -(abs($user->point) * 2 / 3),
+                    'param1' => $by_user->id,
                 ]);
                 return $created_point;
                 break;
@@ -241,7 +235,7 @@ class Point extends Model
                 $created_point = Point::add($user, [
                     'type' => $type,
                     'point' => 8,
-                    'param1' => $by_user->id
+                    'param1' => $by_user->id,
                 ]);
                 return $created_point;
                 break;
@@ -273,5 +267,18 @@ class Point extends Model
      */
     public function scopeToday($query) {
         return $query->whereDate('created_at', '=', date('Y-m-d'));
+    }
+
+    /**
+     * Get render content
+     */
+    public function getRenderedContentAttribute() {
+        $view = View::make('points.type_' . $this->type,
+            [
+                'point' => $this,
+            ]);
+        $content = $view->render();
+
+        return $content;
     }
 }

@@ -157,7 +157,7 @@ class Question extends Model
     public function open() {
         $user = Auth::user();
         // check authority
-        if (!$user->operation(14) || $user->id == $this->owner->id) {
+        if (!$user->operation(14)) {
             return false;
         }
 

@@ -851,12 +851,13 @@ function bindBanUserEvent() {
             e.preventDefault()
         }
         var self = this;
+        var button = $(self).data('type') == 'cancel' ? 'Cancel' : 'Yes, ban it!';
         swal({
-            title: "Ban User?",
-            text: "User will not able to login",
+            title: "Ban/Cancel User?",
+            text: "If ban user, user cannot login",
             type: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, ban it!",
+            confirmButtonText: button,
             closeOnConfirm: false
         }, function() {
             $.post('/people/' + $(self).data('url_name') + '/ban', {

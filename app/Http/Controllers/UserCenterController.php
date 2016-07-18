@@ -415,4 +415,47 @@ class UserCenterController extends Controller
 
         return $results;
     }
+
+    /**
+     * Response ajax request to get point item
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function postPoint(Request $request) {
+        $user = Auth::user();
+        // stable sort thus we sort all first
+        $points = $user->points()->orderBy('created_at', 'desc')->get();
+        $day = $request->get('day') ? $request->get('day') : 1;
+        // group by date and sort by date
+        $pointsByDay = $points->groupBy(function ($point) {
+            return Carbon::parse($point->updated_at)->format('d/m/Y');
+        })->sortByDesc(function($item, $key) {
+            return Carbon::createFromFormat('d/m/Y', $key)->timestamp;
+        })->forPage($day, 1);
+
+        // format result
+        $results = [];
+        foreach ($pointsByDay as $date => $points) {
+            $results['date'] = $date;
+            $partials = [];
+            foreach ($points as $point) {
+                array_push($partials, [
+                    'content' => $point->renderedContent,
+                    'type' => $point->type
+                ]);
+            }
+            $results['items'] = $partials;
+        }
+        // determine whether the results is empty
+        if(empty($results)) {
+            $results['status'] = false;
+        } else {
+            $results['status'] = true;
+        }
+
+        return $results;
+    }
+
+
 }

@@ -511,9 +511,11 @@ class PeopleController extends Controller
 
             if ($request->get('operation') == 'cancel') {
                 // trigger event adjust user group according to the point
+                $user->authGroup_id = 1;
+                $user->save();
                 $user->adjustAuthGroup();
 
-                // add point ot user
+                // add point to user
                 Point::add_point($user, 17, [$auth_user->id]);
 
                 return [

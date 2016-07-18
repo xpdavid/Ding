@@ -1,5 +1,6 @@
 
 var notificationDay = 1;
+var pointDay = 1;
 var homeQuestionPage = 1;
 var subscribedQuestionPage = 1;
 var subscribedQuestionItemInPage = 15;
@@ -22,6 +23,13 @@ function genericGet(type) {
     $('#' + type + '_more').prop('disabled', true);
     switch (type) {
         case 'notification' :
+            request = {
+                day :  pointDay
+            };
+            increment = function() { pointDay++ };
+            template = Handlebars.templates['_notification_day.html'];
+            break;
+        case 'point' :
             request = {
                 day :  notificationDay
             };

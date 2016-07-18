@@ -438,10 +438,14 @@ class AnswerController extends Controller
                     if ($vote_up_user->id == $user->id) continue;
                     Point::add_point($vote_up_user, 5, [$answer->id, $user->id]);
                 }
-                // Vote Answer
-                Point::add_point($user, 3, [$answer->id]);
-                // Receiving Votes for Answers
-                Point::add_point($answer->owner, 4, [$answer->id, $user->id]);
+
+                // only not owner answer receive point
+                if ($answer->owner->id != $user->id) {
+                    // Vote Answer
+                    Point::add_point($user, 3, [$answer->id]);
+                    // Receiving Votes for Answers
+                    Point::add_point($answer->owner, 4, [$answer->id, $user->id]);
+                }
 
                 // save
                 $answer->vote_up_users()->save($user);
