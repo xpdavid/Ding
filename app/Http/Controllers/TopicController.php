@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Visitor;
 use Auth;
+use App\Point;
 use Carbon\Carbon;
 use IImage;
 use File;
@@ -153,6 +155,9 @@ class TopicController extends Controller
                 'description' => $request->get('description'),
             ]);
 
+            // add point to user
+            Point::add_point($user, 9, [$topic->id]);
+
             return [
                 'status' => true,
                 'location' => '/topic/' . $topic->id . '/edit'
@@ -178,6 +183,14 @@ class TopicController extends Controller
                 'type' => 10,
                 'text' => $request->get('reason')
             ]));
+
+            // closed topic
+            // deduct user mark
+            // New Topic Rejected
+            $user_id = $topic->histories()->orderBy('created_at')->first()->user_id;
+            if ($user_id != Auth::user()->id) {
+                Point::add_point(User::findOrFail($user_id), 15, [$topic->id, Auth::user()->id]);
+            }
 
             return [
                 'status' => true
@@ -451,6 +464,10 @@ class TopicController extends Controller
                 'text' => $topic->id
             ]));
         }
+
+        // edit topic
+        Point::add_point(Auth::user(), 8, [$topic->id]);
+
 
         return redirect(action('TopicController@edit', $topic_id));
     }

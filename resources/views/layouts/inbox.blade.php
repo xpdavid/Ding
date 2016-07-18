@@ -80,5 +80,13 @@
 {!! Html::script('js/inbox.js') !!}
 
 @yield('javascript')
+
+@if (Session::has('add_point'))
+    <script type="text/javascript">
+        $(function() {
+            pointUI({{ Session::get('add_point') }});
+        })
+    </script>
+@endif
 </body>
 </html>

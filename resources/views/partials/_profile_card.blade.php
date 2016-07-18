@@ -94,6 +94,7 @@
 
     <div class="userHome_pointSummary clearfix">
         <div class="float-left margin-top">
+            <span class="label label-default">{{ $user->authGroup->name }}</span>
             Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>{{ $user->totalVotes }}</strong> Vote,
             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <strong>{{ $user->totalLikes }}</strong> Likes
         </div>

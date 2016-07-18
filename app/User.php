@@ -209,6 +209,20 @@ class User extends Authenticatable
         return $this->hasMany('App\Notification');
     }
 
+    /**
+     * An user has many point
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function points() {
+        return $this->hasMany('App\Point');
+    }
+
+    /**
+     * A user is belongs to a authgroup
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function authGroup() {
         return $this->belongsTo('App\AuthGroup', 'authGroup_id');
     }

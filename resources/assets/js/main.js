@@ -723,6 +723,28 @@ function equal(a1, a2) {
 }
 
 /**
+ * Show point effect
+ * @param $integer
+ */
+function pointUI(integer) {
+    var $UI = $('#_point_operation');
+    $UI.css('opacity', 0);
+    $UI.html(integer > 0 ? '+' + integer : integer);
+    $UI.css('top', '60px');
+    $UI.animate({
+        opacity : 1,
+        top : '30px',
+    }, 400, 'swing', function() {
+        setTimeout(function() {
+            $UI.animate({
+                opacity : 0,
+                top : 0,
+            }, 200, 'swing', null);
+        }, 400);
+    });
+}
+
+/**
  * Fix for boostrap modal using tinymce
  */
 $(function() {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\History;
+use App\Point;
 use App\Question;
 use App\Topic;
 use App\User;
@@ -499,7 +500,7 @@ class HistoryController extends Controller
 
                 $answer->update([
                     'answer' => $history->text
-                ]);
+                ], ['history' => true]);
 
                 break;
             case 'App\Question' :
@@ -508,16 +509,20 @@ class HistoryController extends Controller
                 if ($history->type == 1) {
                     $question->update([
                         'title' => $history->text
-                    ]);
+                    ], ['history' => true]);
                 } else if ($history->type == 2) {
                     $question->update([
                         'content' => $history->text
-                    ]);
+                    ], ['history' => true]);
                 } else if ($history->type == 3) {
                     $question->topics()->detach($history->text);
                 } else if ($history->type == 4) {
                     $question->topics()->attach($history->text);
                 }
+
+                // deduct user mark
+                // edit question reject
+                Point::add_point(User::findOrFail($history->user_id), 10, [$history->id, Auth::user()->id]);
 
                 // record it in history
                 $question->recordTopicsHistory($question->topics()->lists('topic_id')->all()
@@ -550,6 +555,11 @@ class HistoryController extends Controller
                     , $old_subtopics_list);
                 $topic->recordParentTopicsHistory($topic->parent_topics()->lists('parent_topic_id')->all()
                     , $old_parent_topics_list);
+
+
+                // deduct user mark
+                // edit topic reject
+                Point::add_point(User::findOrFail($history->user_id), 12, [$history->id, Auth::user()->id]);
 
                 break;
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Notification;
+use App\Point;
 use Auth;
 use App\Visitor;
 use App\Reply;
@@ -141,6 +142,12 @@ class AnswerController extends Controller
                 'type' => 2,
                 'text' => $request->get('reason')
             ]));
+
+            if ($answer->owner->id != Auth::user()->id) {
+                // answer not closed by the owner
+                // Question Closed
+                Point::add_point($answer->owner, 14, [$answer->id, Auth::user()->id]);
+            }
 
             return [
                 'status' => true
@@ -348,6 +355,11 @@ class AnswerController extends Controller
 
         if ($request->has('id')) {
             $answer = Answer::findOrFail($request->get('id'));
+            // authority check
+            if ($answer->owner->id != Auth::user()->id || $answer->status != 2) {
+                abort(401);
+            }
+
             // the post answer is an draft
             // save the draft immediately
             $answer->saveDraft([
@@ -371,11 +383,13 @@ class AnswerController extends Controller
             // save relationship
             $user->answers()->save($answer);
             $question->answers()->save($answer);
-
-            // notification
-            $question->notifySubscriber($answer);
-            $user->notifySubscriber(2, $answer);
         }
+
+        // notification
+        $question->notifySubscriber($answer);
+        $user->notifySubscriber(2, $answer);
+        // add/sub the user point
+        Point::add_point($user, 2, [$answer->id]);
 
         // return success data
         $data = $answer->jsonAnswerDetail();
@@ -419,7 +433,19 @@ class AnswerController extends Controller
 
         switch ($request->get('op')) {
             case 'up' :
+                // Vote acknowledged by Others
+                foreach ($answer->vote_up_users as $vote_up_user) {
+                    if ($vote_up_user->id == $user->id) continue;
+                    Point::add_point($vote_up_user, 5, [$answer->id, $user->id]);
+                }
+                // Vote Answer
+                Point::add_point($user, 3, [$answer->id]);
+                // Receiving Votes for Answers
+                Point::add_point($answer->owner, 4, [$answer->id, $user->id]);
+
+                // save
                 $answer->vote_up_users()->save($user);
+
                 // send notification (type 7 notification)
                 // vote by yourself will not send notification to you
                 if ($user->id != $answer->owner->id) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Point;
 use App\User;
 use Auth;
 use App\Visitor;
@@ -195,7 +196,7 @@ class QuestionController extends Controller
 
         if ($request->has('question_draft_id')) {
             $question = Question::findOrFail($request->get('question_draft_id'));
-            if($question->owner->id != $user->id) {
+            if($question->owner->id != $user->id || $question->status != 2) {
                 // the question is not owned by user
                 abort(401);
             }
@@ -226,8 +227,11 @@ class QuestionController extends Controller
             $question->topics()->sync($request->get('question_topics'));
         }
 
-        $user->notifySubscriber(12, $question);
         // notification to user subscribers
+        $user->notifySubscriber(12, $question);
+
+        // add/sub the user point
+        Point::add_point($user, 1, [$question->id]);
 
         return redirect(action('QuestionController@show', $question->id));
     }
@@ -263,10 +267,16 @@ class QuestionController extends Controller
         $question->recordTopicsHistory($request->get('question_topics'));
         $question->topics()->sync($request->get('question_topics'));
         
+        if($question->owner->id != Auth::user()->id) {
+            // edit question
+            Point::add_point(Auth::user(), 6, [$question->id]);
+        }
+
         $question->update([
             'title' => $request->get('question_title'),
             'content' => $request->get('question_detail'),
         ], ['history' => true]);
+
 
         // only owner can change the reward
         if($question->owner->id == Auth::user()->id) {
@@ -295,6 +305,12 @@ class QuestionController extends Controller
                 'type' => 5,
                 'text' => $request->get('reason')
             ]));
+
+            // Question Closed
+            if ($question->owner->id != Auth::user()->id) {
+                // not close by the owner itself
+                Point::add_point($question->owner, 13, [$question->id, Auth::user()->id]);
+            }
 
             return [
                 'status' => true

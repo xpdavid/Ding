@@ -81,6 +81,9 @@ class UploadController extends Controller
         ]);
         $topic->histories()->save($history);
 
+        // edit topic add point
+        Point::add_point(Auth::user(), 8, [$topic->id]);
+
         return [
             'status' => 'true'
         ];

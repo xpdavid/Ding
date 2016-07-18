@@ -84,6 +84,11 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+{{--for dispaly add point--}}
+<div id="_point_operation">
+
+</div>
+
 @include('partials._noticebar_model')
 
 @include('partials._latex_equation_model')
