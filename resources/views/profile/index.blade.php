@@ -3,6 +3,67 @@
 @section('content')
     @include('partials._profile_card', ['user' => $user])
 
+    <div class="userHome_layoutDiv">
+        <div class="userHome_layoutDivHead">
+            Point: <span class="label label-info">{{ $user->point }}</span>
+            @if($user->authGroup->id == 6)
+                <span class="label label-success">Moderator</span>
+            @endif
+            @if($user->authGroup->id == 7)
+                <span class="label label-success">Admin</span>
+            @endif
+            @if($user->authGroup->id == 8)
+                <span class="label label-danger">Ban User</span>
+            @endif
+        </div>
+        <div class="userHome_layoutDivContent">
+            <br>
+            <div class="point_label clearfix">
+                <div class="float-left" style="width: 13%">
+                    <span class="glyphicon glyphicon-chevron-down"></span>v1
+                </div>
+                <div class="float-left" style="width: 21%">
+                    <span class="glyphicon glyphicon-chevron-down"></span>v2
+                </div>
+                <div class="float-left" style="width: 22%">
+                    <span class="glyphicon glyphicon-chevron-down"></span>v3
+                </div>
+                <div class="float-left" style="width: 34%">
+                    <span class="glyphicon glyphicon-chevron-down"></span>v4
+                </div>
+                <div class="float-left" style="width: 10%">
+                    <span class="glyphicon glyphicon-chevron-down"></span>v5
+                </div>
+            </div>
+            <div class="progress">
+                @if ($user->authGroup->id <= 5)
+                    <div class="progress-bar progress-bar-success" style="width: {{ $user->authGroup->point / 5 }}%">
+                        {{ $user->point - $user->authGroup->point }}
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: {{ ($user->point - $user->authGroup->point) / 5 }}%">
+                        {{ $user->point - $user->authGroup->point }}
+                    </div>
+                @endif
+                {{--moderator--}}
+                @if ($user->authGroup->id == 6 || $user->authGroup->id == 7)
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span class="sr-only">N/A</span>
+                        </div>
+                    </div>
+                @endif
+                {{--banded user--}}
+                @if ($user->authGroup->id == 8)
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span class="sr-only">N/A</span>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <!-- Specialization -->
     @if($user->specializations()->count() > 0)
         <div class="userHome_layoutDiv">

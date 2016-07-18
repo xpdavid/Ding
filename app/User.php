@@ -219,6 +219,24 @@ class User extends Authenticatable
     }
 
     /**
+     * Count the overall point of the user
+     */
+    public function getPointAttribute() {
+        $total = 0;
+        foreach ($this->points as $point) {
+            $total += $point->point;
+        }
+        return $total;
+    }
+
+    /**
+     * Determine whether the user is baned
+     */
+    public function isBaned() {
+        return $this->authGroup_id == 8;
+    }
+
+    /**
      * A user is belongs to a authgroup
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -662,6 +680,40 @@ class User extends Authenticatable
     public function operation($id) {
         return in_array($id,
             $this->authGroup->authorities->lists('id')->all());
+    }
+
+    /**
+     * Adjust user auth group according to the point
+     */
+    public function adjustAuthGroup() {
+        $point = $this->point;
+        $v1 = AuthGroup::find(1);
+        $v2 = AuthGroup::find(2);
+        $v3 = AuthGroup::find(3);
+        $v4 = AuthGroup::find(4);
+        $v5 = AuthGroup::find(5);
+
+        if ($point >= $v1->point) {
+            $this->authGroup_id = 1;
+        }
+
+        if ($point >= $v2->point) {
+            $this->authGroup_id = 2;
+        }
+
+        if ($point >= $v3->point) {
+            $this->authGroup_id = 3;
+        }
+
+        if ($point >= $v4->point) {
+            $this->authGroup_id = 4;
+        }
+
+        if ($point >= $v5->point) {
+            $this->authGroup_id = 5;
+        }
+
+        $this->save();
     }
 
 }

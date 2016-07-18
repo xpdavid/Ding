@@ -53,6 +53,23 @@
     </div>
 @endif
 
+@if(Auth::user()->operation(17) && $user->id != Auth::user()->id)
+    @if ($user->isBaned())
+        <div class="userHome_sideBarSection noborder">
+            <div class="userHome_sideBarSectionInner">
+                <button class="btn btn-warning" data-action="user_operation" data-type="cancel" data-url_name="{{ $user->url_name }}">Cancel Ban</button>
+            </div>
+        </div>
+    @else
+        <div class="userHome_sideBarSection noborder">
+            <div class="userHome_sideBarSectionInner">
+                <button class="btn btn-danger" data-action="user_operation" data-type="ban" data-url_name="{{ $user->url_name }}">Ban User</button>
+            </div>
+        </div>
+    @endif
+
+@endif
+
 <div class="userHome_sideBarSection noborder">
     <div class="userHome_sideBarSectionInner">
         This page has been viewed <span class="userHome_number"> {{ $user->hit->total }} </span> times.

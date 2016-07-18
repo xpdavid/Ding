@@ -892,7 +892,7 @@ body.modal-open {
 /*for question_homepage.html*/
 .questions_questionLayout {
   padding-left: 55px;
-  min-height: 70px;
+  min-height: 40px;
   margin: 20px 0px 20px 0px; }
 
 .questions_questionContent {

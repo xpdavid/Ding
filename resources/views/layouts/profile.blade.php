@@ -106,6 +106,13 @@
         $(function() {
             pointUI({{ Session::get('add_point') }});
         })
+
+    </script>
+@endif
+
+@if (Auth::user()->operation(17))
+    <script type="text/javascript">
+        bindBanUserEvent();
     </script>
 @endif
 

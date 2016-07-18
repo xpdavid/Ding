@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Point;
 use Carbon\Carbon;
 use Log;
 use File;
@@ -495,6 +496,46 @@ class PeopleController extends Controller
         }
 
         abort(401);
+    }
+
+    /**
+     * Ban user operation
+     *
+     * @param $url_name
+     * @return array
+     */
+    public function postBan($url_name, Request $request) {
+        $user = User::findUrlName($url_name);
+        $auth_user = Auth::user();
+        if ($auth_user->operation(17)) {
+
+            if ($request->get('operation') == 'cancel') {
+                // trigger event adjust user group according to the point
+                $user->adjustAuthGroup();
+
+                // add point ot user
+                Point::add_point($user, 17, [$auth_user->id]);
+
+                return [
+                    'status' => true
+                ];
+
+            } else if ($request->get('operation') == 'ban') {
+                // ban user
+                $user->authGroup_id = 8;
+                $user->save();
+
+                // add point ot user
+                Point::add_point($user, 16, [$auth_user->id]);
+
+                return [
+                    'status' => true
+                ];
+            }
+        }
+        return [
+            'status' => false
+        ];
     }
 
 

@@ -841,3 +841,37 @@ function hoverShowArrow(prefix, arrow_class) {
         $(this).find('.' + arrow_class).hide();
     });
 }
+
+/**
+ * Bind ban user button event
+ */
+function bindBanUserEvent() {
+    $('body').on('click', '[data-action="user_operation"]', function(e) {
+        if (e) {
+            e.preventDefault()
+        }
+        var self = this;
+        swal({
+            title: "Ban User?",
+            text: "User will not able to login",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, ban it!",
+            closeOnConfirm: false
+        }, function() {
+            $.post('/people/' + $(self).data('url_name') + '/ban', {
+                operation : $(self).data('type')
+            }, function(results) {
+                if (results.status) {
+                    swal({
+                        title: "Success",
+                        text: "Operation success",
+                        type: "success",
+                    }, function() {
+                        window.location.reload();
+                    });
+                }
+            })
+        });
+    })
+}

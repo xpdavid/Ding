@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Point;
 use App\Subscribe;
 use App\User;
 use Validator;
@@ -74,6 +75,9 @@ class AuthController extends Controller
         $user->subscribe()->save($subscribe);
 
         $this->generateUrlName($user);
+
+        // add point to user
+        Point::add_point($user, 18, []);
 
         return $user;
     }

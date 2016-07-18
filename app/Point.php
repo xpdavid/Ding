@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Point extends Model
@@ -26,7 +27,9 @@ class Point extends Model
      */
     public static function add($user, array $attributes = []) {
         $query = $user->points()->whereType($attributes['type']);
-        if (!in_array($attributes['type'], [10, 11, 12, 13, 14, 15])) {
+        $created_point = false;
+
+        if (!in_array($attributes['type'], [10, 11, 12, 13, 14, 15, 17, 18])) {
             if(isset($attributes['param1'])) {
                 $query = $query->whereParam1($attributes['param1']);
             }
@@ -40,31 +43,31 @@ class Point extends Model
                 $point = static::create($attributes);
                 $user->points()->save($point);
 
-                if (Auth::user()->id == $user->id) {
-                    // send flash message
-                    session()->flash('add_point', $point->point);
-                }
-
-                return $point;
+                $created_point = $point;
             } else {
                 // update the time
                 $point = $query->first();
                 $point->updated_at = Carbon::now();
                 $point->save();
-                return false;
             }
         } else {
             // can be created many times
             $point = static::create($attributes);
             $user->points()->save($point);
 
-            if (Auth::user()->id == $user->id) {
-                // send flash message
-                session()->flash('add_point', $point->point);
-            }
-
-            return $point;
+            $created_point = $point;
         }
+
+        // add flash message
+        if ($created_point && Auth::user()->id == $user->id) {
+            // send flash message
+            session()->flash('add_point', $created_point->point);
+        }
+
+        // update user group
+        $user->adjustAuthGroup();
+
+        return $created_point;
     }
 
 
@@ -221,6 +224,31 @@ class Point extends Model
                     'type' => $type,
                     'point' => -20,
                     'param1' => $topic->id
+                ]);
+                return $created_point;
+                break;
+            case 16:
+                $by_user = User::findOrFail($additional[0]);
+                $created_point = Point::add($user, [
+                    'type' => $type,
+                    'point' => -($user->point * 2 / 3),
+                    'param1' => $by_user->id
+                ]);
+                return $created_point;
+                break;
+            case 17:
+                $by_user = User::findOrFail($additional[0]);
+                $created_point = Point::add($user, [
+                    'type' => $type,
+                    'point' => 8,
+                    'param1' => $by_user->id
+                ]);
+                return $created_point;
+                break;
+            case 18:
+                $created_point = Point::add($user, [
+                    'type' => $type,
+                    'point' => 10,
                 ]);
                 return $created_point;
                 break;
