@@ -58,14 +58,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="clearfix">
-                            <a href="#" class="clearfix">
-                                <div class="float-left">
-                                    <span class="label label-default float-left nav_user_tag space-right">{{ Auth::user()->authGroup->name }}</span>
-                                    {{ Auth::user()->name }}
-                                </div>
-                            </a>
-                        </li>
+                        <li><a href="/people/{{ Auth::user()->url_name }}">{{ Auth::user()->name }} <span class="badge">{{ Auth::user()->authGroup->name }}</span></a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/people/{{ Auth::user()->url_name }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
                         <li><a href="/inbox"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>

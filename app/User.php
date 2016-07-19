@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Auth;
+use App\LoginMethod;
 use App\Subscribe;
 use Carbon\Carbon;
 use App\Settings;
@@ -46,6 +47,8 @@ class User extends Authenticatable
         $user->settings()->save($settings);
         // assign user with v1 group
         $user->authGroup_id = 1;
+        // generate url name
+        $user->generateUrlName();
 
         // user profile hit
         Hit::create([
@@ -53,6 +56,25 @@ class User extends Authenticatable
             'owner_id' => $user->id
         ]);
         return $user;
+    }
+
+    /**
+     * Auto-generate url-name for user.
+     *
+     * @return string
+     */
+    private function generateUrlName() {
+        $url_name = $this->name;
+
+        // replace all the non-alphanumeric characters
+        $url_name = preg_replace("/[^A-Za-z0-9 ]/", '', $url_name);
+        // replace the space with underscore
+        $url_name = str_replace(' ', '_', $url_name);
+
+        // in order to prevent using same name, add user id at last.
+        $this->url_name = $url_name . $this->id;
+
+        $this->save();
     }
 
     /**
@@ -207,6 +229,28 @@ class User extends Authenticatable
      */
     public function notifications() {
         return $this->hasMany('App\Notification');
+    }
+
+    /**
+     * A user has many login methods
+     */
+    public function loginMethods() {
+        return $this->hasMany('App\LoginMethod');
+    }
+
+    /**
+     * Get the specific methods
+     *
+     * @param $type
+     * @return $string / bool
+     */
+    public function loginMethod($type) {
+        if (LoginMethod::whereType($type)->exists()) {
+            $method = LoginMethod::whereType($type)->first();
+            return $method;
+        } else {
+            return false;
+        }
     }
 
     /**

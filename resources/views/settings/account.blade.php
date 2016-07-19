@@ -41,8 +41,11 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label userSetting_contentLabelLeft">Other Login Methods</label>
                         <div class="col-sm-9 control-label userSetting_contentLabelLeft userSetting_Item">
-                            <a href="#">NUS Open ID</a>
-                            <a href="#">IVLE</a>
+                            @if ($user->loginMethod('IVLE'))
+                                <a href="/login/unbind_ivle" class="text-danger">Unbind IVLE Login Method</a>
+                            @else
+                                <a href="/login/bind_ivle">Bind IVLE Login Method</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -50,6 +53,16 @@
 
             <div class="row userSetting_section">
                 <div class="col-md-8">
+                    @if (Session::has('messages'))
+                        <div class="alert alert-success">
+                            <ul>
+                                @foreach (Session::get('messages') as $message)
+                                    <li>{{ $message }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <ul>

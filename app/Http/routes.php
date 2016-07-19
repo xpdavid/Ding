@@ -165,3 +165,13 @@ Route::post('/history/{id}/rollback', 'HistoryController@postRollback');
 Route::get('/image/{reference_id}/{width}/{height}', 'ImageController@image');
 Route::get('/image/{reference_id}', 'ImageController@original_image');
 
+
+// for login method
+Route::get('/login/ivle', 'LoginMethodController@IVLE');
+Route::get('/login/ivle_callback', 'LoginMethodController@IVLE_callback');
+
+
+Route::get('/login/bind_ivle', 'LoginMethodController@bindIVLE');
+Route::get('/login/bind_ivel_callback', 'LoginMethodController@bindIVLE_callback');
+
+Route::get('/login/unbind_ivle', 'LoginMethodController@unbindIVLE');

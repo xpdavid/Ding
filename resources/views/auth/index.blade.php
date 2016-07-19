@@ -59,7 +59,9 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Register Ding</button>
-                        <button type="button" class="btn btn-warning">Login with NUSOpen ID</button>
+                        <a href="/login/ivle">
+                            <button type="submit" class="btn btn-warning">Login with IVLE</button>
+                        </a>
                         {{ Form::close() }}
                     </div>
 
@@ -85,6 +87,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Login Ding</button>
                         {{ Form::close() }}
+                        <a href="/login/ivle">
+                            <button type="submit" class="btn btn-warning">Login with IVLE</button>
+                        </a>
                     </div>
 
                     {{--check if the url is login operation--}}
