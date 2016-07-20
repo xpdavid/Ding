@@ -23,7 +23,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" src="message.png" alt="...">
+                                <img class="media-object" src="{{ DImage($message->sendBy->settings->profile_pic_id, 50, 50) }}" alt="{{ $message->sendBy->name }}">
                             </a>
                         </div>
                         <div class="media-body">

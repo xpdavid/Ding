@@ -23,11 +23,11 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object" src="message.png" alt="...">
+                                <img class="media-object" src="{{ DImage($message->sendBy->settings->profile_pic_id, 50, 50)  }}" alt="{{ $message->sendBy->name }}">
                             </a>
                         </div>
                         <div class="media-body">
-                            <h5 class="media-heading"><a href="#">{{ $message->sendBy->name }}</a></h5>
+                            <h5 class="media-heading"><a href="/people/{{ $message->sendBy->url_name }}">{{ $message->sendBy->name }}</a></h5>
                             <div class="message_content">
                                 {{ $message->content }}
                             </div>
@@ -61,9 +61,11 @@
                     <div>
                         <a href="#">{{  $conversation->users->count() }}</a> people participate in this conversation.
                     </div>
-                    <div>
+                    <div class="margin-top">
                         @foreach($conversation->users as $user)
-                            <img src="/upload/user/sample_icon.png" alt="..." class="img-rounded avatar-img">
+                            <a href="/people/{{ $user->url_name }}">
+                                <img src="{{ DImage($user->settings->profile_pic_id, 50, 50) }}" alt="{{ $user->name }}" class="img-rounded avatar-img">
+                            </a>
                         @endforeach
                     </div>
                 </div>
