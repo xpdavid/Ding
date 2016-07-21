@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Auth;
+use File;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +55,29 @@ class Topic extends Model
             'text' => $topic->description
         ]);
         $topic->histories()->save($history);
+
+        // create image for it
+        // check if topic folder exist
+        // generate file name
+        $filename = 'topic-' . $topic->id . '.png';
+        File::copy(base_path('public/static/images/default_topic.png'),
+            base_path('images/topic/' . $filename));
+
+        // create new image instance
+        $img_database = Image::create([
+            'path' => 'images/topic/' . $filename,
+            'width' => 600,
+            'height' => 529
+        ]);
+        $img_database->save();
+
+        // update reference id
+        $img_database->reference_id = $img_database->id;
+        $img_database->save();
+
+        // update new user pic id
+        $topic->avatar_img_id = $img_database->id;
+        $topic->save();
 
         return $topic;
     }

@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use File;
 use Auth;
 use App\LoginMethod;
 use App\Subscribe;
@@ -49,6 +50,35 @@ class User extends Authenticatable
         $user->authGroup_id = 1;
         // generate url name
         $user->generateUrlName();
+
+        // set default image
+        // check if user folder exist
+        if (!File::exists(base_path('images/user/' . $user->id))) {
+            File::makeDirectory(base_path('images/user/' . $user->id), $mode = 0777, true, true);
+        }
+        $filename = 'profile-' . $user->id . '.png';
+        $file = 'images/user/' . $user->id .'/' . $filename;
+
+        File::copy(base_path('public/static/images/default_user.png'),
+            base_path('images/user/' . $user->id .'/' . $filename));
+
+        // create new image instance
+        $img_database = Image::create([
+            'path' => $file,
+            'width' => 600,
+            'height' => 600
+        ]);
+        $img_database->save();
+
+        // update reference id
+        $img_database->reference_id = $img_database->id;
+        $img_database->save();
+
+        // update new user pic id
+        $settings = $user->settings;
+        $settings->profile_pic_id = $img_database->id;
+        $settings->save();
+
 
         // user profile hit
         Hit::create([

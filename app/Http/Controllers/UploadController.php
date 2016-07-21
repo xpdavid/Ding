@@ -164,7 +164,12 @@ class UploadController extends Controller
         ];
     }
 
-
+    /**
+     * Upload user image
+     *
+     * @param Request $request
+     * @return array
+     */
     public function uploadUserImage(Request $request) {
         $this->validate($request, [
             'croppedImage' => 'required|mimes:jpeg,bmp,png'
