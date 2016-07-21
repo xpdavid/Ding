@@ -245,8 +245,8 @@ class User extends Authenticatable
      * @return $string / bool
      */
     public function loginMethod($type) {
-        if (LoginMethod::whereType($type)->exists()) {
-            $method = LoginMethod::whereType($type)->first();
+        if ($this->loginMethods()->whereType($type)->exists()) {
+            $method = $this->loginMethods()->whereType($type)->first();
             return $method;
         } else {
             return false;

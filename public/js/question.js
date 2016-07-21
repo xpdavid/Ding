@@ -949,11 +949,7 @@ function bindExpendAll() {
                 imgResponsiveIn('answer_full_' + $object.data('id'));
                 // set has expanded
                 $('#answer_full_' + $object.data('id')).data('expand', true);
-            }).error(function(xhr, textStatus, error) {
-                if(xhr.status == 401) {
-                    swal('Error', 'Login Required. More info after login', 'error');
-                }
-            });
+            })
         } else if ($object.data('type') == "question") {
             $.ajax({
                 url : '/question/' + $object.data('id'),

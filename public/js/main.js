@@ -4,6 +4,14 @@
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    statusCode : {
+        405 : function() {
+            swal('Warning', 'Please bind your account with IVLE', 'warning');
+        },
+        401 : function() {
+            swal('Error', 'Login Required. More info after login', 'error');
+        }
     }
 });
 

@@ -25,7 +25,7 @@ class ReplyController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['replyList', 'showConversation']]);
+        $this->middleware('auth_real', ['except' => ['replyList', 'showConversation']]);
     }
 
     public function show($reply_id) {

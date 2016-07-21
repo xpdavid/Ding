@@ -71,10 +71,13 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $subscribe = Subscribe::create();
-        $user->subscribe()->save($subscribe);
+        $user->generateUrlName($user);
 
-        $this->generateUrlName($user);
+        // real-name system
+        // require binding with ivle
+        $user->authGroup_id = 8;
+
+        $user->save();
 
         // add point to user
         Point::add_point($user, 18, []);

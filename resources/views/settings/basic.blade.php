@@ -46,6 +46,21 @@
                 </div>
             </div>
 
+            <div class="row userSetting_section">
+                <div class="col-md-8">
+                    @if (count($errors) > 0)
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">There is error in this form</div>
+                            <div class="panel-body">
+                                @foreach($errors->all() as $error)
+                                    <p class="text-danger">{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <div class="row userSetting_section noborder">
                 <div class="col-md-8">
                     <div class="form-group">

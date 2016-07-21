@@ -68,13 +68,6 @@
                           Email
                       @endif
                   </span>
-                  <span class="userHome_profileMoreItem">
-                      @if ($user->settings->display_facebook)
-                          <a href="#">Facebook</a>
-                      @else
-                          Facebook
-                      @endif
-                  </span>
                 </p>
                 <p>
                     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>

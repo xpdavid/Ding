@@ -13,20 +13,34 @@ $(function() {
  */
 var navbar_noticeBarPage = 1;
 function navbar_triggerNoticeBar() {
-    // ajax get notification content
-    navbar_noticeBarAJAX(function(results) {
-        $('#user_notice').popover({
-            animation: true,
-            container: 'body',
-            content: $('#contentForNoticeBar').html(), // need use ajax function next time
-            html: true,
-            placement: 'bottom',
-            template : '<div class="popover navbar_noticeBarPopover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-        });
+    var $object = $($('#contentForNoticeBar').html());
+    $('#contentForNoticeBar').empty();
 
-
-        $('#contentForNoticeBar').empty(); // in order for the js trigger function well.
+    $('#user_notice').popover({
+        animation: true,
+        container: 'body',
+        content: '<div id="nav_notification"></div>', // need use ajax function next time
+        html: true,
+        placement: 'bottom',
+        template : '<div class="popover navbar_noticeBarPopover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
     });
+
+    $('#user_notice').on('show.bs.popover', function() {
+        navbar_noticeBarAJAX($object, function() {
+            $('#nav_notification').html($object[0].outerHTML);
+        });
+    });
+
+    // click other place close the popover
+    // popover click outside auto hide
+    $('html').on('click', function (e) {
+        if (!$(e.target).parents().is("#nav_notification")
+                && !$(e.target).is("#user_notice")
+            && $(e.target).parents('.popover.in').length === 0) {
+            $('#user_notice').popover('hide');
+        }
+    });
+
 
 }
 
@@ -34,7 +48,7 @@ function navbar_triggerNoticeBar() {
  * function: navbar_noticBarAJAX
  * description: ajax to get content for notice bar
  */
-function navbar_noticeBarAJAX(callback) {
+function navbar_noticeBarAJAX($object, callback) {
     // ajax get notification content
     $.post('/notification', {
         page: navbar_noticeBarPage
@@ -54,15 +68,15 @@ function navbar_noticeBarAJAX(callback) {
             });
 
             $.each(notice_notice, function (index, item) {
-                $('#notice_notice').append('<div>' + item.content + '</div>');
+                $object.find('#notice_notice').append('<div>' + item.content + '</div>');
             });
 
             $.each(notice_user, function (index, item) {
-                $('#notice_user').append('<div>' + item.content + '</div>');
+                $object.find('#notice_user').append('<div>' + item.content + '</div>');
             });
 
             $.each(notice_thanks, function (index, item) {
-                $('#notice_thanks').append('<div>' + item.content + '</div>');
+                $object.find('#notice_thanks').append('<div>' + item.content + '</div>');
             });
         }
 

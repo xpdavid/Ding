@@ -14,6 +14,16 @@ use Illuminate\Http\Request;
 class UploadController extends Controller
 {
     /**
+     * UserCenterController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth_real');
+    }
+
+    /**
      * Response ajax request to store topic img
      *
      * @param Request $request

@@ -15,10 +15,8 @@ use Illuminate\Support\Facades\Redirect;
 class LoginMethodController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth', ['only' =>
+        $this->middleware('auth_real', ['only' =>
             [
-                'bindIVLE',
-                'bindIVLE_callback',
                 'unbindIVLE'
             ]]);
     }
@@ -231,6 +229,13 @@ class LoginMethodController extends Controller
             $user->loginMethod('IVLE')->delete();
         }
 
+        // check unique id
+        if (LoginMethod::findUser('IVLE', $this->getID($request->get('token')))) {
+            // people has bind the ivle id
+            // abort
+            return redirect('/settings/account')->withErrors(['The IVLE ID has been used by another user']);
+        }
+
         // store new token
         $user->loginMethods()->save(LoginMethod::create([
             'type' => 'IVLE',
@@ -242,6 +247,11 @@ class LoginMethodController extends Controller
         $this->updateID($user, 'IVLE');
 
         session()->flash('messages', ['Bind IVLE login method success']);
+
+        // update user group
+        $user->authGroup_id = 1;
+        $user->save();
+        $user->adjustAuthGroup();
 
         return redirect()->action('SettingsController@getAccount');
     }
@@ -256,6 +266,11 @@ class LoginMethodController extends Controller
         if ($user->loginMethod('IVLE')) {
             $user->loginMethod('IVLE')->delete();
             session()->flash('messages', ['Unbind IVLE login Method success']);
+
+            // turn to unbind user
+            $user->authGroup_id = 8;
+            $user->save();
+
         }
 
         return redirect()->action('SettingsController@getAccount');

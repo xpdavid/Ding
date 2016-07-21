@@ -12,6 +12,17 @@ use App\Http\Requests;
 class SettingsController extends Controller
 {
     /**
+     * AnswerController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('realname', ['except' => ['getAccount']]);
+    }
+
+    /**
      * get the basic settings page
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -77,8 +88,17 @@ class SettingsController extends Controller
         if ($request->has('personal_domain')) {
             // you need be authoried to do this
             if ($user->operation(10) && !$user->settings->personal_domain_modified) {
-                $settings->update(['personal_domain_modified' => true]);
-                $user->update(['url_name' => $request->get('personal_domain')]);
+                // check not exisit the same name
+                $findUser =  User::where('url_name', $request->get('personal_domain'));
+                if ($findUser->exists() && $findUser->first()->id == $user->id) {
+                    // do nothing as the user doesn't change the personal domain
+                } else if (!$findUser->exists()) {
+                    $settings->update(['personal_domain_modified' => true]);
+                    $user->update(['url_name' => $request->get('personal_domain')]);
+                } else {
+                    return redirect('/settings/basic')->withErrors(['The domain name has been used by other user']);
+                }
+
             }
         }
 

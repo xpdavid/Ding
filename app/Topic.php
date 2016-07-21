@@ -256,7 +256,7 @@ class Topic extends Model
      *
      * @return mixed
      */
-    public function recommendQuestions($page, $itemInPage, $sorted) {
+    public function recommendQuestions($page, $itemInPage, $sorted = "default") {
         $all_questions = Cache::remember(
             'topic_' . $this->id . '_questions', 10, function() {
             return $this->questions()->published()->get();
@@ -292,7 +292,7 @@ class Topic extends Model
      *
      * @return mixed
      */
-    public function waitAnswerQuestions($page, $itemInPage, $sorted) {
+    public function waitAnswerQuestions($page, $itemInPage, $sorted = "default") {
         // get all topic questions
         $all_questions = Cache::remember(
             'topic_' . $this->id . '_questions', 10, function() {
@@ -341,7 +341,7 @@ class Topic extends Model
      * @param $itemInPage
      * @return mixed
      */
-    public function highlightQuestions($page, $itemInPage, $sorted) {
+    public function highlightQuestions($page, $itemInPage, $sorted = "default") {
 
         // get all topic questions
         $all_questions = Cache::remember(

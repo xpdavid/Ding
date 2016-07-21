@@ -61,7 +61,7 @@ class Point extends Model
         }
 
         // add flash message
-        if ($created_point && Auth::user()->id == $user->id) {
+        if ($created_point && Auth::user() && Auth::user()->id == $user->id) {
             // send flash message
             session()->flash('add_point', $created_point->point);
         }

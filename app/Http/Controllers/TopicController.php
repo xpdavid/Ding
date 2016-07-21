@@ -26,7 +26,7 @@ class TopicController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => [
+        $this->middleware('auth_real', ['except' => [
             'show',
             'topics',
             'subTopics',
@@ -309,7 +309,7 @@ class TopicController extends Controller
             
             return $topics;
         });
-        
+
 
         foreach ($display_topics->forPage($page, $this->itemInPage) as $subtopic) {
             array_push($results, $subtopic->toJsonFormat());

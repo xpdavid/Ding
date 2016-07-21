@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\RealNameSystem;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -34,6 +35,11 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
         ],
+
+        'auth_real' => [
+            \App\Http\Middleware\RealNameSystem::class,
+            \App\Http\Middleware\Authenticate::class
+        ]
     ];
 
     /**
@@ -49,5 +55,6 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'realname' => \App\Http\Middleware\RealNameSystem::class,
     ];
 }

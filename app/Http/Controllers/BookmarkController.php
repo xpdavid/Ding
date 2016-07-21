@@ -21,6 +21,15 @@ class BookmarkController extends Controller
     protected $itemInPage = 8;
     protected $maxItem = 20;
 
+    /**
+     * AnswerController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth_real');
+    }
 
     /**
      * Find url_name and show his/her bookmarks

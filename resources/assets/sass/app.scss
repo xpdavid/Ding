@@ -179,6 +179,13 @@ body.modal-open {
   font-size: 26px;
 }
 
+.realname_alert {
+  position: fixed;
+  z-index: 1;
+  top: 62px;
+  right: 7px;
+}
+
 .navbar_backgroud {
   background: #222;
   background: -webkit-linear-gradient(top, #252527, #1c1c1e);
@@ -852,6 +859,10 @@ body.modal-open {
   width: 308px;
   margin: 0 auto;
   display: none;
+}
+
+#nav_notification {
+  width: 308px;
 }
 
 .noticeBarWapper {

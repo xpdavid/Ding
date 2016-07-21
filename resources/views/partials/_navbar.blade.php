@@ -99,6 +99,12 @@
 
 </div>
 
+@if(Auth::user() && Auth::user()->authGroup_id == 8)
+    <div class="alert alert-warning realname_alert">
+        Please complete the real-name system <a href="/settings/account"><strong>(Bind your account with IVLE)</strong></a>
+    </div>
+@endif
+
 @include('partials._noticebar_model')
 
 @include('partials._latex_equation_model')

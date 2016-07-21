@@ -25,7 +25,7 @@ class AnswerController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['postAnswers']]);
+        $this->middleware('auth_real', ['except' => ['postAnswers']]);
     }
 
     /**

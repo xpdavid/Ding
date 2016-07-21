@@ -15,6 +15,16 @@ class SearchController extends Controller
     protected $itemInPage = 12;
 
 
+    /**
+     * UserCenterController constructor.
+     *
+     * define middleware
+     */
+    public function __construct()
+    {
+        $this->middleware('auth_real');
+    }
+
     public function index(Request $request) {
         $this->validate($request, [
             'query' => 'required',
