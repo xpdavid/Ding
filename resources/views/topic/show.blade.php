@@ -40,9 +40,9 @@
     <div class="clearfix">
         <div class="float-right">
             @if( $sorted == 'created')
-                <a href="/topic/{{ $topic->id }}">Sort by Rate</a> / Sort by Date
+                <a href="{{ action('TopicController@show', [ $topic->id, 'type' => $type, 'sorted' => 'default']) }}">Sort by Default</a> / Sort by Date
             @else
-                Sort by Rate / <a href="/topic/{{ $topic->id }}?sorted=created">Sort by Date</a>
+                Sort by Default / <a href="{{ action('TopicController@show', [ $topic->id, 'type' => $type, 'sorted' => 'created']) }}">Sort by Date</a>
             @endif
         </div>
     </div>

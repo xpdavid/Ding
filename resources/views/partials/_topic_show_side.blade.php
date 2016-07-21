@@ -11,6 +11,7 @@
 <div class="sideBar_section">
     <div class="sideBar_sectionItem">
         <div class="clearfix">
+            @if(Auth::user())
                 @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
                     <button type="button" class="btn btn-warning"
                             onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
@@ -21,13 +22,14 @@
                     {{ $topic->isClosed() ? 'disabled' : ''}}>
                         Subscribe</button>
                 @endif
+            @endif
             <div class="float-right margin-top">{{ $topic->subscribers()->count() }} <span class="font-black">People Subscribe</span> </div>
         </div>
 
         <div class="margin-top">
             <a href="/topic/{{ $topic->id }}/organization">Topic Organization Tree</a>
             <span>•</span>
-            @if(Auth::user()->operation(12))
+            @if(Auth::user() && Auth::user()->operation(12))
                 <a href="/topic/{{ $topic->id }}/edit">Edit Topic</a>
                 <span>•</span>
             @endif

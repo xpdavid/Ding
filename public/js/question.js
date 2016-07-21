@@ -949,9 +949,16 @@ function bindExpendAll() {
                 imgResponsiveIn('answer_full_' + $object.data('id'));
                 // set has expanded
                 $('#answer_full_' + $object.data('id')).data('expand', true);
+            }).error(function(xhr, textStatus, error) {
+                if(xhr.status == 401) {
+                    swal('Error', 'Login Required. More info after login', 'error');
+                }
             });
         } else if ($object.data('type') == "question") {
-            $.post('/question/' + $object.data('id'), {}, function(results) {
+            $.ajax({
+                url : '/question/' + $object.data('id'),
+                method : 'POST',
+            }, function(results) {
                 $('#question_summary_' + $object.data('id')).hide();
                 $('#question_full_' + $object.data('id')).html(results.content);
                 rerenderMath('question_full_' + $object.data('id'));
@@ -959,7 +966,7 @@ function bindExpendAll() {
                 imgResponsiveIn('question_full_' + $object.data('id'));
                 // set has expanded
                 $('#question_full_' + $object.data('id')).data('expand', true);
-            });
+            })
         }
     })
 }

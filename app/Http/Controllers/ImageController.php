@@ -9,15 +9,6 @@ use App\Http\Requests;
 
 class ImageController extends Controller
 {
-    /**
-     * ImageController constructor.
-     *
-     * define middleware
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Query database to get image

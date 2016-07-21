@@ -101,26 +101,37 @@
             {{/if}}
         </div>
 
-        <div class="horizontal_item">
-            <a href="#" onclick="userHome_subscribe_question(event, 'q_{{id}}_subscribe', '{{id}}')">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                {{#if subscribed}}
-                <span id="q_{{id}}_subscribe" class="subscribed">Unsubscribe</span>
-                {{^}}
-                <span id="q_{{id}}_subscribe">Subscribe Question</span>
-                {{/if}}
-            </a>
-            <a href="#"
-               id="answer_comment_{{answer.id}}_trigger"
-               onclick="showComment(event, 'answer', '{{answer.id}}', 'answer_comment_{{answer.id}}');">
-                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                Comment (<span id="answer_comment_{{answer.id}}_replies_count">{{answer.numComment}}</span>)
-            </a>
-            <a href="#"
-               onclick="bookmark('answer', '{{answer.id}}', event)">
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark
-            </a>
-        </div>
+        {{#if guest}}
+            <div class="horizontal_item">
+                <a href="#"
+                   id="answer_comment_{{answer.id}}_trigger"
+                   onclick="showComment(event, 'answer', '{{answer.id}}', 'answer_comment_{{answer.id}}');">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    Comment (<span id="answer_comment_{{answer.id}}_replies_count">{{answer.numComment}}</span>)
+                </a>
+            </div>
+        {{^}}
+            <div class="horizontal_item">
+                <a href="#" onclick="userHome_subscribe_question(event, 'q_{{id}}_subscribe', '{{id}}')">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    {{#if subscribed}}
+                    <span id="q_{{id}}_subscribe" class="subscribed">Unsubscribe</span>
+                    {{^}}
+                    <span id="q_{{id}}_subscribe">Subscribe Question</span>
+                    {{/if}}
+                </a>
+                <a href="#"
+                   id="answer_comment_{{answer.id}}_trigger"
+                   onclick="showComment(event, 'answer', '{{answer.id}}', 'answer_comment_{{answer.id}}');">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    Comment (<span id="answer_comment_{{answer.id}}_replies_count">{{answer.numComment}}</span>)
+                </a>
+                <a href="#"
+                   onclick="bookmark('answer', '{{answer.id}}', event)">
+                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark
+                </a>
+            </div>
+        {{/if}}
 
         <div class="comment_box" id="answer_comment_{{answer.id}}">
             <div class="comment_spike"></div>
@@ -133,21 +144,26 @@
 
                 </div>
 
-                <div class="comment_form clearfix">
-                    <div class="form-group">
-                        <input type="email"
-                               class="form-control" id="answer_comment_{{answer.id}}_input"
-                               placeholder="Write Your Comment Here",
-                               id="answer_comment_{{answer.id}}_input",
-                               onfocus="show_form(event, 'answer_comment_{{answer.id}}_buttons')">
+                {{#if guest}}
+                    <div class="comment_form clearfix">
+                        Login to comment.
                     </div>
-                    <div class="float-right form-group noneDisplay" id="answer_comment_{{answer.id}}_buttons">
-                        <a href="#" role="button" class="space-right-big"
-                           onclick="cancel_from(event, 'answer_comment_{{answer.id}}_buttons')">Cancel</a>
-                        <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{answer.id}}', '{{answer.id}}', 'answer')">Submit</button>
+                {{^}}
+                    <div class="comment_form clearfix">
+                        <div class="form-group">
+                            <input type="email"
+                                   class="form-control" id="answer_comment_{{answer.id}}_input"
+                                   placeholder="Write Your Comment Here",
+                                   id="answer_comment_{{answer.id}}_input",
+                                   onfocus="show_form(event, 'answer_comment_{{answer.id}}_buttons')">
+                        </div>
+                        <div class="float-right form-group noneDisplay" id="answer_comment_{{answer.id}}_buttons">
+                            <a href="#" role="button" class="space-right-big"
+                               onclick="cancel_from(event, 'answer_comment_{{answer.id}}_buttons')">Cancel</a>
+                            <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{answer.id}}', '{{answer.id}}', 'answer')">Submit</button>
+                        </div>
                     </div>
-                </div>
-
+                {{/if}}
             </div>
         </div>
     {{/if}}

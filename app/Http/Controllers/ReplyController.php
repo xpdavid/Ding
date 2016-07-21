@@ -25,7 +25,7 @@ class ReplyController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['replyList', 'showConversation']]);
     }
 
     public function show($reply_id) {
@@ -93,7 +93,7 @@ class ReplyController extends Controller
 
         $results = [];
         foreach ($item->replies->sortBy('created_at')->forPage($page, $this->itemInPage) as $reply) {
-            $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
+            $vote_up_class = ($user && $reply->vote_up_users->contains($user->id)) ? 'active' : '';
             $from = [
                 'user_id' => $reply->owner->id,
                 'user_name' => $reply->owner->name,
@@ -111,7 +111,7 @@ class ReplyController extends Controller
                 $to = [];
             }
 
-            array_push($results, [
+            $reply_basic = [
                 'id' => $reply->id,
                 'from' => $from,
                 'to' => $to,
@@ -121,9 +121,16 @@ class ReplyController extends Controller
                 'for_item_id' => $item->id,
                 'votes' => $reply->vote_up_users->count(),
                 'vote_up_class' => $vote_up_class,
-                'canReply' =>  $reply->owner->canReplyBy($user),
-                'canVote' => $reply->owner->canReplyVoteBy($user)
-            ]);
+            ];
+
+            if ($user) {
+                $reply_basic['canReply'] =  $reply->owner->canReplyBy($user);
+                $reply_basic['canVote'] = $reply->owner->canReplyVoteBy($user);
+            } else {
+                $reply_basic['guest'] = true;
+            }
+
+            array_push($results, $reply_basic);
 
         }
 
@@ -296,7 +303,7 @@ class ReplyController extends Controller
         while($reply && !in_array($reply->id, $visited)) {
             // check $reply is not null , lazy &&
             $user = Auth::user();
-            $vote_up_class = ($reply->vote_up_users->contains($user->id)) ? 'active' : '';
+            $vote_up_class = ($user && $reply->vote_up_users->contains($user->id)) ? 'active' : '';
             $from = [
                 'reply_id' => $reply->id,
                 'user_id' => $reply->owner->id,
@@ -314,7 +321,7 @@ class ReplyController extends Controller
             } else {
                 $to = [];
             }
-            array_unshift($results, [
+            $reply_basic = [
                 'id' => $reply->id,
                 'from' => $from,
                 'to' => $to,
@@ -322,8 +329,16 @@ class ReplyController extends Controller
                 'created_at' => $reply->createdAtHumanReadable,
                 'votes' => $reply->vote_up_users->count(),
                 'vote_up_class' => $vote_up_class,
-                'canVote' => $reply->owner->canReplyVoteBy($user)
-            ]);
+            ];
+
+            if ($user) {
+                $reply_basic['canVote'] = $reply->owner->canReplyVoteBy($user);
+            } else {
+                $reply_basic['guest'] = true;
+            }
+
+            array_unshift($results, $reply_basic);
+
             // mark as visited
             array_push($visited, $reply->id);
             $reply = $reply->reply_to; //iteration

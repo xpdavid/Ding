@@ -25,7 +25,7 @@ class AnswerController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['postAnswers']]);
     }
 
     /**
@@ -227,7 +227,6 @@ class AnswerController extends Controller
         $page = $request->get('page');
         $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
         $pages = ceil($answers->count() / $itemInPage);
-        $user = Auth::user();
 
         // determine sorting method
         if ($request->exists('sorted') && $request->get('sorted') == 'created') {

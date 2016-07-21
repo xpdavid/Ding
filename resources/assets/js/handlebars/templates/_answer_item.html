@@ -73,14 +73,24 @@
     </div>
 
     <div class="horizontal_item">
-        <a href="/answer/{{id}}">Posted on {{created_at}}</a>
-        <a href="#"
-           id="answer_comment_{{id}}_trigger"
-           onclick="showComment(event, 'answer', '{{id}}', 'answer_comment_{{id}}');">
-            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-            Comment (<span id="answer_comment_{{id}}_replies_count">{{numComment}}</span>)
-        </a>
-        <a href="#" onclick="bookmark('answer', '{{id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+        {{#if guest}}
+            <a href="/answer/{{id}}">Posted on {{created_at}}</a>
+            <a href="#"
+               id="answer_comment_{{id}}_trigger"
+               onclick="showComment(event, 'answer', '{{id}}', 'answer_comment_{{id}}');">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                Comment (<span id="answer_comment_{{id}}_replies_count">{{numComment}}</span>)
+            </a>
+        {{^}}
+            <a href="/answer/{{id}}">Posted on {{created_at}}</a>
+            <a href="#"
+               id="answer_comment_{{id}}_trigger"
+               onclick="showComment(event, 'answer', '{{id}}', 'answer_comment_{{id}}');">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                Comment (<span id="answer_comment_{{id}}_replies_count">{{numComment}}</span>)
+            </a>
+            <a href="#" onclick="bookmark('answer', '{{id}}', event)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Bookmark</a>
+        {{/if}}
     </div>
 
 
@@ -94,21 +104,26 @@
             <div class="text-center" id="answer_comment_{{id}}_nav">
 
             </div>
-
-            <div class="comment_form clearfix">
-                <div class="form-group">
-                    <input type="email"
-                           class="form-control" id="answer_comment_{{id}}_input"
-                           placeholder="Write Your Comment Here",
-                           id="answer_comment_{{id}}_input",
-                           onfocus="show_form(event, 'answer_comment_{{id}}_buttons')">
+            {{#if guest}}
+                <div class="comment_form clearfix">
+                    Login to comment
                 </div>
-                <div class="float-right form-group noneDisplay" id="answer_comment_{{id}}_buttons">
-                    <a href="#" role="button" class="space-right-big"
-                       onclick="cancel_from(event, 'answer_comment_{{id}}_buttons')">Cancel</a>
-                    <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{id}}', '{{id}}', 'answer')">Submit</button>
+            {{^}}
+                <div class="comment_form clearfix">
+                    <div class="form-group">
+                        <input type="email"
+                               class="form-control" id="answer_comment_{{id}}_input"
+                               placeholder="Write Your Comment Here",
+                               id="answer_comment_{{id}}_input",
+                               onfocus="show_form(event, 'answer_comment_{{id}}_buttons')">
+                    </div>
+                    <div class="float-right form-group noneDisplay" id="answer_comment_{{id}}_buttons">
+                        <a href="#" role="button" class="space-right-big"
+                           onclick="cancel_from(event, 'answer_comment_{{id}}_buttons')">Cancel</a>
+                        <button class="btn btn-primary" type="submit" onclick="saveComment('answer_comment_{{id}}', '{{id}}', 'answer')">Submit</button>
+                    </div>
                 </div>
-            </div>
+            {{/if}}
 
         </div>
     </div>

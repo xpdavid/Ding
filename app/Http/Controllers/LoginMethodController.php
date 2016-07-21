@@ -66,6 +66,10 @@ class LoginMethodController extends Controller
             $this->updateID($user, 'IVLE');
             $this->updateName($user, 'IVLE');
             $this->updateEmail($user, 'IVLE');
+
+            // regenerate url name
+            $user->generateUrlName();
+
             Auth::login($user, true);
             return redirect('/');
         }

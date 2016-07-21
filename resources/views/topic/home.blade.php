@@ -25,7 +25,7 @@
 
     <div class="clearfix">
         <div class="float-right">
-            <a href="#" onclick="topic_show_sort(this, 'vote')">Sort by Vote</a> /
+            <a href="#" onclick="topic_show_sort(this, 'default')">Sort by Default</a> /
             <a href="#" class="font-black" onclick="topic_show_sort(this, 'created')">Sort by Date</a>
         </div>
     </div>

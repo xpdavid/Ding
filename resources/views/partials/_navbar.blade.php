@@ -21,21 +21,31 @@
                     <li><a href="/">Index</a></li>
                 @endif
 
-                    {{--for Topic button--}}
-                @if(Request::is('topic'))
-                    <li class="navbar_active"><a href="/topic"><strong>Topic</strong></a></li>
+                {{--for Topic button--}}
+                @if(Auth::user())
+                    @if(Request::is('topic'))
+                        <li class="navbar_active"><a href="/topic"><strong>Topic</strong></a></li>
+                    @else
+                        <li><a href="/topic">Topic</a></li>
+                    @endif
                 @else
-                    <li><a href="/topic">Topic</a></li>
+                    @if(Request::is('topics'))
+                        <li class="navbar_active"><a href="/topics"><strong>Topic</strong></a></li>
+                    @else
+                        <li><a href="/topics">Topic</a></li>
+                    @endif
                 @endif
 
-                    {{--for Highlight button--}}
+                {{--for Highlight button--}}
                 @if(Request::is('highlight'))
                     <li class="navbar_active"><a href="/highlight"><strong>Highlight</strong></a></li>
                 @else
                     <li><a href="/highlight">Highlight</a></li>
                 @endif
 
-                <li><a tabindex="0" role="button" id="user_notice">Notification</a></li>
+                @if(Auth::user())
+                    <li><a tabindex="0" role="button" id="user_notice">Notification</a></li>
+                @endif
             </ul>
 
             <form class="navbar-form navbar-left" role="search">
@@ -49,29 +59,36 @@
                 </div>
             </form>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle navbar_portraitBox" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <img class="_portrait"
-                             src="{{ DImage(Auth::user()->settings->profile_pic_id, 25,25) }}"
-                             alt="{{ Auth::user()->name }}">
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/people/{{ Auth::user()->url_name }}">{{ Auth::user()->name }} <span class="badge">{{ Auth::user()->authGroup->name }}</span></a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/people/{{ Auth::user()->url_name }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
-                        <li><a href="/inbox"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
-                        <li><a href="/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
+            @if (Auth::guest())
+                <form class="navbar-form navbar-right">
+                    <a class="btn btn-primary btn-block" href="/login">Login to See more</a>
+                </form>
+            @else
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle navbar_portraitBox" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <img class="_portrait"
+                                 src="{{ DImage(Auth::user()->settings->profile_pic_id, 25,25) }}"
+                                 alt="{{ Auth::user()->name }}">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/people/{{ Auth::user()->url_name }}">{{ Auth::user()->name }} <span class="badge">{{ Auth::user()->authGroup->name }}</span></a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/people/{{ Auth::user()->url_name }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
+                            <li><a href="/inbox"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
+                            <li><a href="/settings/basic"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-            <form class="navbar-form navbar-right" role="ask">
-                <button type="button" class="btn btn-primary btn-block" onclick="navbar_ask_button()">Ask</button>
-            </form>
+                <form class="navbar-form navbar-right" role="ask">
+                    <button type="button" class="btn btn-primary btn-block" onclick="navbar_ask_button()">Ask</button>
+                </form>
+            @endif
+
 
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

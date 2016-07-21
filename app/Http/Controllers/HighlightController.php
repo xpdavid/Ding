@@ -12,16 +12,6 @@ class HighlightController extends Controller
     protected $itemInPage = 5;
 
     /**
-     * HighlightController constructor.
-     *
-     * define middleware
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Display highlight page
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -52,13 +42,11 @@ class HighlightController extends Controller
         $itemInPage = $request->get('itemInPage') ? $request->get('itemInPage') : $this->itemInPage;
         $results = [];
         // get question
-        $questions = Question::recommendQuestions();
-
-        // page system
-        $questions = $questions->forPage($page, $itemInPage);
+        $questions = Question::recommendQuestions($page, $itemInPage);
 
         // filter base on user setting
-        $questions = $user->filterQuestions($questions);
+        $questions = $user ? $user->filterQuestions($questions)
+         : $questions;
 
 
         foreach ($questions as $question) {
@@ -72,36 +60,24 @@ class HighlightController extends Controller
                 ]);
             }
 
-            $answer_arr = false;
             if ($answer != null) {
-                // check if the user has voted the answer
-                $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
-                $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
-                $answer_arr = [
-                    'id' => $answer->id,
-                    'owner' => [
-                        'name' => $answer->owner->name,
-                        'bio' => $answer->owner->bio,
-                        'url_name' => $answer->owner->url_name,
-                    ],
-                    'answer' => $answer->summary,
-                    'netVotes' => $answer->netVotes,
-                    'numComment' => $answer->replies()->count(),
-                    'vote_up_class' => $vote_up_class,
-                    'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user),
-                    'canEdit' => $answer->owner->id == $user->id
+                array_push($results, $answer->jsonAnswerSummary());
+            } else {
+                $arr = [
+                    'id' => $question->id,
+                    'topics' => $topics,
+                    'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
+                    'answer' => false,
+                    'title' => $question->title,
                 ];
+                if (!Auth::guest()) {
+                    $arr['subscribed'] = $user->subscribe->checkHasSubscribed($question->id, 'question');
+                } else {
+                    $arr['guest'] = true;
+                }
+                array_push($results, $arr);
             }
 
-            array_push($results, [
-                'id' => $question->id,
-                'topics' => $topics,
-                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
-                'answer' => $answer_arr,
-                'title' => $question->title,
-                'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
-            ]);
         }
 
         return $results;
@@ -122,18 +98,16 @@ class HighlightController extends Controller
         // determine week or month
         switch ($request->get('hot')) {
             case 'week':
-                $questions = Question::weekQuestions();
+                $questions = Question::weekQuestions($page, $itemInPage);
                 break;
             default :
-                $questions = Question::monthQuestions();
+                $questions = Question::monthQuestions($page, $itemInPage);
                 break;
         }
 
-        // page system
-        $questions = $questions->forPage($page, $itemInPage);
-
         // filter base on user setting
-        $questions = $user->filterQuestions($questions);
+        $questions = $user ? $user->filterQuestions($questions)
+            : $questions;
 
         foreach ($questions as $question) {
             $answer = $question->hotAnswer;
@@ -145,34 +119,24 @@ class HighlightController extends Controller
                     'id' => $topic->id
                 ]);
             }
-            $answer_arr = false;
+
             if ($answer != null) {
-                // check if the user has voted the answer
-                $vote_up_class = $answer->vote_up_users->contains($user->id) ? 'active' : '';
-                $vote_down_class = $answer->vote_down_users->contains($user->id) ? 'active' : '';
-                $answer_arr = [
-                    'id' => $answer->id,
-                    'owner' => [
-                        'name' => $answer->owner->name,
-                        'bio' => $answer->owner->bio,
-                        'url_name' => $answer->owner->url_name,
-                    ],
-                    'answer' => $answer->summary,
-                    'netVotes' => $answer->netVotes,
-                    'numComment' => $answer->replies()->count(),
-                    'vote_up_class' => $vote_up_class,
-                    'vote_down_class' => $vote_down_class,
-                    'canVote' => $answer->owner->canAnswerVoteBy($user),
+                array_push($results, $answer->jsonAnswerSummary());
+            } else {
+                $arr = [
+                    'id' => $question->id,
+                    'topics' => $topics,
+                    'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
+                    'answer' => false,
+                    'title' => $question->title,
                 ];
+                if (!Auth::guest()) {
+                    $arr['subscribed'] = $user->subscribe->checkHasSubscribed($question->id, 'question');
+                } else {
+                    $arr['guest'] = true;
+                }
+                array_push($results, $arr);
             }
-            array_push($results, [
-                'id' => $question->id,
-                'topics' => $topics,
-                'topic_pic' => DImage($question->topics->first()->avatar_img_id, 40, 40),
-                'answer' => $answer_arr,
-                'title' => $question->title,
-                'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
-            ]);
         }
 
         return $results;

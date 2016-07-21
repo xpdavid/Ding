@@ -76,7 +76,7 @@
             <div class="row userSetting_section">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">@ / Replying me: </label>
+                        <label class="col-sm-3 control-label">Replying me: </label>
                         <label class="col-sm-2 radio-inline">
                             <input type="radio" name="receiving_replies" id="inlineRadio1" value="2"
                                    @if ($settings->receiving_replies == 2) checked="checked" @endif> Everyone can reply me

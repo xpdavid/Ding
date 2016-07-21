@@ -402,15 +402,21 @@ class Question extends Model
      *
      * @return static
      */
-    public static function recommendQuestions() {
-        return Question::published()->get()->sortByDesc(function($question) {
-            $numVote = $question->highestVote;
-            $numSubscriber = $question->subscribers()->count();
-            $numHit = $question->hit->month;
-            $reward = $question->reward;
-            return $numVote * 2 + $numSubscriber * 3 + $numHit * 2
+    public static function recommendQuestions($page, $itemInPage) {
+        $questions = Cache::remember('recommend_questions_' . $page . '_' . $itemInPage , 10 ,
+            function() use ($page, $itemInPage) {
+            return Question::published()->get()->sortByDesc(
+                function($question) use ($page, $itemInPage) {
+                $numVote = $question->highestVote;
+                $numSubscriber = $question->subscribers()->count();
+                $numHit = $question->hit->month;
+                $reward = $question->reward;
+                return $numVote * 2 + $numSubscriber * 3 + $numHit * 2
                 + $reward;
+            })->forPage($page, $itemInPage);
         });
+
+        return $questions;
     }
 
 
@@ -419,17 +425,22 @@ class Question extends Model
      *
      * @return static
      */
-    public static function weekQuestions() {
-        return Question::published()->get()->sortByDesc(function($question) {
-            $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-            $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-            $numVote = $question->highestVote;
-            $numSubscriber = $question->subscribers()->count();
-            $numHit_week = $question->hit->week;
-            $reward = $question->reward;
-            return $numVote + $numSubscriber * 2 +
-            $numHit_week * 5 + $timeDiff * 2 + $reward;
+    public static function weekQuestions($page, $itemInPage) {
+        $question = Cache::remember('week_questions_' . $page . '_' . $itemInPage, 10,
+            function() use ($page, $itemInPage) {
+            return Question::published()->get()->sortByDesc(
+                function($question) use ($page, $itemInPage) {
+                $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                $numVote = $question->highestVote;
+                $numSubscriber = $question->subscribers()->count();
+                $numHit_week = $question->hit->week;
+                $reward = $question->reward;
+                return $numVote + $numSubscriber * 2 +
+                $numHit_week * 5 + $timeDiff * 2 + $reward;
+            })->forPage($page, $itemInPage);
         });
+        return $question;
     }
 
     /**
@@ -437,17 +448,23 @@ class Question extends Model
      *
      * @return static
      */
-    public static function monthQuestions() {
-        return Question::published()->get()->sortByDesc(function($question) {
-            $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-            $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-            $numVote = $question->highestVote;
-            $numSubscriber = $question->subscribers()->count();
-            $numHit_month = $question->hit->month;
-            $reward = $question->reward;
-            return $numVote + $numSubscriber * 2 +
-            $numHit_month * 5 + $timeDiff * 2 + $reward;
+    public static function monthQuestions($page, $itemInPage) {
+        $question = Cache::remember('month' . $page . '_' . $itemInPage, 10,
+            function() use ($page, $itemInPage) {
+            return Question::published()->get()->sortByDesc(
+                function($question) use ($page, $itemInPage) {
+                $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                $numVote = $question->highestVote;
+                $numSubscriber = $question->subscribers()->count();
+                $numHit_month = $question->hit->month;
+                $reward = $question->reward;
+                return $numVote + $numSubscriber * 2 +
+                $numHit_month * 5 + $timeDiff * 2 + $reward;
+            })->forPage($page, $itemInPage);
         });
+
+        return $question;
     }
 
     /**

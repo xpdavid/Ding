@@ -42,17 +42,17 @@ function getMoreTopics() {
             var processResults = [];
 
             // no result
-            if (results.length == 0) {
+            if (!results.status) {
                 var $button = $('#topics_more_button');
                 $button.prop('disabled', true);
                 $button.html('No More Already');
                 return ;
             }
 
-            $.each(results, function(index, topic) {
+            $.each(results.data, function(index, topic) {
                 if (index % 2 == 0) {
-                    var left = results[index] ? results[index] : {};
-                    var right = results[index + 1] ? results[index + 1] : {};
+                    var left = results.data[index] ? results.data[index] : {};
+                    var right = results.data[index + 1] ? results.data[index + 1] : {};
                     processResults.push({
                         left : left,
                         right : right

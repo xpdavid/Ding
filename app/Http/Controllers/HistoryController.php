@@ -18,6 +18,13 @@ class HistoryController extends Controller
 {
     protected $itemInPage = 6;
 
+    /**
+     * HistoryController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Show topic edit history

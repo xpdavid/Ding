@@ -63,7 +63,7 @@ class User extends Authenticatable
      *
      * @return string
      */
-    private function generateUrlName() {
+    public function generateUrlName() {
         $url_name = $this->name;
 
         // replace all the non-alphanumeric characters

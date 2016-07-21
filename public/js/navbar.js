@@ -69,7 +69,7 @@ function navbar_noticeBarAJAX(callback) {
         if (callback && typeof callback == 'function') {
             callback(results);
         }
-    });
+    })
 }
 
 

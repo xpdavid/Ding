@@ -256,24 +256,33 @@ class Topic extends Model
      *
      * @return mixed
      */
-    public function recommendQuestions($page, $itemInPage) {
+    public function recommendQuestions($page, $itemInPage, $sorted) {
         $all_questions = Cache::remember(
             'topic_' . $this->id . '_questions', 10, function() {
             return $this->questions()->published()->get();
         });
 
-        $recommend = Cache::remember(
-            'topic_' . $this->id . '_recommend_questions_' . $page . '_'. $itemInPage,
-            10,
-            function() use ($all_questions, $page, $itemInPage){
-                return $all_questions->sortByDesc(function ($question) {
-                    $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-                    $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-                    $numSubscriber = $question->subscribers()->count();
-                    $numHit = $question->hit->month;
-                    return $numHit * 7 + $numSubscriber * 5 + $timeDiff;
-                })->forPage($page, $itemInPage);
-            });
+        if ($sorted == 'created') {
+            $recommend = Cache::remember(
+                'topic_' . $this->id . '_recommend_questions_' . $page . '_'. $itemInPage . '_' . $sorted,
+                10,
+                function() use ($all_questions, $page, $itemInPage){
+                    return $all_questions->sortByDesc('created_at')->forPage($page, $itemInPage);
+                });
+        } else {
+            $recommend = Cache::remember(
+                'topic_' . $this->id . '_recommend_questions_' . $page . '_'. $itemInPage . '_' . $sorted,
+                10,
+                function() use ($all_questions, $page, $itemInPage){
+                    return $all_questions->sortByDesc(function ($question) {
+                        $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                        $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                        $numSubscriber = $question->subscribers()->count();
+                        $numHit = $question->hit->month;
+                        return $numHit * 7 + $numSubscriber * 5 + $timeDiff;
+                    })->forPage($page, $itemInPage);
+                });
+        }
 
         return $recommend;
     }
@@ -283,30 +292,44 @@ class Topic extends Model
      *
      * @return mixed
      */
-    public function waitAnswerQuestions($page, $itemInPage) {
+    public function waitAnswerQuestions($page, $itemInPage, $sorted) {
         // get all topic questions
         $all_questions = Cache::remember(
             'topic_' . $this->id . '_questions', 10, function() {
             return $this->questions()->published()->get();
         });
 
-        // cache with pagination
-        $wait = Cache::remember(
-            'topic_' . $this->id . '_wait_questions_' . $page . '_'. $itemInPage,
-            10,
-            function() use ($all_questions, $page, $itemInPage) {
-            $questions = $all_questions->filter(function($question) {
-                return $question->answers()->count() == 0;
-            });
-            $questions = $questions->sortBy(function($question) {
-                $numHit = $question->hit->month;
-                $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-                $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-                $numSubscriber = $question->subscribers()->count();
-                return $numHit * 5 + $timeDiff * 2 + $numSubscriber * 4;
-            });
-            return $questions->forPage($page, $itemInPage);
-        });
+        if ($sorted == 'created') {
+            // cache with pagination
+            // cache with pagination
+            $wait = Cache::remember(
+                'topic_' . $this->id . '_wait_questions_' . $page . '_'. $itemInPage . '_' . $sorted,
+                10,
+                function() use ($all_questions, $page, $itemInPage) {
+                    $questions = $all_questions->filter(function($question) {
+                        return $question->answers()->count() == 0;
+                    });
+                    return $questions->sortByDesc('created_at')->forPage($page, $itemInPage);
+                });
+        } else {
+            $wait = Cache::remember(
+                'topic_' . $this->id . '_wait_questions_' . $page . '_'. $itemInPage . '_' . $sorted,
+                10,
+                function() use ($all_questions, $page, $itemInPage) {
+                    $questions = $all_questions->filter(function($question) {
+                        return $question->answers()->count() == 0;
+                    });
+                    $questions = $questions->sortBy(function($question) {
+                        $numHit = $question->hit->month;
+                        $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                        $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                        $numSubscriber = $question->subscribers()->count();
+                        return $numHit * 5 + $timeDiff * 2 + $numSubscriber * 4;
+                    });
+                    return $questions->forPage($page, $itemInPage);
+                });
+        }
+
 
         return $wait;
     }
@@ -318,7 +341,7 @@ class Topic extends Model
      * @param $itemInPage
      * @return mixed
      */
-    public function highlightQuestions($page, $itemInPage) {
+    public function highlightQuestions($page, $itemInPage, $sorted) {
 
         // get all topic questions
         $all_questions = Cache::remember(
@@ -327,19 +350,29 @@ class Topic extends Model
         });
 
         // cache with pagination
-        $highlight = Cache::remember(
-            'topic_' . $this->id . '_highlight_questions_' . $page . '_'. $itemInPage,
-            10,
-            function() use ($all_questions, $page, $itemInPage) {
-                $questions = $all_questions->sortBy(function($question) {
-                    $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
-                    $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
-                    $numSubscriber = $question->subscribers()->count();
-                    $numHit = $question->hit->month;
-                    return $numHit * 7 + $numSubscriber * 5 + $timeDiff * 3;
+        if ($sorted == 'created') {
+            $highlight = Cache::remember(
+                'topic_' . $this->id . '_highlight_questions_' . $page . '_'. $itemInPage . '_' . $sorted,
+                10,
+                function() use ($all_questions, $page, $itemInPage) {
+                    return $all_questions->sortByDesc('created_at')->forPage($page, $itemInPage);
                 });
-                return $questions->forPage($page, $itemInPage);
-            });
+        } else {
+            $highlight = Cache::remember(
+                'topic_' . $this->id . '_highlight_questions_' . $page . '_'. $itemInPage . '_' . $sorted,
+                10,
+                function() use ($all_questions, $page, $itemInPage) {
+                    $questions = $all_questions->sortBy(function($question) {
+                        $timeDiff = Carbon::parse($question->created_at)->diffInDays(Carbon::now());
+                        $timeDiff = (30 - $timeDiff) > 0 ? 30 - $timeDiff : 0;
+                        $numSubscriber = $question->subscribers()->count();
+                        $numHit = $question->hit->month;
+                        return $numHit * 7 + $numSubscriber * 5 + $timeDiff * 3;
+                    });
+                    return $questions->forPage($page, $itemInPage);
+                });
+        }
+
 
         return $highlight;
     }
@@ -355,7 +388,12 @@ class Topic extends Model
                 return $numSubscriber * 2 + $numHit * 3;
             });
         });
-        return Auth::user()->filterTopics($hotTopics);
+
+        if (Auth::user()) {
+            return Auth::user()->filterTopics($hotTopics);
+        } else {
+            return $hotTopics;
+        }
     }
 
 
@@ -485,6 +523,27 @@ class Topic extends Model
             }
             return $results;
         }
+    }
+
+    /**
+     * To json format
+     */
+    public function toJsonFormat() {
+        $topic_basic = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'numSubtopic' => $this->subtopics()->count(),
+            'pic' => DImage($this->avatar_img_id, 40, 40),
+        ];
+
+        if (Auth::user()) {
+            $topic_basic['isSubscribed'] = Auth::user()->subscribe->checkHasSubscribed($this->id, 'topic');
+        } else {
+            $topic_basic['guest'] = true;
+        }
+
+        return $topic_basic;
     }
 
 }

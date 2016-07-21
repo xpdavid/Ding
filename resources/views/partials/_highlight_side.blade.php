@@ -19,20 +19,22 @@
                     <div class="float-left topics_name">
                         <a href="/topic/{{ $topic->id }}">{{ $topic->name }}</a>
                     </div>
-                    @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
-                        <a class="float-right topics_subscribe active"
-                           href="#"
-                           onclick="topics_subscribe(event, this, '{{ $topic->id }}')">
-                            <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
-                            <span>Unsubscribe</span>
-                        </a>
-                    @else
-                        <a class="float-right topics_subscribe"
-                           href="#"
-                           onclick="topics_subscribe(event, this, '{{ $topic->id }}')">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                            <span>Subscribe</span>
-                        </a>
+                    @if (Auth::user())
+                        @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
+                            <a class="float-right topics_subscribe active"
+                               href="#"
+                               onclick="topics_subscribe(event, this, '{{ $topic->id }}')">
+                                <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
+                                <span>Unsubscribe</span>
+                            </a>
+                        @else
+                            <a class="float-right topics_subscribe"
+                               href="#"
+                               onclick="topics_subscribe(event, this, '{{ $topic->id }}')">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                <span>Subscribe</span>
+                            </a>
+                        @endif
                     @endif
                 </div>
                 <p class="font-black">{{ $topic->subscribers()->count() }} subscribe</p>

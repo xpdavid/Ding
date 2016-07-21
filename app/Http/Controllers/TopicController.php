@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Cache;
 use App\Visitor;
 use Auth;
 use App\Point;
@@ -25,7 +26,12 @@ class TopicController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => [
+            'show',
+            'topics',
+            'subTopics',
+            'getQuestions'
+        ]]);
     }
 
     /**
@@ -254,23 +260,17 @@ class TopicController extends Controller
 
 
         $questions = null;
-        // determine sorted type
-        if ($sorted == 'created') {
-            $questions = $topic->questions()->orderBy('created_at', 'desc')
-                ->whereStatus(1)->get(); // published question
-        } else {
-            // determine request type
-            switch ($request->get('type')) {
-                case 'recommend' :
-                    $questions = $topic->recommendQuestions($page, $itemInPage);
-                    break;
-                case 'wait_for_answer' :
-                    $questions = $topic->waitAnswerQuestions($page, $itemInPage);
-                    break;
-                default:
-                    $questions = $topic->highlightQuestions($page, $itemInPage);
-                    break;
-            }
+        // determine request type
+        switch ($request->get('type')) {
+            case 'recommend' :
+                $questions = $topic->recommendQuestions($page, $itemInPage, $sorted);
+                break;
+            case 'wait_for_answer' :
+                $questions = $topic->waitAnswerQuestions($page, $itemInPage, $sorted);
+                break;
+            default:
+                $questions = $topic->highlightQuestions($page, $itemInPage, $sorted);
+                break;
         }
 
 
@@ -299,33 +299,30 @@ class TopicController extends Controller
 
         $topic = Topic::findOrFail($parent_id);
 
-        $user = Auth::user();
-
         // format results
         $results = [];
-        foreach ($topic->subtopics()->opened()->get()
-                     ->forPage($page, $this->itemInPage) as $subtopic) {
-            array_push($results, [
-                'id' => $subtopic->id,
-                'name' => $subtopic->name,
-                'description' => $subtopic->description,
-                'numSubtopic' => $subtopic->subtopics()->count(),
-                'isSubscribed' => $user->subscribe->checkHasSubscribed($subtopic->id, 'topic'),
-                'pic' => DImage($subtopic->avatar_img_id, 40, 40),
-            ]);
+        $status = true;
+
+        $display_topics = Cache::remember('subtopics_first_' . $parent_id, 10, function() use ($topic) {
+            $topics = $topic->subtopics()->opened()->get();
+            $topics->prepend($topic);
+            
+            return $topics;
+        });
+        
+
+        foreach ($display_topics->forPage($page, $this->itemInPage) as $subtopic) {
+            array_push($results, $subtopic->toJsonFormat());
         }
 
-        // push the topics itself also
-        array_unshift($results, [
-            'id' => $topic->id,
-            'name' => $topic->name,
-            'description' => $topic->description,
-            'numSubtopic' => $topic->subtopics()->count(),
-            'isSubscribed' => $user->subscribe->checkHasSubscribed($topic->id, 'topic'),
-            'pic' => DImage($topic->avatar_img_id, 40, 40),
-        ]);
+        if (count($results) == 0) {
+            $status = false;
+        }
 
-        return $results;
+        return [
+            'data' => $results,
+            'status' => $status
+        ];
     }
 
     /**

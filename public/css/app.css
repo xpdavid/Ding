@@ -713,9 +713,6 @@ body.modal-open {
   background: linear-gradient(to right, #fff 0, rgba(255, 255, 255, 0.5) 1%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0) 94%, rgba(255, 255, 255, 0.5) 99%, #fff 100%);
   padding: 8px 2px 8px 2px; }
 
-.nav_user_tag {
-  margin-top: 3px; }
-
 .sideBar_section {
   border-bottom: 1px solid #eee; }
 

@@ -4,7 +4,11 @@
 @section('left')
     <div class="clearfix">
         <a href="#" class="float-left font"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span>Topics</span></a>
-        <div class="float-right font-grey">{{ Auth::user()->subscribe->topics()->count() }} topic(s) subscribed</div>
+        @if (Auth::user())
+            <div class="float-right font-grey">{{ Auth::user()->subscribe->topics()->count() }} topic(s) subscribed</div>
+        @else
+            <div class="float-right font-grey">Login to subscribe topic</div>
+        @endif
     </div>
     <hr class="small_hr">
     <div class="topics_topicTag" id="top_parent_topics">
@@ -33,7 +37,7 @@
 
 
 @section('right')
-        @if (Auth::user()->operation(11))
+        @if (Auth::user() && Auth::user()->operation(11))
             @include('partials._add_topic_model')
             <div class="sideBar_section ">
                 <div class="sideBar_item">
@@ -60,23 +64,25 @@
                                 <div class="float-left topics_name">
                                     <a href="/topic/{{ $popular_topic->id }}">{{ $popular_topic->name }}</a>
                                 </div>
-                                @if(Auth::user()->subscribe->checkHasSubscribed($popular_topic->id, 'topic'))
-                                    <a class="float-right topics_subscribe active"
-                                       href="#"
-                                       onclick="topics_subscribe(event, this, '{{ $popular_topic->id }}')">
-                                        <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
-                                        <span>Unsubscribe</span>
-                                    </a>
-                                @else
-                                    <a class="float-right topics_subscribe"
-                                       href="#"
-                                       onclick="topics_subscribe(event, this, '{{ $popular_topic->id }}')">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                        <span>Subscribe</span>
-                                    </a>
+                                @if(Auth::user())
+                                    @if(Auth::user()->subscribe->checkHasSubscribed($popular_topic->id, 'topic'))
+                                        <a class="float-right topics_subscribe active"
+                                           href="#"
+                                           onclick="topics_subscribe(event, this, '{{ $popular_topic->id }}')">
+                                            <span class="glyphicon glyphicon-plus noneDisplay" aria-hidden="true"></span>
+                                            <span>Unsubscribe</span>
+                                        </a>
+                                    @else
+                                        <a class="float-right topics_subscribe"
+                                           href="#"
+                                           onclick="topics_subscribe(event, this, '{{ $popular_topic->id }}')">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            <span>Subscribe</span>
+                                        </a>
+                                    @endif
                                 @endif
                             </div>
-                            <p class="font-black">{{ $popular_topic->subscribers()->count() }} subscribe</p>
+                            <p class="font-black">{{ $popular_topic->subscribers()->count() }} subscribers</p>
                         </div>
                         <div class="topics_item_hots">
                             @foreach($popular_topic->questions->take(1) as $question)

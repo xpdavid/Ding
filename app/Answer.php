@@ -330,25 +330,32 @@ class Answer extends Model
      */
     public function jsonAnswerDetail() {
         $user = Auth::user();
-        $vote_up_class = $this->vote_up_users->contains($user->id) ? 'active' : '';
-        $vote_down_class = $this->vote_down_users->contains($user->id) ? 'active' : '';
-        return [
+        $answer_basic = [
             'id' => $this->id,
             'user_name' => $this->owner->name,
             'user_id' => $this->owner->id,
             'user_bio' => $this->owner->bio,
             'user_pic' => DImage($this->owner->settings->profile_pic_id, 25, 25),
+            'user_url' => action('PeopleController@show', $this->owner->url_name),
             'answer' => $this->summary,
             'created_at' => $this->createdAtHumanReadable,
             'votes' => $this->netVotes,
             'numComment' => $this->replies->count(),
-            'canVote' => $this->owner->canAnswerVoteBy($user) && !$this->isClosed(),
-            'canEdit' => $this->owner->id == $user->id,
             'status' => true,
-            'user_url' => action('PeopleController@show', $this->owner->url_name),
-            'vote_up_class' => $vote_up_class,
-            'vote_down_class' => $vote_down_class,
         ];
+
+        // auth user get more
+        if ($user) {
+            $vote_up_class = $this->vote_up_users->contains($user->id) ? 'active' : '';
+            $vote_down_class = $this->vote_down_users->contains($user->id) ? 'active' : '';
+            $answer_basic['canVote'] = $this->owner->canAnswerVoteBy($user) && !$this->isClosed();
+            $answer_basic['canEdit'] = $this->owner->id == $user->id;
+            $answer_basic['vote_up_class'] = $vote_up_class;
+            $answer_basic['vote_down_class'] = $vote_down_class;
+        } else {
+            $answer_basic['guest'] = true;
+        }
+        return $answer_basic;
     }
 
     /**
@@ -357,14 +364,12 @@ class Answer extends Model
      * @return array
      */
     public function jsonAnswerSummary() {
-        $user = Auth::user();
-        $vote_up_class = $this->vote_up_users->contains($user->id) ? 'active' : '';
-        $vote_down_class = $this->vote_down_users->contains($user->id) ? 'active' : '';
         $topics = [];
         foreach ($this->question->topics as $topic) {
             array_push($topics, $topic->json);
         }
-        return [
+
+        $answer_basic = [
             'answer' => [
                 'id' => $this->id,
                 'owner' => [
@@ -375,16 +380,26 @@ class Answer extends Model
                 'answer' => $this->summary,
                 'netVotes' => $this->netVotes,
                 'numComment' => $this->replies()->count(),
-                'vote_up_class' => $vote_up_class,
-                'vote_down_class' => $vote_down_class,
-                'canVote' => $this->owner->canAnswerVoteBy($user),
-                'canEdit' => $this->owner->id == $user->id,
             ],
             'id' => $this->question->id,
             'topics' => $topics,
             'topic_pic' => DImage($this->question->topics->first()->avatar_img_id, 40, 40),
             'title' => $this->question->title,
-            'subscribed' => $user->subscribe->checkHasSubscribed($this->question->id, 'question'),
         ];
+
+        $user = Auth::user();
+        if ($user) {
+            $vote_up_class = $this->vote_up_users->contains($user->id) ? 'active' : '';
+            $vote_down_class = $this->vote_down_users->contains($user->id) ? 'active' : '';
+            $answer_basic['answer']['vote_up_class'] = $vote_up_class;
+            $answer_basic['answer']['vote_down_class'] = $vote_down_class;
+            $answer_basic['answer']['canVote'] = $this->owner->canAnswerVoteBy($user);
+            $answer_basic['answer']['canEdit'] = $this->owner->id == $user->id;
+            $answer_basic['subscribed'] = $user->subscribe->checkHasSubscribed($this->question->id, 'question');
+        } else {
+            $answer_basic['guest'] = true;
+        }
+
+        return $answer_basic;
     }
 }
