@@ -951,10 +951,7 @@ function bindExpendAll() {
                 $('#answer_full_' + $object.data('id')).data('expand', true);
             })
         } else if ($object.data('type') == "question") {
-            $.ajax({
-                url : '/question/' + $object.data('id'),
-                method : 'POST',
-            }, function(results) {
+            $.post('/question/' + $object.data('id'), {}, function(results) {
                 $('#question_summary_' + $object.data('id')).hide();
                 $('#question_full_' + $object.data('id')).html(results.content);
                 rerenderMath('question_full_' + $object.data('id'));

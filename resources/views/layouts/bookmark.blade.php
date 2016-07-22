@@ -24,6 +24,9 @@
     {{--select2 supporting file--}}
     {!! Html::style('css/select2.css') !!}
 
+    {{--cropper supporting file--}}
+    {!! Html::style('css/cropper.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
