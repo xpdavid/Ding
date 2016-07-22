@@ -36,8 +36,8 @@
                             </a>
                         @endif
                     @endif
+                    <p class="font-black">{{ $topic->subscribers()->count() }} subscribe</p>
                 </div>
-                <p class="font-black">{{ $topic->subscribers()->count() }} subscribe</p>
             </div>
         </div>
     @endforeach
