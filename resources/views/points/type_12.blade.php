@@ -4,4 +4,4 @@ Topic
 <a href="/topic/{{ \App\History::find($point->param1)->forItem->id }}">
     {{ \App\History::find($point->param1)->forItem->name }}
 </a>
-editing reject
+editing rejected.

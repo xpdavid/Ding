@@ -61,7 +61,7 @@
 
             @if (Auth::guest())
                 <form class="navbar-form navbar-right">
-                    <a class="btn btn-primary btn-block" href="/login">Login to See more</a>
+                    <a class="btn btn-primary btn-block" href="/login">Login to See More</a>
                 </form>
             @else
                 <ul class="nav navbar-nav navbar-right">
@@ -77,7 +77,7 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="/people/{{ Auth::user()->url_name }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Home Page</a></li>
                             <li><a href="/inbox"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> My Message</a></li>
-                            <li><a href="/settings/basic"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Setting</a></li>
+                            <li><a href="/settings/basic"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
                         </ul>
@@ -101,7 +101,7 @@
 
 @if(Auth::user() && Auth::user()->authGroup_id == 8)
     <div class="alert alert-warning realname_alert">
-        Please complete the real-name system <a href="/settings/account"><strong>(Bind your account with IVLE)</strong></a>
+        Please complete identification verification <a href="/settings/account"><strong>(Bind your account with IVLE)</strong></a>
     </div>
 @endif
 

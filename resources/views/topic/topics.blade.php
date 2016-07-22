@@ -7,7 +7,7 @@
         @if (Auth::user())
             <div class="float-right font-grey">{{ Auth::user()->subscribe->topics()->count() }} topic(s) subscribed</div>
         @else
-            <div class="float-right font-grey">Login to subscribe topic</div>
+            <div class="float-right font-grey">Login to subscribe to the topic</div>
         @endif
     </div>
     <hr class="small_hr">

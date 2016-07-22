@@ -31,7 +31,7 @@
                         <label class="col-sm-2 control-label">Your domain:</label>
                         <div class="col-sm-6">
                             <div class="input-group margin-top">
-                                <div class="input-group-addon">http://nusding.com/</div>
+                                <div class="input-group-addon">http://nusding.info/</div>
                                 <input type="text" class="form-control" name="personal_domain" placeholder="{{ $user->url_name }}"
                                        {{ $settings->personal_domain_modified || !Auth::user()->operation(10) ? 'disabled' : '' }}
                                 >

@@ -34,7 +34,7 @@
 
     {{--current answer log here--}}
     <div id="topic_log_content">
-        <p class="text-center font-greyLight">This topic has no edit history.</p>
+        <p class="text-center font-greyLight">This topic has no editing history.</p>
     </div>
 
     <div id="topic_log_nav" class="text-center">

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=500px, initial-scale=2">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>My Message - Ding</title>
+    <title>My Messages - Ding</title>
 
     <!-- Bootstrap -->
     {!! Html::style('css/bootstrap.min.css') !!}

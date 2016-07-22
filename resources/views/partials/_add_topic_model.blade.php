@@ -16,7 +16,7 @@
                         <div class="form-group">
                             <label for="_topic_description">Topic Description</label>
                             <textarea rows="3" class="form-control" id="_topic_description" name="topic_description" placeholder="Topic description"></textarea>
-                            <p class="help-block">Please upload topic avatar after create topics</p>
+                            <p class="help-block">Please upload topic avatar after create the topic</p>
                         </div>
                 </div>
                 <div class="modal-footer">

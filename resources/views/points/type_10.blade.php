@@ -4,4 +4,4 @@ Question
 <a href="/question/{{ \App\History::find($point->param1)->forItem->id }}">
     {{ \App\History::find($point->param1)->forItem->title }}
 </a>
-editing reject
+editing rejected.

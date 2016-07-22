@@ -98,7 +98,7 @@
                 <span class="glyphicon glyphicon-search invite_search_box_icon font-greyLight"></span>
             </div>
             <div class="col-md-7">
-                <span class="font-greyLight">You can invite other user which you may think could answer the question</span>
+                <span class="font-greyLight">You may invite other users whom you think could answer this question.</span>
             </div>
         </div>
         <hr class="small_hrLight">

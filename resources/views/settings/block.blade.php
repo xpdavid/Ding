@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-sm-5">
                             <div class="userSetting_info">
-                                You will receive any notification from this user.
+                                You won't receive any notifications from these users.
                             </div>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                             @foreach ($user->blockings as $blocking)
                                 <div>
                                     <a href="/people/{{ $blocking->url_name }}"><span class="label label-danger">{{ $blocking->name }}</span></a>
-                                    (<a onclick="cancelBlocking(event, '{{ $blocking->id }}')" class="text-danger">Cancel</a>)
+                                    (<a onclick="cancelBlocking(event, '{{ $blocking->id }}')" class="text-danger">Unblock</a>)
                                 </div>
                             @endforeach
                         </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-sm-5">
                             <div class="font-greyLight">
-                                You may want to hide certain topic. We will not show this topic to you.
+                                Hidden topics will not be shown to you.
                             </div>
                         </div>
                     </div>

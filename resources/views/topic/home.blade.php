@@ -57,7 +57,7 @@
 
     <div class="sideBar_section noborder">
         <div class="sideBar_sectionItem">
-            <h5>Other people also subscribed:
+            <h5>Other people have also subscribed:
             </h5>
             <div class="topic_home_topic_list">
                 @foreach($other_topics as $other_topic)

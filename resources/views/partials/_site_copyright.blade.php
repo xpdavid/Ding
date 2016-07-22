@@ -1,7 +1,7 @@
 <div class="sitesCopyright">
     <div class="sitesCopyrightInner">
         <ul>
-            <li><a href="#">Instruction</a></li>
+            <li><a href="#">Guidlines</a></li>
             <li><a href="#">Suggestion</a></li>
             <li><a href="#">Join us</a></li>
             <li><a href="#">Terms & Condition</a></li>

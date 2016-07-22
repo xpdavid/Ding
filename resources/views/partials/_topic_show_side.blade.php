@@ -23,7 +23,7 @@
                         Subscribe</button>
                 @endif
             @endif
-            <div class="float-right margin-top">{{ $topic->subscribers()->count() }} <span class="font-black">People Subscribe</span> </div>
+            <div class="float-right margin-top">{{ $topic->subscribers()->count() }} <span class="font-black">People Have Subscribed</span> </div>
         </div>
 
         <div class="margin-top">
@@ -33,7 +33,7 @@
                 <a href="/topic/{{ $topic->id }}/edit">Edit Topic</a>
                 <span>•</span>
             @endif
-            <a href="/topic/{{ $topic->id }}/log" class="font-greyLight">Show topic histories</a>
+            <a href="/topic/{{ $topic->id }}/log" class="font-greyLight">Show Topic Histories</a>
         </div>
     </div>
 </div>

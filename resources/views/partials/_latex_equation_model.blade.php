@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Tex-formular">Tex Formular Here</label>
+                    <label for="Tex-formular">Tex Formulae Here</label>
                     <textarea rows="3" class="form-control" id="tex-formula" placeholder="Input your Tex here"></textarea>
                 </div>
 

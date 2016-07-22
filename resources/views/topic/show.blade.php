@@ -17,19 +17,19 @@
                 @if($type == 'recommend')
                     <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>
                     <li>Recommend</li>
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Wait For Answers</a></li>
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Await For Answers</a></li>
                 @endif
 
                 @if($type == 'wait_for_answer')
                     <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'highlight']) }}">Highlight</a></li>
                     <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'recommend']) }}">Recommend</a></li>
-                    <li>Wait For Answers</li>
+                    <li>Await For Answers</li>
                 @endif
 
                 @if($type == 'highlight')
                     <li>Highlight</li>
                     <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'recommend']) }}">Recommend</a></li>
-                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Wait For Answers</a></li>
+                    <li><a href="{{ action('TopicController@show', [ $topic->id, 'type' => 'wait_for_answer']) }}">Await For Answers</a></li>
                 @endif
                 </ul>
         </div>

@@ -232,7 +232,7 @@
             </div>
             @if (count($errors) > 0)
                 <div class="panel panel-danger">
-                    <div class="panel-heading">There is error in this form</div>
+                    <div class="panel-heading">There are errors in this form</div>
                     <div class="panel-body">
                         @foreach($errors->all() as $error)
                             <p class="text-danger">{{ $error }}</p>
@@ -274,7 +274,7 @@
                             data-action="open"
                             data-type="topic"
                             data-id="{{ $topic->id }}"
-                    >Reopen Topic</button>
+                    >Re-open Topic</button>
                 </div>
             </div>
         @else

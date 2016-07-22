@@ -48,7 +48,7 @@
             <div class="text-center">
                 <hr>
                 <h5 class="font-greyLight">
-                    The question is closed, you may send ticket to reopen the question
+                    The question is closed, you may send ticket to re-open the question
                     <a href="#">
                         Ticket
                     </a>
@@ -62,7 +62,7 @@
                 <div class="text-center">
                     <hr>
                     <h5 class="font-greyLight">
-                        You can only answer a question once, but you can edit
+                        You can only answer a question once. You may edit
                         <a href="/answer/{{ $question->answers()->where('user_id', Auth::user()->id)->first()->id }}">
                             current answer
                         </a>
@@ -87,7 +87,7 @@
                             data-draft_url="/question/{{ $question->id }}/draft"
                     ></textarea>
                         <div class="margin-top clearfix">
-                            <p class="text-danger float-left noneDisplay" id="question_answers_error">Bruh, I think answers must be more than 1 characters.</p>
+                            <p class="text-danger float-left noneDisplay" id="question_answers_error">Bruh, I think answers must be more than 1 character.</p>
                             <button type="submit" class="btn btn-warning float-right"
                                     onclick="saveAnswer('question_answers', '{{ $question->id }}')">Submit</button>
                         </div>

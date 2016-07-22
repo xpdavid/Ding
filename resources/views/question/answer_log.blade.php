@@ -18,7 +18,7 @@
 
         {{--current answer log here--}}
         <div id="answer_log_content">
-            <p class="text-center font-greyLight">This answer has no edit history.</p>
+            <p class="text-center font-greyLight">This answer has no editing history.</p>
         </div>
 
         <div id="answer_log_nav" class="text-center">

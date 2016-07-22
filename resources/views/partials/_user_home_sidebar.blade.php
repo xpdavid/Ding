@@ -35,7 +35,7 @@
                     <form action="/settings/update" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="cancel_block" value="{{ $user->id }}">
-                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Cancel block</button>
+                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"></span>Unblock</button>
                     </form>
                 @else
                     <form action="/settings/update" method="POST">
@@ -63,7 +63,7 @@
     @else
         <div class="userHome_sideBarSection noborder">
             <div class="userHome_sideBarSectionInner">
-                <button class="btn btn-danger" data-action="user_operation" data-type="ban" data-url_name="{{ $user->url_name }}">Ban User</button>
+                <button class="btn btn-danger" data-action="user_operation" data-type="ban" data-url_name="{{ $user->url_name }}">Ban The User</button>
             </div>
         </div>
     @endif

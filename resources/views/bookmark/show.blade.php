@@ -17,7 +17,7 @@
         @if ($bookmark->owner->id == Auth::user()->id)
             <div id="bookmark_edit" class="clearfix noneDisplay margin-top">
                 <div class="form-group">
-                    <label for="bookmark_name">Bookmark Name <span class="font-greyLight">(Your bookmark subscriber may be disturbed by the change of name)</span></label>
+                    <label for="bookmark_name">Bookmark Name <span class="font-greyLight">(Your bookmark subscriber may be confused by the name change)</span></label>
                     <input type="email" value="{{ $bookmark->name }}" class="form-control" id="bookmark_name" placeholder="Name">
                 </div>
                 <div class="form-group">
@@ -28,7 +28,7 @@
                     <label>
                         <input type="radio" value="true" name="bookmark_is_public" id="bookmark_public" {{ $bookmark->is_public ? 'checked' : '' }}> Pulbic
                                     <span class="font-greyLight">
-                                        You can change to private if there is not subscribers
+                                        You can change your bookmark status to private if there are no subscribers
                                     </span>
                     </label>
                 </div>

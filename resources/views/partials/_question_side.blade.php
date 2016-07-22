@@ -54,7 +54,7 @@
                         data-action="open"
                         data-type="question"
                         data-id="{{ $question->id }}"
-                >Reopen Question</button>
+                >Re-open Question</button>
             </div>
         </div>
     @else

@@ -4,14 +4,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Ask Your Question</h4>
+                <h4 class="modal-title">Ask A Question</h4>
             </div>
             <div class="modal-body">
-                <p>Ding is a helpful community. We hope everyone get their desired answers.</p>
-                <p>Good question will get quick response. Please refer to the question 'How to ask a good question'</p>
+                <p>Ding is a helpful community. We hope everyone can find their desired answers.</p>
+                <p>Good questions will receive quick responses. Please refer to the question 'How to ask a good question'.</p>
                 <p>Please make your question clear and specific... bla bla</p>
                 <div class="form-group">
-                    <label for="search_question"><strong>Please search before asking</strong></label>
+                    <label for="search_question"><strong>Do a search before asking your question</strong></label>
                     <input type="text" class="form-control" id="ask_question_input" placeholder="Type your keywords" autocomplete="off">
                 </div>
             </div>
@@ -47,7 +47,7 @@
                                data-key="question_title"
                                autocomplete="off"
                         >
-                        <p class="text-danger float-left noneDisplay" id="_question_title_error">Bruh, You must provide question title (5 more characters).</p>
+                        <p class="text-danger float-left noneDisplay" id="_question_title_error">Bruh, You must provide question title (At least 5 characters).</p>
                     </div>
                     <table class="table" id="_question_title_search_table"
                            data-parent="_question">
@@ -97,7 +97,7 @@
                             >
                             <span class="input-group-addon">Exp</span>
                         </div>
-                        <p class="help-block">Higher reward question may get quick response</p>
+                        <p class="help-block">Question with higher reward may receive quicker responses.</p>
                     </div>
                 </div>
                 <div class="modal-footer">

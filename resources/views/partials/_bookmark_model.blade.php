@@ -20,7 +20,7 @@
                         <div role="tabpanel" class="tab-pane fade in active" id="bookmark_add">
                             <div class="bookmark_modal_list" id="bookmark_modal_list">
                                 <div class="bookmark_modal_item text-center noneDisplay" id="bookmark_modal_list_empty">
-                                    No Bookmark, click To Add
+                                    No Bookmark, Click To Add
                                 </div>
                             </div>
                             <div class="float-right">
@@ -42,7 +42,7 @@
                                 <label>
                                     <input type="radio" value="true" name="bookmark_new_public" checked="checked"> Pulbic
                                     <span class="font-greyLight">
-                                        You can change to private later if and only if there is not subscribers to this bookmark
+                                        You can change bookmark status to private only if there are no  subscribers to this bookmark
                                     </span>
                                 </label>
                             </div>

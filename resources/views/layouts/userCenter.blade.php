@@ -73,7 +73,7 @@
 
                         <li class="{{ Request::is('invitation') ?  'sideBar_item_active' : ''}}">
                             <a href="/invitation"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                Invitaion</a>
+                                Invitation</a>
                         </li>
                 </ul>
             </div>

@@ -93,7 +93,7 @@
             <div class="font-greyLight">Created at {{ $answer->created_at }}</div>
             <div class="font-greyLight">Updated at {{ $answer->updated_at }}</div>
             <div class="font-greyLight"><a href="/answer/{{ $answer->id }}/log">Show Answer Log</a></div>
-            <div class="font-greyLight">Belonging Question has being view <strong>{{ $answer->hit->total }}</strong> times</div>
+            <div class="font-greyLight">Corresponding question has been viewed <strong>{{ $answer->hit->total }}</strong> times</div>
         </div>
     </div>
 </div>
@@ -106,7 +106,7 @@
                         data-action="open"
                         data-type="answer"
                         data-id="{{ $answer->id }}"
-                >Reopen Answer</button>
+                >Re-open Answer</button>
             </div>
         </div>
     @else

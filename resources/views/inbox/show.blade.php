@@ -72,13 +72,13 @@
             </div>
             <hr>
             <div>
-                <div class="alert alert-success" role="alert">If you worry about span, maybe <a href="/settings/notification" class="alert-link">Setting</a> is a good place to prevent it.</div>
+                <div class="alert alert-success" role="alert">If you worry about spams, maybe <a href="/settings/notification" class="alert-link">Setting</a> is a good place to prevent it.</div>
             </div>
 
             <div>
                 @if (count($errors) > 0)
                     <div class="panel panel-danger">
-                        <div class="panel-heading">There is error in this form</div>
+                        <div class="panel-heading">There are errors in this form</div>
                         <div class="panel-body">
                             @foreach($errors->all() as $error)
                                 <p class="text-danger">{{ $error }}</p>
