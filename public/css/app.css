@@ -939,6 +939,10 @@ body.modal-open {
   text-decoration: none;
   color: #698ebf; }
 
+._summary {
+  overflow: hidden;
+  zoom: 1; }
+
 ._summary img {
   float: left;
   height: 112px;

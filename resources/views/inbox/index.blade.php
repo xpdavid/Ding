@@ -7,12 +7,15 @@
         <div class="col-md-8">
             <div class="userMessage_Head">
                 <div class="row">
-                    <div class="col-md-9">
-                        <h4>My Message <span class="badge">{{ $conversations->count() }}</span></h4>
+                    <div class="col-md-12 clearfix">
+                        <div class="float-left">
+                            <h4>My Message <span class="badge">{{ $conversations->count() }}</span></h4>
+                        </div>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#sendModal">Send New Message</button>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#sendModal">Send New Message</button>
-                    </div>
+
                 </div>
             </div>
             <div class="userMessage_Content">
@@ -22,12 +25,12 @@
                     <!--{!! $message = $conversation->messages->all()[0] !!}-->
                     <div class="media">
                         <div class="media-left">
-                            <a href="#">
+                            <a href="/people/{{ $message->sendBy->url_name }}">
                                 <img class="media-object" src="{{ DImage($message->sendBy->settings->profile_pic_id, 50, 50) }}" alt="{{ $message->sendBy->name }}">
                             </a>
                         </div>
                         <div class="media-body">
-                            <h5 class="media-heading"><a href="#">{{ $message->sendBy->name }}</a></h5>
+                            <h5 class="media-heading"><a  href="/people/{{ $message->sendBy->url_name }}">{{ $message->sendBy->name }}</a></h5>
                             <div class="message_content">
                                 {{ $message->content }}
                             </div>

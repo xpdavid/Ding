@@ -3,10 +3,29 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=500px, initial-scale=2">
+    <meta name="viewport" content="width=320, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Topic - Ding</title>
+    @if (Route::current()->getName() == 'topic.subscribed')
+        <title>Subscribed Topics - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'topic.palace')
+        <title>Topic Palace - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'topic.show')
+        <title>{{ $topic->name }} - Topic - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'topic.edit')
+        <title>{{ $topic->name }} - Topic - Edit - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'topic.organization')
+        <title>{{ $topic->name }} - Topic - Organization - NUSDing</title>
+    @endif
+
 
     <!-- Bootstrap -->
     {!! Html::style('css/bootstrap.min.css') !!}

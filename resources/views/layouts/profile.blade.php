@@ -3,10 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=500px, initial-scale=2">
+    <meta name="viewport" content="width=320, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Profile - Ding</title>
+    @if (Route::current()->getName() == 'people.index')
+        <title>{{ $user->name }}'s Profile - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.edit')
+        <title>Edit {{ $user->name }}'s Profile - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.follow')
+        <title>{{ $user->name }} Subscribe Users - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.follower')
+        <title>{{ $user->name }}'s Subscribers - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.question')
+        <title>{{ $user->name }}'s Questions</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.answer')
+        <title>{{ $user->name }}'s Answers</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.more')
+        <title>{{ $user->name }}'s Complete Profile</title>
+    @endif
+
+    @if (Route::current()->getName() == 'people.bookmark')
+        <title>{{ $user->name }}'s Bookmarks</title>
+    @endif
 
     <!-- Bootstrap -->
     {!! Html::style('css/bootstrap.min.css') !!}

@@ -48,10 +48,7 @@
             <div class="text-center">
                 <hr>
                 <h5 class="font-greyLight">
-                    The question is closed, you may send ticket to reopen the question
-                    <a href="#">
-                        Ticket
-                    </a>
+                    The question is closed, you may contact admin for more information
                 </h5>
             </div>
             <br>
