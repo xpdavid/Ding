@@ -101,11 +101,11 @@
 
 @section('javascript')
 <script type="text/javascript">
-    @if(count($top_parent_topics) > 0)
         $(function() {
-            getFirstLevelChildTopic('{{ $top_parent_topics[0]->id }}', 1);
+            @if(count($top_parent_topics) > 0)
+                getFirstLevelChildTopic('{{ $top_parent_topics[0]->id }}', 1);
+            @endif
             _addTopic_form();
         });
-    @endif
 </script>
 @endsection

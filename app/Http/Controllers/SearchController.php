@@ -119,8 +119,6 @@ class SearchController extends Controller
                     ->skip(($page - 1) * $itemInPage)->take($itemInPage)->get();
                 $results = [];
                 foreach ($users as $s_user) {
-                    // don't search yourself
-                    if ($user->id == $s_user->id) continue;
                     array_push($results, [
                         'id' => $s_user->id,
                         'name' => $s_user->name,
