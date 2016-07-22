@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AuthGroupSeeder::class);
 
         $user = User::create([
-            'name' => 'Admin'
+            'name' => 'Admin',
+            'email' => env('ADMIN_EMAIL'),
+            'password' => bcrypt(env('ADMIN_PWD')),
         ]);
         $user->authGroup_id = 7;
         $user->save();
