@@ -46,9 +46,6 @@
                 @endif
 
             </div>
-            <div class="margin-top">
-                <button type="submit" class="btn btn-default"><span class="glyphicon  glyphicon-remove-circle"></span>Report the user</button>
-            </div>
         </div>
     </div>
 @endif

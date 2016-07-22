@@ -1,4 +1,4 @@
-<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 <span class="label label-{{ $point->point < 0 ? 'danger' : 'primary' }}">{{ $point->point }}</span>
 Receiving Vote from
 <a href="/people/{{ \App\User::find($point->param2)->url_name }}">

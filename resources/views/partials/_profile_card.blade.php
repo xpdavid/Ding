@@ -125,11 +125,6 @@
             Bookmarks
             <span>{{ $user->bookmarks()->where('is_public', true)->count() }}</span>
         </a>
-
-        <a href="#">
-            Edit
-            <span>0</span>
-        </a>
     </div>
 
 </div>

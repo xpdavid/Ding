@@ -6,7 +6,7 @@ function showTopicLogPage(base_id, type, answer_id, page, callback) {
         page : page,
     }, function(results) {
         // only the current answer itself
-        if (results.data.names || results.data.descriptions || results.data.topics) {
+        if (results.pages != 0) {
             // clear content
             $('#' + base_id + '_content').html('');
 
@@ -95,7 +95,9 @@ function showTopicLogPage(base_id, type, answer_id, page, callback) {
             rerenderMath(base_id + '_content');
 
             // update nav bar
-            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showTopicLogPage'));
+            if (all.length != 0) {
+                $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showTopicLogPage'));
+            }
 
             // check callback
             if(callback && typeof callback == "function"){
@@ -114,7 +116,7 @@ function showAnswerLogPage(base_id, type, answer_id, page, callback) {
         page : page,
     }, function(results) {
         // only the current answer itself
-        if (results.data.answers || results.data.operations) {
+        if (results.pages != 0) {
             var all = [];
 
             // process operations
@@ -149,7 +151,9 @@ function showAnswerLogPage(base_id, type, answer_id, page, callback) {
             rerenderMath(base_id + '_content');
 
             // update nav bar
-            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showQuestionLogPage'));
+            if (all.length != 0) {
+                $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showQuestionLogPage'));
+            }
 
             // check callback
             if(callback && typeof callback == "function"){
@@ -167,7 +171,7 @@ function showQuestionLogPage(base_id, type, answer_id, page, callback) {
         page : page,
     }, function(results) {
         // only the current answer itself
-        if (results.data.titles || results.data.contents || results.data.topics) {
+        if (results.pages != 0) {
             // clear content
             $('#' + base_id + '_content').html('');
 
@@ -225,7 +229,9 @@ function showQuestionLogPage(base_id, type, answer_id, page, callback) {
             rerenderMath(base_id + '_content');
 
             // update nav bar
-            $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showQuestionLogPage'));
+            if (all.length != 0) {
+                $('#' + base_id + '_nav').html(compilePageNav(page, results.pages, base_id, type, answer_id, 'showQuestionLogPage'));
+            }
 
             // check callback
             if(callback && typeof callback == "function"){

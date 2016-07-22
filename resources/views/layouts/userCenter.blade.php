@@ -3,10 +3,32 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=500px, initial-scale=2">
+    <meta name="viewport" content="width=320, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>User Center - Ding</title>
+    @if (Route::current()->getName() == 'user.notification')
+        <title>User Notification - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'user.subscribed')
+        <title>Subscribed Question - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'user.invitation')
+        <title>Invitation - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'user.bookmark')
+        <title>Bookmarks - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'user.draft')
+        <title>Drafts - NUSDing</title>
+    @endif
+
+    @if (Route::current()->getName() == 'user.news')
+        <title>News - NUSDing</title>
+    @endif
 
     <!-- Bootstrap -->
     {!! Html::style('css/bootstrap.min.css') !!}
