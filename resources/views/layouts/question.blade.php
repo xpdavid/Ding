@@ -43,6 +43,9 @@
     {{--cropper supporting file--}}
     {!! Html::style('css/cropper.css') !!}
 
+    {{--codesample supporting file--}}
+    {!! Html::style('js/tinymce/plugins/codesample/css/prism.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
