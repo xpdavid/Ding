@@ -117,7 +117,7 @@ class AnswerController extends Controller
 
         // update answer with set history
         $answer->update([
-            'answer' => $request->get('answer')
+            'answer' => clean($request->get('answer'))
         ], ['history' => true]);
 
         return [
@@ -140,7 +140,7 @@ class AnswerController extends Controller
             $answer->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 2,
-                'text' => $request->get('reason')
+                'text' => e($request->get('reason'))
             ]));
 
             if ($answer->owner->id != Auth::user()->id) {
@@ -174,7 +174,7 @@ class AnswerController extends Controller
             $answer->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 3,
-                'text' => $request->get('reason')
+                'text' => e($request->get('reason'))
             ]));
 
             return [
@@ -300,7 +300,7 @@ class AnswerController extends Controller
             // already saved answer
             $answer = $draft;
             $answer->saveDraft([
-                'answer' => $request->get('text')
+                'answer' => clean($request->get('text'))
             ]);
 
         } else {
@@ -315,7 +315,7 @@ class AnswerController extends Controller
 
             // create answers
             $answer = Answer::create([
-                'answer' => $request->get('text'),
+                'answer' => clean($request->get('text')),
                 'status' => 2 // draft status
             ]);
             $answer->save();
@@ -362,7 +362,7 @@ class AnswerController extends Controller
             // the post answer is an draft
             // save the draft immediately
             $answer->saveDraft([
-                'answer' => $request->get('user_answer')
+                'answer' => clean($request->get('user_answer'))
             ]);
             $answer->publish(); // the auth process is contained in the publish method
         } else {
@@ -375,7 +375,7 @@ class AnswerController extends Controller
 
             // create answers
             $answer = Answer::create([
-                'answer' => $request->get('user_answer')
+                'answer' => clean($request->get('user_answer'))
             ]);
             $answer->save();
 

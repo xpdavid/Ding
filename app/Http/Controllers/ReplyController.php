@@ -189,7 +189,7 @@ class ReplyController extends Controller
 
         // create comment
         $comment = Reply::create([
-            'reply' => $request->get('text')
+            'reply' => e($request->get('text'))
         ]);
         $comment->save();
 

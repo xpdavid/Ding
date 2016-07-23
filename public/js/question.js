@@ -945,6 +945,8 @@ function bindExpendAll() {
                 $('#answer_summary_' + $object.data('id')).hide();
                 $('#answer_full_content_' + $object.data('id')).html(results);
                 rerenderMath('answer_full_' + $object.data('id'));
+                // highlight code
+                Prism.highlightAll();
                 $('#answer_full_' + $object.data('id')).show();
                 imgResponsiveIn('answer_full_' + $object.data('id'));
                 // set has expanded
@@ -955,6 +957,8 @@ function bindExpendAll() {
                 $('#question_summary_' + $object.data('id')).hide();
                 $('#question_full_' + $object.data('id')).html(results.content);
                 rerenderMath('question_full_' + $object.data('id'));
+                // highlight code
+                Prism.highlightAll();
                 $('#question_full_' + $object.data('id')).show();
                 imgResponsiveIn('question_full_' + $object.data('id'));
                 // set has expanded

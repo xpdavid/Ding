@@ -10,7 +10,8 @@
         "laravelcollective/html": "5.2.*",
         "intervention/image": "^2.3",
         "yangqi/htmldom": "dev-master",
-        "guzzlehttp/guzzle": "~5.3|~6.0"
+        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "mews/purifier": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

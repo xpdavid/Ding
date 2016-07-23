@@ -116,6 +116,12 @@ body.modal-open {
 .marginAuto {
   margin: 0 auto !important; }
 
+.a_tagBG {
+  text-decoration: none; }
+
+.a_tagBG:hover {
+  background: #eff6fa; }
+
 .sweet-alert {
   z-index: 100006; }
 

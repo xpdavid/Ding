@@ -159,6 +159,7 @@ return [
 
         Intervention\Image\ImageServiceProvider::class,
         Yangqi\Htmldom\HtmldomServiceProvider::class,
+        Mews\Purifier\PurifierServiceProvider::class
 
     ],
 
@@ -210,6 +211,7 @@ return [
 
         'IImage' => Intervention\Image\Facades\Image::class,
         'Htmldom' => Yangqi\Htmldom\Htmldom::class,
+        'Purifier' => Mews\Purifier\Facades\Purifier::class,
 
     ],
 

@@ -187,7 +187,7 @@ class TopicController extends Controller
             $topic->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 10,
-                'text' => $request->get('reason')
+                'text' => e($request->get('reason'))
             ]));
 
             // closed topic
@@ -223,7 +223,7 @@ class TopicController extends Controller
             $topic->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 11,
-                'text' => $request->get('reason')
+                'text' => e($request->get('reason'))
             ]));
 
             return [

@@ -454,6 +454,8 @@ function cropImage(img_id, aspectRatio, callback) {
                             window.location.reload();
                         });
                     }
+                    $uploadClick.prop('disabled', false);
+                    $uploadClick.html('Upload');
                 },
                 error: function () {
                     swal("Upload Error", "Sever post a question :(", "error");
@@ -501,8 +503,8 @@ function tinyMCEeditor(textareaID, initcallback) {
         selector: '#' + textareaID,
         paste_as_text: true,
         browser_spellcheck: true,
-        plugins: 'advlist autolink link image imagetools table media codesample fullscreen paste',
-        toolbar: ['undo redo | bold italic underline | blockquote codesample bullist numlist math | link image media | fullscreen',],
+        plugins: 'code advlist autolink link image table media codesample fullscreen paste',
+        toolbar: ['code | undo redo | bold italic underline | blockquote codesample bullist numlist math | link image media | fullscreen',],
         relative_urls : false,
         remove_script_host : false,
         convert_urls : true,

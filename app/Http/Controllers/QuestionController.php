@@ -122,8 +122,8 @@ class QuestionController extends Controller
             $question = $draft;
 
             if ($question->saveDraft([
-                'title' => $request->get('question_title'),
-                'content' => $request->get('text'),
+                'title' => e($request->get('question_title')),
+                'content' => clean($request->get('text')),
                 'reward' => $reward
             ])) {
                 // save topics relationship
@@ -137,8 +137,8 @@ class QuestionController extends Controller
         } else {
             // create question
             $question = Question::create([
-                'title' => $request->get('question_title'),
-                'content' => $request->get('text'),
+                'title' => e($request->get('question_title')),
+                'content' => clean($request->get('text')),
                 'reward' => $reward,
                 'status' => 2 // draft status
             ]);
@@ -203,8 +203,8 @@ class QuestionController extends Controller
 
             // save draft last time
             $question->saveDraft([
-                'title' => $request->get('question_title'),
-                'content' => $request->get('question_detail'),
+                'title' => e($request->get('question_title')),
+                'content' => clean($request->get('question_detail')),
                 'reward' => $reward,
             ]);
 
@@ -215,8 +215,8 @@ class QuestionController extends Controller
 
         } else {
             $question = Question::create([
-                'title' => $request->get('question_title'),
-                'content' => $request->get('question_detail'),
+                'title' => e($request->get('question_title')),
+                'content' => clean($request->get('question_detail')),
                 'reward' => $reward,
             ]);
 
@@ -276,8 +276,8 @@ class QuestionController extends Controller
         }
 
         $question->update([
-            'title' => $request->get('question_title'),
-            'content' => $request->get('question_detail'),
+            'title' => e($request->get('question_title')),
+            'content' => clean($request->get('question_detail')),
         ], ['history' => true]);
 
 
@@ -306,7 +306,7 @@ class QuestionController extends Controller
             $question->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 5,
-                'text' => $request->get('reason')
+                'text' => e($request->get('reason'))
             ]));
 
             // Question Closed
@@ -340,7 +340,7 @@ class QuestionController extends Controller
             $question->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 6,
-                'text' => $request->get('reason')
+                'text' => e($request->get('reason'))
             ]));
 
             return [

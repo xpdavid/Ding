@@ -16,6 +16,7 @@ elixir(function(mix) {
     var sweetalertPath = 'resources/assets/sweetalert';
     var select2Path = 'resources/assets/select2';
     var cropperPath = 'resources/assets/cropper';
+    var prismPath = 'resources/assets/prism'
 
     var cssPath = 'resources/assets/css';
     var jsPath = 'resources/assets/js';
@@ -47,6 +48,10 @@ elixir(function(mix) {
     // for tiny mce
     mix.copy(jsPath + '/tinymce', 'public/js/tinymce')
         .copy(jsPath + '/equation.js', 'public/js'); // copy equation support
+
+    // for prism
+    mix.copy(prismPath + '/prism.css', 'public/css')
+        .copy(prismPath + '/prism.js', 'public/js');
     
     // for project css file
     mix.sass('app.scss');

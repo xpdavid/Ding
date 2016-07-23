@@ -304,6 +304,18 @@ class Answer extends Model
         $html = new Htmldom;
         $html->load($this->answer);
 
+        // delete code
+        foreach ($html->find('pre') as $pre) {
+            $pre->outertext = '**Code**';
+        }
+        $html->load($html->save());
+
+        // delete link
+        foreach ($html->find('a') as $pre) {
+            $pre->outertext = '**Link**';
+        }
+        $html->load($html->save());
+
         $output = $html->plaintext;
 
 

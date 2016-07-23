@@ -46,6 +46,9 @@
     {{--cropper supporting file--}}
     {!! Html::style('css/cropper.css') !!}
 
+    {{--codesample supporting file--}}
+    {!! Html::style('css/prism.css') !!}
+
     {{--project css file--}}
     {!! Html::style('css/app.css') !!}
 
@@ -111,6 +114,9 @@
 
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
+
+{{--prism supporting js file--}}
+{!! Html::script('js/prism.js') !!}
 
 {{--topic javascript support--}}
 {!! Html::script('js/topic.js') !!}
