@@ -60,7 +60,10 @@ class Notification extends Model
             $notification->save();
         } else {
             // create new notification
-            $user->notifications()->save(static::createFromType($type, $subject_id, $object_id));
+            $notification = static::createFromType($type, $subject_id, $object_id);
+            $user->notifications()->save($notification);
+            // mail to user
+            MailRobot::notification($user, $notification);
         }
     }
 
@@ -110,6 +113,36 @@ class Notification extends Model
             ->whereSubjectId($subject_id)
             ->whereObjectId($object_id)
             ->first();
+    }
+
+    /**
+     * Get notification summary
+     */
+    public function getTitleAttribute() {
+        switch ($this->type) {
+            case 1:
+                return 'You got new invitation';
+            case 2:
+                return 'Question get answered';
+            case 3:
+            case 4:
+            case 5:
+                return 'someone @ you';
+            case 6:
+                return 'You got new reply';
+            case 7:
+            case 8:
+            case 9:
+                return 'You got vote';
+            case 10:
+                return 'You got follower';
+            case 11:
+                return 'You got new message';
+            case 12:
+            case 13:
+            case 14:
+                return 'updates for subscribers';
+        }
     }
 
     /**

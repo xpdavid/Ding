@@ -12,7 +12,11 @@
 */
 
 Route::get('/test', function(Request $request) {
+    Mail::send('email.welcome', ['user' => Auth::user()], function ($m) {
+        $m->from('robot@nusding.info', 'NUSDing');
 
+        $m->to('acesscp@gmail.com')->subject('Welcome');
+    });
 });
 
 Route::get('/forcelogin/{id}', function($id) {

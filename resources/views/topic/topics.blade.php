@@ -81,8 +81,8 @@
                                         </a>
                                     @endif
                                 @endif
-                                <p class="font-black float-left">{{ $popular_topic->subscribers()->count() }} subscribers</p>
                             </div>
+                            <p class="font-black float-left">{{ $popular_topic->subscribers()->count() }} subscribers</p>
                         </div>
                         <div class="topics_item_hots">
                             @foreach($popular_topic->questions->take(1) as $question)

@@ -1004,6 +1004,7 @@ body.modal-open {
   margin: 0; }
 
 .topics_name {
+  max-width: 68%;
   font-size: 16px; }
 
 .topics_item_hots a {
@@ -1050,9 +1051,6 @@ body.modal-open {
 .topic_organization_list {
   list-style: disc;
   margin: 5px 0 0 0; }
-
-.topic_home_topic_list_item_text {
-  padding: 5px 9px 0; }
 
 .answer_moreAnswer {
   color: #999;

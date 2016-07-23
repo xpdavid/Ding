@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LoginMethod;
+use App\MailRobot;
 use App\User;
 use Auth;
 use Carbon\Carbon;
@@ -57,6 +58,7 @@ class LoginMethodController extends Controller
                 'password' => bcrypt(str_random(10)),
                 'remember_token' => str_random(10),
             ]);
+
             $user->loginMethods()->save(LoginMethod::create([
                 'type' => 'IVLE',
                 'token' => $token
@@ -65,8 +67,14 @@ class LoginMethodController extends Controller
             $this->updateName($user, 'IVLE');
             $this->updateEmail($user, 'IVLE');
 
+            // set user password
+            $user->setDefaultPassword();
+
             // regenerate url name
             $user->generateUrlName();
+
+            // send  welcome message
+            MailRobot::welcome($user);
 
             Auth::login($user, true);
             return redirect('/');

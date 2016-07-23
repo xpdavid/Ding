@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $user->authGroup_id = 7;
         $user->save();
 
-        $this->call(NUSModuleSeeder::class);
+        // $this->call(NUSModuleSeeder::class);
 
 
         Model::reguard();

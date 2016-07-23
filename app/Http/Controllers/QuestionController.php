@@ -230,6 +230,9 @@ class QuestionController extends Controller
         // notification to user subscribers
         $user->notifySubscriber(12, $question);
 
+        // asker auto subscribe to the question
+        $user->subscribe->questions()->save($question);
+
         // add/sub the user point
         Point::add_point($user, 1, [$question->id]);
 

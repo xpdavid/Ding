@@ -792,4 +792,12 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * Set default password for user
+     */
+    public function setDefaultPassword() {
+        $this->password = bcrypt(md5($this->id . env('APP_KEY')));
+        $this->save();
+    }
+
 }

@@ -59,15 +59,20 @@
         <div class="sideBar_sectionItem">
             <h5>Other people have also subscribed:
             </h5>
-            <div class="topic_home_topic_list">
+            <div>
                 @foreach($other_topics as $other_topic)
-                    <div class="topic_home_topic_list_item clearfix">
-                        <img class="topics_item_image float-left" src="{{ DImage($other_topic->avatar_img_id, 40, 40) }}" alt="{{ $other_topic->name }}">
-                        <div class="topic_home_topic_list_item_text clearfix">
-                            <div class="float-left">
-                                <strong><a href="/topic/{{ $other_topic->id }}">{{ $other_topic->name }}</a></strong>
+                <div class="media topics_item">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object topics_item_image img-rounded" src="{{ DImage($other_topic->avatar_img_id, 40, 40) }}" alt="{{ $other_topic->name }}">
+                        </a>
+                    </div>
+                    <div class="media-body topics_more">
+                        <div class="clearfix">
+                            <div class="float-left topics_name">
+                                <a href="/topic/{{ $other_topic->id }}">{{ $other_topic->name }}</a>
                             </div>
-                            <div class="float-right">
+                            @if (Auth::user())
                                 @if(Auth::user()->subscribe->checkHasSubscribed($other_topic->id, 'topic'))
                                     <a class="float-right topics_subscribe active"
                                        href="#"
@@ -83,11 +88,12 @@
                                         <span>Subscribe</span>
                                     </a>
                                 @endif
-                            </div>
+                            @endif
                         </div>
+                        <p class="font-black">{{ $other_topic->subscribers()->count() }} subscribe</p>
                     </div>
+                </div>
                 @endforeach
-
             </div>
         </div>
     </div>

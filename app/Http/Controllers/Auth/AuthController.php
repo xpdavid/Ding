@@ -82,6 +82,9 @@ class AuthController extends Controller
         // add point to user
         Point::add_point($user, 18, []);
 
+        // send  welcome message
+        MailRobot::welcome($user);
+
         return $user;
     }
 
