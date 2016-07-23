@@ -157,8 +157,8 @@ class TopicController extends Controller
         $user = Auth::user();
         if ($user->operation(11)) {
             $topic = Topic::create([
-                'name' => $request->get('name'),
-                'description' => $request->get('description'),
+                'name' => e($request->get('name')),
+                'description' => e($request->get('description')),
             ]);
 
             // add point to user
@@ -344,13 +344,13 @@ class TopicController extends Controller
 
         if($request->has('topic_name')) {
             $topic->update([
-                'name' => $request->get('topic_name')
+                'name' => e($request->get('topic_name'))
             ]);
         }
 
         if($request->has('topic_description')) {
             $topic->update([
-                'description' => $request->get('topic_description')
+                'description' => e($request->get('topic_description'))
             ]);
         }
 

@@ -82,7 +82,7 @@ class SettingsController extends Controller
         $blockings = $user->blockings;
         
         if ($request->has('name')){
-            $user->update(['name' => $request->get('name')]);
+            $user->update(['name' => e($request->get('name'))]);
         }
 
         if ($request->has('personal_domain')) {
@@ -94,7 +94,7 @@ class SettingsController extends Controller
                     // do nothing as the user doesn't change the personal domain
                 } else if (!$findUser->exists()) {
                     $settings->update(['personal_domain_modified' => true]);
-                    $user->update(['url_name' => $request->get('personal_domain')]);
+                    $user->update(['url_name' => e($request->get('personal_domain'))]);
                 } else {
                     return redirect('/settings/basic')->withErrors(['The domain name has been used by other user']);
                 }

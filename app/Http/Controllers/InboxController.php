@@ -77,7 +77,9 @@ class InboxController extends Controller
         $conversation = Conversation::create(['can_reply' => $can_reply]);
 
         // a message belong to a conversation
-        $message = Message::create($request->all());
+        $message = Message::create([
+            'content' => clean($request->get('content'))
+        ]);
         $conversation->messages()->save($message);
 
         // current user can have many conversations

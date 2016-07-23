@@ -397,7 +397,7 @@ class PeopleController extends Controller
         
         switch ($request->get('type')) {
             case 'education':
-                $educationExp = EducationExp::findOrCreate($request->get('institution'), $request->get('major'));
+                $educationExp = EducationExp::findOrCreate(e($request->get('institution')), e($request->get('major')));
                 // prevent duplicate saving
                 $user->educationExps()->detach($educationExp->id);
                 $user->educationExps()->attach($educationExp->id);
@@ -407,7 +407,7 @@ class PeopleController extends Controller
                     'status' => true
                 ];
             case 'job':
-                $job = Job::findOrCreate($request->get('organization'), $request->get('designation'));
+                $job = Job::findOrCreate(e($request->get('organization')), e($request->get('designation')));
                 // prevent duplicate saving
                 $user->jobs()->detach($job->id);
                 $user->jobs()->attach($job->id);
@@ -455,12 +455,12 @@ class PeopleController extends Controller
                     'email' => $settings->display_email
                 ];
             case 'bio':
-                $user->update(['bio' => $request->get('bio')]);
+                $user->update(['bio' => e($request->get('bio'))]);
                 return [
                     'bio' => $user->bio
                 ];
             case 'intro':
-                $user->update(['self_intro' => $request->get('intro')]);
+                $user->update(['self_intro' => e($request->get('intro'))]);
                 return [
                     'self_intro' => $user->self_intro
                 ];
