@@ -48,21 +48,33 @@ class InboxController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'users' => 'required|array',
+            'content' => 'required',
+            'can_reply' => 'required|boolean'
+        ]);
+
         $current_user = Auth::user();
         $users_id = $request->get('users');
         // check blocking
         foreach ($users_id as $user_id) {
             $to_user = User::findOrFail($user_id);
             if (!$current_user->canSendMessageTo($to_user)) {
-                return redirect()
-                    ->back()
-                    ->withErrors(['There are some users who block you or some users set they only can receive message from users who they subscribe to.']);
+                return [
+                    'error' => 'There are some users who block you or some users set they only can receive message from users who they subscribe to.'
+                ];
             }
         }
 
+        // check user can set message to can_reply
+        if ($current_user->operation(18)) {
+            $can_reply = $request->get('can_reply');
+        } else {
+            $can_reply = true;
+        }
 
         // Every store will create a new conversation
-        $conversation = Conversation::create(['can_reply' => true]);
+        $conversation = Conversation::create(['can_reply' => $can_reply]);
 
         // a message belong to a conversation
         $message = Message::create($request->all());
@@ -83,9 +95,9 @@ class InboxController extends Controller
             Notification::notification($user, 11, $current_user->id, $message->id);
         }
 
-
-
-        return redirect(route('inbox.index'));
+        return [
+            'location' => route('inbox.show', $conversation->id)
+        ];
     }
 
     /**
@@ -142,7 +154,9 @@ class InboxController extends Controller
             Notification::notification($user, 11, $current_user->id, $message->id);
         }
 
-        return redirect(route('inbox.show', $id));
+        return [
+            'location' => route('inbox.show', $id)
+        ];
     }
 
     /**

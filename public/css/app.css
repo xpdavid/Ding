@@ -14,7 +14,7 @@ body.modal-open {
   padding-right: 0 !important; }
 
 .modal-scrollbar-measure {
-  overflow: hidden; }
+  overflow: scroll; }
 
 .modal {
   overflow-y: scroll; }

@@ -32,7 +32,7 @@
                         <div class="media-body">
                             <h5 class="media-heading"><a  href="/people/{{ $message->sendBy->url_name }}">{{ $message->sendBy->name }}</a></h5>
                             <div class="message_content">
-                                {{ $message->content }}
+                                {!! $message->content !!}
                             </div>
                             <div class="userMessage_ContentItemBottom">
                                 <span class="userMessage_ContentItemBottomLeft space-right-big">{{ $conversation->created_at }}</span>
@@ -74,43 +74,8 @@
     </div> <!-- for row -->
 </div>
 
-<div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="sendModalLabel">
-    {!! Form::open(['url' => route('inbox.store'), 'method' => 'POST']) !!}
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Send Message</h4>
-            </div>
-            <div class="modal-body">
-                <!-- User Form Input-->
-                <div class="form-group">
-                    {!! Form::label('users', 'User:') !!}
-                    {!! Form::select('users[]', [], null, ['class' => 'form-control', 'id' => 'receive_message_users', 'multiple']) !!}
-                </div>
-                
-                <!-- Content Form Input-->
-                <div class="form-group">
-                    {!! Form::label('content', 'Content:') !!}
-                    {!! Form::textarea('content', null, ['class' => 'form-control', 'rows' => 4]) !!}
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Send</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-    {!! Form::close() !!}
-</div><!-- /.modal -->
+{{--for message modal--}}
+@include('partials._message_model')
 
 @endsection
 
-@section('javascript')
-    <script type="text/javascript">
-        $(function() {
-            user_name_autocomplete('receive_message_users');
-        });
-    </script>
-@endsection

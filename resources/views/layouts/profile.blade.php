@@ -87,6 +87,8 @@
 
 </div> <!--For contianer-->
 
+@include('partials._message_model', ['receiver_select' => [ $user->id => $user->name]])
+
 {{--jQuery (necessary for Bootstrap's JavaScript plugins)--}}
 {!! Html::script('js/jquery-1.12.3.min.js') !!}
 
@@ -121,6 +123,9 @@
 
 {{--form validator javascript support--}}
 {!! Html::script('js/validator.js') !!}
+
+{{--inbox javascript support--}}
+{!! Html::script('js/inbox.js') !!}
 
 {{--profile javascript support--}}
 {!! Html::script('js/profile.js') !!}

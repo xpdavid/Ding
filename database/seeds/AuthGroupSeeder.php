@@ -101,6 +101,11 @@ class AuthGroupSeeder extends Seeder
             'description' => 'Ban User'
         ]);
 
+        Authority::create([
+            'type' => 18,
+            'description' => 'set message can reply'
+        ]);
+
         // associate with group
         AuthGroup::create([
             'name' => 'v1',
@@ -133,13 +138,13 @@ class AuthGroupSeeder extends Seeder
             'name' => 'moderator',
             'point' => 0
         ])->authorities()
-            ->attach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+            ->attach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16, 18]);
 
         AuthGroup::create([
             'name' => 'admin',
             'point' => 0
         ])->authorities()
-            ->attach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]);
+            ->attach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17, 18]);
 
 
         // baned user

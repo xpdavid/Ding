@@ -29,7 +29,7 @@
                         <div class="media-body">
                             <h5 class="media-heading"><a href="/people/{{ $message->sendBy->url_name }}">{{ $message->sendBy->name }}</a></h5>
                             <div class="message_content">
-                                {{ $message->content }}
+                                {!! $message->content !!}
                             </div>
                             <div class="userMessage_ContentItemBottom">
                                 <span class="userMessage_ContentItemBottomTime">{{ $message->created_at }}</span>
@@ -41,13 +41,12 @@
 
 
                 @if($conversation->can_reply)
-                    {!! Form::open(['url' => route('inbox.update', $conversation->id), 'method' => 'PATCH']) !!}
-                        <div class="form-group">
-                            {!! Form::label('Reply', 'Reply:') !!}
-                            {!! Form::textarea('reply', null, ['class' => 'form-control', 'rows' => 5]) !!}
-                        </div>
-                        <button class="btn btn-warning float-right" type="submit">Reply</button>
-                    {{ Form::close() }}
+                    <div class="form-group">
+                        {!! Form::label('Reply', 'Reply:') !!}
+                        {!! Form::textarea('reply', null, ['class' => 'form-control', 'id' => 'message_content', 'rows' => 5]) !!}
+                    </div>
+                    <button class="btn btn-warning float-right" type="button" onclick="sendReply('{{ $conversation->id }}')">Reply</button>
+                    <div id="message_content_error" class="text-danger noneDisplay">You must input message content</div>
                 @endif
 
             </div>

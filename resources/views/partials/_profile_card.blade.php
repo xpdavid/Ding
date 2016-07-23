@@ -91,16 +91,20 @@
             Gain <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <strong>{{ $user->totalVotes }}</strong> Vote,
             <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <strong>{{ $user->totalLikes }}</strong> Likes
         </div>
-        @if(($user->id != Auth::user()->id) && ($user->canSubscribedBy(Auth::user())))
+
             <div class="float-right">
-                @if(Auth::user()->subscribe->checkHasSubscribed($user->id, 'user'))
-                    <button class="btn btn-default" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Unsubscribe</button>
-                @else
-                    <button class="btn btn-success" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Subscribe</button>
+                @if(($user->id != Auth::user()->id) && ($user->canSubscribedBy(Auth::user())))
+                    @if(Auth::user()->subscribe->checkHasSubscribed($user->id, 'user'))
+                        <button class="btn btn-default" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Unsubscribe</button>
+                    @else
+                        <button class="btn btn-success" onclick="user_button_subscribe(this, '{{ $user->id }}', 'user_numSubscriber')">Subscribe</button>
+                    @endif
                 @endif
-                <button class="btn btn-default"><span class="space-right"></span><span class="glyphicon glyphicon-envelope"></span></button>
+
+                @if(($user->id != Auth::user()->id) && (Auth::user()->canSendMessageTo($user)))
+                    <button class="btn btn-default"  data-toggle="modal" data-target="#sendModal"><span class="space-right"></span><span class="glyphicon glyphicon-envelope"></span></button>
+                @endif
             </div>
-        @endif
     </div>
 
     <div class="userHome_profileNavbar">
