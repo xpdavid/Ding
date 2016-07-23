@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use File;
 use IImage;
+use App\Point;
 use App\History;
 use App\Image;
 use App\Topic;

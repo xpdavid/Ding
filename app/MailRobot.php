@@ -52,7 +52,7 @@ class MailRobot extends Model
 
         return Mail::send('email.notification', ['user' =>$user, 'notification' => $notification], function ($m) use($user, $notification) {
             $m->from('robot@nusding.info', 'NUSDing');
-            $m->to($user->email, $user->name)->subject('New notification : , ' . $notification->title . ' - NUSDing');
+            $m->to($user->email, $user->name)->subject('New notification : ' . $notification->title . ' - NUSDing');
         });
     }
 }
