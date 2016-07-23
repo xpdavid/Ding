@@ -85,6 +85,22 @@
                             @endif
                         </div>
                     </div>
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="remember" value="true"> Remember Me
+                                </label>
+                            </div>
+                        </div>
+                        <div class="float-right">
+                            <div class="checkbox">
+                                <label>
+                                    <a href="#">Forget Password?</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Login Ding</button>
                     {{ Form::close() }}
                     <a href="/login/ivle">

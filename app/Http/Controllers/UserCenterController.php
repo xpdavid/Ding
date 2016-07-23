@@ -201,6 +201,7 @@ class UserCenterController extends Controller
                     'id' => $topic->id
                 ]);
             }
+            sort($topics);
             $answer_arr = false;
             if ($answer != null) {
                 array_push($results, $answer->jsonAnswerSummary());

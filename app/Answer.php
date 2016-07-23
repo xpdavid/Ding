@@ -380,6 +380,7 @@ class Answer extends Model
         foreach ($this->question->topics as $topic) {
             array_push($topics, $topic->json);
         }
+        sort($topics);
 
         $answer_basic = [
             'answer' => [
