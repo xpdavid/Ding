@@ -10,20 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
-Route::get('/test', function(Request $request) {
-    Mail::send('email.welcome', ['user' => Auth::user()], function ($m) {
-        $m->from('robot@nusding.info', 'NUSDing');
-
-        $m->to('acesscp@gmail.com')->subject('Welcome');
-    });
-});
-
-Route::get('/forcelogin/{id}', function($id) {
-    Auth::loginUsingId($id);
-    return redirect('/highlight');
-});
-
 // for auth controller
 Route::auth();
 
