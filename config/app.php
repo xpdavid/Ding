@@ -159,7 +159,8 @@ return [
 
         Intervention\Image\ImageServiceProvider::class,
         Yangqi\Htmldom\HtmldomServiceProvider::class,
-        Mews\Purifier\PurifierServiceProvider::class
+        Mews\Purifier\PurifierServiceProvider::class,
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
     ],
 
@@ -212,7 +213,7 @@ return [
         'IImage' => Intervention\Image\Facades\Image::class,
         'Htmldom' => Yangqi\Htmldom\Htmldom::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
-
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
     ],
 
 ];

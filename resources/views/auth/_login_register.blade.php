@@ -51,6 +51,12 @@
                             @endif
                         </div>
                     </div>
+                    <div class="margin-top">
+                        <div id="RecaptchaField1"></div>
+                    </div>
+                    @if ($errors->has('g-recaptcha-response'))
+                        <div class="text-danger">Please complete the reCaptcha Robot Test</div>
+                    @endif
                     <button type="submit" class="btn btn-primary">Register Ding</button>
                     <a href="/login/ivle">
                         <button type="submit" class="btn btn-warning">Login with IVLE</button>
@@ -97,6 +103,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="margin-top">
+                        <div id="RecaptchaField2"></div>
+                    </div>
+                    @if ($errors->has('g-recaptcha-response'))
+                        <div class="text-danger">Please complete the reCaptcha Robot Test</div>
+                    @endif
                     <button type="submit" class="btn btn-primary">Login Ding</button>
                     {{ Form::close() }}
                     <a href="/login/ivle">

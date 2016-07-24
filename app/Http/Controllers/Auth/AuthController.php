@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Point;
 use App\Subscribe;
 use App\User;
+use App\MailRobot;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -23,7 +25,12 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers {
+        register as register_parent;
+        login as login_parent;
+    }
+
+    use ThrottlesLogins;
 
     /**
      * Where to redirect users after login / registration.
@@ -89,6 +96,32 @@ class AuthController extends Controller
         MailRobot::welcome($user);
 
         return $user;
+    }
+
+    /**
+     * Override register method to validate recapacha
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request) {
+        $this->validate($request, [
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
+        return $this->register_parent($request);
+    }
+
+    /**
+     * Override register method to validate recapacha
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request) {
+        $this->validate($request, [
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
+        return $this->login_parent($request);
     }
 
 
