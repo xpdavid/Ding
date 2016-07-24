@@ -23,7 +23,7 @@
                       @if (count($user->educationExps) > 0)
                             {{$user->educationExps->first()->institution}}
                         @else
-                            Not fill up yet
+                            Not filled up yet
                         @endif
                     </a>
                   </span>
@@ -45,7 +45,7 @@
                       @if (count($user->jobs) > 0)
                             {{ $user->jobs->first()->organization }}
                         @else
-                            Not fill up yet
+                            Not filled up yet
                         @endif
                     </a>
                   </span>
@@ -54,7 +54,7 @@
                       @if (count($user->jobs) > 0)
                             {{$user->jobs->first()->designation}}
                         @else
-                            Not fill up yet
+                            Not filled up yet
                         @endif
                     </a>
                   </span>
