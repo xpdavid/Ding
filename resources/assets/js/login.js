@@ -117,16 +117,30 @@ function MyBackground(drawDivText, drawDivLine) {
 	this.MyObejcts = [];
 	this.MyLines = [];
     var self = this;
-    $.post('/hot-topics', {
-        max : 30
-    }, function(results) {
-        var process = [];
-        $.each(results, function(index, item) {
-            process.push(item.name);
-        });
-        MyBackground.prototype.textSource = process;
+    // local storage to get cache
+    try {
+        var storage = window.localStorage;
+        if (storage.getItem('NUS-DING-HOT-TOPICS') == null) {
+            $.post('/hot-topics', {
+                max : 30
+            }, function(results) {
+                var process = [];
+                $.each(results, function(index, item) {
+                    process.push(item.name);
+                });
+                MyBackground.prototype.textSource = process;
+                storage.setItem('NUS-DING-HOT-TOPICS', JSON.stringify(process));
+                self.init();
+            });
+        } else {
+            MyBackground.prototype.textSource = JSON.parse(storage.getItem('NUS-DING-HOT-TOPICS'));
+            self.init();
+        }
+    } catch(e) {
         self.init();
-    });
+    }
+
+
 }
 
 /*
