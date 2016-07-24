@@ -56,15 +56,15 @@ function navbar_noticeBarAJAX($object, callback) {
         if (results.items) {
             var items = results.items;
             var notice_notice = items.filter(function (item) {
-                return $.inArray(item.type, [1, 2, 3, 4, 5, 6]) != -1;
+                return $.inArray(parseInt(item.type), [1, 2, 3, 4, 5, 6]) != -1;
             });
 
             var notice_user = items.filter(function (item) {
-                return $.inArray(item.type, [10, 11, 12, 13, 14]) != -1;
+                return $.inArray(parseInt(item.type), [10, 11, 12, 13, 14]) != -1;
             });
 
             var notice_thanks = items.filter(function (item) {
-                return $.inArray(item.type, [7, 8, 9]) != -1;
+                return $.inArray(parseInt(item.type), [7, 8, 9]) != -1;
             });
 
             $.each(notice_notice, function (index, item) {
