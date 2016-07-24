@@ -32,6 +32,17 @@ return [
             "HTML.SafeIframe"          => 'true',
             "URI.SafeIframeRegexp"     => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
         ],
+        'nothing' => [
+            'HTML.Doctype'             => 'XHTML 1.0 Transitional',
+            'HTML.Allowed'             => ''
+        ],
+        'message' => [
+            'HTML.Doctype'             => 'XHTML 1.0 Transitional',
+            'HTML.Allowed'             => 'p,strong,em,span,blockquote,li,ul[style],ol[style],a[href]',
+            'CSS.AllowedProperties'    => 'text-decoration,list-style-type',
+            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.RemoveEmpty'   => true,
+        ]
     ],
 
 ];

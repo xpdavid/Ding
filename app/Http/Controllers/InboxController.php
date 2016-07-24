@@ -78,7 +78,7 @@ class InboxController extends Controller
 
         // a message belong to a conversation
         $message = Message::create([
-            'content' => clean($request->get('content'))
+            'content' => clean($request->get('content'), 'message')
         ]);
         $conversation->messages()->save($message);
 

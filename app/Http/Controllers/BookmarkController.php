@@ -173,8 +173,8 @@ class BookmarkController extends Controller
 
         // create a bookmark
         $bookmark = Bookmark::create([
-            'name' => e($request->get('name')),
-            'description' => e($description),
+            'name' => clean($request->get('name'), 'nothing'),
+            'description' => clean($description, 'nothing'),
             'is_public' => $isPublic
         ]);
 
@@ -202,8 +202,8 @@ class BookmarkController extends Controller
             ];
         }
         $bookmark->update([
-            'name' => e($request->get('name')),
-            'description' => e($request->get('description')),
+            'name' => clean($request->get('name'), 'nothing'),
+            'description' => clean($request->get('description'), 'nothing'),
             'is_public' => $request->get('is_public')
         ]);
         return [

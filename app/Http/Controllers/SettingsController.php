@@ -88,13 +88,16 @@ class SettingsController extends Controller
         if ($request->has('personal_domain')) {
             // you need be authoried to do this
             if ($user->operation(10) && !$user->settings->personal_domain_modified) {
-                // check not exisit the same name
+                // check not exist the same name
                 $findUser =  User::where('url_name', $request->get('personal_domain'));
                 if ($findUser->exists() && $findUser->first()->id == $user->id) {
                     // do nothing as the user doesn't change the personal domain
                 } else if (!$findUser->exists()) {
                     $settings->update(['personal_domain_modified' => true]);
-                    $user->update(['url_name' => e($request->get('personal_domain'))]);
+                    $domain = clean($request->get('personal_domain'), 'nothing');
+                    if ($domain != "") {
+                        $user->update(['url_name' => urlencode($domain)]);
+                    }
                 } else {
                     return redirect('/settings/basic')->withErrors(['The domain name has been used by other user']);
                 }

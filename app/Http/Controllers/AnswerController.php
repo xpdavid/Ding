@@ -140,7 +140,7 @@ class AnswerController extends Controller
             $answer->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 2,
-                'text' => e($request->get('reason'))
+                'text' => clean($request->get('reason'), 'nothing')
             ]));
 
             if ($answer->owner->id != Auth::user()->id) {
@@ -174,7 +174,7 @@ class AnswerController extends Controller
             $answer->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 3,
-                'text' => e($request->get('reason'))
+                'text' => clean($request->get('reason'), 'nothing')
             ]));
 
             return [
@@ -287,6 +287,12 @@ class AnswerController extends Controller
             'text' => 'required|min:5'
         ]);
 
+        // check answer has content
+        $answer_content = clean($request->get('text'));
+        if ($answer_content == "") {
+            abort(403);
+        }
+
         // get necessary param
         $user = Auth::user();
         $question = Question::findOrFail($question_id);
@@ -300,7 +306,7 @@ class AnswerController extends Controller
             // already saved answer
             $answer = $draft;
             $answer->saveDraft([
-                'answer' => clean($request->get('text'))
+                'answer' => $answer_content
             ]);
 
         } else {
@@ -315,7 +321,7 @@ class AnswerController extends Controller
 
             // create answers
             $answer = Answer::create([
-                'answer' => clean($request->get('text')),
+                'answer' => $answer_content,
                 'status' => 2 // draft status
             ]);
             $answer->save();
@@ -347,6 +353,12 @@ class AnswerController extends Controller
         $user = Auth::user();
         $question = Question::findOrFail($question_id);
 
+        // check answer has content
+        $answer_content = clean($request->get('user_answer'));
+        if ($answer_content == "") {
+            abort(403);
+        }
+
         if ($question->status != 1) {
             // you can only answer an published status question item
             abort(401);
@@ -359,10 +371,11 @@ class AnswerController extends Controller
                 abort(401);
             }
 
+
             // the post answer is an draft
             // save the draft immediately
             $answer->saveDraft([
-                'answer' => clean($request->get('user_answer'))
+                'answer' => $answer_content
             ]);
             $answer->publish(); // the auth process is contained in the publish method
         } else {
@@ -375,7 +388,7 @@ class AnswerController extends Controller
 
             // create answers
             $answer = Answer::create([
-                'answer' => clean($request->get('user_answer'))
+                'answer' => $answer_content
             ]);
             $answer->save();
 

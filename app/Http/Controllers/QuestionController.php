@@ -100,6 +100,11 @@ class QuestionController extends Controller
             'text' => 'required|min:5'
         ]);
 
+        // check topics exists
+        foreach ($request->get('question_topics') as $topic_id) {
+            $topic = Topic::findOrFail($topic_id);
+        }
+
         // get necessary param
         $user = Auth::user();
 
@@ -121,8 +126,14 @@ class QuestionController extends Controller
             // already saved answer
             $question = $draft;
 
+            $title = clean($request->get('question_title'), 'nothing');
+            // question title is empty
+            if ($title == "") {
+                abort(403);
+            }
+
             if ($question->saveDraft([
-                'title' => e($request->get('question_title')),
+                'title' => $title,
                 'content' => clean($request->get('text')),
                 'reward' => $reward
             ])) {
@@ -135,9 +146,15 @@ class QuestionController extends Controller
             }
 
         } else {
+            $title = clean($request->get('question_title'), 'nothing');
+            // question title is empty
+            if ($title == "") {
+                abort(403);
+            }
+
             // create question
             $question = Question::create([
-                'title' => e($request->get('question_title')),
+                'title' => $title,
                 'content' => clean($request->get('text')),
                 'reward' => $reward,
                 'status' => 2 // draft status
@@ -188,6 +205,11 @@ class QuestionController extends Controller
             'question_topics' => 'required|array'
         ]);
 
+        // check topics exists
+        foreach ($request->get('question_topics') as $topic_id) {
+            $topic = Topic::findOrFail($topic_id);
+        }
+
         // get necessary param
         $user = Auth::user();
 
@@ -201,21 +223,36 @@ class QuestionController extends Controller
                 abort(401);
             }
 
+            $title = clean($request->get('question_title'), 'nothing');
+            // question title is empty
+            if ($title == "") {
+                abort(403);
+            }
+
             // save draft last time
             $question->saveDraft([
-                'title' => e($request->get('question_title')),
+                'title' => $title,
                 'content' => clean($request->get('question_detail')),
                 'reward' => $reward,
             ]);
 
             // save topics relationship
+            foreach ($request->get('question_topics') as $topic_id) {
+                $topic = Topic::findOrFail($topic_id);
+            }
             $question->topics()->sync($request->get('question_topics'));
 
             $question->publish();
 
         } else {
+            $title = clean($request->get('question_title'), 'nothing');
+            // question title is empty
+            if ($title == "") {
+                abort(403);
+            }
+
             $question = Question::create([
-                'title' => e($request->get('question_title')),
+                'title' => $title,
                 'content' => clean($request->get('question_detail')),
                 'reward' => $reward,
             ]);
@@ -265,6 +302,11 @@ class QuestionController extends Controller
         ]);
 
 
+        // check topics exists
+        foreach ($request->get('question_topics') as $topic_id) {
+            $topic = Topic::findOrFail($topic_id);
+        }
+
 
         // record topic change
         $question->recordTopicsHistory($request->get('question_topics'));
@@ -275,8 +317,14 @@ class QuestionController extends Controller
             Point::add_point(Auth::user(), 6, [$question->id]);
         }
 
+        $title = clean($request->get('question_title'), 'nothing');
+        // question title is empty
+        if ($title == "") {
+            abort(403);
+        }
+
         $question->update([
-            'title' => e($request->get('question_title')),
+            'title' => $title,
             'content' => clean($request->get('question_detail')),
         ], ['history' => true]);
 
@@ -306,7 +354,7 @@ class QuestionController extends Controller
             $question->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 5,
-                'text' => e($request->get('reason'))
+                'text' => clean($request->get('reason'), 'nothing')
             ]));
 
             // Question Closed
@@ -340,7 +388,7 @@ class QuestionController extends Controller
             $question->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 6,
-                'text' => e($request->get('reason'))
+                'text' => clean($request->get('reason'), 'nothing')
             ]));
 
             return [

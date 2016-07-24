@@ -259,12 +259,14 @@ function saveEducationExp() {
             type : 'education'
         },
         dataType: 'json'
-    }).done(function(data) {
         // empty data
-        if (!data.status) return;
+    }).done(function(data) {
         // clear value
         $('[name="institution"]').val("");
         $('[name="major"]').val("");
+
+        if (!data.status) return;
+        
         // check has the same experience
         if ($('#educationExp_' + data.id).length != 0) {
             // do nothing
@@ -337,13 +339,13 @@ function saveJob() {
             type : 'job'
         },
         dataType: 'json'
-    }).done(function(data) {
         // empty data
-        if (!data.status) return;
-
+}).done(function(data) {
         // clear value
         $('[name="organization"]').val("");
         $('[name="designation"]').val("");
+
+        if (!data.status) return;
 
         // check has the same experience
         if ($('#job_' + data.id).length != 0) {

@@ -158,7 +158,7 @@ class TopicController extends Controller
         if ($user->operation(11)) {
             $topic = Topic::create([
                 'name' => e($request->get('name')),
-                'description' => e($request->get('description')),
+                'description' => clean($request->get('description'), 'nothing'),
             ]);
 
             // add point to user
@@ -187,7 +187,7 @@ class TopicController extends Controller
             $topic->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 10,
-                'text' => e($request->get('reason'))
+                'text' => clean($request->get('reason'), 'nothing')
             ]));
 
             // closed topic
@@ -223,7 +223,7 @@ class TopicController extends Controller
             $topic->histories()->save(History::create([
                 'user_id' => Auth::user()->id,
                 'type' => 11,
-                'text' => e($request->get('reason'))
+                'text' => clean($request->get('reason'), 'nothing')
             ]));
 
             return [
@@ -344,13 +344,13 @@ class TopicController extends Controller
 
         if($request->has('topic_name')) {
             $topic->update([
-                'name' => e($request->get('topic_name'))
+                'name' => clean($request->get('topic_name'), 'nothing')
             ]);
         }
 
         if($request->has('topic_description')) {
             $topic->update([
-                'description' => e($request->get('topic_description'))
+                'description' => clean($request->get('topic_description'), 'nothing')
             ]);
         }
 

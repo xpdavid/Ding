@@ -394,7 +394,17 @@ class PeopleController extends Controller
         
         switch ($request->get('type')) {
             case 'education':
-                $educationExp = EducationExp::findOrCreate(e($request->get('institution')), e($request->get('major')));
+                $institution = clean($request->get('institution'), 'nothing');
+                $major = clean($request->get('major'), 'nothing');
+                if ($institution == "") {
+                    return [
+                        'status' => false
+                    ];
+                }
+                $educationExp = EducationExp::findOrCreate(
+                    $institution,
+                    $major
+                );
                 // prevent duplicate saving
                 $user->educationExps()->detach($educationExp->id);
                 $user->educationExps()->attach($educationExp->id);
@@ -405,7 +415,17 @@ class PeopleController extends Controller
                     'status' => true
                 ];
             case 'job':
-                $job = Job::findOrCreate(e($request->get('organization')), e($request->get('designation')));
+                $organization = clean($request->get('organization'), 'nothing');
+                $designation = clean($request->get('designation'), 'nothing');
+                if ($organization == "") {
+                    return [
+                        'status' => false
+                    ];
+                }
+                $job = Job::findOrCreate(
+                    $organization,
+                    $designation
+                );
                 // prevent duplicate saving
                 $user->jobs()->detach($job->id);
                 $user->jobs()->attach($job->id);
@@ -454,12 +474,12 @@ class PeopleController extends Controller
                     'email' => $settings->display_email
                 ];
             case 'bio':
-                $user->update(['bio' => e($request->get('bio'))]);
+                $user->update(['bio' => clean($request->get('bio'), 'nothing')]);
                 return [
                     'bio' => $user->bio
                 ];
             case 'intro':
-                $user->update(['self_intro' => e($request->get('intro'))]);
+                $user->update(['self_intro' => clean($request->get('intro'), 'nothing')]);
                 return [
                     'self_intro' => $user->self_intro
                 ];
