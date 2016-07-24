@@ -663,12 +663,12 @@
                 <div style="Margin-left: 20px;Margin-right: 20px;">
 
                     <h2 class="size-24" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #44a8c7;font-size: 20px;line-height: 28px;text-align: center;" lang="x-size-24"><strong>
-                            Hi, {{ $user->name }}, you password reset link!
+                            Hi {{ $user->name }}, this is your password reset link!
                             </strong></h2>
                 </div>
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-bottom: 24px;">
-                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">Hi, {{ $user->name }}, we detect that you are request to reset you password, please click the button below and follow the system instruction to get your new password.</p>
-                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">If you have never requested resetting password recently, please ignore this email</p>
+                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">Hi {{ $user->name }}, we have detected that you request to reset you password, please click the button below and follow the instructions to set your new password.</p>
+                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">If you have not requested for password reset, please ignore this email.</p>
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-bottom: 24px;">
@@ -678,9 +678,9 @@
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-bottom: 24px;">
-                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">If you are unable to click the button, please copy and paste the following link and visit it in your browser.</p>
+                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">If the button fails to work, please copy and paste the following link and visit it on your browser.</p>
                     <a style="text-decoration: none;transition: opacity 0.1s ease-in;color: #5c91ad;Margin-top: 20px;" href="{{ $link }}">{{ $link }}</a>
-                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">The link will be expired in one hour.</p>
+                    <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">The link will expire in one hour.</p>
                 </div>
 
             </div>
@@ -715,7 +715,7 @@
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 10px;Margin-bottom: 10px;">
 
                     <div>
-                        <div>NUSDing<br />
+                        <div>NUS Ding<br />
                             2016 Copyright All right reserved.</div>
                     </div>
                     <div style="Margin-top: 18px;">
