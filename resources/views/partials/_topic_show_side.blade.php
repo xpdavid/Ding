@@ -14,16 +14,16 @@
             @if(Auth::user())
                 @if(Auth::user()->subscribe->checkHasSubscribed($topic->id, 'topic'))
                     <button type="button" class="btn btn-warning"
-                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')">
+                            onclick="topic_show_subscribe(this, '{{ $topic->id }}', 'topic_{{ $topic->id }}_numSubscriber')">
                         Unsubscribe</button>
                 @else
                     <button type="button" class="btn btn-success"
-                            onclick="topic_show_subscribe(this, '{{ $topic->id }}')"
+                            onclick="topic_show_subscribe(this, '{{ $topic->id }}', 'topic_{{ $topic->id }}_numSubscriber')"
                     {{ $topic->isClosed() ? 'disabled' : ''}}>
                         Subscribe</button>
                 @endif
             @endif
-            <div class="float-right margin-top">{{ $topic->subscribers()->count() }} <span class="font-black">People Have Subscribed</span> </div>
+            <div class="float-right margin-top"><span id="topic_{{ $topic->id }}_numSubscriber">{{ $topic->subscribers()->count() }}</span> <span class="font-black">People Have Subscribed</span> </div>
         </div>
 
         <div class="margin-top">
