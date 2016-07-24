@@ -30,7 +30,8 @@ class TopicController extends Controller
             'show',
             'topics',
             'subTopics',
-            'getQuestions'
+            'getQuestions',
+            'hotTopics'
         ]]);
     }
 
@@ -158,7 +159,7 @@ class TopicController extends Controller
         if ($user->operation(11)) {
             $topic = Topic::create([
                 'name' => e($request->get('name')),
-                'description' => clean($request->get('description'), 'nothing'),
+                'description' => clean($request->get('description'), 'nonthing'),
             ]);
 
             // add point to user
@@ -235,6 +236,18 @@ class TopicController extends Controller
             ];
         }
 
+    }
+
+    /**
+     * Get all hottopics in the site
+     */
+    public function hotTopics(Request $request) {
+        $max = $request->has('max') ? $request->get('max') : 30;
+        $topics = [];
+        foreach (Topic::getHotTopics()->take($max) as $topic) {
+            array_push($topics, $topic->toJsonFormat());
+        }
+        return $topics;
     }
 
     /**

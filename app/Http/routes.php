@@ -68,6 +68,7 @@ Route::get('/topic/{topic_id}/organization', [ 'uses' => 'TopicController@organi
 Route::post('/topic/questions', 'TopicController@getQuestions');
 Route::post('/topic/create', 'TopicController@create');
 Route::post('/topic/upload', 'UploadController@uploadTopicImg');
+Route::post('/hot-topics', 'TopicController@hotTopics');
 
 // for bookmark
 Route::get('/people/{url_name}/bookmark', [ 'as' => 'people.bookmark', 'uses' => 'BookmarkController@index']);

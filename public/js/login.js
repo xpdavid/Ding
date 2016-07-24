@@ -116,7 +116,17 @@ function MyBackground(drawDivText, drawDivLine) {
 	this.areaLine = drawDivLine; // a JQuery object
 	this.MyObejcts = [];
 	this.MyLines = [];
-	this.init();
+    var self = this;
+    $.post('/hot-topics', {
+        max : 30
+    }, function(results) {
+        var process = [];
+        $.each(results, function(index, item) {
+            process.push(item.name);
+        });
+        MyBackground.prototype.textSource = process;
+        self.init();
+    });
 }
 
 /*
@@ -264,7 +274,8 @@ function draw() {
 * excute this function after load the page
 */
 $(function() {
-	setInterval(draw, 50);
+
+    setInterval(draw, 50);
 });
 
 /*
