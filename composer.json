@@ -11,7 +11,8 @@
         "intervention/image": "^2.3",
         "yangqi/htmldom": "dev-master",
         "guzzlehttp/guzzle": "~5.3|~6.0",
-        "mews/purifier": "^2.0"
+        "mews/purifier": "^2.0",
+        "greggilbert/recaptcha": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
