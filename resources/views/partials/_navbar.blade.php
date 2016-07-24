@@ -99,6 +99,13 @@
 
 </div>
 
+<button class="btn close_detail_button noneDisplay" id="close_detail_button_answer" data-toggle="hide">
+    <span class="glyphicon glyphicon-chevron-up"></span>Close
+</button>
+<button class="btn close_detail_button noneDisplay" id="close_detail_button_question" data-toggle="hide">
+    <span class="glyphicon glyphicon-chevron-up"></span>Close
+</button>
+
 @if(Auth::user() && Auth::user()->authGroup_id == 8)
     <div class="alert alert-warning realname_alert">
         Please complete identification verification <a href="/settings/account"><strong>(Bind your account with IVLE)</strong></a>

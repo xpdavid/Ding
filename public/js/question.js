@@ -941,29 +941,47 @@ function bindExpendAll() {
         }
         var $object = $(this);
         if ($object.data('type') == "answer") {
-            $.post('/answer/' + $object.data('id'), {}, function(results) {
+            if (!$('#answer_full_' + $object.data('id')).data('expand')) {
+                $.post('/answer/' + $object.data('id'), {}, function(results) {
+                    $('#answer_summary_' + $object.data('id')).hide();
+                    $('#answer_full_content_' + $object.data('id')).html(results);
+                    rerenderMath('answer_full_' + $object.data('id'));
+                    // highlight code
+                    Prism.highlightAll();
+                    $('#answer_full_' + $object.data('id')).show();
+                    imgResponsiveIn('answer_full_' + $object.data('id'));
+                    // set has expanded
+                    $('#answer_full_' + $object.data('id')).data('expand', true);
+                    // check to show close button
+                    checkAndShowCloseButton('answer');
+                })
+            } else {
                 $('#answer_summary_' + $object.data('id')).hide();
-                $('#answer_full_content_' + $object.data('id')).html(results);
-                rerenderMath('answer_full_' + $object.data('id'));
-                // highlight code
-                Prism.highlightAll();
                 $('#answer_full_' + $object.data('id')).show();
-                imgResponsiveIn('answer_full_' + $object.data('id'));
-                // set has expanded
-                $('#answer_full_' + $object.data('id')).data('expand', true);
-            })
+                // check to show close button
+                checkAndShowCloseButton('answer');
+            }
         } else if ($object.data('type') == "question") {
-            $.post('/question/' + $object.data('id'), {}, function(results) {
+            if (!$('#question_full_' + $object.data('id')).data('expand')) {
+                $.post('/question/' + $object.data('id'), {}, function(results) {
+                    $('#question_summary_' + $object.data('id')).hide();
+                    $('#question_full_content_' + $object.data('id')).html(results.content);
+                    rerenderMath('question_full_' + $object.data('id'));
+                    // highlight code
+                    Prism.highlightAll();
+                    $('#question_full_' + $object.data('id')).show();
+                    imgResponsiveIn('question_full_' + $object.data('id'));
+                    // set has expanded
+                    $('#question_full_' + $object.data('id')).data('expand', true);
+                    // check to show close button
+                    checkAndShowCloseButton('question');
+                })
+            } else {
                 $('#question_summary_' + $object.data('id')).hide();
-                $('#question_full_' + $object.data('id')).html(results.content);
-                rerenderMath('question_full_' + $object.data('id'));
-                // highlight code
-                Prism.highlightAll();
                 $('#question_full_' + $object.data('id')).show();
-                imgResponsiveIn('question_full_' + $object.data('id'));
-                // set has expanded
-                $('#question_full_' + $object.data('id')).data('expand', true);
-            })
+                // check to show close button
+                checkAndShowCloseButton('question');
+            }
         }
     })
 }

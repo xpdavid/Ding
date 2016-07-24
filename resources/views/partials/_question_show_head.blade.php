@@ -28,7 +28,11 @@
                 {!! $question->summary !!} <a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{ $question->id }}">Show all</a>
             </div>
             <div id="question_full_{{ $question->id }}">
+                <span id="question_full_content_{{$question->id}}_viewport_top"></span>
+                <div id="question_full_content_{{ $question->id }}">
 
+                </div>
+                <span id="question_full_content_{{$question->id}}_viewport_bottom"></span>
             </div>
             @if ($question->isClosed())
                 <div class="well margin-top">

@@ -755,6 +755,92 @@ function pointUI(integer) {
 }
 
 /**
+ * Determine if the element is in the view point
+ *
+ * @param el
+ * @returns {boolean}
+ */
+$.fn.isOnScreen = function(){
+
+    var win = $(window);
+
+    var viewport = {
+        top : win.scrollTop(), // for navbar
+        left : win.scrollLeft()
+    };
+    viewport.right = viewport.left + win.width();
+    viewport.bottom = viewport.top + win.height();
+
+    var bounds = this.offset();
+    bounds.right = bounds.left + this.outerWidth();
+    bounds.bottom = bounds.top + this.outerHeight();
+
+    return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+
+};
+
+/**
+ * Check wheter show the button to close long answers/question
+ *
+ * @param $type
+ */
+function checkAndShowCloseButton($type) {
+    var id;
+    var regexp = new RegExp($type + "_full_content_(\\d{1,})", "g");
+    var $div = $('div')
+        .filter(function() {
+            if (this.id.match(regexp)) {
+                if ($(this).isOnScreen()) {
+                    var id_temp = regexp.exec(this.id)[1];
+                    if (!$('#' + $type + '_full_content_' + id_temp + '_viewport_bottom').isOnScreen()) {
+                        id = id_temp;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+    var $button = $('#close_detail_button_' + $type);
+    if ($div.length != 0) {
+        var offset = $div.offset();
+        var viewportOffsetRight = offset.left - $(document).scrollLeft() + $div.width() - 65;
+        $button.css('left', viewportOffsetRight);
+        $button.data('hide', $type + '_full_' + id);
+        $button.data('show', $type + '_summary_' + id);
+        $button.show();
+        if ($button.data('_id') != ($type + id)) {
+            $button.css('opacity', 0);
+            $button.css('bottom', '-30px');
+            $button.animate({
+                opacity : 1,
+                bottom : '12px'
+            }, 200, null);
+        }
+        $button.data('_id', $type + id);
+    } else {
+        $button.data('_id', null);
+        $button.fadeOut();
+    }
+}
+/**
+ * Bind close detail button with scrolling event
+ *
+ * @param $type
+ */
+function bindFixedAnswerCloseButton($type) {
+    var check = function() {
+        checkAndShowCloseButton($type);
+    };
+    $(window).scroll(check);
+    $('body').on('click', '[data-toggle="hide"]', check);
+}
+
+$(function() {
+    bindFixedAnswerCloseButton('answer');
+    bindFixedAnswerCloseButton('question');
+});
+
+/**
  * Fix for boostrap modal using tinymce
  */
 $(function() {

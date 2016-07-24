@@ -976,6 +976,18 @@ body.modal-open {
   margin:0px 10px 0px 0px;
 }
 
+.close_detail_button {
+  position: fixed;
+  right: auto;
+  z-index: 1;
+  margin: 0;
+  background-color: #81baeb;
+  color: #fff;
+  opacity: .9;
+  -ms-filter: "alpha(Opacity=90)";
+  top: auto; bottom: 12px;
+}
+
 
 .comment_box {
   position: relative;
