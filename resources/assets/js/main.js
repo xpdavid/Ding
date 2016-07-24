@@ -104,21 +104,27 @@ function topics_subscribe(event, clickObject, topic_id) {
  * @param clickObject
  * @param topic_id
  */
-function topic_show_subscribe(clickObject, topic_id) {
+function topic_show_subscribe(clickObject, topic_id, text_id) {
     var $button = $(clickObject);
     if ($button.hasClass('btn-success')) {
         // has not subscribed yet
-        subscribeTopic(topic_id, null, function() {
-            $button.html('Unsubscribe');
-            $button.removeClass('btn-success');
-            $button.addClass('btn-warning');
+        subscribeTopic(topic_id, null, function(results) {
+            if (results.status) {
+                $('#' + text_id).html(results.numSubscriber);
+                $button.html('Unsubscribe');
+                $button.removeClass('btn-success');
+                $button.addClass('btn-warning');
+            }
         });
     } else {
         // has subscribed
-        subscribeTopic(topic_id, 'unsubscribe', function() {
-            $button.html('Subscribe');
-            $button.removeClass('btn-warning');
-            $button.addClass('btn-success');
+        subscribeTopic(topic_id, 'unsubscribe', function(results) {
+            if (results.status) {
+                $('#' + text_id).html(results.numSubscriber);
+                $button.html('Subscribe');
+                $button.removeClass('btn-warning');
+                $button.addClass('btn-success');
+            }
         });
     }
 }

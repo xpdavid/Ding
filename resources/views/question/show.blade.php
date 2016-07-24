@@ -5,7 +5,7 @@
 
     <div class="col-md-12">
         <div class="clearfix">
-            <div class="float-left">{{ $question->answers->count() }} answer(s)</div>
+            <div class="float-left">{{ $question->answers()->published()->count() }} answer(s)</div>
             <div class="float-right">
                 @if($sorted == 'created')
                     <a href="{{ action('QuestionController@show', $question->id) }}">Sort by Vote</a> / Sort by Date

@@ -59,7 +59,7 @@
                     @endif
                     <button type="submit" class="btn btn-primary">Register Ding</button>
                     <a href="/login/ivle">
-                        <button type="submit" class="btn btn-warning">Login with IVLE</button>
+                        <button type="button" class="btn btn-warning">Login with IVLE</button>
                     </a>
                     <a href="/highlight">
                         <button type="submit" class="btn btn-link">Take a quick view</button>
@@ -112,7 +112,7 @@
                     <button type="submit" class="btn btn-primary">Login Ding</button>
                     {{ Form::close() }}
                     <a href="/login/ivle">
-                        <button type="submit" class="btn btn-warning">Login with IVLE</button>
+                        <button type="button" class="btn btn-warning">Login with IVLE</button>
                     </a>
                     <a href="/highlight">
                         <button type="submit" class="btn btn-link">Take a quick view</button>
