@@ -13,7 +13,7 @@ $(function() {
  */
 var navbar_noticeBarPage = 1;
 function navbar_triggerNoticeBar() {
-    var $object = $($('#contentForNoticeBar').html());
+    var $backup = $($('#contentForNoticeBar').html());
     $('#contentForNoticeBar').empty();
 
     $('#user_notice').popover({
@@ -26,6 +26,7 @@ function navbar_triggerNoticeBar() {
     });
 
     $('#user_notice').on('show.bs.popover', function() {
+        var $object = $backup.clone();
         navbar_noticeBarAJAX($object, function() {
             $('#nav_notification').html($object[0].outerHTML);
         });
