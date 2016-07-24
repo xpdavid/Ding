@@ -553,7 +553,6 @@ body.modal-open {
   text-align: center; }
 
 .login_mainBody {
-  min-height: 510px;
   display: block;
   vertical-align: middle;
   text-align: left;

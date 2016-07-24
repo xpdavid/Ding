@@ -1,7 +1,3 @@
-<div id="login_bg_text">
-</div>
-<div id="login_bg_line">
-</div>
 <div class="login_main">
     <div class="login_mainBody">
         <div class="login_mainBodyHeader">
@@ -96,7 +92,7 @@
                         <div class="float-right">
                             <div class="checkbox">
                                 <label>
-                                    <a href="#">Forget Password?</a>
+                                    <a href="/password/reset">Forget Password?</a>
                                 </label>
                             </div>
                         </div>

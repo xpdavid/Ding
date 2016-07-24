@@ -710,7 +710,7 @@
                             2016 Copyright All right reserved.</div>
                     </div>
                     <div style="Margin-top: 18px;">
-                        <div>You are receiving this email because you got new notificati.<br />
+                        <div>You are receiving this email because you got new notification.<br />
                             This is a system generate email, Please do not reply!</div>
                     </div>
                 </div>

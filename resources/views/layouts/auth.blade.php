@@ -26,7 +26,10 @@
 
 </head>
 <body class="login_body">
-
+<div id="login_bg_text">
+</div>
+<div id="login_bg_line">
+</div>
 @yield('content')
 
 

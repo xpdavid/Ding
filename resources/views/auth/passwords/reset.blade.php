@@ -1,7 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
-<div class="container">
+    <div class="login_main">
+        <div class="login_mainBody">
+            <div class="login_mainBodyHeader">
+                <h1 class="logo hide-text">DING</h1>
+                <h4 class="logo_subtitle">Share your Knowledge with others</h4>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
@@ -66,5 +73,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

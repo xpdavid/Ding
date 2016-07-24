@@ -20,6 +20,8 @@ class PasswordController extends Controller
 
     use ResetsPasswords;
 
+    protected $subject = "Your Email Reset Link - NUSDing";
+
     /**
      * Create a new password controller instance.
      *
@@ -29,4 +31,6 @@ class PasswordController extends Controller
     {
         $this->middleware($this->guestMiddleware());
     }
+    
+    
 }
