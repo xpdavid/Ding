@@ -7,10 +7,10 @@
                 <h4 class="modal-title">Ask A Question</h4>
             </div>
             <div class="modal-body">
-                <p>Ding is a friendly and helpful community. We hope everyone can find answers to their question.</p>
-                <p>To craft a good question, please make your question title clear and question description concise.</p>
-                <p>For more details, please refer to the post on our blog <a href="http://blog.nusding.info/index.php/2016/07/22/how-to-post-a-good-question/">Here</a>. </p>
-                <p>Of course, a good reward will make your question more attractive and responses more prompt.</p>
+            <p>Ding is a friendly and helpful community. We hope everyone can find answers to their question.</p>
+            <p>To craft a good question, please make your question title clear and question description concise.</p>
+            <p>For more details, please refer to the post on our blog <a href="http://blog.nusding.info/index.php/2016/07/22/how-to-post-a-good-question/">Here</a>. </p>
+            <p>Of course, a good reward will make your question more attractive and responses more prompt.</p>
                 <div class="form-group">
                     <label for="search_question"><strong>Do a search before asking your question</strong></label>
                     <input type="text" class="form-control" id="ask_question_input" placeholder="Type your keywords" autocomplete="off">
