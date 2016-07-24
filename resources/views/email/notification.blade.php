@@ -688,8 +688,8 @@
 
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 24px;Margin-bottom: 24px;">
 
-                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #434547;font-size: 16px;line-height: 24px;">If you have any question in using NUSDing or find a&nbsp;critical bugs in the websites.</h3><h3 style="Margin-top: 12px;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #434547;font-size: 16px;line-height: 24px;">Please contact email :&nbsp;</h3><p style="Margin-top: 12px;Margin-bottom: 0;">For question : tiket@nusding.info</p><p style="Margin-top: 20px;Margin-bottom: 0;">For bugs : bug@nusding.info</p><blockquote style="Margin-top: 20px;Margin-bottom: 0;Margin-left: 0;Margin-right: 0;padding-left: 14px;border-left: 4px solid #b1c1d8;"><h3 style="Margin-top: 20px;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #434547;font-size: 16px;line-height: 24px;">For developers who are interested in fork our project. We welcome you to
-                            star&nbsp;our project in <a style="text-decoration: none;transition: opacity 0.1s ease-in;color: #5c91ad;Margin-top: 20px;" href="https://github.com/xpdavid/Ding">Github</a></h3></blockquote>
+                    <h3 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #434547;font-size: 16px;line-height: 24px;">If you have any questions in using NUS Ding or find any critical bugs.</h3><h3 style="Margin-top: 12px;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #434547;font-size: 16px;line-height: 24px;">Please contact email :&nbsp;</h3><p style="Margin-top: 12px;Margin-bottom: 0;">For question : ticket@nusding.info</p><p style="Margin-top: 20px;Margin-bottom: 0;">For bugs : bug@nusding.info</p><blockquote style="Margin-top: 20px;Margin-bottom: 0;Margin-left: 0;Margin-right: 0;padding-left: 14px;border-left: 4px solid #b1c1d8;"><h3 style="Margin-top: 20px;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #434547;font-size: 16px;line-height: 24px;">For developers who are interested in forking our project, we welcome you to
+                            star our project on <a style="text-decoration: none;transition: opacity 0.1s ease-in;color: #5c91ad;Margin-top: 20px;" href="https://github.com/xpdavid/Ding">Github</a></h3></blockquote>
                 </div>
 
             </div>
@@ -706,12 +706,12 @@
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 10px;Margin-bottom: 10px;">
 
                     <div>
-                        <div>NUSDing<br />
+                        <div>NUS Ding<br />
                             2016 Copyright All right reserved.</div>
                     </div>
                     <div style="Margin-top: 18px;">
-                        <div>You are receiving this email because you got new notification.<br />
-                            This is a system generate email, Please do not reply!</div>
+                        <div>You are receiving this email because you have received a new notification.<br />
+                            This is an automatically generated email, please do not reply.</div>
                     </div>
                 </div>
             </div>
