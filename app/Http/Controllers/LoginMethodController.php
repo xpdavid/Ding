@@ -8,6 +8,7 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 use Route;
+use App\Point;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -75,6 +76,9 @@ class LoginMethodController extends Controller
 
             // send  welcome message
             MailRobot::welcome($user);
+
+            // add point to user
+            Point::add_point($user, 18, []);
 
             Auth::login($user, true);
             return redirect('/');
