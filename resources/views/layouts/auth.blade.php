@@ -55,8 +55,12 @@
 <script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
 <script type="text/javascript">
     var CaptchaCallback = function() {
-        grecaptcha.render('RecaptchaField1', {'sitekey' : '{{ env('RECAPTCHA_PUBLIC_KEY') }}'});
-        grecaptcha.render('RecaptchaField2', {'sitekey' : '{{ env('RECAPTCHA_PUBLIC_KEY') }}'});
+        if ($('#RecaptchaField1').length != 0) {
+            grecaptcha.render('RecaptchaField1', {'sitekey' : '{{ env('RECAPTCHA_PUBLIC_KEY') }}'});
+        }
+        if ($('#RecaptchaField2').length != 0) {
+            grecaptcha.render('RecaptchaField2', {'sitekey' : '{{ env('RECAPTCHA_PUBLIC_KEY') }}'});
+        }
     };
 </script>
 

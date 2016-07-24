@@ -99,10 +99,6 @@
                         </div>
                         <p class="help-block">Question with higher reward may receive quicker responses.</p>
                     </div>
-
-                    <div class="margin-top">
-                        <div id="RecaptchaField1"></div>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <div id="_question_new_question">
