@@ -216,6 +216,16 @@ class Answer extends Model
     }
 
     /**
+     * Get published answer
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopePublished($query) {
+        return $query->whereStatus(1);
+    }
+
+    /**
      * Save draft to answer
      *
      * @param array $attributes
@@ -273,11 +283,11 @@ class Answer extends Model
         if ($range != null) {
             return $query->where('created_at', '>', Carbon::now()->subDays($range)->toDateTimeString())
                 ->where('answer', 'LIKE', '%' . $key . '%')
-                ->whereStatus(1); // published
+                ->published(); // published
 
         } else {
             return $query->where('answer', 'LIKE' , '%' . $key . '%')
-                ->whereStatus(1); // published
+                ->published(); // published
         }
 
     }
