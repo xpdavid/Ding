@@ -116,7 +116,31 @@ function MyBackground(drawDivText, drawDivLine) {
 	this.areaLine = drawDivLine; // a JQuery object
 	this.MyObejcts = [];
 	this.MyLines = [];
-	this.init();
+    var self = this;
+    // local storage to get cache
+    try {
+        var storage = window.localStorage;
+        if (storage.getItem('NUS-DING-HOT-TOPICS') == null) {
+            $.post('/hot-topics', {
+                max : 30
+            }, function(results) {
+                var process = [];
+                $.each(results, function(index, item) {
+                    process.push(item.name);
+                });
+                MyBackground.prototype.textSource = process;
+                storage.setItem('NUS-DING-HOT-TOPICS', JSON.stringify(process));
+                self.init();
+            });
+        } else {
+            MyBackground.prototype.textSource = JSON.parse(storage.getItem('NUS-DING-HOT-TOPICS'));
+            self.init();
+        }
+    } catch(e) {
+        self.init();
+    }
+
+
 }
 
 /*
@@ -264,7 +288,8 @@ function draw() {
 * excute this function after load the page
 */
 $(function() {
-	setInterval(draw, 50);
+
+    setInterval(draw, 50);
 });
 
 /*
