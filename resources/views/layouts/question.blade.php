@@ -54,6 +54,8 @@
             src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
 
+    {{--for social share--}}
+    <script type="text/javascript">(function(){window.switchTo5x=false;var e=document.createElement("script");e.type="text/javascript";e.async=true;e.onload=function(){try{stLight.options({publisher: "a72697fa-63bf-44fb-a0a9-c0ae69c85e45-a51c", doNotHash: false, doNotCopy: false, hashAddressBar: true});}catch(e){}};e.src=("https:" == document.location.protocol ? "https://ws" : "http://w") + ".sharethis.com/button/buttons.js";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(e, s);})();</script>
 </head>
 <body>
 
