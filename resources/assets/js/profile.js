@@ -282,7 +282,8 @@ function saveEducationExp() {
                         name : data.name,
                         url : ''
                     },
-                    delete_onclick : 'detachEducationExp(event, ' + data.id + ')'
+                    delete_onclick : 'detachEducationExp(event, ' + data.id + ')',
+                    img_url : data.img
                 }]
             })
         );
@@ -360,7 +361,8 @@ function saveJob() {
                         name : data.name,
                         url : ''
                     },
-                    delete_onclick : 'detachJob(event, ' + data.id + ')'
+                    delete_onclick : 'detachJob(event, ' + data.id + ')',
+                    img_url : data.img
                 }]
             })
         );

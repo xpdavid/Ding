@@ -33,13 +33,12 @@
                         <li id="job_{{ $job->id }}">
                             <div class="userEdit_itemListDetail">
                                 <div class="userEdit_itemListDetailImage">
-                                    <img src="topic.png" class="img-rounded" />
+                                    <img src="{{ autoImage($job->full_name, 50, 50) }}" class="img-rounded" />
                                 </div>
                                 <div class="userEdit_itemListDetailContent">
                                     <a href="#">{{ $job->full_name }}</a>
                                 </div>
                             </div>
-                            <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" onclick="detachJob(event, '{{ $job->id }}')">Delete</a>
                         </li>
                     @endforeach
                 </ul>
@@ -56,13 +55,12 @@
                         <li id="educationExp_{{ $educationExp->id }}">
                             <div class="userEdit_itemListDetail">
                                 <div class="userEdit_itemListDetailImage">
-                                    <img src="topic.png" class="img-rounded" />
+                                    <img src="{{ autoImage($educationExp->full_name, 50, 50) }}" class="img-rounded" />
                                 </div>
                                 <div class="userEdit_itemListDetailContent">
                                     <a href="#">{{ $educationExp->full_name }}</a>
                                 </div>
                             </div>
-                            <a href="#" class="glyphicon glyphicon-trash userSetting_EditA userEdit_itemListDetailButton" onclick="detachEducationExp(event, '{{ $educationExp->id }}')">Delete</a>
                         </li>
                     @endforeach
                 </ul>

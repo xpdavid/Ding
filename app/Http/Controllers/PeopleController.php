@@ -61,9 +61,6 @@ class PeopleController extends Controller
 
         // generate process
         $count = 0;
-        if ($settings->profile_pic_id != 0) {
-            $count += 2;
-        }
         if ($user->bio != "") {
             $count += 2;
         }
@@ -76,7 +73,7 @@ class PeopleController extends Controller
         if ($user->specializations()->count() > 0) {
             $count += 3;
         }
-        $progress = ceil(($count / 10) * 100);
+        $progress = ceil(($count / 8) * 100);
 
 
         return view('profile.edit', compact('user', 'settings', 'progress'));
@@ -404,6 +401,7 @@ class PeopleController extends Controller
                 return [
                     'name' => $educationExp->full_name,
                     'id' => $educationExp->id,
+                    'img' => autoImage($educationExp->full_name, 50, 50),
                     'status' => true
                 ];
             case 'job':
@@ -414,6 +412,7 @@ class PeopleController extends Controller
                 return [
                     'name' => $job->full_name,
                     'id' => $job->id,
+                    'img' => autoImage($job->full_name, 50, 50),
                     'status' => true
                 ];
             case 'specialization':

@@ -154,6 +154,7 @@ Route::post('/history/{id}/rollback', 'HistoryController@postRollback');
 // for dynamic image system
 Route::get('/image/{reference_id}/{width}/{height}', 'ImageController@image');
 Route::get('/image/{reference_id}', 'ImageController@original_image');
+Route::get('/image/auto/{query}/{width}/{height}', 'ImageController@autoGetting');
 
 
 // for login method
