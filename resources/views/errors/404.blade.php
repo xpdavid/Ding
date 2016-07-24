@@ -30,7 +30,7 @@
             </p>
             <p class="text-right">
                 We can't find the page you're looking for. Check out our
-                <a href="blog.nusding.info">Blog</a> for updates or send email to
+                <a href="http://blog.nusding.info">Blog</a> for updates or send email to
                 ticket@nusding.info for technical support.
             </p>
         </div>
