@@ -129,9 +129,9 @@
 <div class="login_footer">
     <span>&copy; 2016 Ding &amp; KKP</span>
     <span class="login_footer_dot">·</span>
-    <a href="#">NUS SOC Orbital 2016</a>
+    <a href="https://orbital.comp.nus.edu.sg/">NUS SOC Orbital 2016</a>
     <span class="login_footer_dot">·</span>
-    <a href="#">Blog</a>
+    <a href="http://blog.nusding.info/">Blog</a>
     <span class="login_footer_dot">·</span>
-    <a href="#">GitHub</a>
+    <a href="https://github.com/xpdavid/Ding">GitHub</a>
 </div>

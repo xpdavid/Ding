@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <div class="clearfix">
             <div class="float-left">
-                Question Log
+                Question Edit History
             </div>
             <div class="float-right">
                 <a href="/question/{{ $question->id }}">&lt;&lt; Back to the question</a>

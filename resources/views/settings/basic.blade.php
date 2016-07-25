@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-sm-4">
-                            <span class="userSetting_info">Permanent once edited</span>
+                            <span class="userSetting_info">Permanent once edited (for V3 and above)</span>
                         </div>
                     </div>
                 </div>
