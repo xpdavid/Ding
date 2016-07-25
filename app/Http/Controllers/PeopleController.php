@@ -30,6 +30,7 @@ class PeopleController extends Controller
     public function __construct()
     {
         $this->middleware('auth_real');
+        $this->middleware('ban_user');
     }
 
     /**
@@ -543,7 +544,7 @@ class PeopleController extends Controller
 
             } else if ($request->get('operation') == 'ban') {
                 // ban user
-                $user->authGroup_id = 8;
+                $user->authGroup_id = 9;
                 $user->save();
 
                 // add point ot user

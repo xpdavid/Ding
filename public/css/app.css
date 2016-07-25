@@ -136,7 +136,7 @@ body.modal-open {
   background: rgba(255, 255, 255, 0.6);
   font-size: 26px; }
 
-.realname_alert {
+.fixed_top_right {
   position: fixed;
   z-index: 1;
   top: 62px;

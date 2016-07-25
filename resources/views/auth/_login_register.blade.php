@@ -135,3 +135,10 @@
     <span class="login_footer_dot">·</span>
     <a href="https://github.com/xpdavid/Ding">GitHub</a>
 </div>
+
+{{--for baned user--}}
+@if (session('ban_user'))
+    <div class="alert alert-danger fixed_top_right">
+        {{ session('ban_user') }}
+    </div>
+@endif

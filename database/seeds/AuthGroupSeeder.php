@@ -147,16 +147,16 @@ class AuthGroupSeeder extends Seeder
             ->attach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17, 18]);
 
 
-        // baned user
+        // Unregistered (not real name) user
         AuthGroup::create([
             'name' => 'v0',
             'point' => 0
         ])->authorities()
             ->attach(1);;
 
-        // Unregistered User
+        // ban User
         AuthGroup::create([
-            'name' => 'Unregistered User',
+            'name' => 'Ban User',
             'point' => 0
         ])->authorities()
             ->attach(1);

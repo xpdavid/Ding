@@ -16,6 +16,7 @@ class NotificationController extends Controller
     public function __construct()
     {
         $this->middleware('auth_real');
+        $this->middleware('ban_user');
     }
     /**
      * Response ajax request to do notification operation

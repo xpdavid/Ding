@@ -112,7 +112,7 @@
 </a>
 
 @if(Auth::user() && Auth::user()->authGroup_id == 8)
-    <div class="alert alert-warning realname_alert">
+    <div class="alert alert-warning fixed_top_right">
         Please complete identification verification <a href="/settings/account"><strong>(Bind your account with IVLE)</strong></a>
     </div>
 @endif

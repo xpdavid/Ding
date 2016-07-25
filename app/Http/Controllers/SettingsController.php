@@ -20,6 +20,7 @@ class SettingsController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('realname', ['except' => ['getAccount']]);
+        $this->middleware('ban_user');
     }
 
     /**

@@ -21,6 +21,7 @@ class UserCenterController extends Controller
     public function __construct()
     {
         $this->middleware('auth_real');
+        $this->middleware('ban_user');
     }
 
     /**

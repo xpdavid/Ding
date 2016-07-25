@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\BanUserMiddleware;
 use App\Http\Middleware\RealNameSystem;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -56,5 +57,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'realname' => \App\Http\Middleware\RealNameSystem::class,
+        'ban_user' => \App\Http\Middleware\BanUserMiddleware::class,
     ];
 }
