@@ -286,9 +286,11 @@ function navbar_ask_clear_input() {
     $('#_question_topics').empty();
     // clear id
     $('#_question_detail_draft_id').val('');
+    $('#_question_detail_draft_id').data('value', '');
     $('#_question_detail_draft_id').data('id', '');
     // clear id
     $('#_question_edit_id').val('');
+    $('#_question_detail_draft_id').data('value', '');
     $('#_question_edit_id').data('id', '');
     // clear reward
     $('#_question_reward').val('');
