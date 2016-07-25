@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <p>Ding is a friendly and helpful community. We hope that with the help of this forum, everyone can find answers to their question. To craft a good question, please make your question title clear and question description concise. </p>
-                <p>For more details on how to craft a good question, please refer to the post on our blog <a href="http://blog.nusding.info/index.php/2016/07/22/how-to-post-a-good-question/">Here</a>. </p>
+                <p>For more details on how to craft a good question, please refer to the post on our blog <a href="http://blog.nusding.info/index.php/2016/07/12/how-to-post-a-good-question/">Here</a>. </p>
                 <p>Of course, a good reward will always make your question more attractive and responses more prompt. So now let's proceed to our first step!</p>
                 <div class="form-group">
                     <label for="search_question"><strong>Do a search before asking your question</strong></label>
