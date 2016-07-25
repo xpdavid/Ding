@@ -664,7 +664,7 @@
 
                     <h2 class="size-24" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #44a8c7;font-size: 20px;line-height: 28px;text-align: center;" lang="x-size-24"><strong>
                             {{ $user->name }}, {{ $notification->title }}
-                        </strong></h2><p class="size-16" style="Margin-top: 16px;Margin-bottom: 0;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">Hi, {{$user->name}}, you get new notification</p>
+                        </strong></h2><p class="size-16" style="Margin-top: 16px;Margin-bottom: 0;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">Hi {{$user->name}}, you have received new notification</p>
                     <p class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 16px;line-height: 24px;text-align: left;" lang="x-size-16">{!! $notification->renderedContent !!}</p>
                 </div>
 
