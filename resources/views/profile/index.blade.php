@@ -38,7 +38,7 @@
             <div class="progress">
                 @if ($user->authGroup->id <= 5)
                     <div class="progress-bar progress-bar-success" style="width: {{ $user->authGroup->point / 5 }}%">
-                        {{ $user->point - $user->authGroup->point }}
+                        {{ $user->authGroup->point }}
                     </div>
                     <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: {{ ($user->point - $user->authGroup->point) / 5 }}%">
                         {{ $user->point - $user->authGroup->point }}
