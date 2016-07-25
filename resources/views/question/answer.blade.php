@@ -87,6 +87,7 @@
             @endif
         @endforeach
 
+        invite_search_box('{{ $question->id }}');
     })
 </script>
 @endsection

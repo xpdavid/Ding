@@ -37,6 +37,8 @@
     <script type="text/javascript">
         $(function() {
             showQuestionLogPage('question_log', null, '{{ $question->id }}', 1, null);
+
+            invite_search_box('{{ $question->id }}');
         });
     </script>
 
