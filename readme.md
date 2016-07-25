@@ -63,7 +63,7 @@ Please run `composer update` to get the plugins when deploying.
 - `// fix bootstrap modal shifting`
 - `// fix bootstarp modal scrolling`
 - `// fix for tinyMCE fullscreen modal`
-- `// fix for sweet alert`
+- `// fix for sweetalert`
 
 #### Classes
 - `<body>` :  the overall color is set to '#666', the font is set to `helvetica` the fond size is set to `15px`
@@ -226,7 +226,7 @@ With PDO parameter binding, ‘ding@example.com’ or 1=1 will be binded into �
 			`<script>alert(“malicious script”)</script>`
 			
 			If such field is entered and parsed as an HTML entity, the pop-up window with information “malicious script” will be shown.
-			With the <script> entity escaped, the code will be removed.
+			With the `<script>` entity escaped, the code will be removed.
 			Which will not be parsed as a script any more.
 * In order to guide users on how to use Ding, a blog that includes the documentation of Ding is set up [Blog](http://blog.nusding.info/). 
 * User testing is deployed to improve quality of Ding.
