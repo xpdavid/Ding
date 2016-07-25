@@ -94,7 +94,7 @@ class BookmarkController extends Controller
                         'id' => $question->id,
                         'title' => $question->title,
                         'numAnswer' => $question->answers()->count(),
-                        'visit' => 13,
+                        'visit' => $question->hit->total,
                         'numSubscriber' => $question->subscribers()->count(),
                         'subscribed' => $user->subscribe->checkHasSubscribed($question->id, 'question')
                     ]);

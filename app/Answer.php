@@ -210,6 +210,8 @@ class Answer extends Model
 
         // change answer status
         $this->status = 1;
+        // update time
+        $this->created_at = Carbon::now();
         $this->save();
 
         return true;
