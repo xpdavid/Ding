@@ -63,7 +63,13 @@
         $(function() {
             getRecommendQuestion(null, null, processRecommendShort); // ajax get recommend question
             getHotWeekQuestion(); // ajax get hot week questions
-            getHotMonthQuestion(); // ajax get hot month questions
+            getHotMonthQuestion(function() { // callback
+                // backup content
+                hotMonthContent = $('#highlight_month').html();
+                // remove to prevent duplicate id
+                $('#highlight_month').html('');
+            }); // ajax get hot month questions
+
             backupContent();
         })
     </script>

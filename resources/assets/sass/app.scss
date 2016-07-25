@@ -1,15 +1,12 @@
 body {
   color: #666;
   font-size: 15px;
+  font-family: 'helvetica' !important;
 }
 
 html {
   padding-top: 60px;
   overflow-y: scroll !important;
-}
-
-body {
-  font-family: 'helvetica' !important;
 }
 
 // fix bootstrap modal shifting
@@ -34,7 +31,7 @@ body.modal-open {
   -o-transform: none;
   transform: none;
 }
-// end of fix
+
 
 .glyphicon {
   margin-right: 5px;
@@ -169,6 +166,7 @@ body.modal-open {
   background: #eff6fa;
 }
 
+// fix for sweet alert
 .sweet-alert {
   z-index: 100006;
 }
@@ -193,6 +191,53 @@ body.modal-open {
   top: 62px;
   right: 7px;
 }
+
+#back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 9999;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  line-height: 30px;
+  background-color: #ddd;
+  color: #444;
+  cursor: pointer;
+  border: 0;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
+  display: block;
+}
+#back-to-top:hover {
+  background: #e2e2e2;
+}
+#back-to-top.show {
+  opacity: 1;
+}
+#back-to-top div {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: auto
+}
+#back-to-top-arrow {
+  width: 0;
+  height: 0;
+  top: -1px;
+  border: 9px solid transparent;
+  border-bottom-color: #aaa
+}
+#back-to-top-stick {
+  width: 8px;
+  height: 14px;
+  top: 15px;
+  border-radius: 1px;
+  background-color: #aaa
+}
+
 
 .navbar_backgroud {
   background: #222;

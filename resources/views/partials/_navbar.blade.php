@@ -106,6 +106,11 @@
     <span class="glyphicon glyphicon-chevron-up"></span>Close
 </button>
 
+<a href="#" id="back-to-top" title="Back to top">
+    <div id="back-to-top-arrow"></div>
+    <div id="back-to-top-stick"></div>
+</a>
+
 @if(Auth::user() && Auth::user()->authGroup_id == 8)
     <div class="alert alert-warning realname_alert">
         Please complete identification verification <a href="/settings/account"><strong>(Bind your account with IVLE)</strong></a>

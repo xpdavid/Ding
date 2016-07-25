@@ -94,7 +94,7 @@ function getHotQuestion(before, callback, process, type) {
 /**
  * Get more hot week question
  */
-function getHotWeekQuestion() {
+function getHotWeekQuestion(callback) {
     getHotQuestion(function() {
         $('#highlight_week_more').prop('disabled', true);
     }, function(results) {
@@ -111,13 +111,18 @@ function getHotWeekQuestion() {
         }));
 
         rerenderMath('highlight_week');
-    }, 'week');
+
+        if (callback && typeof callback == 'function') {
+            callback(results);
+        }
+
+    }, 'week', callback);
 }
 
 /**
  * Get more hot month question
  */
-function getHotMonthQuestion() {
+function getHotMonthQuestion(callback) {
     getHotQuestion(function() {
         $('#highlight_month_more').prop('disabled', true);
     }, function(results) {
@@ -134,7 +139,11 @@ function getHotMonthQuestion() {
         }));
 
         rerenderMath('highlight_month');
-    }, 'month');
+
+        if (callback && typeof callback == "function") {
+            callback(results);
+        }
+    }, 'month', callback);
 }
 
 var hotWeekContent = null;
