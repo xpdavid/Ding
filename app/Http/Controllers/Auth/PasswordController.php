@@ -25,6 +25,9 @@ class PasswordController extends Controller
 
     protected $subject = "Your Email Reset Link - NUSDing";
 
+    protected $redirectTo = "/";
+    
+    
     /**
      * Create a new password controller instance.
      *

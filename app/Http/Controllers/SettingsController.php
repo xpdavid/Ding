@@ -111,6 +111,7 @@ class SettingsController extends Controller
                     $user->update([
                         'password' => Hash::make($request->get('new_password')),
                     ]);
+                    session()->flash('messages', 'Password Changing Success');
                 } else {
                     return Redirect::back()->withErrors(['Password mismatch']);
                 }
