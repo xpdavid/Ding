@@ -364,13 +364,14 @@ class AnswerController extends Controller
             abort(401);
         }
 
-        if ($request->has('id')) {
-            $answer = Answer::findOrFail($request->get('id'));
+        // get user draft in answer
+        $draft = $question->answerDraftBy($user->id);
+        if ($draft) {
+            $answer = $draft;
             // authority check
             if ($answer->owner->id != Auth::user()->id || $answer->status != 2) {
                 abort(401);
             }
-
 
             // the post answer is an draft
             // save the draft immediately
