@@ -38,6 +38,8 @@ class AnswerController extends Controller
         $user = Auth::user();
         $answer = Answer::findOrFail($answer_id);
         if ($answer->status != 2 || $answer->owner->id == $user->id) {
+            // an answer has been visited
+            Visitor::visit($answer);
             return $answer->answer;
         } else {
             abort(401); // you cannot get an unpublished answer

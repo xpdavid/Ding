@@ -12,10 +12,16 @@
     {{#if summary}}
         <p>
             <div id="question_summary_{{id}}" class="_summary">
-                {{{content}}}<a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{id}}">Show all</a>
+                {{{content}}} <a href="#" class="_show_all" data-toggle="expand_all" data-type="question" data-id="{{id}}">Show all</a>
             </div>
-            <div id="question_full_{{id}}">
+            <div id="question_full_{{id}}" class="noneDisplay">
+                <span id="question_full_content_{{id}}_viewport_top"></span>
+                <div id="question_full_content_{{id}}">
 
+                </div>
+                <a href="#" class="_show_all"
+                   data-toggle="hide" data-hide="question_full_{{id}}" data-show="question_summary_{{id}}">Close</a>
+                <span id="question_full_content_{{id}}_viewport_bottom"></span>
             </div>
         </p>
     {{^}}

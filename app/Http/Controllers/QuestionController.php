@@ -78,6 +78,8 @@ class QuestionController extends Controller
         $question = Question::findOrFail($question_id);
 
         if($question->status != 2 || $question->owner->id == $user->id) {
+            // Visit count
+            Visitor::visit($question);
             // only if you are the owner, then you can visit it
             return $question->toJsonFull();
         } else {

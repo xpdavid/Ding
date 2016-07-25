@@ -105,7 +105,7 @@
                     </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">
-                        <span data-parent="_question" data-ask="Ask" data-edit="Edit"></span>
+                        <span data-parent="_question" data-ask="Ask(Publish)" data-edit="Edit"></span>
                     </button>
                     <div class="margin-top text-warning" data-parent="_question" data-ask=""
                           data-edit="Please note that your edit will be recorded">

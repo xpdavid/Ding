@@ -33,12 +33,15 @@
             {{/if}}
         </div>
         <div id="answer_full_{{answer.id}}" class="noneDisplay">
-                <span id="answer_full_content_{{answer.id}}">
-
-                </span>
+            <span id="answer_full_content_{{answer.id}}_viewport_top"></span>
+            <div id="answer_full_content_{{answer.id}}">
+            </div>
+            <a href="#" class="_show_all"
+               data-toggle="hide" data-hide="answer_full_{{answer.id}}" data-show="answer_summary_{{answer.id}}">Close</a>
             {{#if answer.canEdit}}
             <a href="#" class="_show_all" onclick="editAnswer(event, {{answer.id}})">Edit</a>
             {{/if}}
+            <span id="answer_full_content_{{answer.id}}_viewport_bottom"></span>
         </div>
         {{#if answer.canEdit}}
         <div id="answer_editor_{{answer.id}}_wrapper" class="noneDisplay">

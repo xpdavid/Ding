@@ -32,6 +32,8 @@
                 <div id="question_full_content_{{ $question->id }}">
 
                 </div>
+                <a href="#" class="_show_all"
+                   data-toggle="hide" data-hide="question_full_{{ $question->id }}" data-show="question_summary_{{ $question->id }}">Close</a>
                 <span id="question_full_content_{{$question->id}}_viewport_bottom"></span>
             </div>
             @if ($question->isClosed())
