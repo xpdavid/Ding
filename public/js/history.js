@@ -149,6 +149,8 @@ function showAnswerLogPage(base_id, type, answer_id, page, callback) {
 
             // rerender math equation
             rerenderMath(base_id + '_content');
+            // highlight code
+            Prism.highlightAll();
 
             // update nav bar
             if (all.length != 0) {
@@ -227,6 +229,8 @@ function showQuestionLogPage(base_id, type, answer_id, page, callback) {
 
             // rerender math equation
             rerenderMath(base_id + '_content');
+            // highlight code
+            Prism.highlightAll();
 
             // update nav bar
             if (all.length != 0) {
