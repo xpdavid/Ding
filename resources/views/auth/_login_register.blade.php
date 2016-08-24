@@ -62,7 +62,7 @@
                         <button type="button" class="btn btn-warning">Login with IVLE</button>
                     </a>
                     <a href="/highlight">
-                        <button type="submit" class="btn btn-link">Take a quick view</button>
+                        <button type="button" class="btn btn-link">Take a quick view</button>
                     </a>
                     {{ Form::close() }}
                 </div>
@@ -115,7 +115,7 @@
                         <button type="button" class="btn btn-warning">Login with IVLE</button>
                     </a>
                     <a href="/highlight">
-                        <button type="submit" class="btn btn-link">Take a quick view</button>
+                        <button type="button" class="btn btn-link">Take a quick view</button>
                     </a>
                 </div>
 
